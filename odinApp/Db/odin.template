@@ -1,0 +1,2 @@
+include "ADBase.template"
+include "NDFile.template"

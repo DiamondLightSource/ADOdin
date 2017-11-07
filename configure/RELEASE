@@ -1,0 +1,7 @@
+#RELEASE Location of external products
+# Run "gnumake clean uninstall install" in the application
+# top directory each time this file is changed.
+
+-include $(AREADETECTOR)/configure/RELEASE_PATHS.local
+-include $(AREADETECTOR)/configure/RELEASE_PRODS.local
+-include $(AREADETECTOR)/configure/RELEASE_LIBS.local
