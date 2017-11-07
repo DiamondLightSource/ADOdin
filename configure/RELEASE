@@ -5,3 +5,5 @@
 -include $(AREADETECTOR)/configure/RELEASE_PATHS.local
 -include $(AREADETECTOR)/configure/RELEASE_PRODS.local
 -include $(AREADETECTOR)/configure/RELEASE_LIBS.local
+
+-include $(TOP)/configure/RELEASE.local
