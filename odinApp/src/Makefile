@@ -5,7 +5,7 @@ include $(TOP)/configure/CONFIG
 
 LIBRARY_IOC = odinDetector
 
-LIB_SRCS += odinDetector.cpp
+LIB_SRCS += odinDetector.cpp odinRestApi.cpp
 
 LIB_LIBS += restClient
 

@@ -4,10 +4,14 @@
 #include "ADDriver.h"
 #include "restParam.h"
 
-class odinDetector : public ADDriver
+#include "odinRestApi.h"
+
+#define OdinConnected "CONNECTED"
+
+class OdinDetector : public ADDriver
 {
-public:
-  odinDetector(
+ public:
+  OdinDetector(
       const char *portName, const char *serverHostname,
       int maxBuffers, size_t maxMemory, int priority, int stackSize);
 
@@ -21,6 +25,21 @@ public:
   virtual asynStatus drvUserCreate(
       asynUser *pasynUser, const char *drvInfo,
       const char **pptypeName, size_t *psize);
+
+ private:
+  char mHostname[512];
+  OdinRestAPI mAPI;
+  RestParamSet mParams;
+
+  int mFirstParam;
+
+  RestParam * createRESTParam(
+      std::string const & asynName, asynParamType asynType,
+      sys_t subSystem, std::string const & name);
+  RestParam * mConnected;
+
+  asynStatus getStatus();
+
 };
 
 #endif

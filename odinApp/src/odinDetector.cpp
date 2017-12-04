@@ -4,14 +4,12 @@
 #include <iocsh.h>
 
 static const std::string DRIVER_VERSION("0-1");
+static const char *driverName = "OdinDetector";
 
-static const char *driverName = "odinDetector";
-
-/* Constructor for Odin driver; most parameters are simply passed to
- * ADDriver::ADDriver.
- * After calling the base class constructor this method creates a thread to
- * collect the detector data, and sets reasonable default values for the
- * parameters defined in this class, asynNDArrayDriver, and ADDriver.
+/* Constructor for Odin driver; most parameters are simply passed to ADDriver::ADDriver.
+ * After calling the base class constructor this method creates a thread to collect the detector
+ * data, and sets reasonable default values for the parameters defined in this class,
+ * asynNDArrayDriver, and ADDriver.
  * \param[in] portName The name of the asyn port driver to be created.
  * \param[in] serverHostname The IP or url of the detector webserver.
  * \param[in] maxBuffers The maximum number of NDArray buffers that the
@@ -25,36 +23,65 @@ static const char *driverName = "odinDetector";
  * \param[in] stackSize The stack size for the asyn port driver thread if
  *            ASYN_CANBLOCK is set in asynFlags.
  */
-odinDetector::odinDetector(const char *portName, const char *serverHostname,
-                           int maxBuffers, size_t maxMemory, int priority,
-                           int stackSize)
+OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int maxBuffers,
+                           size_t maxMemory, int priority, int stackSize)
 
     : ADDriver(portName, 2, 0, maxBuffers, maxMemory,
                0, 0,                 /* No interfaces beyond ADDriver.cpp */
                ASYN_CANBLOCK |       /* ASYN_CANBLOCK=1 */
                    ASYN_MULTIDEVICE, /* ASYN_MULTIDEVICE=1 */
                1,                    /* autoConnect=1 */
-               priority, stackSize) {
-  const char *functionName = "odinDetector";
+               priority, stackSize),
+    mAPI(serverHostname, 8080),
+    mParams(this, &mAPI, pasynUserSelf) {
+  const char *functionName = "OdinDetector";
+
+  strncpy(mHostname, serverHostname, sizeof(mHostname));
 
   // Write version to appropriate parameter
   setStringParam(NDDriverVersion, DRIVER_VERSION);
+
+  mConnected = createRESTParam(OdinConnected, asynParamInt32, SSExcaliburStatus, "connected");
+  mFirstParam = mConnected->getIndex();
+}
+
+RestParam *OdinDetector::createRESTParam(
+    std::string const & asynName, asynParamType asynType, sys_t subSystem, std::string const & name)
+{
+  RestParam *p = mParams.create(asynName, asynType, mAPI.sysStr[subSystem], name, REST_P_BOOL);
+  return p;
+}
+
+asynStatus OdinDetector::getStatus() {
+  int status = 0;
+  // Fetch connected state
+  status |= mConnected->fetch();
+
+  if(status)
+    return asynError;
+
+  callParamCallbacks();
+  return asynSuccess;
 }
 
 /* Called when asyn clients call pasynInt32->write().
- * This function performs actions for some parameters, including ADAcquire,
- * ADTriggerMode, etc.
- * For all parameters it sets the value in the parameter library and calls any
- * registered callbacks..
+ * This function performs actions for some parameters, including ADAcquire, ADTriggerMode, etc.
+ * For all parameters it sets the value in the parameter library and calls any registered callbacks.
+ *
  * \param[in] pasynUser pasynUser structure that encodes the reason and address.
  * \param[in] value Value to write.
  */
-asynStatus odinDetector::writeInt32(asynUser *pasynUser, epicsInt32 value) {
+asynStatus OdinDetector::writeInt32(asynUser *pasynUser, epicsInt32 value) {
   int function = pasynUser->reason;
   asynStatus status = asynSuccess;
   const char *functionName = "writeInt32";
 
-  status = ADDriver::writeInt32(pasynUser, value);
+  if (function == ADReadStatus) {
+    status = getStatus();
+  }
+  else if(function < mFirstParam) {
+    status = ADDriver::writeInt32(pasynUser, value);
+  }
 
   if (status) {
     asynPrint(
@@ -82,8 +109,8 @@ asynStatus odinDetector::writeInt32(asynUser *pasynUser, epicsInt32 value) {
  *            address.
  * \param[in] value Value to write.
  */
-asynStatus odinDetector::writeFloat64(asynUser *pasynUser,
-                                      epicsFloat64 value) {
+asynStatus OdinDetector::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
+{
   int function = pasynUser->reason;
   asynStatus status = asynSuccess;
   const char *functionName = "writeFloat64";
@@ -113,7 +140,7 @@ asynStatus odinDetector::writeFloat64(asynUser *pasynUser,
   * \param[in] value Address of the string to write.
   * \param[in] nChars Number of characters to write.
   * \param[out] nActual Number of characters actually written. */
-asynStatus odinDetector::writeOctet(asynUser *pasynUser, const char *value,
+asynStatus OdinDetector::writeOctet(asynUser *pasynUser, const char *value,
                                     size_t nChars, size_t *nActual) {
   int function = pasynUser->reason;
   asynStatus status = asynSuccess;
@@ -143,12 +170,12 @@ asynStatus odinDetector::writeOctet(asynUser *pasynUser, const char *value,
  * \param[in] fp File pointed passed by caller where the output is written to.
  * \param[in] details If >0 then driver details are printed.
  */
-void odinDetector::report(FILE *fp, int details) {
+void OdinDetector::report(FILE *fp, int details) {
   // Invoke the base class method
   ADDriver::report(fp, details);
 }
 
-asynStatus odinDetector::drvUserCreate(asynUser *pasynUser,
+asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
                                        const char *drvInfo,
                                        const char **pptypeName,
                                        size_t *psize) {
@@ -161,7 +188,7 @@ extern "C" int odinDetectorConfig(const char *portName,
                                   size_t maxMemory,
                                   int priority,
                                   int stackSize) {
-  new odinDetector(portName, serverPort, maxBuffers, maxMemory, priority,
+  new OdinDetector(portName, serverPort, maxBuffers, maxMemory, priority,
                    stackSize);
   return asynSuccess;
 }

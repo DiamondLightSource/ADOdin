@@ -1,2 +1,25 @@
+# Macros:
+#% macro, P, Device Prefix
+#% macro, R, Device Suffix
+#% macro, PORT, Asyn Port name
+#% macro, TIMEOUT, Timeout
+#% macro, ADDR, Asyn Port address
+
 include "ADBase.template"
 include "NDFile.template"
+
+record(ao,"$(P)$(R)AcquireTime") {
+    field(VAL, "1")
+}
+
+record(ao,"$(P)$(R)AcquirePeriod") {
+    field(VAL, "1")
+}
+
+record(bi, "$(P)$(R)Connected_RBV") {
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CONNECTED")
+    field(ZNAM, "Disconnected")
+    field(ONAM, "Connected")
+    field(SCAN, "I/O Intr")
+}
