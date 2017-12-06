@@ -6,7 +6,9 @@
 
 #include "odinRestApi.h"
 
-#define OdinConnected "CONNECTED"
+#define RestAPIVersion "REST_API_VERSION"
+#define Connected      "CONNECTED"
+#define NumPending     "NUM_PENDING"
 
 class OdinDetector : public ADDriver
 {
@@ -35,8 +37,11 @@ class OdinDetector : public ADDriver
 
   RestParam * createRESTParam(
       std::string const & asynName, asynParamType asynType,
-      sys_t subSystem, std::string const & name);
+      sys_t subSystem, std::string const & name,
+      rest_param_type_t restType = REST_P_UNINIT);
+  RestParam * mAPIVersion;
   RestParam * mConnected;
+  RestParam * mNumPending;
 
   asynStatus getStatus();
 

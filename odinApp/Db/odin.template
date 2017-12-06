@@ -16,10 +16,25 @@ record(ao,"$(P)$(R)AcquirePeriod") {
     field(VAL, "1")
 }
 
+record(stringin, "$(P)$(R)RestAPIVersion_RBV")
+{
+   field(DTYP, "asynOctetRead")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))REST_API_VERSION")
+   field(VAL,  "Unknown")
+   field(SCAN, "I/O Intr")
+}
+
 record(bi, "$(P)$(R)Connected_RBV") {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CONNECTED")
     field(ZNAM, "Disconnected")
     field(ONAM, "Connected")
     field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)NumPending_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))NUM_PENDING")
+   field(SCAN, "I/O Intr")
 }

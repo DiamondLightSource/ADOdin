@@ -12,7 +12,7 @@
 // Subsystems
 typedef enum
 {
-  SSAPIVersion,
+  SSRoot,
   SSAdapters,
   SSExcalibur,
   SSExcaliburStatus,
@@ -22,12 +22,11 @@ typedef enum
 
 class OdinRestAPI : public RestAPI
 {
+ public:
+  static const char *sysStr [SSCount];
+  int lookupAccessMode(std::string subSystem, rest_access_mode_t &accessMode);
 
-public:
-    static const char *sysStr [SSCount];
-    int lookupAccessMode(std::string subSystem, rest_access_mode_t &accessMode);
-
-    OdinRestAPI(std::string const & hostname, int port, size_t numSockets=5);
+  OdinRestAPI(std::string const & hostname, int port, size_t numSockets=5);
 };
 
 #endif

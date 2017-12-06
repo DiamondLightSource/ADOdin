@@ -41,24 +41,33 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
   // Write version to appropriate parameter
   setStringParam(NDDriverVersion, DRIVER_VERSION);
 
-  mConnected = createRESTParam(OdinConnected, asynParamInt32, SSExcaliburStatus, "connected");
-  mFirstParam = mConnected->getIndex();
+  mAPIVersion = createRESTParam(Connected, asynParamOctet, SSRoot, "api", REST_P_STRING);
+  mFirstParam = mAPIVersion->getIndex();
+  mConnected  = createRESTParam(RestAPIVersion, asynParamInt32,
+                                SSExcaliburStatus, "connected", REST_P_BOOL);
+  mNumPending  = createRESTParam(NumPending, asynParamInt32, SSExcaliburStatus, "num_pending");
+  mParams.fetchAll();
 }
 
-RestParam *OdinDetector::createRESTParam(
-    std::string const & asynName, asynParamType asynType, sys_t subSystem, std::string const & name)
+RestParam *OdinDetector::createRESTParam(std::string const & asynName, asynParamType asynType,
+                                         sys_t subSystem, std::string const & name,
+                                         rest_param_type_t restType)
 {
-  RestParam *p = mParams.create(asynName, asynType, mAPI.sysStr[subSystem], name, REST_P_BOOL);
+  RestParam *p = mParams.create(asynName, asynType, mAPI.sysStr[subSystem], name, restType);
   return p;
 }
 
-asynStatus OdinDetector::getStatus() {
+asynStatus OdinDetector::getStatus()
+{
   int status = 0;
-  // Fetch connected state
-  status |= mConnected->fetch();
 
-  if(status)
+  // Fetch status items
+  status |= mConnected->fetch();
+  status |= mNumPending->fetch();
+
+  if(status) {
     return asynError;
+  }
 
   callParamCallbacks();
   return asynSuccess;

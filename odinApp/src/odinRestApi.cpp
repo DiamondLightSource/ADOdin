@@ -49,7 +49,7 @@
 // Static public members
 
 const char *OdinRestAPI::sysStr [SSCount] = {
-    "/api",
+    "/",
     "/api/" API_VERSION "/adapters",
     "/api/" API_VERSION "/" DETECTOR_NAME "/",
     "/api/" API_VERSION "/" DETECTOR_NAME "/status/",
@@ -66,7 +66,7 @@ int OdinRestAPI::lookupAccessMode(
             sysStr, std::find(sysStr, sysStr + SSCount, subSystem));
     switch(ssEnum)
     {
-      case SSAPIVersion: SSExcalibur: SSExcaliburStatus:
+      case SSRoot: SSExcalibur: SSExcaliburStatus:
             accessMode = REST_ACC_RO;
             return EXIT_SUCCESS;
         default:
