@@ -48,6 +48,11 @@
 
 // Static public members
 
+const std::string OdinRestAPI::CONNECT           = "connect";
+const std::string OdinRestAPI::START_ACQUISITION = "start_acquisition";
+const std::string OdinRestAPI::STOP_ACQUISITION  = "stop_acquisition";
+const std::string OdinRestAPI::EMPTY_JSON_STRING = "\"\"";
+
 const char *OdinRestAPI::sysStr [SSCount] = {
     "/",
     "/api/" API_VERSION "/adapters",
@@ -62,7 +67,22 @@ OdinRestAPI::OdinRestAPI(std::string const & hostname, int port, size_t numSocke
 
 int OdinRestAPI::connectDetector()
 {
-  return put(sysStr[SSDetectorCommand], "connect", "connect", "{\"state\": true}");
+  return put(sysStr[SSDetectorCommand], CONNECT, "state", "true");
+}
+
+int OdinRestAPI::disconnectDetector()
+{
+  return put(sysStr[SSDetectorCommand], CONNECT, "state", "false");
+}
+
+int OdinRestAPI::startAcquisition()
+{
+  return put(sysStr[SSDetectorCommand], START_ACQUISITION, "", EMPTY_JSON_STRING);
+}
+
+int OdinRestAPI::stopAcquisition()
+{
+  return put(sysStr[SSDetectorCommand], STOP_ACQUISITION, "", EMPTY_JSON_STRING);
 }
 
 int OdinRestAPI::lookupAccessMode(

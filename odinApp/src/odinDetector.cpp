@@ -90,8 +90,22 @@ asynStatus OdinDetector::writeInt32(asynUser *pasynUser, epicsInt32 value) {
   asynStatus status = asynSuccess;
   const char *functionName = "writeInt32";
 
+  int adStatus;
+  getIntegerParam(ADStatus, &adStatus);
+
   if (function == ADReadStatus) {
     status = getStatus();
+  }
+  else if(function == ADAcquire) {
+    if(value && adStatus != ADStatusAcquire) {
+      mAPI.startAcquisition();
+      setIntegerParam(ADStatus, ADStatusAcquire);
+    }
+    else if (!value && adStatus == ADStatusAcquire) {
+      mAPI.stopAcquisition();
+      setIntegerParam(ADStatus, ADStatusAborted);
+    }
+    setIntegerParam(ADAcquire, value);
   }
   else if(function < mFirstParam) {
     status = ADDriver::writeInt32(pasynUser, value);

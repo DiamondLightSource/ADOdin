@@ -30,6 +30,15 @@ class OdinRestAPI : public RestAPI
   OdinRestAPI(std::string const & hostname, int port, size_t numSockets=5);
 
   int connectDetector();
+  int disconnectDetector();
+  int startAcquisition();
+  int stopAcquisition();
+
+ private:
+  static const std::string CONNECT;
+  static const std::string START_ACQUISITION;
+  static const std::string STOP_ACQUISITION;
+  static const std::string EMPTY_JSON_STRING;
 };
 
 #endif
