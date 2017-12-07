@@ -14,8 +14,9 @@ typedef enum
 {
   SSRoot,
   SSAdapters,
-  SSExcalibur,
-  SSExcaliburStatus,
+  SSDetector,
+  SSDetectorStatus,
+  SSDetectorCommand,
 
   SSCount,
 } sys_t;
@@ -27,6 +28,8 @@ class OdinRestAPI : public RestAPI
   int lookupAccessMode(std::string subSystem, rest_access_mode_t &accessMode);
 
   OdinRestAPI(std::string const & hostname, int port, size_t numSockets=5);
+
+  int connectDetector();
 };
 
 #endif

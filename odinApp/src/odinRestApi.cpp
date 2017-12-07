@@ -53,11 +53,17 @@ const char *OdinRestAPI::sysStr [SSCount] = {
     "/api/" API_VERSION "/adapters",
     "/api/" API_VERSION "/" DETECTOR_NAME "/",
     "/api/" API_VERSION "/" DETECTOR_NAME "/status/",
+    "/api/" API_VERSION "/" DETECTOR_NAME "/command/",
 };
 
 
 OdinRestAPI::OdinRestAPI(std::string const & hostname, int port, size_t numSockets) :
     RestAPI(hostname, port, numSockets) {}
+
+int OdinRestAPI::connectDetector()
+{
+  return put(sysStr[SSDetectorCommand], "connect", "connect", "{\"state\": true}");
+}
 
 int OdinRestAPI::lookupAccessMode(
         std::string subSystem, rest_access_mode_t &accessMode)
@@ -66,10 +72,12 @@ int OdinRestAPI::lookupAccessMode(
             sysStr, std::find(sysStr, sysStr + SSCount, subSystem));
     switch(ssEnum)
     {
-      case SSRoot: SSExcalibur: SSExcaliburStatus:
-            accessMode = REST_ACC_RO;
-            return EXIT_SUCCESS;
+      case SSRoot: SSDetector: SSDetectorStatus:
+        accessMode = REST_ACC_RO;
+        return EXIT_SUCCESS;
+      case SSDetectorCommand:
+        accessMode = REST_ACC_WO;
         default:
-            return EXIT_FAILURE;
+          return EXIT_FAILURE;
     }
 }

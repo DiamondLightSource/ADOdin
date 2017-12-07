@@ -41,12 +41,17 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
   // Write version to appropriate parameter
   setStringParam(NDDriverVersion, DRIVER_VERSION);
 
-  mAPIVersion = createRESTParam(Connected, asynParamOctet, SSRoot, "api", REST_P_STRING);
+  mAPIVersion = createRESTParam(RestAPIVersion, asynParamOctet,
+                                SSRoot, "api", REST_P_STRING);
+  mConnected  = createRESTParam(Connected, asynParamInt32,
+                                SSDetectorStatus, "connected", REST_P_BOOL);
+  mNumPending = createRESTParam(NumPending, asynParamInt32,
+                                SSDetectorStatus, "num_pending", REST_P_UINT);
+
   mFirstParam = mAPIVersion->getIndex();
-  mConnected  = createRESTParam(RestAPIVersion, asynParamInt32,
-                                SSExcaliburStatus, "connected", REST_P_BOOL);
-  mNumPending  = createRESTParam(NumPending, asynParamInt32, SSExcaliburStatus, "num_pending");
   mParams.fetchAll();
+
+  mAPI.connectDetector();
 }
 
 RestParam *OdinDetector::createRESTParam(std::string const & asynName, asynParamType asynType,
