@@ -41,12 +41,9 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
   // Write version to appropriate parameter
   setStringParam(NDDriverVersion, DRIVER_VERSION);
 
-  mAPIVersion = createRESTParam(RestAPIVersion, asynParamOctet,
-                                SSRoot, "api", REST_P_STRING);
-  mConnected  = createRESTParam(Connected, asynParamInt32,
-                                SSDetectorStatus, "connected", REST_P_BOOL);
-  mNumPending = createRESTParam(NumPending, asynParamInt32,
-                                SSDetectorStatus, "num_pending", REST_P_UINT);
+  mAPIVersion = createRESTParam(RestAPIVersion, REST_P_STRING, SSRoot,           "api");
+  mConnected  = createRESTParam(Connected,      REST_P_BOOL,   SSDetectorStatus, "connected");
+  mNumPending = createRESTParam(NumPending,     REST_P_UINT,   SSDetectorStatus, "num_pending");
 
   mFirstParam = mAPIVersion->getIndex();
   mParams.fetchAll();
@@ -54,11 +51,10 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
   mAPI.connectDetector();
 }
 
-RestParam *OdinDetector::createRESTParam(std::string const & asynName, asynParamType asynType,
-                                         sys_t subSystem, std::string const & name,
-                                         rest_param_type_t restType)
+RestParam *OdinDetector::createRESTParam(std::string const & asynName, rest_param_type_t restType,
+                                         sys_t subSystem, std::string const & name)
 {
-  RestParam *p = mParams.create(asynName, asynType, mAPI.sysStr[subSystem], name, restType);
+  RestParam *p = mParams.create(asynName, restType, mAPI.sysStr[subSystem], name);
   return p;
 }
 
