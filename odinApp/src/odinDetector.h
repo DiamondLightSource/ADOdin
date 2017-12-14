@@ -28,6 +28,9 @@ class OdinDetector : public ADDriver
       asynUser *pasynUser, const char *drvInfo,
       const char **pptypeName, size_t *psize);
 
+  static void configureOdinData(const char * libraryPath);
+  static std::string mLibraryPath;
+
  private:
   char mHostname[512];
   OdinRestAPI mAPI;

@@ -6,8 +6,14 @@
 #include <algorithm>
 #include <frozen.h>     // JSON parser
 
+#include "jsonDict.h"
+
 #define API_VERSION             "0.1"
 #define DETECTOR_NAME           "excalibur"
+#define ODIN_DATA               "odin_data"
+#define ODIN_DATA_LIB_PATH      "build/lib"
+#define FILE_WRITER_CLASS       "FileWriterPlugin"
+#define FILE_WRITER_LIB         "libHdf5Plugin.so"
 #define EOL                     "\r\n"      // End of Line
 #define EOL_LEN                 2           // End of Line Length
 #define EOH                     EOL EOL     // End of Header
@@ -59,6 +65,7 @@ const char *OdinRestAPI::sysStr [SSCount] = {
     "/api/" API_VERSION "/" DETECTOR_NAME "/",
     "/api/" API_VERSION "/" DETECTOR_NAME "/status/",
     "/api/" API_VERSION "/" DETECTOR_NAME "/command/",
+    "/api/" API_VERSION "/" ODIN_DATA "/",
 };
 
 
@@ -83,6 +90,21 @@ int OdinRestAPI::startAcquisition()
 int OdinRestAPI::stopAcquisition()
 {
   return put(sysStr[SSDetectorCommand], STOP_ACQUISITION, "", EMPTY_JSON_STRING);
+}
+
+int OdinRestAPI::loadFileWriter(std::string odinDataPath)
+{
+  std::vector<JsonDict> loadDict;
+  std::stringstream libraryPath;
+  libraryPath << odinDataPath << "/" << ODIN_DATA_LIB_PATH << "/" << FILE_WRITER_LIB;
+
+  loadDict.push_back(JsonDict("library", libraryPath.str().c_str()));
+  loadDict.push_back(JsonDict("index", "hdf"));
+  loadDict.push_back(JsonDict("name", FILE_WRITER_CLASS));
+  JsonDict loadConfig = JsonDict(loadDict);
+  JsonDict config = JsonDict("load", loadConfig);
+
+  return put(sysStr[SSData], "plugin", config.str());
 }
 
 int OdinRestAPI::lookupAccessMode(

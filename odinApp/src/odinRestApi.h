@@ -17,6 +17,7 @@ typedef enum
   SSDetector,
   SSDetectorStatus,
   SSDetectorCommand,
+  SSData,
 
   SSCount,
 } sys_t;
@@ -33,6 +34,7 @@ class OdinRestAPI : public RestAPI
   int disconnectDetector();
   int startAcquisition();
   int stopAcquisition();
+  int loadFileWriter(std::string odinDataPath);
 
  private:
   static const std::string CONNECT;

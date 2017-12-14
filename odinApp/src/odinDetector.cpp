@@ -5,6 +5,7 @@
 
 static const std::string DRIVER_VERSION("0-1");
 static const char *driverName = "OdinDetector";
+std::string OdinDetector::mLibraryPath = "";
 
 /* Constructor for Odin driver; most parameters are simply passed to ADDriver::ADDriver.
  * After calling the base class constructor this method creates a thread to collect the detector
@@ -49,6 +50,17 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
   mParams.fetchAll();
 
   mAPI.connectDetector();
+  if (mLibraryPath.empty()) {
+    asynPrint(pasynUserSelf, ASYN_TRACE_WARNING,
+              "OdinData library path not set; not loading FileWriterPlugin");
+  }
+  else {
+    mAPI.loadFileWriter(mLibraryPath);
+  }
+}
+
+void OdinDetector::configureOdinData(const char * libraryPath) {
+  mLibraryPath = std::string(libraryPath);
 }
 
 RestParam *OdinDetector::createRESTParam(std::string const & asynName, rest_param_type_t restType,
@@ -217,6 +229,11 @@ extern "C" int odinDetectorConfig(const char *portName,
   return asynSuccess;
 }
 
+extern "C" int odinDataConfig(const char * libraryPath) {
+  OdinDetector::configureOdinData(libraryPath);
+  return asynSuccess;
+}
+
 // Code for iocsh registration
 static const iocshArg odinDetectorConfigArg0 = {"Port name", iocshArgString};
 static const iocshArg odinDetectorConfigArg1 = {"Server host name",
@@ -238,10 +255,28 @@ static void configOdinDetectorCallFunc(const iocshArgBuf *args) {
                      args[3].ival, args[4].ival, args[5].ival);
 }
 
-static void odinDetectorRegister(void) {
+static void odinDetectorRegister() {
   iocshRegister(&configOdinDetector, configOdinDetectorCallFunc);
 }
 
 extern "C" {
-  epicsExportRegistrar(odinDetectorRegister);
+epicsExportRegistrar(odinDetectorRegister);
+}
+
+static const iocshArg odinDataConfigArg0 = {"Dynamic library path", iocshArgString};
+static const iocshArg *const odinDataConfigArgs[] = {
+    &odinDataConfigArg0};
+
+static const iocshFuncDef configOdinData = {"odinDataConfig", 1, odinDataConfigArgs};
+
+static void configOdinDataCallFunc(const iocshArgBuf *args) {
+  odinDataConfig(args[0].sval);
+}
+
+static void odinDataRegister() {
+  iocshRegister(&configOdinData, configOdinDataCallFunc);
+}
+
+extern "C" {
+epicsExportRegistrar(odinDataRegister);
 }
