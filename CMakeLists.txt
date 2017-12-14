@@ -19,7 +19,8 @@ include_directories(
     ${ASYN}/include
     ${ADSIMDETECTOR}/include
     ${EPICS_BASE}/include
-    ${EPICS_BASE}/include/os/Linux)
+    ${EPICS_BASE}/include/os/Linux
+    odinApp/frozenSrc)
 
 set(ADODIN_SOURCE_FILES
     odinApp/frozenSrc/frozen.c
