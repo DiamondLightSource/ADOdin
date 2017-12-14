@@ -1,8 +1,9 @@
-from iocbuilder import AutoSubstitution
+from iocbuilder import AutoSubstitution, Device
 from iocbuilder.arginfo import makeArgInfo, Simple
 from iocbuilder.modules.asyn import AsynPort
 from iocbuilder.modules.ADCore import ADCore, ADBaseTemplate, makeTemplateInstance
 from iocbuilder.modules.restClient import restClient
+from iocbuilder.modules.OdinData import OdinData
 
 
 __all__ = ['odinDetector']
@@ -16,7 +17,7 @@ class odinDetector(AsynPort):
 
     """Create an odin detector"""
 
-    Dependencies = (ADCore, restClient)
+    Dependencies = (ADCore, restClient, OdinData)
 
     # This tells xmlbuilder to use PORT instead of name as the row ID
     UniqueName = "PORT"
@@ -43,5 +44,7 @@ class odinDetector(AsynPort):
     DbdFileList = ['odinDetectorSupport']
 
     def Initialise(self):
+        print '# odinDataConfig(const char * libraryPath)'
+        print 'odinDataConfig("$(ODINDATA)")'  # Put the actual macro in the src boot script to be substituted by `make`
         print "# odinDetectorConfig(const char *portName, const char *serverPort, int maxBuffers, size_t maxMemory, int priority, int stackSize)"
         print 'odinDetectorConfig("%(PORT)s", %(SERVER)s, %(BUFFERS)s, %(MEMORY)d)' % self.__dict__
