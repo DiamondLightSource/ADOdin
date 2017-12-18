@@ -1,5 +1,5 @@
 from iocbuilder import AutoSubstitution, Device
-from iocbuilder.arginfo import makeArgInfo, Simple
+from iocbuilder.arginfo import makeArgInfo, Simple, Ident
 from iocbuilder.modules.asyn import AsynPort
 from iocbuilder.modules.ADCore import ADCore, ADBaseTemplate, makeTemplateInstance
 from iocbuilder.modules.restClient import restClient
@@ -25,7 +25,7 @@ class odinDetector(AsynPort):
 
     _SpecificTemplate = odinDetectorTemplate
 
-    def __init__(self, PORT, SERVER, DETECTOR, BUFFERS = 0, MEMORY = 0, **args):
+    def __init__(self, PORT, SERVER, DETECTOR, ODIN_DATA, BUFFERS = 0, MEMORY = 0, **args):
         # Init the superclass (AsynPort)
         self.__super.__init__(PORT)
         # Update the attributes of self from the commandline args
@@ -33,13 +33,16 @@ class odinDetector(AsynPort):
         # Make an instance of our template
         makeTemplateInstance(self._SpecificTemplate, locals(), args)
 
-        self.DETECTOR_MACRO = self.DETECTOR.upper()
+        self.DETECTOR_NAME = DETECTOR.NAME
+        self.DETECTOR_MACRO = DETECTOR.MACRO
+        self.ODIN_DATA_MACRO = ODIN_DATA.MACRO
 
     # __init__ arguments
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
         PORT=Simple('Port name for the detector', str),
         SERVER=Simple('Server host name', str),
-        DETECTOR=Simple('Name of Odin detector', str),
+        DETECTOR=Ident('Odin detector configuration', ExcaliburDetector),
+        ODIN_DATA=Ident('OdinData configuration', OdinData),
         BUFFERS=Simple('Maximum number of NDArray buffers to be created for plugin callbacks', int),
         MEMORY=Simple('Max memory to allocate, should be maxw*maxh*nbuffer for driver and all attached plugins', int))
 
@@ -48,9 +51,10 @@ class odinDetector(AsynPort):
     DbdFileList = ['odinDetectorSupport']
 
     def Initialise(self):
+        # Put the actual macros in the src boot script to be substituted by `make`
         print '# odinDataConfig(const char * libraryPath)'
-        print 'odinDataConfig("$(ODINDATA)")'  # Put the actual macro in the src boot script to be substituted by `make`
-        print '# odinDataConfig(const char * detectorName, const char * libraryPath)'
-        print 'odinDataDetectorConfig("%(DETECTOR)s", "$(%(DETECTOR_MACRO)sDETECTOR)")' % self.__dict__  # Put the actual macro in the src boot script to be substituted by `make`
+        print 'odinDataConfig("$(%(ODIN_DATA_MACRO)s)")' % self.__dict__
+        print '# odinDataDetectorConfig(const char * detectorName, const char * libraryPath)'
+        print 'odinDataDetectorConfig("%(DETECTOR_NAME)s", "$(%(DETECTOR_MACRO)s)")' % self.__dict__
         print "# odinDetectorConfig(const char *portName, const char *serverPort, int maxBuffers, size_t maxMemory, int priority, int stackSize)"
         print 'odinDetectorConfig("%(PORT)s", %(SERVER)s, %(BUFFERS)s, %(MEMORY)d)' % self.__dict__
