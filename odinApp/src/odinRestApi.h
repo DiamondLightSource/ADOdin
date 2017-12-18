@@ -34,7 +34,10 @@ class OdinRestAPI : public RestAPI
   int disconnectDetector();
   int startAcquisition();
   int stopAcquisition();
-  int loadFileWriter(std::string odinDataPath);
+  int loadPlugin(const std::string& modulePath,
+                 const char * name, const char * index, const char * library);
+  int loadProcessPlugin(const std::string& modulePath, const std::string& pluginIndex);
+  int loadFileWriterPlugin(const std::string& odinDataPath);
 
  private:
   static const std::string CONNECT;

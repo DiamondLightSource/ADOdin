@@ -5,7 +5,9 @@
 
 static const std::string DRIVER_VERSION("0-1");
 static const char *driverName = "OdinDetector";
-std::string OdinDetector::mLibraryPath = "";
+std::string OdinDetector::mOdinDataLibraryPath = "";
+std::string OdinDetector::mDetectorName = "";
+std::string OdinDetector::mDetectorLibraryPath = "";
 
 /* Constructor for Odin driver; most parameters are simply passed to ADDriver::ADDriver.
  * After calling the base class constructor this method creates a thread to collect the detector
@@ -50,17 +52,29 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
   mParams.fetchAll();
 
   mAPI.connectDetector();
-  if (mLibraryPath.empty()) {
+  if (mOdinDataLibraryPath.empty()) {
     asynPrint(pasynUserSelf, ASYN_TRACE_WARNING,
               "OdinData library path not set; not loading FileWriterPlugin");
   }
   else {
-    mAPI.loadFileWriter(mLibraryPath);
+    mAPI.loadFileWriterPlugin(mOdinDataLibraryPath);
+  }
+  if (mDetectorName.empty() || mDetectorLibraryPath.empty()) {
+    asynPrint(pasynUserSelf, ASYN_TRACE_WARNING,
+              "Detector name and library path not set; not loading detector ProcessPlugin");
+  }
+  else {
+    mAPI.loadProcessPlugin(mDetectorLibraryPath, mDetectorName);
   }
 }
 
 void OdinDetector::configureOdinData(const char * libraryPath) {
-  mLibraryPath = std::string(libraryPath);
+  mOdinDataLibraryPath = std::string(libraryPath);
+}
+
+void OdinDetector::configureDetector(const char * detectorName, const char * libraryPath) {
+  mDetectorName = std::string(detectorName);
+  mDetectorLibraryPath = std::string(libraryPath);
 }
 
 RestParam *OdinDetector::createRESTParam(std::string const & asynName, rest_param_type_t restType,
@@ -234,6 +248,11 @@ extern "C" int odinDataConfig(const char * libraryPath) {
   return asynSuccess;
 }
 
+extern "C" int odinDataDetectorConfig(const char * detectorName, const char * libraryPath) {
+  OdinDetector::configureDetector(detectorName, libraryPath);
+  return asynSuccess;
+}
+
 // Code for iocsh registration
 static const iocshArg odinDetectorConfigArg0 = {"Port name", iocshArgString};
 static const iocshArg odinDetectorConfigArg1 = {"Server host name",
@@ -279,4 +298,24 @@ static void odinDataRegister() {
 
 extern "C" {
 epicsExportRegistrar(odinDataRegister);
+}
+
+static const iocshArg odinDataDetectorConfigArg0 = {"Detector name", iocshArgString};
+static const iocshArg odinDataDetectorConfigArg1 = {"Dynamic library path", iocshArgString};
+static const iocshArg *const odinDataDetectorConfigArgs[] = {
+    &odinDataDetectorConfigArg0, &odinDataDetectorConfigArg1};
+
+static const iocshFuncDef configOdinDataDetector = {"odinDataDetectorConfig", 2,
+                                                    odinDataDetectorConfigArgs};
+
+static void configOdinDataDetectorCallFunc(const iocshArgBuf *args) {
+  odinDataDetectorConfig(args[0].sval, args[1].sval);
+}
+
+static void odinDataDetectorRegister() {
+  iocshRegister(&configOdinDataDetector, configOdinDataDetectorCallFunc);
+}
+
+extern "C" {
+epicsExportRegistrar(odinDataDetectorRegister);
 }

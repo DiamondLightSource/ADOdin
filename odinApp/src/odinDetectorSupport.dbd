@@ -1,2 +1,3 @@
 registrar("odinDetectorRegister")
 registrar("odinDataRegister")
+registrar("odinDataDetectorRegister")

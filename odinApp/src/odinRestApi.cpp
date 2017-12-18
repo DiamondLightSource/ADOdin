@@ -8,12 +8,21 @@
 
 #include "jsonDict.h"
 
-#define API_VERSION             "0.1"
-#define DETECTOR_NAME           "excalibur"
-#define ODIN_DATA               "odin_data"
-#define ODIN_DATA_LIB_PATH      "build/lib"
-#define FILE_WRITER_CLASS       "FileWriterPlugin"
-#define FILE_WRITER_LIB         "libHdf5Plugin.so"
+#define API_VERSION              "0.1"
+
+// JSON Strings
+#define PLUGIN                   "plugin"
+#define LOAD                     "load"
+#define PLUGIN_INDEX             "index"
+#define PLUGIN_NAME              "name"
+#define PLUGIN_LIBRARY           "library"
+#define DETECTOR_PLUGIN_INDEX    "excalibur"
+#define ODIN_DATA_PLUGIN_INDEX   "odin_data"
+#define FILE_WRITER_PLUGIN_INDEX "hdf"
+#define FILE_WRITER_CLASS        "FileWriterPlugin"
+#define FILE_WRITER_LIB          "libHdf5Plugin.so"
+#define ODIN_DATA_LIB_PATH       "prefix/lib"
+
 #define EOL                     "\r\n"      // End of Line
 #define EOL_LEN                 2           // End of Line Length
 #define EOH                     EOL EOL     // End of Header
@@ -62,10 +71,10 @@ const std::string OdinRestAPI::EMPTY_JSON_STRING = "\"\"";
 const char *OdinRestAPI::sysStr [SSCount] = {
     "/",
     "/api/" API_VERSION "/adapters",
-    "/api/" API_VERSION "/" DETECTOR_NAME "/",
-    "/api/" API_VERSION "/" DETECTOR_NAME "/status/",
-    "/api/" API_VERSION "/" DETECTOR_NAME "/command/",
-    "/api/" API_VERSION "/" ODIN_DATA "/",
+    "/api/" API_VERSION "/" DETECTOR_PLUGIN_INDEX "/",
+    "/api/" API_VERSION "/" DETECTOR_PLUGIN_INDEX "/status/",
+    "/api/" API_VERSION "/" DETECTOR_PLUGIN_INDEX "/command/",
+    "/api/" API_VERSION "/" ODIN_DATA_PLUGIN_INDEX "/",
 };
 
 
@@ -92,19 +101,36 @@ int OdinRestAPI::stopAcquisition()
   return put(sysStr[SSDetectorCommand], STOP_ACQUISITION, "", EMPTY_JSON_STRING);
 }
 
-int OdinRestAPI::loadFileWriter(std::string odinDataPath)
+int OdinRestAPI::loadPlugin(const std::string& modulePath,
+                            const char * name, const char * index, const char * library) {
+  std::vector<JsonDict> loadConfig;
+  std::stringstream fullPath;
+  fullPath << modulePath << "/" << ODIN_DATA_LIB_PATH << "/" << library;
+
+  loadConfig.push_back(JsonDict(PLUGIN_NAME, name));
+  loadConfig.push_back(JsonDict(PLUGIN_INDEX, index));
+  loadConfig.push_back(JsonDict(PLUGIN_LIBRARY, fullPath.str().c_str()));
+  JsonDict loadDict = JsonDict(loadConfig);
+  JsonDict config = JsonDict(LOAD, loadDict);
+
+  return put(sysStr[SSData], PLUGIN, config.str());
+}
+
+int OdinRestAPI::loadProcessPlugin(const std::string& modulePath, const std::string& pluginIndex)
 {
-  std::vector<JsonDict> loadDict;
-  std::stringstream libraryPath;
-  libraryPath << odinDataPath << "/" << ODIN_DATA_LIB_PATH << "/" << FILE_WRITER_LIB;
+  std::stringstream sPluginName;
+  sPluginName << pluginIndex << "ProcessPlugin";
+  std::string pluginName = sPluginName.str();
+  pluginName[0] = toupper(pluginName[0]);
+  std::stringstream sLibrary;
+  sLibrary << "lib" << pluginName << ".so";
 
-  loadDict.push_back(JsonDict("library", libraryPath.str().c_str()));
-  loadDict.push_back(JsonDict("index", "hdf"));
-  loadDict.push_back(JsonDict("name", FILE_WRITER_CLASS));
-  JsonDict loadConfig = JsonDict(loadDict);
-  JsonDict config = JsonDict("load", loadConfig);
+  return loadPlugin(modulePath, pluginName.c_str(), pluginIndex.c_str(), sLibrary.str().c_str());
+}
 
-  return put(sysStr[SSData], "plugin", config.str());
+int OdinRestAPI::loadFileWriterPlugin(const std::string& odinDataPath)
+{
+  return loadPlugin(odinDataPath, FILE_WRITER_CLASS, FILE_WRITER_PLUGIN_INDEX, FILE_WRITER_LIB);
 }
 
 int OdinRestAPI::lookupAccessMode(

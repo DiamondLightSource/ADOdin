@@ -29,7 +29,10 @@ class OdinDetector : public ADDriver
       const char **pptypeName, size_t *psize);
 
   static void configureOdinData(const char * libraryPath);
-  static std::string mLibraryPath;
+  static std::string mOdinDataLibraryPath;
+  static void configureDetector(const char * detectorName, const char * libraryPath);
+  static std::string mDetectorName;
+  static std::string mDetectorLibraryPath;
 
  private:
   char mHostname[512];
