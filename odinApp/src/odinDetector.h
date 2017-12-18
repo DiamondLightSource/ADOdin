@@ -28,8 +28,14 @@ class OdinDetector : public ADDriver
       asynUser *pasynUser, const char *drvInfo,
       const char **pptypeName, size_t *psize);
 
-  static void configureOdinData(const char * libraryPath);
+  // IOC Init Methods
+  static void configureOdinData(const char * libraryPath, const char * ipAddress,
+                                int readyPort, int releasePort, int metaPort);
   static std::string mOdinDataLibraryPath;
+  static std::string mIPAddress;
+  static int mReadyPort;
+  static int mReleasePort;
+  static int mMetaPort;
   static void configureDetector(const char * detectorName, const char * libraryPath);
   static std::string mDetectorName;
   static std::string mDetectorLibraryPath;

@@ -5,8 +5,14 @@
 
 static const std::string DRIVER_VERSION("0-1");
 static const char *driverName = "OdinDetector";
+
+// These parameters are optionally configured by ioc init commands
 std::string OdinDetector::mOdinDataLibraryPath = "";
-std::string OdinDetector::mDetectorName = "";
+std::string OdinDetector::mIPAddress           = "";
+int         OdinDetector::mReadyPort           =  0;
+int         OdinDetector::mReleasePort         =  0;
+int         OdinDetector::mMetaPort            =  0;
+std::string OdinDetector::mDetectorName        = "";
 std::string OdinDetector::mDetectorLibraryPath = "";
 
 /* Constructor for Odin driver; most parameters are simply passed to ADDriver::ADDriver.
@@ -62,16 +68,22 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
   }
   if (mOdinDataLibraryPath.empty()) {
     asynPrint(pasynUserSelf, ASYN_TRACE_WARNING,
-              "OdinData library path not set; not loading FileWriterPlugin");
+              "OdinData library path not set; not configuring processes");
   }
   else {
+    mAPI.configureSharedMemoryChannels(mIPAddress, mReadyPort, mReleasePort);
     mAPI.loadFileWriterPlugin(mOdinDataLibraryPath);
     mAPI.connectToProcessPlugin(mAPI.FILE_WRITER_PLUGIN);
   }
 }
 
-void OdinDetector::configureOdinData(const char * libraryPath) {
+void OdinDetector::configureOdinData(const char * libraryPath, const char * ipAddress,
+                                     int readyPort, int releasePort, int metaPort) {
   mOdinDataLibraryPath = std::string(libraryPath);
+  mIPAddress = ipAddress;
+  mReadyPort = readyPort;
+  mReleasePort = releasePort;
+  mMetaPort = metaPort;
 }
 
 void OdinDetector::configureDetector(const char * detectorName, const char * libraryPath) {
@@ -245,8 +257,9 @@ extern "C" int odinDetectorConfig(const char *portName,
   return asynSuccess;
 }
 
-extern "C" int odinDataConfig(const char * libraryPath) {
-  OdinDetector::configureOdinData(libraryPath);
+extern "C" int odinDataConfig(const char * libraryPath, const char * ipAddress,
+                              int readyPort, int releasePort, int metaPort) {
+  OdinDetector::configureOdinData(libraryPath, ipAddress, readyPort, releasePort, metaPort);
   return asynSuccess;
 }
 
@@ -285,13 +298,19 @@ epicsExportRegistrar(odinDetectorRegister);
 }
 
 static const iocshArg odinDataConfigArg0 = {"Dynamic library path", iocshArgString};
+static const iocshArg odinDataConfigArg1 = {"IP address of OdinData processes", iocshArgString};
+static const iocshArg odinDataConfigArg2 = {"Ready port", iocshArgInt};
+static const iocshArg odinDataConfigArg3 = {"Release port", iocshArgInt};
+static const iocshArg odinDataConfigArg4 = {"Meta port", iocshArgInt};
 static const iocshArg *const odinDataConfigArgs[] = {
-    &odinDataConfigArg0};
+    &odinDataConfigArg0, &odinDataConfigArg1,
+    &odinDataConfigArg2, &odinDataConfigArg3, &odinDataConfigArg4};
 
-static const iocshFuncDef configOdinData = {"odinDataConfig", 1, odinDataConfigArgs};
+static const iocshFuncDef configOdinData = {"odinDataConfig", 5, odinDataConfigArgs};
 
 static void configOdinDataCallFunc(const iocshArgBuf *args) {
-  odinDataConfig(args[0].sval);
+  odinDataConfig(args[0].sval, args[1].sval,
+                 args[2].ival, args[3].ival, args[4].ival);
 }
 
 static void odinDataRegister() {

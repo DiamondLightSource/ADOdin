@@ -34,6 +34,9 @@ class OdinRestAPI : public RestAPI
   int disconnectDetector();
   int startAcquisition();
   int stopAcquisition();
+
+  // OdinData Methods
+  int configureSharedMemoryChannels(const std::string& ipAddress, int readyPort, int releasePort);
   int loadPlugin(const std::string& modulePath,
                  const std::string& name, const std::string& index, const std::string& library);
   int loadProcessPlugin(const std::string& modulePath, const std::string& pluginIndex);

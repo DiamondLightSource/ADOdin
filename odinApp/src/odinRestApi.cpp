@@ -20,6 +20,9 @@
 #define PLUGIN_CONNECTION           "connection"
 #define PLUGIN_NAME                 "name"
 #define PLUGIN_LIBRARY              "library"
+#define FR_SETUP                    "fr_setup"
+#define FR_READY_CNXN               "fr_ready_cnxn"
+#define FR_RELEASE_CNXN             "fr_release_cnxn"
 #define DETECTOR_PLUGIN_INDEX       "excalibur"
 #define FILE_WRITER_PLUGIN_INDEX    "hdf"
 #define FRAME_RECEIVER_PLUGIN_INDEX "frame_receiver"
@@ -105,6 +108,21 @@ int OdinRestAPI::startAcquisition()
 int OdinRestAPI::stopAcquisition()
 {
   return put(sysStr[SSDetectorCommand], STOP_ACQUISITION, "", EMPTY_JSON_STRING);
+}
+
+int OdinRestAPI::configureSharedMemoryChannels(const std::string& ipAddress,
+                                               int readyPort, int releasePort)
+{
+  std::stringstream ready, release;
+  ready << "tcp://" << ipAddress << ":" << readyPort;
+  release << "tcp://" << ipAddress << ":" << releasePort;
+
+  std::vector<JsonDict> channelConfig;
+  channelConfig.push_back(JsonDict(FR_READY_CNXN, ready.str().c_str()));
+  channelConfig.push_back(JsonDict(FR_RELEASE_CNXN, release.str().c_str()));
+  JsonDict channelDict = JsonDict(channelConfig);
+
+  return put(sysStr[SSData], FR_SETUP, channelDict.str());
 }
 
 int OdinRestAPI::loadPlugin(const std::string& modulePath,
