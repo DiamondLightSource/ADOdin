@@ -8,20 +8,24 @@
 
 #include "jsonDict.h"
 
+// REST Strings
 #define API_VERSION              "0.1"
+#define ODIN_DATA_ADAPTER        "odin_data"
 
-// JSON Strings
-#define PLUGIN                   "plugin"
-#define LOAD                     "load"
-#define PLUGIN_INDEX             "index"
-#define PLUGIN_NAME              "name"
-#define PLUGIN_LIBRARY           "library"
-#define DETECTOR_PLUGIN_INDEX    "excalibur"
-#define ODIN_DATA_PLUGIN_INDEX   "odin_data"
-#define FILE_WRITER_PLUGIN_INDEX "hdf"
-#define FILE_WRITER_CLASS        "FileWriterPlugin"
-#define FILE_WRITER_LIB          "libHdf5Plugin.so"
-#define ODIN_DATA_LIB_PATH       "prefix/lib"
+// OdinData JSON Strings
+#define PLUGIN                      "plugin"
+#define PLUGIN_LOAD                 "load"
+#define PLUGIN_CONNECT              "connect"
+#define PLUGIN_INDEX                "index"
+#define PLUGIN_CONNECTION           "connection"
+#define PLUGIN_NAME                 "name"
+#define PLUGIN_LIBRARY              "library"
+#define DETECTOR_PLUGIN_INDEX       "excalibur"
+#define FILE_WRITER_PLUGIN_INDEX    "hdf"
+#define FRAME_RECEIVER_PLUGIN_INDEX "frame_receiver"
+#define FILE_WRITER_CLASS           "FileWriterPlugin"
+#define FILE_WRITER_LIB             "libHdf5Plugin.so"
+#define ODIN_DATA_LIB_PATH          "prefix/lib"
 
 #define EOL                     "\r\n"      // End of Line
 #define EOL_LEN                 2           // End of Line Length
@@ -68,13 +72,15 @@ const std::string OdinRestAPI::START_ACQUISITION = "start_acquisition";
 const std::string OdinRestAPI::STOP_ACQUISITION  = "stop_acquisition";
 const std::string OdinRestAPI::EMPTY_JSON_STRING = "\"\"";
 
+const std::string OdinRestAPI::FILE_WRITER_PLUGIN = FILE_WRITER_PLUGIN_INDEX;
+
 const char *OdinRestAPI::sysStr [SSCount] = {
     "/",
     "/api/" API_VERSION "/adapters",
     "/api/" API_VERSION "/" DETECTOR_PLUGIN_INDEX "/",
     "/api/" API_VERSION "/" DETECTOR_PLUGIN_INDEX "/status/",
     "/api/" API_VERSION "/" DETECTOR_PLUGIN_INDEX "/command/",
-    "/api/" API_VERSION "/" ODIN_DATA_PLUGIN_INDEX "/",
+    "/api/" API_VERSION "/" ODIN_DATA_ADAPTER "/",
 };
 
 
@@ -102,16 +108,17 @@ int OdinRestAPI::stopAcquisition()
 }
 
 int OdinRestAPI::loadPlugin(const std::string& modulePath,
-                            const char * name, const char * index, const char * library) {
+                            const std::string& name, const std::string& index,
+                            const std::string& library) {
   std::vector<JsonDict> loadConfig;
   std::stringstream fullPath;
   fullPath << modulePath << "/" << ODIN_DATA_LIB_PATH << "/" << library;
 
-  loadConfig.push_back(JsonDict(PLUGIN_NAME, name));
-  loadConfig.push_back(JsonDict(PLUGIN_INDEX, index));
+  loadConfig.push_back(JsonDict(PLUGIN_NAME, name.c_str()));
+  loadConfig.push_back(JsonDict(PLUGIN_INDEX, index.c_str()));
   loadConfig.push_back(JsonDict(PLUGIN_LIBRARY, fullPath.str().c_str()));
   JsonDict loadDict = JsonDict(loadConfig);
-  JsonDict config = JsonDict(LOAD, loadDict);
+  JsonDict config = JsonDict(PLUGIN_LOAD, loadDict);
 
   return put(sysStr[SSData], PLUGIN, config.str());
 }
@@ -131,6 +138,26 @@ int OdinRestAPI::loadProcessPlugin(const std::string& modulePath, const std::str
 int OdinRestAPI::loadFileWriterPlugin(const std::string& odinDataPath)
 {
   return loadPlugin(odinDataPath, FILE_WRITER_CLASS, FILE_WRITER_PLUGIN_INDEX, FILE_WRITER_LIB);
+}
+
+int OdinRestAPI::connectPlugins(const std::string& index, const std::string& connection) {
+  std::vector<JsonDict> connectionConfig;
+  connectionConfig.push_back(JsonDict(PLUGIN_INDEX, index.c_str()));
+  connectionConfig.push_back(JsonDict(PLUGIN_CONNECTION, connection.c_str()));
+  JsonDict connectionDict = JsonDict(connectionConfig);
+  JsonDict configDict = JsonDict(PLUGIN_CONNECT, connectionDict);
+
+  return put(sysStr[SSData], PLUGIN, configDict.str());
+}
+
+int OdinRestAPI::connectToFrameReceiver(const std::string& index) {
+
+  return connectPlugins(index, FRAME_RECEIVER_PLUGIN_INDEX);
+}
+
+int OdinRestAPI::connectToProcessPlugin(const std::string& index) {
+
+  return connectPlugins(index, DETECTOR_PLUGIN_INDEX);
 }
 
 int OdinRestAPI::lookupAccessMode(
