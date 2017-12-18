@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
 <components arch="linux-x86_64">
-    <ADOdin.odinDetector ADDR="0" P="ODINDETECTOR" R=":CAM:" PORT="ODN.CAM" SERVER="127.0.0.1" TIMEOUT="1"/>
+    <ADOdin.odinDetector ADDR="0" P="ODINDETECTOR" R=":CAM:" PORT="ODN.CAM" SERVER="127.0.0.1" DETECTOR="excalibur" TIMEOUT="1"/>
     <ADCore.NDFileHDF5 ADDR="0" NDARRAY_PORT="ODN.CAM" P="ODINDETECTOR" PORT="ODN.HDF" R=":HDF:" TIMEOUT="1"/>
 </components>
