@@ -6,9 +6,9 @@
 
 #include "odinRestApi.h"
 
-#define RestAPIVersion "REST_API_VERSION"
-#define Connected      "CONNECTED"
-#define NumPending     "NUM_PENDING"
+#define OdinRestAPIVersion "ODIN_REST_API_VERSION"
+#define OdinConnected      "ODIN_CONNECTED"
+#define OdinNumPending     "ODIN_NUM_PENDING"
 
 class OdinDetector : public ADDriver
 {

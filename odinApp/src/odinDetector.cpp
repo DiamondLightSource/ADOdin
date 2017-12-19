@@ -51,9 +51,9 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
   // Write version to appropriate parameter
   setStringParam(NDDriverVersion, DRIVER_VERSION);
 
-  mAPIVersion = createRESTParam(RestAPIVersion, REST_P_STRING, SSRoot,           "api");
-  mConnected  = createRESTParam(Connected,      REST_P_BOOL,   SSDetectorStatus, "connected");
-  mNumPending = createRESTParam(NumPending,     REST_P_UINT,   SSDetectorStatus, "num_pending");
+  mAPIVersion = createRESTParam(OdinRestAPIVersion, REST_P_STRING, SSRoot,           "api");
+  mConnected  = createRESTParam(OdinConnected,      REST_P_BOOL,   SSDetectorStatus, "connected");
+  mNumPending = createRESTParam(OdinNumPending,     REST_P_UINT,   SSDetectorStatus, "num_pending");
 
   mFirstParam = mAPIVersion->getIndex();
   mParams.fetchAll();
