@@ -7,13 +7,14 @@ static const std::string DRIVER_VERSION("0-1");
 static const char *driverName = "OdinDetector";
 
 // These parameters are optionally configured by ioc init commands
-std::string OdinDetector::mOdinDataLibraryPath = "";
-std::string OdinDetector::mIPAddress           = "";
-int         OdinDetector::mReadyPort           =  0;
-int         OdinDetector::mReleasePort         =  0;
-int         OdinDetector::mMetaPort            =  0;
-std::string OdinDetector::mDetectorName        = "";
-std::string OdinDetector::mDetectorLibraryPath = "";
+std::string      OdinDetector::mOdinDataLibraryPath = "";
+std::string      OdinDetector::mIPAddress           = "";
+int              OdinDetector::mReadyPort           =  0;
+int              OdinDetector::mReleasePort         =  0;
+int              OdinDetector::mMetaPort            =  0;
+std::string      OdinDetector::mDetectorName        = "";
+std::string      OdinDetector::mDetectorLibraryPath = "";
+std::vector<int> OdinDetector::mDetectorDims        = {};
 
 /* Constructor for Odin driver; most parameters are simply passed to ADDriver::ADDriver.
  * After calling the base class constructor this method creates a thread to collect the detector
@@ -74,6 +75,7 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
     }
     mAPI.loadFileWriterPlugin(mOdinDataLibraryPath);
     mAPI.connectToProcessPlugin(mAPI.FILE_WRITER_PLUGIN);
+    mAPI.createDataset("test", 2, mDetectorDims);
   }
 }
 
@@ -86,9 +88,14 @@ void OdinDetector::configureOdinData(const char * libraryPath, const char * ipAd
   mMetaPort = metaPort;
 }
 
-void OdinDetector::configureDetector(const char * detectorName, const char * libraryPath) {
+void OdinDetector::configureDetector(const char * detectorName, const char * libraryPath,
+                                     int detectorWidth, int detectorHeight) {
   mDetectorName = std::string(detectorName);
   mDetectorLibraryPath = std::string(libraryPath);
+  std::vector<int> datasetDims;
+  datasetDims.push_back(detectorWidth);
+  datasetDims.push_back(detectorHeight);
+  mDetectorDims = datasetDims;
 }
 
 RestParam *OdinDetector::createRESTParam(std::string const & asynName, rest_param_type_t restType,
@@ -263,8 +270,9 @@ extern "C" int odinDataConfig(const char * libraryPath, const char * ipAddress,
   return asynSuccess;
 }
 
-extern "C" int odinDataDetectorConfig(const char * detectorName, const char * libraryPath) {
-  OdinDetector::configureDetector(detectorName, libraryPath);
+extern "C" int odinDataDetectorConfig(const char * detectorName, const char * libraryPath,
+                                      int detectorWidth, int detectorHeight) {
+  OdinDetector::configureDetector(detectorName, libraryPath, detectorWidth, detectorHeight);
   return asynSuccess;
 }
 
@@ -323,14 +331,17 @@ epicsExportRegistrar(odinDataRegister);
 
 static const iocshArg odinDataDetectorConfigArg0 = {"Detector name", iocshArgString};
 static const iocshArg odinDataDetectorConfigArg1 = {"Dynamic library path", iocshArgString};
+static const iocshArg odinDataDetectorConfigArg2 = {"Detector frame width", iocshArgInt};
+static const iocshArg odinDataDetectorConfigArg3 = {"Detector frame height", iocshArgInt};
 static const iocshArg *const odinDataDetectorConfigArgs[] = {
-    &odinDataDetectorConfigArg0, &odinDataDetectorConfigArg1};
+    &odinDataDetectorConfigArg0, &odinDataDetectorConfigArg1,
+    &odinDataDetectorConfigArg2, &odinDataDetectorConfigArg3};
 
-static const iocshFuncDef configOdinDataDetector = {"odinDataDetectorConfig", 2,
+static const iocshFuncDef configOdinDataDetector = {"odinDataDetectorConfig", 4,
                                                     odinDataDetectorConfigArgs};
 
 static void configOdinDataDetectorCallFunc(const iocshArgBuf *args) {
-  odinDataDetectorConfig(args[0].sval, args[1].sval);
+  odinDataDetectorConfig(args[0].sval, args[1].sval, args[2].ival, args[3].ival);
 }
 
 static void odinDataDetectorRegister() {

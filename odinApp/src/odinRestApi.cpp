@@ -28,6 +28,12 @@
 #define FILE_WRITER_CLASS           "FileWriterPlugin"
 #define FILE_WRITER_LIB             "libHdf5Plugin.so"
 #define ODIN_DATA_LIB_PATH          "prefix/lib"
+#define DATASET                     "dataset"
+#define DATASET_CMD                 "cmd"
+#define DATASET_CMD_CREATE          "create"
+#define DATASET_NAME                "name"
+#define DATASET_DATATYPE            "datatype"
+#define DATASET_DIMS                "dims"
 
 #define EOL                     "\r\n"      // End of Line
 #define EOL_LEN                 2           // End of Line Length
@@ -180,6 +186,18 @@ int OdinRestAPI::connectToFrameReceiver(const std::string& index) {
 int OdinRestAPI::connectToProcessPlugin(const std::string& index) {
 
   return connectPlugins(index, mDetectorName);
+}
+
+int OdinRestAPI::createDataset(const std::string& name, int datatype,
+                               std::vector<int>& dimensions) {
+  std::vector<JsonDict> datasetConfig;
+  datasetConfig.push_back(JsonDict(DATASET_CMD, DATASET_CMD_CREATE));
+  datasetConfig.push_back(JsonDict(DATASET_NAME, name.c_str()));
+  datasetConfig.push_back(JsonDict(DATASET_DATATYPE, datatype));
+  datasetConfig.push_back(JsonDict(DATASET_DIMS, dimensions));
+  JsonDict datasetDict = JsonDict(datasetConfig);
+
+  return put(sysStr[SSData], DATASET, datasetDict.str());
 }
 
 int OdinRestAPI::lookupAccessMode(

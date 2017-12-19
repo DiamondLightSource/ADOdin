@@ -38,6 +38,7 @@ class OdinRestAPI : public RestAPI
   int stopAcquisition();
 
   // OdinData Methods
+  // -- Initialisation
   int configureSharedMemoryChannels(const std::string& ipAddress, int readyPort, int releasePort);
   int loadPlugin(const std::string& modulePath,
                  const std::string& name, const std::string& index, const std::string& library);
@@ -46,6 +47,8 @@ class OdinRestAPI : public RestAPI
   int connectPlugins(const std::string& index, const std::string& connection);
   int connectToFrameReceiver(const std::string& index);
   int connectToProcessPlugin(const std::string& index);
+  // -- Acquisition Control
+  int createDataset(const std::string& name, int datatype, std::vector<int>& dimensions);
 
   static const std::string FILE_WRITER_PLUGIN;
 
