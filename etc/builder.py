@@ -36,6 +36,10 @@ class odinDetector(AsynPort):
         self.DETECTOR_NAME = DETECTOR.NAME
         self.DETECTOR_MACRO = DETECTOR.MACRO
         self.ODIN_DATA_MACRO = ODIN_DATA.MACRO
+        self.ODIN_DATA_IP = ODIN_DATA.IP
+        self.ODIN_DATA_READY = ODIN_DATA.READY
+        self.ODIN_DATA_RELEASE = ODIN_DATA.RELEASE
+        self.ODIN_DATA_META = ODIN_DATA.META
 
     # __init__ arguments
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
@@ -44,7 +48,8 @@ class odinDetector(AsynPort):
         DETECTOR=Ident('Odin detector configuration', ExcaliburDetector),
         ODIN_DATA=Ident('OdinData configuration', OdinData),
         BUFFERS=Simple('Maximum number of NDArray buffers to be created for plugin callbacks', int),
-        MEMORY=Simple('Max memory to allocate, should be maxw*maxh*nbuffer for driver and all attached plugins', int))
+        MEMORY=Simple('Max memory to allocate, should be maxw*maxh*nbuffer for driver and all '
+                      'attached plugins', int))
 
     # Device attributes
     LibFileList = ['odinDetector', 'frozen']
@@ -52,9 +57,12 @@ class odinDetector(AsynPort):
 
     def Initialise(self):
         # Put the actual macros in the src boot script to be substituted by `make`
-        print '# odinDataConfig(const char * libraryPath)'
-        print 'odinDataConfig("$(%(ODIN_DATA_MACRO)s)")' % self.__dict__
+        print '# odinDataConfig(const char * libraryPath, int ipAddress, int ctrlPort, ' \
+              'int readyPort, int releasePort, int metaPort)'
+        print 'odinDataConfig("$(%(ODIN_DATA_MACRO)s)", %(ODIN_DATA_IP)s, ' \
+              '%(ODIN_DATA_READY)s, %(ODIN_DATA_RELEASE)s, %(ODIN_DATA_META)s)' % self.__dict__
         print '# odinDataDetectorConfig(const char * detectorName, const char * libraryPath)'
         print 'odinDataDetectorConfig("%(DETECTOR_NAME)s", "$(%(DETECTOR_MACRO)s)")' % self.__dict__
-        print "# odinDetectorConfig(const char *portName, const char *serverPort, int maxBuffers, size_t maxMemory, int priority, int stackSize)"
+        print "# odinDetectorConfig(const char *portName, const char *serverPort, " \
+              "int maxBuffers, size_t maxMemory, int priority, int stackSize)"
         print 'odinDetectorConfig("%(PORT)s", %(SERVER)s, %(BUFFERS)s, %(MEMORY)d)' % self.__dict__

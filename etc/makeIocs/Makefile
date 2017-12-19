@@ -9,7 +9,7 @@ XMLBUILDER := dls-xml-iocbuilder.py
 #XMLBUILDER := /dls_sw/work/common/python/iocbuilder/xmlbuilder/xmlbuilder.py
 
 # set to -d to get debugging
-DEBUG := -d
+DEBUG :=
 
 # Add the created iocs and sims to the install target
 TARGETS += $(patsubst %, ../../makeIocs/O.Common/%, $(IOCS)) $(IOC_DIRS)
