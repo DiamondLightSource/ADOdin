@@ -58,20 +58,20 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
   mParams.fetchAll();
 
   mAPI.connectDetector();
-  if (mDetectorName.empty() || mDetectorLibraryPath.empty()) {
-    asynPrint(pasynUserSelf, ASYN_TRACE_WARNING,
-              "Detector name and library path not set; not loading detector ProcessPlugin");
-  }
-  else {
-    mAPI.loadProcessPlugin(mDetectorLibraryPath, mDetectorName);
-    mAPI.connectToFrameReceiver(mDetectorName);
-  }
   if (mOdinDataLibraryPath.empty()) {
     asynPrint(pasynUserSelf, ASYN_TRACE_WARNING,
               "OdinData library path not set; not configuring processes");
   }
   else {
     mAPI.configureSharedMemoryChannels(mIPAddress, mReadyPort, mReleasePort);
+    if (mDetectorName.empty() || mDetectorLibraryPath.empty()) {
+      asynPrint(pasynUserSelf, ASYN_TRACE_WARNING,
+                "Detector name and library path not set; not loading detector ProcessPlugin");
+    }
+    else {
+      mAPI.loadProcessPlugin(mDetectorLibraryPath, mDetectorName);
+      mAPI.connectToFrameReceiver(mDetectorName);
+    }
     mAPI.loadFileWriterPlugin(mOdinDataLibraryPath);
     mAPI.connectToProcessPlugin(mAPI.FILE_WRITER_PLUGIN);
   }
