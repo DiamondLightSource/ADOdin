@@ -23,7 +23,6 @@
 #define FR_SETUP                    "fr_setup"
 #define FR_READY_CNXN               "fr_ready_cnxn"
 #define FR_RELEASE_CNXN             "fr_release_cnxn"
-#define DETECTOR_PLUGIN_INDEX       "excalibur"
 #define FILE_WRITER_PLUGIN_INDEX    "hdf"
 #define FRAME_RECEIVER_PLUGIN_INDEX "frame_receiver"
 #define FILE_WRITER_CLASS           "FileWriterPlugin"
@@ -68,6 +67,8 @@
     "DELETE %s%s HTTP/1.1" EOL\
     "Host: %s" EOH
 
+#define CONCAT_C_STR(str) (std::string(str).c_str())
+
 // Static public members
 
 const std::string OdinRestAPI::CONNECT           = "connect";
@@ -77,18 +78,21 @@ const std::string OdinRestAPI::EMPTY_JSON_STRING = "\"\"";
 
 const std::string OdinRestAPI::FILE_WRITER_PLUGIN = FILE_WRITER_PLUGIN_INDEX;
 
-const char *OdinRestAPI::sysStr [SSCount] = {
-    "/",
-    "/api/" API_VERSION "/adapters",
-    "/api/" API_VERSION "/" DETECTOR_PLUGIN_INDEX "/",
-    "/api/" API_VERSION "/" DETECTOR_PLUGIN_INDEX "/status/",
-    "/api/" API_VERSION "/" DETECTOR_PLUGIN_INDEX "/command/",
-    "/api/" API_VERSION "/" ODIN_DATA_ADAPTER "/",
-};
 
-
-OdinRestAPI::OdinRestAPI(std::string const & hostname, int port, size_t numSockets) :
-    RestAPI(hostname, port, numSockets) {}
+OdinRestAPI::OdinRestAPI(const std::string& detectorName, const std::string& hostname, int port,
+                         size_t numSockets) :
+    RestAPI(hostname, port, numSockets),
+    mDetectorName(detectorName)
+{
+  sysStr = {
+             "/",
+             "/api/" API_VERSION "/adapters",
+             CONCAT_C_STR("/api/" API_VERSION "/" + mDetectorName + "/"),
+             CONCAT_C_STR("/api/" API_VERSION "/" + mDetectorName + "/status/"),
+             CONCAT_C_STR("/api/" API_VERSION "/" + mDetectorName + "/command/"),
+             "/api/" API_VERSION "/" ODIN_DATA_ADAPTER "/",
+           };
+}
 
 int OdinRestAPI::connectDetector()
 {
@@ -175,7 +179,7 @@ int OdinRestAPI::connectToFrameReceiver(const std::string& index) {
 
 int OdinRestAPI::connectToProcessPlugin(const std::string& index) {
 
-  return connectPlugins(index, DETECTOR_PLUGIN_INDEX);
+  return connectPlugins(index, mDetectorName);
 }
 
 int OdinRestAPI::lookupAccessMode(

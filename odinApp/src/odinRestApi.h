@@ -25,10 +25,12 @@ typedef enum
 class OdinRestAPI : public RestAPI
 {
  public:
-  static const char *sysStr [SSCount];
+  const std::string mDetectorName;
+  const char * sysStr [SSCount];
   int lookupAccessMode(std::string subSystem, rest_access_mode_t &accessMode);
 
-  OdinRestAPI(std::string const & hostname, int port, size_t numSockets=5);
+  OdinRestAPI(const std::string& detectorName, const std::string& hostname, int port,
+              size_t numSockets=5);
 
   int connectDetector();
   int disconnectDetector();
