@@ -50,6 +50,8 @@ class OdinRestAPI : public RestAPI
   // -- Acquisition Control
   int createFile(const std::string& name, const std::string& path);
   int createDataset(const std::string& name, int datatype, std::vector<int>& dimensions);
+  int startWrite();
+  int stopWrite();
 
   static const std::string FILE_WRITER_PLUGIN;
 

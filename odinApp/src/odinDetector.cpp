@@ -121,6 +121,24 @@ asynStatus OdinDetector::getStatus()
   return asynSuccess;
 }
 
+asynStatus OdinDetector::acquireStart(const std::string &fileName, const std::string &filePath,
+                                      const std::string &datasetName, int dataType,
+                                      std::vector<int> &dimensions)
+{
+  mAPI.createFile(fileName, filePath);
+  mAPI.createDataset(datasetName, dataType, dimensions);
+  mAPI.startWrite();
+  mAPI.startAcquisition();
+  return asynSuccess;
+}
+
+asynStatus OdinDetector::acquireStop()
+{
+  mAPI.stopAcquisition();
+  mAPI.stopWrite();
+  return asynSuccess;
+}
+
 /* Called when asyn clients call pasynInt32->write().
  * This function performs actions for some parameters, including ADAcquire, ADTriggerMode, etc.
  * For all parameters it sets the value in the parameter library and calls any registered callbacks.
@@ -141,11 +159,11 @@ asynStatus OdinDetector::writeInt32(asynUser *pasynUser, epicsInt32 value) {
   }
   else if(function == ADAcquire) {
     if(value && adStatus != ADStatusAcquire) {
-      mAPI.startAcquisition();
+      acquireStart("test_file", "/tmp", "data", 2, mDetectorDims);
       setIntegerParam(ADStatus, ADStatusAcquire);
     }
     else if (!value && adStatus == ADStatusAcquire) {
-      mAPI.stopAcquisition();
+      acquireStop();
       setIntegerParam(ADStatus, ADStatusAborted);
     }
     setIntegerParam(ADAcquire, value);

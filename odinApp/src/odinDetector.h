@@ -26,6 +26,12 @@ class OdinDetector : public ADDriver
       asynUser *pasynUser, const char *drvInfo,
       const char **pptypeName, size_t *psize);
 
+  // EPICS API
+  asynStatus acquireStart(const std::string &fileName, const std::string &filePath,
+                          const std::string &datasetName, int dataType,
+                          std::vector<int> &dimensions);
+  asynStatus acquireStop();
+
   // IOC Init Methods
   static void configureOdinData(const char * libraryPath, const char * ipAddress,
                                 int readyPort, int releasePort, int metaPort);

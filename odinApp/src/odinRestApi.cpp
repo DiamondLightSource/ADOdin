@@ -28,6 +28,7 @@
 #define FILE                        "file"
 #define FILE_NAME                   "name"
 #define FILE_PATH                   "path"
+#define FILE_WRITE                  "write"
 #define DATASET                     "dataset"
 #define DATASET_CMD                 "cmd"
 #define DATASET_CMD_CREATE          "create"
@@ -201,6 +202,16 @@ int OdinRestAPI::createFile(const std::string& name, const std::string& path) {
   JsonDict configDict = JsonDict(FILE, fileDict);
 
   return put(sysStr(SSData), PLUGIN_INDEX_FILE_WRITER, configDict.str());
+}
+
+int OdinRestAPI::startWrite() {
+  JsonDict writeDict = JsonDict(FILE_WRITE, true);
+  return put(sysStr(SSData), PLUGIN_INDEX_FILE_WRITER, writeDict.str());
+}
+
+int OdinRestAPI::stopWrite() {
+  JsonDict writeDict = JsonDict(FILE_WRITE, false);
+  return put(sysStr(SSData), PLUGIN_INDEX_FILE_WRITER, writeDict.str());
 }
 
 int OdinRestAPI::createDataset(const std::string& name, int datatype,
