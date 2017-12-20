@@ -73,8 +73,6 @@
     "DELETE %s%s HTTP/1.1" EOL\
     "Host: %s" EOH
 
-#define CONCAT_C_STR(str) (std::string(str).c_str())
-
 // Static public members
 
 const std::string OdinRestAPI::CONNECT           = "connect";
@@ -90,34 +88,37 @@ OdinRestAPI::OdinRestAPI(const std::string& detectorName, const std::string& hos
     RestAPI(hostname, port, numSockets),
     mDetectorName(detectorName)
 {
-  sysStr = {
-             "/",
-             "/api/" API_VERSION "/adapters",
-             CONCAT_C_STR("/api/" API_VERSION "/" + mDetectorName + "/"),
-             CONCAT_C_STR("/api/" API_VERSION "/" + mDetectorName + "/status/"),
-             CONCAT_C_STR("/api/" API_VERSION "/" + mDetectorName + "/command/"),
-             "/api/" API_VERSION "/" ODIN_DATA_ADAPTER "/",
-           };
+  sysStr_[SSRoot]            = "/";
+  sysStr_[SSAdapters]        = "/api/" API_VERSION "/adapters";
+  sysStr_[SSDetector]        = "/api/" API_VERSION "/" + detectorName + "/";
+  sysStr_[SSDetectorStatus]  = "/api/" API_VERSION "/" + detectorName + "/status/";
+  sysStr_[SSDetectorCommand] = "/api/" API_VERSION "/" + detectorName + "/command/";
+  sysStr_[SSData]            = "/api/" API_VERSION "/" ODIN_DATA_ADAPTER "/";
+}
+
+std::string OdinRestAPI::sysStr(sys_t sys)
+{
+  return sysStr_[sys];
 }
 
 int OdinRestAPI::connectDetector()
 {
-  return put(sysStr[SSDetectorCommand], CONNECT, "state", "true");
+  return put(sysStr(SSDetectorCommand), CONNECT, "state", "true");
 }
 
 int OdinRestAPI::disconnectDetector()
 {
-  return put(sysStr[SSDetectorCommand], CONNECT, "state", "false");
+  return put(sysStr(SSDetectorCommand), CONNECT, "state", "false");
 }
 
 int OdinRestAPI::startAcquisition()
 {
-  return put(sysStr[SSDetectorCommand], START_ACQUISITION, "", EMPTY_JSON_STRING);
+  return put(sysStr(SSDetectorCommand), START_ACQUISITION, "", EMPTY_JSON_STRING);
 }
 
 int OdinRestAPI::stopAcquisition()
 {
-  return put(sysStr[SSDetectorCommand], STOP_ACQUISITION, "", EMPTY_JSON_STRING);
+  return put(sysStr(SSDetectorCommand), STOP_ACQUISITION, "", EMPTY_JSON_STRING);
 }
 
 int OdinRestAPI::configureSharedMemoryChannels(const std::string& ipAddress,
@@ -132,7 +133,7 @@ int OdinRestAPI::configureSharedMemoryChannels(const std::string& ipAddress,
   channelConfig.push_back(JsonDict(FR_RELEASE_CNXN, release.str().c_str()));
   JsonDict channelDict = JsonDict(channelConfig);
 
-  return put(sysStr[SSData], FR_SETUP, channelDict.str());
+  return put(sysStr(SSData), FR_SETUP, channelDict.str());
 }
 
 int OdinRestAPI::loadPlugin(const std::string& modulePath,
@@ -148,7 +149,7 @@ int OdinRestAPI::loadPlugin(const std::string& modulePath,
   JsonDict loadDict = JsonDict(loadConfig);
   JsonDict config = JsonDict(PLUGIN_LOAD, loadDict);
 
-  return put(sysStr[SSData], PLUGIN, config.str());
+  return put(sysStr(SSData), PLUGIN, config.str());
 }
 
 int OdinRestAPI::loadProcessPlugin(const std::string& modulePath, const std::string& pluginIndex)
@@ -175,7 +176,7 @@ int OdinRestAPI::connectPlugins(const std::string& index, const std::string& con
   JsonDict connectionDict = JsonDict(connectionConfig);
   JsonDict configDict = JsonDict(PLUGIN_CONNECT, connectionDict);
 
-  return put(sysStr[SSData], PLUGIN, configDict.str());
+  return put(sysStr(SSData), PLUGIN, configDict.str());
 }
 
 int OdinRestAPI::connectToFrameReceiver(const std::string& index) {
@@ -195,7 +196,7 @@ int OdinRestAPI::createFile(const std::string& name, const std::string& path) {
   JsonDict fileDict = JsonDict(fileConfig);
   JsonDict configDict = JsonDict(FILE, fileDict);
 
-  return put(sysStr[SSData], PLUGIN_INDEX_FILE_WRITER, configDict.str());
+  return put(sysStr(SSData), PLUGIN_INDEX_FILE_WRITER, configDict.str());
 }
 
 int OdinRestAPI::createDataset(const std::string& name, int datatype,
@@ -208,14 +209,13 @@ int OdinRestAPI::createDataset(const std::string& name, int datatype,
   JsonDict datasetDict = JsonDict(datasetConfig);
   JsonDict configDict = JsonDict(DATASET, datasetDict);
 
-  return put(sysStr[SSData], PLUGIN_INDEX_FILE_WRITER, configDict.str());
+  return put(sysStr(SSData), PLUGIN_INDEX_FILE_WRITER, configDict.str());
 }
 
 int OdinRestAPI::lookupAccessMode(
         std::string subSystem, rest_access_mode_t &accessMode)
 {
-    long ssEnum = std::distance(
-            sysStr, std::find(sysStr, sysStr + SSCount, subSystem));
+    long ssEnum = std::distance(sysStr_, std::find(sysStr_, sysStr_ + SSCount, subSystem));
     switch(ssEnum)
     {
       case SSRoot: case SSDetector: case SSDetectorStatus:

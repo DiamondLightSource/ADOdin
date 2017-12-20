@@ -26,7 +26,7 @@ class OdinRestAPI : public RestAPI
 {
  public:
   const std::string mDetectorName;
-  const char * sysStr [SSCount];
+  std::string sysStr(sys_t sys);
   int lookupAccessMode(std::string subSystem, rest_access_mode_t &accessMode);
 
   OdinRestAPI(const std::string& detectorName, const std::string& hostname, int port,
@@ -54,6 +54,7 @@ class OdinRestAPI : public RestAPI
   static const std::string FILE_WRITER_PLUGIN;
 
  private:
+  std::string sysStr_ [SSCount];
   static const std::string CONNECT;
   static const std::string START_ACQUISITION;
   static const std::string STOP_ACQUISITION;

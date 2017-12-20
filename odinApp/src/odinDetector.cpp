@@ -101,7 +101,7 @@ void OdinDetector::configureDetector(const char * detectorName, const char * lib
 RestParam *OdinDetector::createRESTParam(std::string const & asynName, rest_param_type_t restType,
                                          sys_t subSystem, std::string const & name)
 {
-  RestParam *p = mParams.create(asynName, restType, mAPI.sysStr[subSystem], name);
+  RestParam *p = mParams.create(asynName, restType, mAPI.sysStr(subSystem), name);
   return p;
 }
 
