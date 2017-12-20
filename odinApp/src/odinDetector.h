@@ -11,9 +11,10 @@
 class OdinDetector : public ADDriver
 {
  public:
-  OdinDetector(
-      const char *portName, const char *serverHostname,
-      int maxBuffers, size_t maxMemory, int priority, int stackSize);
+  OdinDetector(const char * portName, const char * serverHostname,
+               int maxBuffers, size_t maxMemory, int priority, int stackSize);
+  int createDetectorParams();
+  int createOdinDataParams();
 
   // These are the methods that we override from ADDriver
   virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
@@ -59,6 +60,8 @@ class OdinDetector : public ADDriver
   RestParam * mAPIVersion;
   RestParam * mConnected;
   RestParam * mNumPending;
+  RestParam * mFilePath;
+  RestParam * mFileName;
 
   asynStatus getStatus();
 

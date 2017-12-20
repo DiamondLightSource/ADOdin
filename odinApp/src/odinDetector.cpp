@@ -50,12 +50,9 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
   // Write version to appropriate parameter
   setStringParam(NDDriverVersion, DRIVER_VERSION);
 
-  mAPIVersion = createRESTParam(OdinRestAPIVersion, REST_P_STRING, SSRoot,           "api");
-  mConnected  = createRESTParam(OdinConnected,      REST_P_BOOL,   SSDetectorStatus, "connected");
-  mNumPending = createRESTParam(OdinNumPending,     REST_P_UINT,   SSDetectorStatus, "num_pending");
-
+  mAPIVersion = createRESTParam(OdinRestAPIVersion, REST_P_STRING, SSRoot, "api");
+  createDetectorParams();
   mFirstParam = mAPIVersion->getIndex();
-  mParams.fetchAll();
 
   mAPI.connectDetector();
   if (mOdinDataLibraryPath.empty()) {
@@ -74,9 +71,10 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
     }
     mAPI.loadFileWriterPlugin(mOdinDataLibraryPath);
     mAPI.connectToProcessPlugin(mAPI.FILE_WRITER_PLUGIN);
-    mAPI.createFile("test", "/tmp");
-    mAPI.createDataset("data", 2, mDetectorDims);
+    createOdinDataParams();
   }
+
+  mParams.fetchAll();
 }
 
 void OdinDetector::configureOdinData(const char * libraryPath, const char * ipAddress,
@@ -103,6 +101,24 @@ RestParam *OdinDetector::createRESTParam(std::string const & asynName, rest_para
 {
   RestParam *p = mParams.create(asynName, restType, mAPI.sysStr(subSystem), name);
   return p;
+}
+
+int OdinDetector::createDetectorParams()
+{
+  mConnected  = createRESTParam(OdinConnected,
+                                REST_P_BOOL,   SSDetectorStatus, "connected");
+  mNumPending = createRESTParam(OdinNumPending,
+                                REST_P_UINT,   SSDetectorStatus, "num_pending");
+  return 0;
+}
+
+int OdinDetector::createOdinDataParams()
+{
+  mFilePath   = createRESTParam(NDFilePathString,
+                                REST_P_STRING, SSDataFile,       "path");
+  mFileName   = createRESTParam(NDFullFileNameString,
+                                REST_P_STRING, SSDataFile,       "name");
+  return 0;
 }
 
 asynStatus OdinDetector::getStatus()

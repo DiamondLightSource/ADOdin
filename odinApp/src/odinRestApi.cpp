@@ -95,6 +95,8 @@ OdinRestAPI::OdinRestAPI(const std::string& detectorName, const std::string& hos
   sysStr_[SSDetectorStatus]  = "/api/" API_VERSION "/" + detectorName + "/status/";
   sysStr_[SSDetectorCommand] = "/api/" API_VERSION "/" + detectorName + "/command/";
   sysStr_[SSData]            = "/api/" API_VERSION "/" ODIN_DATA_ADAPTER "/";
+  sysStr_[SSDataFile]        = "/api/" API_VERSION "/" ODIN_DATA_ADAPTER "/"
+                               PLUGIN_INDEX_FILE_WRITER "/";
 }
 
 std::string OdinRestAPI::sysStr(sys_t sys)
