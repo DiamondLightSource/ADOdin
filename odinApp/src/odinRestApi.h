@@ -48,6 +48,7 @@ class OdinRestAPI : public RestAPI
   int connectToFrameReceiver(const std::string& index);
   int connectToProcessPlugin(const std::string& index);
   // -- Acquisition Control
+  int createFile(const std::string& name, const std::string& path);
   int createDataset(const std::string& name, int datatype, std::vector<int>& dimensions);
 
   static const std::string FILE_WRITER_PLUGIN;

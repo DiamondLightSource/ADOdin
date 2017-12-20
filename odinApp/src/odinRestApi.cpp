@@ -17,17 +17,20 @@
 #define PLUGIN_LOAD                 "load"
 #define PLUGIN_CONNECT              "connect"
 #define PLUGIN_INDEX                "index"
+#define PLUGIN_INDEX_FILE_WRITER    "hdf"
+#define PLUGIN_INDEX_FRAME_RECEIVER "frame_receiver"
 #define PLUGIN_CONNECTION           "connection"
 #define PLUGIN_NAME                 "name"
 #define PLUGIN_LIBRARY              "library"
 #define FR_SETUP                    "fr_setup"
 #define FR_READY_CNXN               "fr_ready_cnxn"
 #define FR_RELEASE_CNXN             "fr_release_cnxn"
-#define FILE_WRITER_PLUGIN_INDEX    "hdf"
-#define FRAME_RECEIVER_PLUGIN_INDEX "frame_receiver"
 #define FILE_WRITER_CLASS           "FileWriterPlugin"
 #define FILE_WRITER_LIB             "libHdf5Plugin.so"
 #define ODIN_DATA_LIB_PATH          "prefix/lib"
+#define FILE                        "file"
+#define FILE_NAME                   "name"
+#define FILE_PATH                   "path"
 #define DATASET                     "dataset"
 #define DATASET_CMD                 "cmd"
 #define DATASET_CMD_CREATE          "create"
@@ -82,7 +85,7 @@ const std::string OdinRestAPI::START_ACQUISITION = "start_acquisition";
 const std::string OdinRestAPI::STOP_ACQUISITION  = "stop_acquisition";
 const std::string OdinRestAPI::EMPTY_JSON_STRING = "\"\"";
 
-const std::string OdinRestAPI::FILE_WRITER_PLUGIN = FILE_WRITER_PLUGIN_INDEX;
+const std::string OdinRestAPI::FILE_WRITER_PLUGIN = PLUGIN_INDEX_FILE_WRITER;
 
 
 OdinRestAPI::OdinRestAPI(const std::string& detectorName, const std::string& hostname, int port,
@@ -165,7 +168,7 @@ int OdinRestAPI::loadProcessPlugin(const std::string& modulePath, const std::str
 
 int OdinRestAPI::loadFileWriterPlugin(const std::string& odinDataPath)
 {
-  return loadPlugin(odinDataPath, FILE_WRITER_CLASS, FILE_WRITER_PLUGIN_INDEX, FILE_WRITER_LIB);
+  return loadPlugin(odinDataPath, FILE_WRITER_CLASS, PLUGIN_INDEX_FILE_WRITER, FILE_WRITER_LIB);
 }
 
 int OdinRestAPI::connectPlugins(const std::string& index, const std::string& connection) {
@@ -180,12 +183,22 @@ int OdinRestAPI::connectPlugins(const std::string& index, const std::string& con
 
 int OdinRestAPI::connectToFrameReceiver(const std::string& index) {
 
-  return connectPlugins(index, FRAME_RECEIVER_PLUGIN_INDEX);
+  return connectPlugins(index, PLUGIN_INDEX_FRAME_RECEIVER);
 }
 
 int OdinRestAPI::connectToProcessPlugin(const std::string& index) {
 
   return connectPlugins(index, mDetectorName);
+}
+
+int OdinRestAPI::createFile(const std::string& name, const std::string& path) {
+  std::vector<JsonDict> fileConfig;
+  fileConfig.push_back(JsonDict(FILE_NAME, name.c_str()));
+  fileConfig.push_back(JsonDict(FILE_PATH, path.c_str()));
+  JsonDict fileDict = JsonDict(fileConfig);
+  JsonDict configDict = JsonDict(FILE, fileDict);
+
+  return put(sysStr[SSData], PLUGIN_INDEX_FILE_WRITER, configDict.str());
 }
 
 int OdinRestAPI::createDataset(const std::string& name, int datatype,
@@ -196,8 +209,9 @@ int OdinRestAPI::createDataset(const std::string& name, int datatype,
   datasetConfig.push_back(JsonDict(DATASET_DATATYPE, datatype));
   datasetConfig.push_back(JsonDict(DATASET_DIMS, dimensions));
   JsonDict datasetDict = JsonDict(datasetConfig);
+  JsonDict configDict = JsonDict(DATASET, datasetDict);
 
-  return put(sysStr[SSData], DATASET, datasetDict.str());
+  return put(sysStr[SSData], PLUGIN_INDEX_FILE_WRITER, configDict.str());
 }
 
 int OdinRestAPI::lookupAccessMode(

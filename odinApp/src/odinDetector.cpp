@@ -75,7 +75,8 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
     }
     mAPI.loadFileWriterPlugin(mOdinDataLibraryPath);
     mAPI.connectToProcessPlugin(mAPI.FILE_WRITER_PLUGIN);
-    mAPI.createDataset("test", 2, mDetectorDims);
+    mAPI.createFile("test", "/tmp");
+    mAPI.createDataset("data", 2, mDetectorDims);
   }
 }
 
