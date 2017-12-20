@@ -103,12 +103,16 @@ std::string OdinRestAPI::sysStr(sys_t sys)
 
 int OdinRestAPI::connectDetector()
 {
-  return put(sysStr(SSDetectorCommand), CONNECT, "state", "true");
+  JsonDict stateDict = JsonDict("state", true);
+  JsonDict connect = JsonDict("connect", stateDict);
+  return put(sysStr(SSDetectorCommand), CONNECT, connect.str());
 }
 
 int OdinRestAPI::disconnectDetector()
 {
-  return put(sysStr(SSDetectorCommand), CONNECT, "state", "false");
+  JsonDict stateDict = JsonDict("state", false);
+  JsonDict connect = JsonDict("connect", stateDict);
+  return put(sysStr(SSDetectorCommand), CONNECT, connect.str());
 }
 
 int OdinRestAPI::startAcquisition()
