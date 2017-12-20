@@ -2,8 +2,6 @@
 #define EIGER_DETECTOR_H
 
 #include "ADDriver.h"
-#include "restParam.h"
-
 #include "odinRestApi.h"
 
 #define OdinRestAPIVersion "ODIN_REST_API_VERSION"

@@ -1,10 +1,7 @@
 #include "odinRestApi.h"
 
 #include <stdexcept>
-
-#include <stdlib.h>
 #include <algorithm>
-#include <frozen.h>     // JSON parser
 
 #include "jsonDict.h"
 
@@ -221,7 +218,7 @@ int OdinRestAPI::lookupAccessMode(
             sysStr, std::find(sysStr, sysStr + SSCount, subSystem));
     switch(ssEnum)
     {
-      case SSRoot: SSDetector: SSDetectorStatus:
+      case SSRoot: case SSDetector: case SSDetectorStatus:
         accessMode = REST_ACC_RO;
         return EXIT_SUCCESS;
       case SSDetectorCommand:

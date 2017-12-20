@@ -19,12 +19,9 @@ include_directories(
     ${ASYN}/include
     ${ADSIMDETECTOR}/include
     ${EPICS_BASE}/include
-    ${EPICS_BASE}/include/os/Linux
-    odinApp/frozenSrc)
+    ${EPICS_BASE}/include/os/Linux)
 
 set(ADODIN_SOURCE_FILES
-    odinApp/frozenSrc/frozen.c
-    odinApp/frozenSrc/frozen.h
     odinApp/src/odinRestApi.cpp
     odinApp/src/odinRestApi.h
     odinApp/src/odinDetector.h
@@ -32,8 +29,6 @@ set(ADODIN_SOURCE_FILES
     cmake-build-debug/CMakeFiles/feature_tests.c
     cmake-build-debug/CMakeFiles/3.8.2/CompilerIdC/CMakeCCompilerId.c
     cmake-build-debug/CMakeFiles/3.8.2/CompilerIdCXX/CMakeCXXCompilerId.cpp
-    iocs/example/exampleApp/src/exampleMain.cpp
-    iocs/example/exampleApp/src/O.linux-x86_64/example_registerRecordDeviceDriver.cpp
 )
 
 add_library(ADOdin_source ${ADODIN_SOURCE_FILES})

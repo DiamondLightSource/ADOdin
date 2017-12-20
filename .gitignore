@@ -3,7 +3,7 @@ lib
 include
 db
 dbd
-iocs/
+iocs/*/
 data/
 venv*/
 *_BAK.adl

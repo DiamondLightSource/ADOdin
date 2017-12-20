@@ -19,7 +19,7 @@ typedef enum
   SSDetectorCommand,
   SSData,
 
-  SSCount,
+  SSCount
 } sys_t;
 
 class OdinRestAPI : public RestAPI

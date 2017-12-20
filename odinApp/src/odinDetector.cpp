@@ -44,7 +44,6 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
                priority, stackSize),
     mAPI(mDetectorName, serverHostname, 8080),
     mParams(this, &mAPI, pasynUserSelf) {
-  const char *functionName = "OdinDetector";
 
   strncpy(mHostname, serverHostname, sizeof(mHostname));
 
