@@ -214,12 +214,12 @@ int OdinRestAPI::stopWrite() {
   return put(sysStr(SSData), PLUGIN_INDEX_FILE_WRITER, writeDict.str());
 }
 
-int OdinRestAPI::createDataset(const std::string& name, int datatype,
+int OdinRestAPI::createDataset(const std::string& name, int dataType,
                                std::vector<int>& dimensions) {
   std::vector<JsonDict> datasetConfig;
   datasetConfig.push_back(JsonDict(DATASET_CMD, DATASET_CMD_CREATE));
   datasetConfig.push_back(JsonDict(DATASET_NAME, name.c_str()));
-  datasetConfig.push_back(JsonDict(DATASET_DATATYPE, datatype));
+  datasetConfig.push_back(JsonDict(DATASET_DATATYPE, dataType));
   datasetConfig.push_back(JsonDict(DATASET_DIMS, dimensions));
   JsonDict datasetDict = JsonDict(datasetConfig);
   JsonDict configDict = JsonDict(DATASET, datasetDict);

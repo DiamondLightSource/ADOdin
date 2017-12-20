@@ -49,7 +49,7 @@ class OdinRestAPI : public RestAPI
   int connectToProcessPlugin(const std::string& index);
   // -- Acquisition Control
   int createFile(const std::string& name, const std::string& path);
-  int createDataset(const std::string& name, int datatype, std::vector<int>& dimensions);
+  int createDataset(const std::string& name, int dataType, std::vector<int>& dimensions);
   int startWrite();
   int stopWrite();
 
