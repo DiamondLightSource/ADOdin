@@ -35,6 +35,7 @@
 #define DATASET_NAME                "name"
 #define DATASET_DATATYPE            "datatype"
 #define DATASET_DIMS                "dims"
+#define DATASET_CHUNKS              "chunks"
 
 #define EOL                     "\r\n"      // End of Line
 #define EOL_LEN                 2           // End of Line Length
@@ -217,12 +218,13 @@ int OdinRestAPI::stopWrite() {
 }
 
 int OdinRestAPI::createDataset(const std::string& name, int dataType,
-                               std::vector<int>& dimensions) {
+                               std::vector<int>& imageDims, std::vector<int>& chunkDims) {
   std::vector<JsonDict> datasetConfig;
   datasetConfig.push_back(JsonDict(DATASET_CMD, DATASET_CMD_CREATE));
   datasetConfig.push_back(JsonDict(DATASET_NAME, name.c_str()));
   datasetConfig.push_back(JsonDict(DATASET_DATATYPE, dataType));
-  datasetConfig.push_back(JsonDict(DATASET_DIMS, dimensions));
+  datasetConfig.push_back(JsonDict(DATASET_DIMS, imageDims));
+  datasetConfig.push_back(JsonDict(DATASET_CHUNKS, chunkDims));
   JsonDict datasetDict = JsonDict(datasetConfig);
   JsonDict configDict = JsonDict(DATASET, datasetDict);
 

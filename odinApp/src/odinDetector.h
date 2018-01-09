@@ -30,7 +30,7 @@ class OdinDetector : public ADDriver
   // EPICS API
   asynStatus acquireStart(const std::string &fileName, const std::string &filePath,
                           const std::string &datasetName, int dataType,
-                          std::vector<int> &dimensions);
+                          std::vector<int>& imageDims, std::vector<int>& chunkDims);
   asynStatus acquireStop();
 
   // IOC Init Methods
@@ -45,7 +45,8 @@ class OdinDetector : public ADDriver
                                 int detectorHeight, int detectorWidth);
   static std::string mDetectorName;
   static std::string mDetectorLibraryPath;
-  static std::vector<int> mDetectorDims;
+  static std::vector<int> mImageDims;
+  static std::vector<int> mChunkDims;
 
  private:
   char mHostname[512];

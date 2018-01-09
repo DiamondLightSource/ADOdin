@@ -14,7 +14,8 @@ int              OdinDetector::mReleasePort         =  0;
 int              OdinDetector::mMetaPort            =  0;
 std::string      OdinDetector::mDetectorName        = "";
 std::string      OdinDetector::mDetectorLibraryPath = "";
-std::vector<int> OdinDetector::mDetectorDims        = {};
+std::vector<int> OdinDetector::mImageDims           = {};
+std::vector<int> OdinDetector::mChunkDims           = {};
 
 /* Constructor for Odin driver; most parameters are simply passed to ADDriver::ADDriver.
  * After calling the base class constructor this method creates a thread to collect the detector
@@ -93,7 +94,12 @@ void OdinDetector::configureDetector(const char * detectorName, const char * lib
   std::vector<int> datasetDims;
   datasetDims.push_back(detectorWidth);
   datasetDims.push_back(detectorHeight);
-  mDetectorDims = datasetDims;
+  mImageDims = datasetDims;
+  std::vector<int> chunkDims;
+  chunkDims.push_back(1);
+  chunkDims.push_back(detectorWidth);
+  chunkDims.push_back(detectorHeight);
+  mChunkDims = chunkDims;
 }
 
 RestParam *OdinDetector::createRESTParam(std::string const & asynName, rest_param_type_t restType,
@@ -139,10 +145,10 @@ asynStatus OdinDetector::getStatus()
 
 asynStatus OdinDetector::acquireStart(const std::string &fileName, const std::string &filePath,
                                       const std::string &datasetName, int dataType,
-                                      std::vector<int> &dimensions)
+                                      std::vector<int>& imageDims, std::vector<int>& chunkDims)
 {
   mAPI.createFile(fileName, filePath);
-  mAPI.createDataset(datasetName, dataType, dimensions);
+  mAPI.createDataset(datasetName, dataType, imageDims, chunkDims);
   mAPI.startWrite();
   mAPI.startAcquisition();
   return asynSuccess;
@@ -175,7 +181,7 @@ asynStatus OdinDetector::writeInt32(asynUser *pasynUser, epicsInt32 value) {
   }
   else if(function == ADAcquire) {
     if(value && adStatus != ADStatusAcquire) {
-      acquireStart("test_file", "/tmp", "data", 2, mDetectorDims);
+      acquireStart("test_file", "/tmp", "data", 2, mImageDims, mChunkDims);
       setIntegerParam(ADStatus, ADStatusAcquire);
     }
     else if (!value && adStatus == ADStatusAcquire) {
