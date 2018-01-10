@@ -169,7 +169,7 @@ int OdinRestAPI::loadProcessPlugin(const std::string& modulePath, const std::str
   std::stringstream sLibrary;
   sLibrary << "lib" << pluginName << ".so";
 
-  return loadPlugin(modulePath, pluginName.c_str(), pluginIndex.c_str(), sLibrary.str().c_str());
+  return loadPlugin(modulePath, pluginName, pluginIndex, sLibrary.str());
 }
 
 int OdinRestAPI::loadFileWriterPlugin(const std::string& odinDataPath)
