@@ -4,9 +4,24 @@
 #include "ADDriver.h"
 #include "odinRestApi.h"
 
-#define OdinRestAPIVersion "ODIN_REST_API_VERSION"
-#define OdinConnected      "ODIN_CONNECTED"
-#define OdinNumPending     "ODIN_NUM_PENDING"
+#define OdinRestAPIVersion             "ODIN_REST_API_VERSION"
+#define OdinConnected                  "ODIN_CONNECTED"
+#define OdinNumPending                 "ODIN_NUM_PENDING"
+#define OdinHDF5FilePath               "ODIN_HDF5_FILE_PATH"
+#define OdinHDF5FilePathExists         "ODIN_HDF5_FILE_PATH_EXISTS"
+#define OdinHDF5FileName               "ODIN_HDF5_FILE_NAME"
+#define OdinHDF5FileTemplate           "ODIN_HDF5_FILE_TEMPLATE"
+#define OdinHDF5NumCapture             "ODIN_HDF5_FILE_NAME"
+#define OdinHDF5ImageWidth             "ODIN_HDF5_IMAGE_WIDTH"
+#define OdinHDF5ImageHeight            "ODIN_HDF5_IMAGE_HEIGHT"
+#define OdinHDF5ChunkWidth             "ODIN_HDF5_CHUNK_WIDTH"
+#define OdinHDF5ChunkHeight            "ODIN_HDF5_CHUNK_HEIGHT"
+#define OdinHDF5ChunkFrames            "ODIN_HDF5_CHUNK_DEPTH"
+#define OdinHDF5ChunkBoundaryAlign     "ODIN_HDF5_CHUNK_BOUNDARY_ALIGN"
+#define OdinHDF5ChunkBoundaryThreshold "ODIN_HDF5_CHUNK_BOUNDARY_THRESHOLD"
+#define OdinHDF5NumFramesPersh         "ODIN_HDF5_NUM_FRAMES_PER_FLUSH"
+#define OdinHDF5Compression            "ODIN_HDF5_COMPRESSION"
+#define OdinHDF5FillValue              "ODIN_HDF5_FILL_VALUE"
 
 class OdinDetector : public ADDriver
 {
