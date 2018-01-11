@@ -41,12 +41,9 @@ class OdinDetector : public ADDriver
   static int mReadyPort;
   static int mReleasePort;
   static int mMetaPort;
-  static void configureDetector(const char * detectorName, const char * libraryPath,
-                                int detectorHeight, int detectorWidth);
+  static void configureDetector(const char * detectorName, const char * libraryPath);
   static std::string mDetectorName;
   static std::string mDetectorLibraryPath;
-  static std::vector<int> mImageDims;
-  static std::vector<int> mChunkDims;
 
  private:
   char mHostname[512];
