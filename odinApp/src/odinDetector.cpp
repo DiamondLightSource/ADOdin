@@ -56,13 +56,13 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
   mAPI.connectDetector();
   if (mOdinDataLibraryPath.empty()) {
     asynPrint(pasynUserSelf, ASYN_TRACE_WARNING,
-              "OdinData library path not set; not configuring processes");
+              "OdinData library path not set; not configuring processes\n");
   }
   else {
     mAPI.configureSharedMemoryChannels(mIPAddress, mReadyPort, mReleasePort);
     if (mDetectorName.empty() || mDetectorLibraryPath.empty()) {
       asynPrint(pasynUserSelf, ASYN_TRACE_WARNING,
-                "Detector name and library path not set; not loading detector ProcessPlugin");
+                "Detector name and library path not set; not loading detector ProcessPlugin\n");
     }
     else {
       mAPI.loadProcessPlugin(mDetectorLibraryPath, mDetectorName);
@@ -103,6 +103,19 @@ int OdinDetector::createDetectorParams()
                                 REST_P_BOOL,   SSDetectorStatus, "connected");
   mNumPending = createRESTParam(OdinNumPending,
                                 REST_P_UINT,   SSDetectorStatus, "num_pending");
+
+  createParam(OdinHDF5ImageHeight, asynParamInt32, &mImageHeight);
+  createParam(OdinHDF5ImageWidth,  asynParamInt32, &mImageWidth);
+  createParam(OdinHDF5ChunkDepth,  asynParamInt32, &mChunkDepth);
+  createParam(OdinHDF5ChunkHeight, asynParamInt32, &mChunkHeight);
+  createParam(OdinHDF5ChunkWidth,  asynParamInt32, &mChunkWidth);
+
+  setIntegerParam(mImageHeight, 512);
+  setIntegerParam(mImageWidth,  2048);
+  setIntegerParam(mChunkDepth,  1);
+  setIntegerParam(mChunkHeight, 512);
+  setIntegerParam(mChunkWidth,  2048);
+
   return 0;
 }
 
@@ -132,10 +145,11 @@ asynStatus OdinDetector::getStatus()
 }
 
 asynStatus OdinDetector::acquireStart(const std::string &fileName, const std::string &filePath,
-                                      const std::string &datasetName, int dataType,
-                                      std::vector<int>& imageDims, std::vector<int>& chunkDims)
+                                      const std::string &datasetName, int dataType)
 {
   mAPI.createFile(fileName, filePath);
+  std::vector<int> imageDims = getImageDimensions();
+  std::vector<int> chunkDims = getChunkDimensions();
   mAPI.createDataset(datasetName, dataType, imageDims, chunkDims);
   mAPI.startWrite();
   mAPI.startAcquisition();
@@ -147,6 +161,28 @@ asynStatus OdinDetector::acquireStop()
   mAPI.stopAcquisition();
   mAPI.stopWrite();
   return asynSuccess;
+}
+
+std::vector<int> OdinDetector::getImageDimensions()
+{
+  std::vector<int> dims(2);
+  getIntegerParam(mImageHeight, &dims[0]);
+  getIntegerParam(mImageWidth, &dims[1]);
+  asynPrint(pasynUserSelf, ASYN_TRACE_FLOW, "Image Dimensions: [%d, %d]\n", dims[0], dims[1]);
+
+  return dims;
+}
+
+std::vector<int> OdinDetector::getChunkDimensions()
+{
+  std::vector<int> dims(3);
+  getIntegerParam(mChunkDepth, &dims[0]);
+  getIntegerParam(mChunkHeight, &dims[1]);
+  getIntegerParam(mChunkWidth, &dims[2]);
+  asynPrint(pasynUserSelf, ASYN_TRACE_FLOW,
+            "Chunk Dimensions: [%d, %d, %d]\n", dims[0], dims[1], dims[2]);
+
+  return dims;
 }
 
 /* Called when asyn clients call pasynInt32->write().
@@ -169,7 +205,7 @@ asynStatus OdinDetector::writeInt32(asynUser *pasynUser, epicsInt32 value) {
   }
   else if(function == ADAcquire) {
     if(value && adStatus != ADStatusAcquire) {
-      acquireStart("test_file", "/tmp", "data", 2, mImageDims, mChunkDims);
+      acquireStart("test_file", "/tmp", "data", 2);
       setIntegerParam(ADStatus, ADStatusAcquire);
     }
     else if (!value && adStatus == ADStatusAcquire) {

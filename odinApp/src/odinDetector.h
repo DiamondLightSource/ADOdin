@@ -16,7 +16,7 @@
 #define OdinHDF5ImageHeight            "ODIN_HDF5_IMAGE_HEIGHT"
 #define OdinHDF5ChunkWidth             "ODIN_HDF5_CHUNK_WIDTH"
 #define OdinHDF5ChunkHeight            "ODIN_HDF5_CHUNK_HEIGHT"
-#define OdinHDF5ChunkFrames            "ODIN_HDF5_CHUNK_DEPTH"
+#define OdinHDF5ChunkDepth             "ODIN_HDF5_CHUNK_DEPTH"
 #define OdinHDF5ChunkBoundaryAlign     "ODIN_HDF5_CHUNK_BOUNDARY_ALIGN"
 #define OdinHDF5ChunkBoundaryThreshold "ODIN_HDF5_CHUNK_BOUNDARY_THRESHOLD"
 #define OdinHDF5NumFramesPersh         "ODIN_HDF5_NUM_FRAMES_PER_FLUSH"
@@ -44,8 +44,7 @@ class OdinDetector : public ADDriver
 
   // EPICS API
   asynStatus acquireStart(const std::string &fileName, const std::string &filePath,
-                          const std::string &datasetName, int dataType,
-                          std::vector<int>& imageDims, std::vector<int>& chunkDims);
+                          const std::string &datasetName, int dataType);
   asynStatus acquireStop();
 
   // IOC Init Methods
@@ -76,7 +75,16 @@ class OdinDetector : public ADDriver
   RestParam * mFilePath;
   RestParam * mFileName;
 
+  // Internal PVs
+  int mImageHeight;
+  int mImageWidth;
+  int mChunkDepth;
+  int mChunkHeight;
+  int mChunkWidth;
+
   asynStatus getStatus();
+  std::vector<int> getImageDimensions();
+  std::vector<int> getChunkDimensions();
 
 };
 
