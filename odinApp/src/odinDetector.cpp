@@ -50,16 +50,16 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
   setStringParam(NDDriverVersion, DRIVER_VERSION);
 
   mAPIVersion = createRESTParam(OdinRestAPIVersion, REST_P_STRING, SSRoot, "api");
-  createDetectorParams();
   mFirstParam = mAPIVersion->getIndex();
 
-  mAPI.connectDetector();
   if (mOdinDataLibraryPath.empty()) {
     asynPrint(pasynUserSelf, ASYN_TRACE_WARNING,
               "OdinData library path not set; not configuring processes\n");
   }
   else {
     mAPI.configureSharedMemoryChannels(mIPAddress, mReadyPort, mReleasePort);
+    mAPI.loadFileWriterPlugin(mOdinDataLibraryPath);
+    createOdinDataParams();
     if (mDetectorName.empty() || mDetectorLibraryPath.empty()) {
       asynPrint(pasynUserSelf, ASYN_TRACE_WARNING,
                 "Detector name and library path not set; not loading detector ProcessPlugin\n");
@@ -67,10 +67,10 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
     else {
       mAPI.loadProcessPlugin(mDetectorLibraryPath, mDetectorName);
       mAPI.connectToFrameReceiver(mDetectorName);
+      mAPI.connectToProcessPlugin(mAPI.FILE_WRITER_PLUGIN);
+      mAPI.connectDetector();
+      createDetectorParams();
     }
-    mAPI.loadFileWriterPlugin(mOdinDataLibraryPath);
-    mAPI.connectToProcessPlugin(mAPI.FILE_WRITER_PLUGIN);
-    createOdinDataParams();
   }
 
   mParams.fetchAll();
@@ -121,10 +121,12 @@ int OdinDetector::createDetectorParams()
 
 int OdinDetector::createOdinDataParams()
 {
+  mProcesses  = createRESTParam(OdinNumProcesses,
+                                REST_P_INT,    SSDataStatusHDF, "processes");
   mFilePath   = createRESTParam(NDFilePathString,
-                                REST_P_STRING, SSDataFile,       "path");
+                                REST_P_STRING, SSDataStatusHDF, "file_path");
   mFileName   = createRESTParam(NDFullFileNameString,
-                                REST_P_STRING, SSDataFile,       "name");
+                                REST_P_STRING, SSDataStatusHDF, "file_name");
   return 0;
 }
 
@@ -135,6 +137,9 @@ asynStatus OdinDetector::getStatus()
   // Fetch status items
   status |= mConnected->fetch();
   status |= mNumPending->fetch();
+  status |= mProcesses->fetch();
+  status |= mFilePath->fetch();
+  status |= mFileName->fetch();
 
   if(status) {
     return asynError;
@@ -200,19 +205,25 @@ asynStatus OdinDetector::writeInt32(asynUser *pasynUser, epicsInt32 value) {
   int adStatus;
   getIntegerParam(ADStatus, &adStatus);
 
-  if (function == ADReadStatus) {
-    status = getStatus();
-  }
-  else if(function == ADAcquire) {
+  if(function == ADAcquire) {
     if(value && adStatus != ADStatusAcquire) {
       acquireStart("test_file", "/tmp", "data", 2);
       setIntegerParam(ADStatus, ADStatusAcquire);
+      setStringParam(ADStatusMessage, "Acquisition started");
     }
     else if (!value && adStatus == ADStatusAcquire) {
       acquireStop();
       setIntegerParam(ADStatus, ADStatusAborted);
+      setStringParam(ADStatusMessage, "Acquisition aborted");
     }
     setIntegerParam(ADAcquire, value);
+  }
+  callParamCallbacks();
+
+  status = setIntegerParam(function, value);
+
+  if (function == ADReadStatus) {
+    status = getStatus();
   }
   else if(function < mFirstParam) {
     status = ADDriver::writeInt32(pasynUser, value);

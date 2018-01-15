@@ -17,8 +17,12 @@ typedef enum
   SSDetector,
   SSDetectorStatus,
   SSDetectorCommand,
-  SSData,
-  SSDataFile,
+  SSDataStatus,
+  SSDataStatusDetector,
+  SSDataStatusHDF,
+  SSDataConfig,
+  SSDataConfigDetector,
+  SSDataConfigHDF,
 
   SSCount
 } sys_t;

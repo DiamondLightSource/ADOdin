@@ -7,6 +7,7 @@
 #define OdinRestAPIVersion             "ODIN_REST_API_VERSION"
 #define OdinConnected                  "ODIN_CONNECTED"
 #define OdinNumPending                 "ODIN_NUM_PENDING"
+#define OdinNumProcesses               "ODIN_NUM_PROCESSES"
 #define OdinHDF5FilePath               "ODIN_HDF5_FILE_PATH"
 #define OdinHDF5FilePathExists         "ODIN_HDF5_FILE_PATH_EXISTS"
 #define OdinHDF5FileName               "ODIN_HDF5_FILE_NAME"
@@ -72,6 +73,7 @@ class OdinDetector : public ADDriver
   RestParam * mAPIVersion;
   RestParam * mConnected;
   RestParam * mNumPending;
+  RestParam * mProcesses;
   RestParam * mFilePath;
   RestParam * mFileName;
 

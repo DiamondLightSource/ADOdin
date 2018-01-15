@@ -65,6 +65,22 @@ record(ai, "$(P)$(R)NumPending_RBV")
    field(SCAN, "I/O Intr")
 }
 
+record(longout, "$(P)$(R)NumProcesses")
+{
+    field(DTYP, "asynInt32")
+    field(OUT, "@asyn($(PORT),0)ODIN_NUM_PROCESSES")
+    field(PINI, "YES")
+    info(autosaveFields, "VAL")
+}
+
+record(longin, "$(P)$(R)NumProcesses_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP, "@asyn($(PORT),0)ODIN_NUM_PROCESSES")
+    field(PINI, "NO")
+    field(SCAN, "I/O Intr")
+}
+
 ### HDF5 records to match NDFileHDF5 plugin API
 
 record(mbbo, "$(P)$(R)FileFormat")

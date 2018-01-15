@@ -76,6 +76,7 @@
     "Host: %s" EOH
 
 // Static public members
+const std::string RestAPI::PARAM_VALUE = "value";  // Set key for RestParam fetch response
 
 const std::string OdinRestAPI::CONNECT           = "connect";
 const std::string OdinRestAPI::START_ACQUISITION = "start_acquisition";
@@ -90,14 +91,19 @@ OdinRestAPI::OdinRestAPI(const std::string& detectorName, const std::string& hos
     RestAPI(hostname, port, numSockets),
     mDetectorName(detectorName)
 {
-  sysStr_[SSRoot]            = "/";
-  sysStr_[SSAdapters]        = "/api/" API_VERSION "/adapters";
-  sysStr_[SSDetector]        = "/api/" API_VERSION "/" + detectorName + "/";
-  sysStr_[SSDetectorStatus]  = "/api/" API_VERSION "/" + detectorName + "/status/";
-  sysStr_[SSDetectorCommand] = "/api/" API_VERSION "/" + detectorName + "/command/";
-  sysStr_[SSData]            = "/api/" API_VERSION "/" ODIN_DATA_ADAPTER "/";
-  sysStr_[SSDataFile]        = "/api/" API_VERSION "/" ODIN_DATA_ADAPTER "/"
-                               PLUGIN_INDEX_FILE_WRITER "/";
+  const std::string api = "/api/" API_VERSION "/";
+
+  sysStr_[SSRoot]               = "/";
+  sysStr_[SSAdapters]           = api + "/adapters";
+  sysStr_[SSDetector]           = api + detectorName + "/";
+  sysStr_[SSDetectorStatus]     = api + detectorName + "/status/";
+  sysStr_[SSDetectorCommand]    = api + detectorName + "/command/";
+  sysStr_[SSDataStatus]         = api + ODIN_DATA_ADAPTER "/status/";
+  sysStr_[SSDataStatusDetector] = api + ODIN_DATA_ADAPTER "/status/" + detectorName + "/";
+  sysStr_[SSDataStatusHDF]      = api + ODIN_DATA_ADAPTER "/status/" PLUGIN_INDEX_FILE_WRITER "/";
+  sysStr_[SSDataConfig]         = api + ODIN_DATA_ADAPTER "/config/";
+  sysStr_[SSDataConfigDetector] = api + ODIN_DATA_ADAPTER "/config/" + detectorName + "/";
+  sysStr_[SSDataConfigHDF]      = api + ODIN_DATA_ADAPTER "/config/" PLUGIN_INDEX_FILE_WRITER "/";
 }
 
 std::string OdinRestAPI::sysStr(sys_t sys)
@@ -141,7 +147,7 @@ int OdinRestAPI::configureSharedMemoryChannels(const std::string& ipAddress,
   channelConfig.push_back(JsonDict(FR_RELEASE_CNXN, release.str().c_str()));
   JsonDict channelDict = JsonDict(channelConfig);
 
-  return put(sysStr(SSData), FR_SETUP, channelDict.str());
+  return put(sysStr(SSDataConfig), FR_SETUP, channelDict.str());
 }
 
 int OdinRestAPI::loadPlugin(const std::string& modulePath,
@@ -157,7 +163,7 @@ int OdinRestAPI::loadPlugin(const std::string& modulePath,
   JsonDict loadDict = JsonDict(loadConfig);
   JsonDict config = JsonDict(PLUGIN_LOAD, loadDict);
 
-  return put(sysStr(SSData), PLUGIN, config.str());
+  return put(sysStr(SSDataConfig), PLUGIN, config.str());
 }
 
 int OdinRestAPI::loadProcessPlugin(const std::string& modulePath, const std::string& pluginIndex)
@@ -184,7 +190,7 @@ int OdinRestAPI::connectPlugins(const std::string& index, const std::string& con
   JsonDict connectionDict = JsonDict(connectionConfig);
   JsonDict configDict = JsonDict(PLUGIN_CONNECT, connectionDict);
 
-  return put(sysStr(SSData), PLUGIN, configDict.str());
+  return put(sysStr(SSDataConfig), PLUGIN, configDict.str());
 }
 
 int OdinRestAPI::connectToFrameReceiver(const std::string& index) {
@@ -204,17 +210,17 @@ int OdinRestAPI::createFile(const std::string& name, const std::string& path) {
   JsonDict fileDict = JsonDict(fileConfig);
   JsonDict configDict = JsonDict(FILE, fileDict);
 
-  return put(sysStr(SSData), PLUGIN_INDEX_FILE_WRITER, configDict.str());
+  return put(sysStr(SSDataConfig), PLUGIN_INDEX_FILE_WRITER, configDict.str());
 }
 
 int OdinRestAPI::startWrite() {
   JsonDict writeDict = JsonDict(FILE_WRITE, true);
-  return put(sysStr(SSData), PLUGIN_INDEX_FILE_WRITER, writeDict.str());
+  return put(sysStr(SSDataConfig), PLUGIN_INDEX_FILE_WRITER, writeDict.str());
 }
 
 int OdinRestAPI::stopWrite() {
   JsonDict writeDict = JsonDict(FILE_WRITE, false);
-  return put(sysStr(SSData), PLUGIN_INDEX_FILE_WRITER, writeDict.str());
+  return put(sysStr(SSDataConfig), PLUGIN_INDEX_FILE_WRITER, writeDict.str());
 }
 
 int OdinRestAPI::createDataset(const std::string& name, int dataType,
@@ -228,7 +234,7 @@ int OdinRestAPI::createDataset(const std::string& name, int dataType,
   JsonDict datasetDict = JsonDict(datasetConfig);
   JsonDict configDict = JsonDict(DATASET, datasetDict);
 
-  return put(sysStr(SSData), PLUGIN_INDEX_FILE_WRITER, configDict.str());
+  return put(sysStr(SSDataConfig), PLUGIN_INDEX_FILE_WRITER, configDict.str());
 }
 
 int OdinRestAPI::lookupAccessMode(
