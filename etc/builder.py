@@ -52,7 +52,7 @@ class odinDetector(AsynPort):
                       'attached plugins', int))
 
     # Device attributes
-    LibFileList = ['odinDetector', 'frozen']
+    LibFileList = ['odinDetector']
     DbdFileList = ['odinDetectorSupport']
 
     def Initialise(self):
