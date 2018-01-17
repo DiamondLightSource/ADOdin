@@ -67,9 +67,8 @@ class OdinDetector : public ADDriver
 
   int mFirstParam;
 
-  RestParam * createRESTParam(
-      std::string const & asynName, rest_param_type_t restType,
-      sys_t subSystem, std::string const & name);
+  RestParam * createRESTParam(const std::string& asynName, rest_param_type_t restType,
+                              sys_t subSystem, const std::string& name, int arrayIndex = -1);
   RestParam * mAPIVersion;
   RestParam * mConnected;
   RestParam * mNumPending;

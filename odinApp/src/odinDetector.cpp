@@ -91,9 +91,9 @@ void OdinDetector::configureDetector(const char * detectorName, const char * lib
 }
 
 RestParam *OdinDetector::createRESTParam(std::string const & asynName, rest_param_type_t restType,
-                                         sys_t subSystem, std::string const & name)
+                                         sys_t subSystem, std::string const & name, int arrayIndex)
 {
-  RestParam *p = mParams.create(asynName, restType, mAPI.sysStr(subSystem), name);
+  RestParam *p = mParams.create(asynName, restType, mAPI.sysStr(subSystem), name, arrayIndex);
   return p;
 }
 
@@ -122,11 +122,11 @@ int OdinDetector::createDetectorParams()
 int OdinDetector::createOdinDataParams()
 {
   mProcesses  = createRESTParam(OdinNumProcesses,
-                                REST_P_INT,    SSDataStatusHDF, "processes");
+                                REST_P_INT,    SSDataStatusHDF, "processes", 0);
   mFilePath   = createRESTParam(NDFilePathString,
-                                REST_P_STRING, SSDataStatusHDF, "file_path");
+                                REST_P_STRING, SSDataStatusHDF, "file_path", 0);
   mFileName   = createRESTParam(NDFullFileNameString,
-                                REST_P_STRING, SSDataStatusHDF, "file_name");
+                                REST_P_STRING, SSDataStatusHDF, "file_name", 0);
   return 0;
 }
 
