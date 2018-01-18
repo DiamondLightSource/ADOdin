@@ -125,7 +125,7 @@ int OdinDetector::createOdinDataParams()
                                 REST_P_INT,    SSDataStatusHDF, "processes", 0);
   mFilePath   = createRESTParam(NDFilePathString,
                                 REST_P_STRING, SSDataStatusHDF, "file_path", 0);
-  mFileName   = createRESTParam(NDFullFileNameString,
+  mFileName   = createRESTParam(NDFileNameString,
                                 REST_P_STRING, SSDataStatusHDF, "file_name", 0);
   return 0;
 }
