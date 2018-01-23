@@ -28,7 +28,8 @@ class OdinDetector : public ADDriver
 {
  public:
   OdinDetector(const char * portName, const char * serverHostname,
-               int maxBuffers, size_t maxMemory, int priority, int stackSize);
+               const char * detectorName, int maxBuffers,
+               size_t maxMemory, int priority, int stackSize);
   int createDetectorParams();
   int createOdinDataParams();
 
