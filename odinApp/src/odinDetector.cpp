@@ -1,7 +1,9 @@
 #include "odinDetector.h"
 
 #include <epicsExport.h>
+#include <epicsString.h>
 #include <iocsh.h>
+#include <drvSup.h>
 
 static const std::string DRIVER_VERSION("0-1");
 static const char *driverName = "OdinDetector";
@@ -324,8 +326,85 @@ void OdinDetector::report(FILE *fp, int details) {
 asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
                                        const char *drvInfo,
                                        const char **pptypeName,
-                                       size_t *psize) {
-  return ADDriver::drvUserCreate(pasynUser, drvInfo, pptypeName, psize);
+                                       size_t *psize)
+{
+  static const char *functionName = "drvUserCreate";
+  asynStatus status = asynSuccess;
+  int index;
+  RestParam *generatedParam;
+
+  // Accepted parameter formats for HTTP parameters
+  //
+  // ODI_...  => Integer parameter
+  // ODE_...  => Enum parameter
+  // ODS_...  => String parameter
+  // ODD_...  => Double parameter
+  if (findParam(drvInfo, &index) && strlen(drvInfo) > 4 && strncmp(drvInfo, "OD", 2) == 0 &&
+      drvInfo[3] == '_') {
+
+    if (mUserParameters.count(drvInfo) == 0){
+      // Retrieve the name of the variable
+      char *httpRequest = epicsStrDup(drvInfo + 4);
+
+      asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+                "%s:%s: Creating new parameter with URI: %s\n",
+                driverName, functionName, httpRequest);
+      // Check for I, D or S in drvInfo[2]
+      switch (drvInfo[2]) {
+      case 'I':
+        // Create the parameter
+        asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+                  "%s:%s: Integer parameter: %s\n",
+                  driverName, functionName, drvInfo);
+        generatedParam  = createRESTParam(drvInfo, REST_P_INT, SSDetector, httpRequest, 0);
+        generatedParam->fetch();
+        // Store the parameter
+        mUserParameters[drvInfo] = generatedParam;
+        break;
+      case 'E':
+        // Create the parameter
+        asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+                  "%s:%s: Enum parameter: %s\n",
+                  driverName, functionName, drvInfo);
+        generatedParam  = createRESTParam(drvInfo, REST_P_ENUM, SSDetector, httpRequest, 0);
+        generatedParam->fetch();
+        // Store the parameter
+        mUserParameters[drvInfo] = generatedParam;
+        break;
+        case 'D':
+          // Create the parameter
+          asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+                    "%s:%s: Double parameter: %s\n",
+                    driverName, functionName, drvInfo);
+          generatedParam  = createRESTParam(drvInfo, REST_P_DOUBLE, SSDetector, httpRequest, 0);
+          generatedParam->fetch();
+          // Store the parameter
+          mUserParameters[drvInfo] = generatedParam;
+          break;
+        case 'S':
+          // Create the parameter
+          asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+                    "%s:%s: String parameter: %s\n",
+                    driverName, functionName, drvInfo);
+          mProcesses  = createRESTParam(drvInfo, REST_P_STRING, SSDetector, httpRequest, 0);
+          mProcesses->fetch();
+          // Store the parameter
+          mUserParameters[drvInfo] = generatedParam;
+          break;
+        default:
+          asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
+                    "%s:%s: Expected ODx_... where x is one of I, D or S. Got '%c'\n",
+                    driverName, functionName, drvInfo[2]);
+          status = asynError;
+      }
+    }
+  }
+
+  if (status == asynSuccess) {
+    // Now return baseclass result
+    status = ADDriver::drvUserCreate(pasynUser, drvInfo, pptypeName, psize);
+  }
+  return status;
 }
 
 extern "C" int odinDetectorConfig(const char *portName,

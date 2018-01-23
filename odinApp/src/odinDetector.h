@@ -83,6 +83,9 @@ class OdinDetector : public ADDriver
   int mChunkHeight;
   int mChunkWidth;
 
+  // Used to store db generated parameters
+  std::map<std::string, RestParam *> mUserParameters;
+
   asynStatus getStatus();
   std::vector<int> getImageDimensions();
   std::vector<int> getChunkDimensions();
