@@ -14,7 +14,7 @@ std::string      OdinDetector::mIPAddress           = "";
 int              OdinDetector::mReadyPort           =  0;
 int              OdinDetector::mReleasePort         =  0;
 int              OdinDetector::mMetaPort            =  0;
-std::string      OdinDetector::mDetectorName        = "";
+std::string      OdinDetector::mProcessPluginName   = "";
 std::string      OdinDetector::mDetectorLibraryPath = "";
 
 /* Constructor for Odin driver; most parameters are simply passed to ADDriver::ADDriver.
@@ -44,7 +44,7 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname,
                    ASYN_MULTIDEVICE, /* ASYN_MULTIDEVICE=1 */
                1,                    /* autoConnect=1 */
                priority, stackSize),
-    mAPI(detectorName, serverHostname, mDetectorName, 8080),
+    mAPI(detectorName, serverHostname, mProcessPluginName, 8080),
     mParams(this, &mAPI, pasynUserSelf) {
 
   strncpy(mHostname, serverHostname, sizeof(mHostname));
@@ -63,13 +63,13 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname,
     mAPI.configureSharedMemoryChannels(mIPAddress, mReadyPort, mReleasePort);
     mAPI.loadFileWriterPlugin(mOdinDataLibraryPath);
     createOdinDataParams();
-    if (mDetectorName.empty() || mDetectorLibraryPath.empty()) {
+    if (mProcessPluginName.empty() || mDetectorLibraryPath.empty()) {
       asynPrint(pasynUserSelf, ASYN_TRACE_WARNING,
                 "Detector name and library path not set; not loading detector ProcessPlugin\n");
     }
     else {
-      mAPI.loadProcessPlugin(mDetectorLibraryPath, mDetectorName);
-      mAPI.connectToFrameReceiver(mDetectorName);
+      mAPI.loadProcessPlugin(mDetectorLibraryPath, mProcessPluginName);
+      mAPI.connectToFrameReceiver(mProcessPluginName);
       mAPI.connectToProcessPlugin(mAPI.FILE_WRITER_PLUGIN);
       mAPI.connectDetector();
       createDetectorParams();
@@ -89,7 +89,7 @@ void OdinDetector::configureOdinData(const char * libraryPath, const char * ipAd
 }
 
 void OdinDetector::configureDetector(const char * detectorName, const char * libraryPath) {
-  mDetectorName = std::string(detectorName);
+  mProcessPluginName = std::string(detectorName);
   mDetectorLibraryPath = std::string(libraryPath);
 }
 

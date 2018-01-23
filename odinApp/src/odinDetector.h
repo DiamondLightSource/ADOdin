@@ -58,7 +58,7 @@ class OdinDetector : public ADDriver
   static int mReleasePort;
   static int mMetaPort;
   static void configureDetector(const char * detectorName, const char * libraryPath);
-  static std::string mDetectorName;
+  static std::string mProcessPluginName;
   static std::string mDetectorLibraryPath;
 
  private:
