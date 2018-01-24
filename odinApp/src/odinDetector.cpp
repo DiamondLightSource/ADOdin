@@ -96,9 +96,9 @@ void OdinDetector::configureDetector(const char * detectorName, const char * lib
 }
 
 RestParam *OdinDetector::createRESTParam(std::string const & asynName, rest_param_type_t restType,
-                                         sys_t subSystem, std::string const & name, int arrayIndex)
+                                         sys_t subSystem, std::string const & name, bool arrayValue)
 {
-  RestParam *p = mParams.create(asynName, restType, mAPI.sysStr(subSystem), name, arrayIndex);
+  RestParam *p = mParams.create(asynName, restType, mAPI.sysStr(subSystem), name, arrayValue);
   return p;
 }
 
@@ -127,11 +127,11 @@ int OdinDetector::createDetectorParams()
 int OdinDetector::createOdinDataParams()
 {
   mProcesses  = createRESTParam(OdinNumProcesses,
-                                REST_P_INT,    SSDataStatusHDF, "processes", 0);
+                                REST_P_INT,    SSDataStatusHDF, "processes", true);
   mFilePath   = createRESTParam(NDFilePathString,
-                                REST_P_STRING, SSDataStatusHDF, "file_path", 0);
+                                REST_P_STRING, SSDataStatusHDF, "file_path", true);
   mFileName   = createRESTParam(NDFileNameString,
-                                REST_P_STRING, SSDataStatusHDF, "file_name", 0);
+                                REST_P_STRING, SSDataStatusHDF, "file_name", true);
   return 0;
 }
 
@@ -316,6 +316,14 @@ asynStatus OdinDetector::writeOctet(asynUser *pasynUser, const char *value,
 
   *nActual = nChars;
   return status;
+}
+
+asynStatus OdinDetector::callParamCallbacks()
+{
+  int status = 0;
+  status |= (int) ADDriver::callParamCallbacks(0);
+  status |= (int) ADDriver::callParamCallbacks(1);
+  return (asynStatus) status;
 }
 
 /* Report status of the driver.
