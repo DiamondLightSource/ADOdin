@@ -39,6 +39,7 @@ class OdinDetector : public ADDriver
   virtual asynStatus writeOctet(
       asynUser *pasynUser, const char *value,
       size_t nChars, size_t *nActual);
+  asynStatus callParamCallbacks();
   void report(FILE *fp, int details);
   virtual asynStatus drvUserCreate(
       asynUser *pasynUser, const char *drvInfo,
@@ -69,7 +70,7 @@ class OdinDetector : public ADDriver
   int mFirstParam;
 
   RestParam * createRESTParam(const std::string& asynName, rest_param_type_t restType,
-                              sys_t subSystem, const std::string& name, int arrayIndex = -1);
+                              sys_t subSystem, const std::string& name, bool arrayValue = false);
   RestParam * mAPIVersion;
   RestParam * mConnected;
   RestParam * mNumPending;
