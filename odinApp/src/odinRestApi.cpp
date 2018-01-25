@@ -248,9 +248,13 @@ int OdinRestAPI::lookupAccessMode(
         std::string subSystem, rest_access_mode_t &accessMode)
 {
     long ssEnum = std::distance(sysStr_, std::find(sysStr_, sysStr_ + SSCount, subSystem));
+
     switch(ssEnum)
     {
-      case SSRoot: case SSDetector: case SSDetectorStatus:
+      case SSDetector:
+        accessMode = REST_ACC_RW;
+        return EXIT_SUCCESS;
+      case SSRoot: case SSDetectorStatus:
         accessMode = REST_ACC_RO;
         return EXIT_SUCCESS;
       case SSDetectorCommand:
