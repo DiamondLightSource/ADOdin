@@ -39,10 +39,10 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname,
                            size_t maxMemory, int priority, int stackSize)
 
     : ADDriver(portName, 2, 0, maxBuffers, maxMemory,
-               0, 0,                 /* No interfaces beyond ADDriver.cpp */
-               ASYN_CANBLOCK |       /* ASYN_CANBLOCK=1 */
-                   ASYN_MULTIDEVICE, /* ASYN_MULTIDEVICE=1 */
-               1,                    /* autoConnect=1 */
+               asynEnumMask, asynEnumMask,    /* Add Enum interface */
+               ASYN_CANBLOCK |                /* ASYN_CANBLOCK=1 */
+                   ASYN_MULTIDEVICE,          /* ASYN_MULTIDEVICE=1 */
+               1,                             /* autoConnect=1 */
                priority, stackSize),
     mAPI(detectorName, serverHostname, mProcessPluginName, 8080),
     mParams(this, &mAPI, pasynUserSelf) {
