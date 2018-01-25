@@ -76,7 +76,9 @@
     "Host: %s" EOH
 
 // Static public members
-const std::string RestAPI::PARAM_VALUE = "value";  // Set key for RestParam fetch response
+const std::string RestAPI::PARAM_ACCESS_MODE = "access";          // Set key for RestParam access mode
+const std::string RestAPI::PARAM_ENUM_VALUES = "allowed_values";  // Set key for RestParam enum values
+const std::string RestAPI::PARAM_VALUE       = "value";           // Set key for RestParam fetch response
 
 const std::string OdinRestAPI::CONNECT           = "connect";
 const std::string OdinRestAPI::START_ACQUISITION = "start_acquisition";
