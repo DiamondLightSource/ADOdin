@@ -334,7 +334,8 @@ asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
   static const char *functionName = "drvUserCreate";
   asynStatus status = asynSuccess;
   int index;
-  RestParam *generatedParam;
+  RestParam *generatedParam = 0;
+  std::string value;
 
   // Accepted parameter formats for HTTP parameters
   //
@@ -359,7 +360,7 @@ asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
         asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
                   "%s:%s: Integer parameter: %s\n",
                   driverName, functionName, drvInfo);
-        generatedParam  = createRESTParam(drvInfo, REST_P_INT, SSDetector, httpRequest, 0);
+        generatedParam = createRESTParam(drvInfo, REST_P_INT, SSDetector, httpRequest, 0);
         generatedParam->fetch();
         // Store the parameter
         mUserParameters[drvInfo] = generatedParam;
@@ -369,7 +370,7 @@ asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
         asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
                   "%s:%s: Enum parameter: %s\n",
                   driverName, functionName, drvInfo);
-        generatedParam  = createRESTParam(drvInfo, REST_P_ENUM, SSDetector, httpRequest, 0);
+        generatedParam = createRESTParam(drvInfo, REST_P_ENUM, SSDetector, httpRequest, 0);
         generatedParam->fetch();
         // Store the parameter
         mUserParameters[drvInfo] = generatedParam;
@@ -379,7 +380,7 @@ asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
           asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
                     "%s:%s: Double parameter: %s\n",
                     driverName, functionName, drvInfo);
-          generatedParam  = createRESTParam(drvInfo, REST_P_DOUBLE, SSDetector, httpRequest, 0);
+          generatedParam = createRESTParam(drvInfo, REST_P_DOUBLE, SSDetector, httpRequest, 0);
           generatedParam->fetch();
           // Store the parameter
           mUserParameters[drvInfo] = generatedParam;
@@ -389,8 +390,8 @@ asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
           asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
                     "%s:%s: String parameter: %s\n",
                     driverName, functionName, drvInfo);
-          mProcesses  = createRESTParam(drvInfo, REST_P_STRING, SSDetector, httpRequest, 0);
-          mProcesses->fetch();
+          generatedParam = createRESTParam(drvInfo, REST_P_STRING, SSDetector, httpRequest, 0);
+          generatedParam->fetch();
           // Store the parameter
           mUserParameters[drvInfo] = generatedParam;
           break;
