@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1981
-y 172
+x 1983
+y 198
 w 385
 h 821
 font "arial-medium-r-12.0"
@@ -32,9 +32,9 @@ major 4
 minor 1
 release 0
 x 0
-y 540
+y 615
 w 385
-h 280
+h 205
 fgColor index 14
 bgColor index 3
 topShadowColor index 1
@@ -52,8 +52,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 95
-y 675
+x 90
+y 705
 w 198
 h 13
 font "arial-medium-r-12.0"
