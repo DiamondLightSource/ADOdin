@@ -24,6 +24,7 @@ typedef enum
   SSDataConfig,
   SSDataConfigDetector,
   SSDataConfigHDF,
+  SSDataConfigHDFProcess,
 
   SSCount
 } sys_t;
@@ -49,7 +50,9 @@ class OdinRestAPI : public RestAPI
 
   // OdinData Methods
   // -- Initialisation
-  int configureSharedMemoryChannels(const std::string& ipAddress, int readyPort, int releasePort);
+  int configureSharedMemoryChannels(std::vector<std::string>& ipAddresses,
+                                    std::vector<int> readyPorts,
+                                    std::vector<int> releasePorts);
   int loadPlugin(const std::string& modulePath,
                  const std::string& name, const std::string& index, const std::string& library);
   int loadProcessPlugin(const std::string& modulePath, const std::string& pluginIndex);
