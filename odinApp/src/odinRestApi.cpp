@@ -99,18 +99,20 @@ OdinRestAPI::OdinRestAPI(const std::string& detectorName,
 {
   const std::string api = "/api/" API_VERSION "/";
 
-  sysStr_[SSRoot]               = "/";
-  sysStr_[SSAdapters]           = api + "/adapters";
-  sysStr_[SSDetector]           = api + detectorName + "/";
-  sysStr_[SSDetectorConfig]     = api + detectorName + "/config/";
-  sysStr_[SSDetectorStatus]     = api + detectorName + "/status/";
-  sysStr_[SSDetectorCommand]    = api + detectorName + "/command/";
-  sysStr_[SSDataStatus]         = api + ODIN_DATA_ADAPTER "/status/";
-  sysStr_[SSDataStatusDetector] = api + ODIN_DATA_ADAPTER "/status/" + pluginName + "/";
-  sysStr_[SSDataStatusHDF]      = api + ODIN_DATA_ADAPTER "/status/" PLUGIN_INDEX_FILE_WRITER "/";
-  sysStr_[SSDataConfig]         = api + ODIN_DATA_ADAPTER "/config/";
-  sysStr_[SSDataConfigDetector] = api + ODIN_DATA_ADAPTER "/config/" + pluginName + "/";
-  sysStr_[SSDataConfigHDF]      = api + ODIN_DATA_ADAPTER "/config/" PLUGIN_INDEX_FILE_WRITER "/";
+  sysStr_[SSRoot]                 = "/";
+  sysStr_[SSAdapters]             = api + "/adapters";
+  sysStr_[SSDetector]             = api + detectorName + "/";
+  sysStr_[SSDetectorConfig]       = api + detectorName + "/config/";
+  sysStr_[SSDetectorStatus]       = api + detectorName + "/status/";
+  sysStr_[SSDetectorCommand]      = api + detectorName + "/command/";
+  sysStr_[SSDataStatus]           = api + ODIN_DATA_ADAPTER "/status/";
+  sysStr_[SSDataStatusDetector]   = api + ODIN_DATA_ADAPTER "/status/" + pluginName + "/";
+  sysStr_[SSDataStatusHDF]        = api + ODIN_DATA_ADAPTER "/status/" PLUGIN_INDEX_FILE_WRITER "/";
+  sysStr_[SSDataConfig]           = api + ODIN_DATA_ADAPTER "/config/";
+  sysStr_[SSDataConfigDetector]   = api + ODIN_DATA_ADAPTER "/config/" + pluginName + "/";
+  sysStr_[SSDataConfigHDF]        = api + ODIN_DATA_ADAPTER "/config/" PLUGIN_INDEX_FILE_WRITER "/";
+  sysStr_[SSDataConfigHDFProcess] = api + ODIN_DATA_ADAPTER "/config/" PLUGIN_INDEX_FILE_WRITER
+                                    "/process/";
 }
 
 std::string OdinRestAPI::sysStr(sys_t sys)
@@ -142,19 +144,25 @@ int OdinRestAPI::stopAcquisition()
   return put(sysStr(SSDetectorCommand), STOP_ACQUISITION, "", EMPTY_JSON_STRING);
 }
 
-int OdinRestAPI::configureSharedMemoryChannels(const std::string& ipAddress,
-                                               int readyPort, int releasePort)
+int OdinRestAPI::configureSharedMemoryChannels(std::vector<std::string>& ipAddresses,
+                                               std::vector<int> readyPorts,
+                                               std::vector<int> releasePorts)
 {
-  std::stringstream ready, release;
-  ready << "tcp://" << ipAddress << ":" << readyPort;
-  release << "tcp://" << ipAddress << ":" << releasePort;
+  int status = 0;
+  for (int index = 0; (size_t) index != ipAddresses.size(); ++index) {
+    std::stringstream ready, release, endpoint;
+    ready << "tcp://" << ipAddresses[index] << ":" << readyPorts[index];
+    release << "tcp://" << ipAddresses[index] << ":" << releasePorts[index];
+    endpoint << FR_SETUP << "/" << index;
 
-  std::vector<JsonDict> channelConfig;
-  channelConfig.push_back(JsonDict(FR_READY_CNXN, ready.str().c_str()));
-  channelConfig.push_back(JsonDict(FR_RELEASE_CNXN, release.str().c_str()));
-  JsonDict channelDict = JsonDict(channelConfig);
+    std::vector<JsonDict> channelConfig;
+    channelConfig.push_back(JsonDict(FR_READY_CNXN, ready.str().c_str()));
+    channelConfig.push_back(JsonDict(FR_RELEASE_CNXN, release.str().c_str()));
+    JsonDict channelDict = JsonDict(channelConfig);
 
-  return put(sysStr(SSDataConfig), FR_SETUP, channelDict.str());
+    status |= put(sysStr(SSDataConfig), endpoint.str(), channelDict.str());
+  }
+  return status;
 }
 
 int OdinRestAPI::loadPlugin(const std::string& modulePath,

@@ -5,6 +5,8 @@ include $(TOP)/configure/CONFIG
 
 CXXFLAGS += -std=c++0x
 
+CXXFLAGS += -O0
+
 LIBRARY_IOC = odinDetector
 
 LIB_SRCS += odinDetector.cpp odinRestApi.cpp
