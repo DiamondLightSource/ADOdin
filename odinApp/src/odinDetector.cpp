@@ -1,7 +1,11 @@
 #include "odinDetector.h"
 
+#include <sstream>
+
 #include <epicsExport.h>
+#include <epicsString.h>
 #include <iocsh.h>
+#include <drvSup.h>
 
 static const std::string DRIVER_VERSION("0-1");
 static const char *driverName = "OdinDetector";
@@ -12,7 +16,7 @@ std::string      OdinDetector::mIPAddress           = "";
 int              OdinDetector::mReadyPort           =  0;
 int              OdinDetector::mReleasePort         =  0;
 int              OdinDetector::mMetaPort            =  0;
-std::string      OdinDetector::mDetectorName        = "";
+std::string      OdinDetector::mProcessPluginName   = "";
 std::string      OdinDetector::mDetectorLibraryPath = "";
 
 /* Constructor for Odin driver; most parameters are simply passed to ADDriver::ADDriver.
@@ -32,16 +36,17 @@ std::string      OdinDetector::mDetectorLibraryPath = "";
  * \param[in] stackSize The stack size for the asyn port driver thread if
  *            ASYN_CANBLOCK is set in asynFlags.
  */
-OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int maxBuffers,
+OdinDetector::OdinDetector(const char *portName, const char *serverHostname,
+                           const char *detectorName, int maxBuffers,
                            size_t maxMemory, int priority, int stackSize)
 
     : ADDriver(portName, 2, 0, maxBuffers, maxMemory,
-               0, 0,                 /* No interfaces beyond ADDriver.cpp */
-               ASYN_CANBLOCK |       /* ASYN_CANBLOCK=1 */
-                   ASYN_MULTIDEVICE, /* ASYN_MULTIDEVICE=1 */
-               1,                    /* autoConnect=1 */
+               asynEnumMask, asynEnumMask,    /* Add Enum interface */
+               ASYN_CANBLOCK |                /* ASYN_CANBLOCK=1 */
+                   ASYN_MULTIDEVICE,          /* ASYN_MULTIDEVICE=1 */
+               1,                             /* autoConnect=1 */
                priority, stackSize),
-    mAPI(mDetectorName, serverHostname, 8080),
+    mAPI(detectorName, serverHostname, mProcessPluginName, 8080),
     mParams(this, &mAPI, pasynUserSelf) {
 
   strncpy(mHostname, serverHostname, sizeof(mHostname));
@@ -60,13 +65,13 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
     mAPI.configureSharedMemoryChannels(mIPAddress, mReadyPort, mReleasePort);
     mAPI.loadFileWriterPlugin(mOdinDataLibraryPath);
     createOdinDataParams();
-    if (mDetectorName.empty() || mDetectorLibraryPath.empty()) {
+    if (mProcessPluginName.empty() || mDetectorLibraryPath.empty()) {
       asynPrint(pasynUserSelf, ASYN_TRACE_WARNING,
                 "Detector name and library path not set; not loading detector ProcessPlugin\n");
     }
     else {
-      mAPI.loadProcessPlugin(mDetectorLibraryPath, mDetectorName);
-      mAPI.connectToFrameReceiver(mDetectorName);
+      mAPI.loadProcessPlugin(mDetectorLibraryPath, mProcessPluginName);
+      mAPI.connectToFrameReceiver(mProcessPluginName);
       mAPI.connectToProcessPlugin(mAPI.FILE_WRITER_PLUGIN);
       mAPI.connectDetector();
       createDetectorParams();
@@ -86,7 +91,7 @@ void OdinDetector::configureOdinData(const char * libraryPath, const char * ipAd
 }
 
 void OdinDetector::configureDetector(const char * detectorName, const char * libraryPath) {
-  mDetectorName = std::string(detectorName);
+  mProcessPluginName = std::string(detectorName);
   mDetectorLibraryPath = std::string(libraryPath);
 }
 
@@ -227,6 +232,8 @@ asynStatus OdinDetector::writeInt32(asynUser *pasynUser, epicsInt32 value) {
   }
   else if(function < mFirstParam) {
     status = ADDriver::writeInt32(pasynUser, value);
+  } else if (RestParam * p = mParams.getByIndex(function)){
+    p->put(value);
   }
 
   if (status) {
@@ -324,17 +331,106 @@ void OdinDetector::report(FILE *fp, int details) {
 asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
                                        const char *drvInfo,
                                        const char **pptypeName,
-                                       size_t *psize) {
-  return ADDriver::drvUserCreate(pasynUser, drvInfo, pptypeName, psize);
+                                       size_t *psize)
+{
+  static const char *functionName = "drvUserCreate";
+  asynStatus status = asynSuccess;
+  int index;
+  RestParam * generatedParam;
+  std::string value;
+
+  // Retrieve the name of the variable
+  char * httpRequest = epicsStrDup(drvInfo + 4);
+
+  std::stringstream temp;
+  temp << httpRequest;
+  std::string uri = temp.str();
+  std::string name;
+  name = uri.substr(uri.rfind("/" + 1));
+
+  // Accepted parameter formats for HTTP parameters
+  //
+  // ODI_...  => Integer parameter
+  // ODE_...  => Enum parameter
+  // ODS_...  => String parameter
+  // ODD_...  => Double parameter
+  if (findParam(drvInfo, &index) && strlen(drvInfo) > 4 && strncmp(drvInfo, "OD", 2) == 0 &&
+      drvInfo[3] == '_') {
+
+    RestParam * existingParam = mParams.getByName(drvInfo);
+    if (existingParam == NULL || existingParam->getName() != name) {
+      // If param doesn't already exist -- Create it
+      // If param does already exist and is bound the the same URI
+      // -- Ignore - this is probably the *_RBV record
+      // If param does already exist, but it is bound to a different URI
+      // -- Let it try to create it and throw an exception, as it would if manually created
+
+      asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+                "%s:%s: Creating new parameter with URI: %s\n",
+                driverName, functionName, httpRequest);
+      // Check for I, D or S in drvInfo[2]
+      switch (drvInfo[2]) {
+      case 'I':
+        // Create the parameter
+        asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+                  "%s:%s: Integer parameter: %s\n",
+                  driverName, functionName, drvInfo);
+        generatedParam = createRESTParam(drvInfo, REST_P_INT, SSDetector, httpRequest, 0);
+        generatedParam->fetch();
+        // Store the parameter
+        break;
+      case 'E':
+        // Create the parameter
+        asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+                  "%s:%s: Enum parameter: %s\n",
+                  driverName, functionName, drvInfo);
+        generatedParam = createRESTParam(drvInfo, REST_P_ENUM, SSDetector, httpRequest, 0);
+        generatedParam->fetch();
+        // Store the parameter
+        break;
+        case 'D':
+          // Create the parameter
+          asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+                    "%s:%s: Double parameter: %s\n",
+                    driverName, functionName, drvInfo);
+          generatedParam = createRESTParam(drvInfo, REST_P_DOUBLE, SSDetector, httpRequest, 0);
+          generatedParam->fetch();
+          // Store the parameter
+          break;
+        case 'S':
+          // Create the parameter
+          asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+                    "%s:%s: String parameter: %s\n",
+                    driverName, functionName, drvInfo);
+          generatedParam = createRESTParam(drvInfo, REST_P_STRING, SSDetector, httpRequest, 0);
+          generatedParam->fetch();
+          // Store the parameter
+          break;
+        default:
+          asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
+                    "%s:%s: Expected ODx_... where x is one of I, D or S. Got '%c'\n",
+                    driverName, functionName, drvInfo[2]);
+          status = asynError;
+      }
+    }
+  }
+
+  if (status == asynSuccess) {
+    // Now return baseclass result
+    status = ADDriver::drvUserCreate(pasynUser, drvInfo, pptypeName, psize);
+  }
+  return status;
 }
 
 extern "C" int odinDetectorConfig(const char *portName,
                                   const char *serverPort,
+                                  const char *detectorName,
                                   int maxBuffers,
                                   size_t maxMemory,
                                   int priority,
                                   int stackSize) {
-  new OdinDetector(portName, serverPort, maxBuffers, maxMemory, priority,
+  new OdinDetector(portName, serverPort, detectorName,
+                   maxBuffers, maxMemory, priority,
                    stackSize);
   return asynSuccess;
 }
@@ -354,21 +450,24 @@ extern "C" int odinDataDetectorConfig(const char * detectorName, const char * li
 static const iocshArg odinDetectorConfigArg0 = {"Port name", iocshArgString};
 static const iocshArg odinDetectorConfigArg1 = {"Server host name",
                                                 iocshArgString};
-static const iocshArg odinDetectorConfigArg2 = {"maxBuffers", iocshArgInt};
-static const iocshArg odinDetectorConfigArg3 = {"maxMemory", iocshArgInt};
-static const iocshArg odinDetectorConfigArg4 = {"priority", iocshArgInt};
-static const iocshArg odinDetectorConfigArg5 = {"stackSize", iocshArgInt};
+static const iocshArg odinDetectorConfigArg2 = {"Detector name", iocshArgString};
+static const iocshArg odinDetectorConfigArg3 = {"maxBuffers", iocshArgInt};
+static const iocshArg odinDetectorConfigArg4 = {"maxMemory", iocshArgInt};
+static const iocshArg odinDetectorConfigArg5 = {"priority", iocshArgInt};
+static const iocshArg odinDetectorConfigArg6 = {"stackSize", iocshArgInt};
 static const iocshArg *const odinDetectorConfigArgs[] = {
     &odinDetectorConfigArg0, &odinDetectorConfigArg1,
     &odinDetectorConfigArg2, &odinDetectorConfigArg3,
-    &odinDetectorConfigArg4, &odinDetectorConfigArg5};
+    &odinDetectorConfigArg4, &odinDetectorConfigArg5,
+    &odinDetectorConfigArg6};
 
 static const iocshFuncDef configOdinDetector = {"odinDetectorConfig",
-                                                6, odinDetectorConfigArgs};
+                                                7, odinDetectorConfigArgs};
 
 static void configOdinDetectorCallFunc(const iocshArgBuf *args) {
-  odinDetectorConfig(args[0].sval, args[1].sval, args[2].ival,
-                     args[3].ival, args[4].ival, args[5].ival);
+  odinDetectorConfig(args[0].sval, args[1].sval, args[2].sval,
+                     args[3].ival, args[4].ival, args[5].ival,
+                     args[6].ival);
 }
 
 static void odinDetectorRegister() {

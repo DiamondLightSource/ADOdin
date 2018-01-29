@@ -28,7 +28,8 @@ class OdinDetector : public ADDriver
 {
  public:
   OdinDetector(const char * portName, const char * serverHostname,
-               int maxBuffers, size_t maxMemory, int priority, int stackSize);
+               const char * detectorName, int maxBuffers,
+               size_t maxMemory, int priority, int stackSize);
   int createDetectorParams();
   int createOdinDataParams();
 
@@ -57,7 +58,7 @@ class OdinDetector : public ADDriver
   static int mReleasePort;
   static int mMetaPort;
   static void configureDetector(const char * detectorName, const char * libraryPath);
-  static std::string mDetectorName;
+  static std::string mProcessPluginName;
   static std::string mDetectorLibraryPath;
 
  private:

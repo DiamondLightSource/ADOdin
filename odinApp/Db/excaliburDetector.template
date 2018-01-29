@@ -1,0 +1,903 @@
+# excaliburDetector.template
+#
+# Parameters:
+#   P       - EPICS name prefix
+#   R       - EPICS plugin name
+#   STRIPE  - Stripe name
+#   PORT    - Asyn port
+#   TIMEOUT - Timeout
+
+# Operation mode.
+# %gdatag,template,simpleMbbinary,$(gda_name=).operationMode,$(gda_desc=)
+# %gdatag,mbbinary,rw,$(gda_name=).operationMode,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)OperationMode")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))ODE_config/operation_mode")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(ZRST, "Normal")
+    field(ONST, "Burst")
+    field(TWST, "Histogram")
+    field(THST, "DAC Scan")
+    field(FRST, "Matrix Read")
+    field(PINI, "1")
+}
+
+# Operation mode read back.
+# %gdatag,template,simpleMbbinary,$(gda_name=).operationMode_RBV,$(gda_desc=)
+# %gdatag,mbbinary,rw,$(gda_name=).operationMode_RBV,RECORD,$(gda_desc=)
+record(mbbi, "$(P)$(R)OperationMode_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))ODE_config/operation_mode")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(ZRST, "Normal")
+    field(ONST, "Burst")
+    field(TWST, "Histogram")
+    field(FRST, "Matrix Read")
+    field(THST, "DAC Scan")
+}
+
+# Counter depth.  Actually part of the operation mode register but the FEM
+# has to be in control of that.
+# %gdatag,template,simpleMbbinary,$(gda_name=).counterdepth,$(gda_desc=)
+# %gdatag,mbbinary,rw,$(gda_name=).counterdepth,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)CounterDepth")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_COUNTERDEPTH")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "1 bit")
+    field(ONST, "6 bit")
+    field(TWST, "12 bit")
+    field(THST, "24 bit")
+    field(PINI, "1")
+}
+
+# Counter depth readback.  Actually part of the operation mode register but the FEM
+# has to be in control of that.
+# %gdatag,template,simpleMbbinary,$(gda_name=).counterdepth_RBV,$(gda_desc=)
+# %gdatag,mbbinary,rw,$(gda_name=).counterdepth_RBV,RECORD,$(gda_desc=)
+record(mbbi, "$(P)$(R)CounterDepth_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_COUNTERDEPTH")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "1 bit")
+    field(ONST, "6 bit")
+    field(TWST, "12 bit")
+    field(THST, "24 bit")
+}
+
+# Counter Select.
+# %gdatag,template,simpleMbbinary,$(gda_name=).counterselect,$(gda_desc=)
+# %gdatag,mbbinary,rw,$(gda_name=).counterselect,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)CounterSelect")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_COUNTERSELECT")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(ZRST, "A")
+    field(ONST, "B")
+    field(TWST, "A and B")
+    field(PINI, "1")
+}
+
+# Counter select readback.
+# %gdatag,template,simpleMbbinary,$(gda_name=).counterselect_RBV,$(gda_desc=)
+# %gdatag,mbbinary,rw,$(gda_name=).counterselect_RBV,RECORD,$(gda_desc=)
+record(mbbi, "$(P)$(R)CounterSelect_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_COUNTERSELECT")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(ZRST, "A")
+    field(ONST, "B")
+    field(TWST, "A and B")
+}
+
+# Energy threshold.
+# %gdatag,template,simplePv,$(gda_name=).energyThreshold,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).energyThreshold,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(ao, "$(P)$(R)EnergyThreshold")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))ENERGY_THRESHOLD")
+    field(EGU,  "keV")
+    field(PINI, "1")
+}
+
+# Energy threshold read back.
+# %gdatag,template,simplePv,$(gda_name=).energyThreshold_RBV,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).energyThreshold_RBV,RECORD,$(gda_desc=)
+record(ai, "$(P)$(R)EnergyThreshold_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))ENERGY_THRESHOLD")
+    field(EGU,  "keV")
+}
+
+# Number of test pulses.
+# %gdatag,template,simplePv,$(gda_name=).numtestpulses,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).numtestpulses,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(longout, "$(P)$(R)NumTestPulses")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_NUMTESTPULSES")
+    field(PINI, "1")
+}
+
+# Number of test pulses.
+# %gdatag,template,simplePv,$(gda_name=).numtestpulses_RBV,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).numtestpulses_RBV,RECORD,$(gda_desc=)
+record(longin, "$(P)$(R)NumTestPulses_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_NUMTESTPULSES")
+}
+
+###############################
+# Number of test pulses.
+# %gdatag,template,simplePv,$(gda_name=).numtestpulses1,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).numtestpulses1,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(longout, "$(P)$(R)NumTestPulses1")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),1,$(TIMEOUT))MPXIII_NUMTESTPULSES")
+    field(PINI, "1")
+}
+
+# Number of test pulses.
+# %gdatag,template,simplePv,$(gda_name=).numtestpulses1_RBV,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).numtestpulses1_RBV,RECORD,$(gda_desc=)
+record(longin, "$(P)$(R)NumTestPulses1_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),1,$(TIMEOUT))MPXIII_NUMTESTPULSES")
+}
+#######################
+
+# Read write mode.  Actually part of the operation mode register but the FEM
+# has to be in control of that.
+# %gdatag,template,simpleMbbinary,$(gda_name=).readwritemode,$(gda_desc=)
+# %gdatag,mbbinary,rw,$(gda_name=).readwritemode,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)ReadWriteMode")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_READWRITEMODE")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "Sequential")
+    field(ONST, "Continuous")
+    field(PINI, "1")
+}
+
+# Read write mode.  Actually part of the operation mode register but the FEM
+# has to be in control of that.
+# %gdatag,template,simpleMbbinary,$(gda_name=).readwritemode_RBV,$(gda_desc=)
+# %gdatag,mbbinary,rw,$(gda_name=).readwritemode_RBV,RECORD,$(gda_desc=)
+record(mbbi, "$(P)$(R)ReadWriteMode_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_READWRITEMODE")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "Sequential")
+    field(ONST, "Continuous")
+}
+
+# Which discriminator in 24 bit mode.  Actually part of the operation mode register but the FEM
+# has to be in control of that.
+# %gdatag,template,simpleMbbinary,$(gda_name=).disccsmspm,$(gda_desc=)
+# %gdatag,mbbinary,rw,$(gda_name=).disccsmspm,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)DiscCsmSpm")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_THRESHOLDSEL")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "Threshold 0")
+    field(ONST, "Threshold 1")
+    field(PINI, "1")
+}
+
+# Which discriminator in 24 bit mode.  Actually part of the operation mode register but the FEM
+# has to be in control of that.
+# %gdatag,template,simpleMbbinary,$(gda_name=).disccsmspm_RBV,$(gda_desc=)
+# %gdatag,mbbinary,rw,$(gda_name=).disccsmspm_RBV,RECORD,$(gda_desc=)
+record(mbbi, "$(P)$(R)DiscCsmSpm_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_THRESHOLDSEL")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "Threshold 0")
+    field(ONST, "Threshold 1")
+}
+
+# Equalization mode.  Actually part of the operation mode register but the FEM
+# has to be in control of that.
+# %gdatag,template,simpleMbbinary,$(gda_name=).equalizationmode,$(gda_desc=)
+# %gdatag,mbbinary,rw,$(gda_name=).equalizationmode,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)EqualizationMode")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_EQUALIZATIONMODE")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "Off")
+    field(ONST, "On")
+    field(PINI, "1")
+}
+
+# Equalization mode.  Actually part of the operation mode register but the FEM
+# has to be in control of that.
+# %gdatag,template,simpleMbbinary,$(gda_name=).equalizationmode_RBV,$(gda_desc=)
+# %gdatag,mbbinary,rw,$(gda_name=).equalizationmode_RBV,RECORD,$(gda_desc=)
+record(mbbi, "$(P)$(R)EqualizationMode_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_EQUALIZATIONMODE")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "Off")
+    field(ONST, "On")
+}
+
+# CSM/SPM mode.  Actually part of the operation mode register but the FEM
+# has to be in control of that.
+# %gdatag,template,simpleMbbinary,$(gda_name=).csmspmmode,$(gda_desc=)
+# %gdatag,mbbinary,rw,$(gda_name=).csmspmmode,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)CsmSpmMode")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_CSMSPMMODE")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "Single Pixel")
+    field(ONST, "Charge Sum")
+    field(PINI, "1")
+}
+
+# CSM/SPM mode.  Actually part of the operation mode register but the FEM
+# has to be in control of that.
+# %gdatag,template,simpleMbbinary,$(gda_name=).csmspmmode_RBV,$(gda_desc=)
+# %gdatag,mbbinary,rw,$(gda_name=).csmspmmode_RBV,RECORD,$(gda_desc=)
+record(mbbi, "$(P)$(R)CsmSpmMode_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_CSMSPMMODE")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "Single Pixel")
+    field(ONST, "Charge Sum")
+}
+
+# Gain mode.  Actually part of the operation mode register but the FEM
+# has to be in control of that.
+# %gdatag,template,simpleMbbinary,$(gda_name=).gainmode,$(gda_desc=)
+# %gdatag,mbbinary,rw,$(gda_name=).gainmode,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)GainMode")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_GAINMODE")
+    field(ZRVL, "0")
+    field(ONVL, "1")  # Previously 2
+    field(TWVL, "2")  # Previously 1
+    field(THVL, "3")
+    field(ZRST, "Super High")
+    field(ONST, "High")
+    field(TWST, "Low")
+    field(THST, "Super Low")
+    field(PINI, "1")
+}
+
+# Gain mode.  Actually part of the operation mode register but the FEM
+# has to be in control of that.
+# %gdatag,template,simpleMbbinary,$(gda_name=).gainmode_RBV,$(gda_desc=)
+# %gdatag,mbbinary,rw,$(gda_name=).gainmode_RBV,RECORD,$(gda_desc=)
+record(mbbi, "$(P)$(R)GainMode_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_GAINMODE")
+    field(ZRVL, "0")
+    field(ONVL, "1")  # Previously 2
+    field(TWVL, "2")  # Previously 1
+    field(THVL, "3")
+    field(ZRST, "Super High")
+    field(ONST, "High")
+    field(TWST, "Low")
+    field(THST, "Super Low")
+}
+
+# Trigger polarity.  Actually part of the operation mode register but the FEM
+# has to be in control of that.
+# %gdatag,template,simpleMbbinary,$(gda_name=).triggerpolarity,$(gda_desc=)
+# %gdatag,mbbinary,rw,$(gda_name=).triggerpolarity,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)TriggerPolarity")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_TRIGGERPOLARITY")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "Electron")
+    field(ONST, "Hole")
+    field(PINI, "1")
+}
+
+# Trigger polarity.  Actually part of the operation mode register but the FEM
+# has to be in control of that.
+# %gdatag,template,simpleMbbinary,$(gda_name=).triggerpolarity_RBV,$(gda_desc=)
+# %gdatag,mbbinary,rw,$(gda_name=).triggerpolarity_RBV,RECORD,$(gda_desc=)
+record(mbbi, "$(P)$(R)TriggerPolarity_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_TRIGGERPOLARITY")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "Electron")
+    field(ONST, "Hole")
+}
+
+# LFSR bypass.
+# %gdatag,template,simpleMbbinary,$(gda_name=).lfsrbypass,$(gda_desc=)
+# %gdatag,mbbinary,rw,$(gda_name=).lfsrbypass,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)LfsrBypass")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_LFSRBYPASS")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "Off")
+    field(ONST, "On")
+    field(PINI, "1")
+}
+
+# LFSR bypass.
+# has to be in control of that.
+# %gdatag,template,simpleMbbinary,$(gda_name=).lfsrbypass_RBV,$(gda_desc=)
+# %gdatag,mbbinary,rw,$(gda_name=).lfsrbypass_RBV,RECORD,$(gda_desc=)
+record(mbbi, "$(P)$(R)LfsrBypass_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_LFSRBYPASS")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "Off")
+    field(ONST, "On")
+}
+
+# Convert a DAC number to a name string
+# by writing the number to DACNUMBER and reading
+# the string back from DACNAME.
+record(ao, "$(P)$(R)DacNumber")
+{
+    field(VAL, "0")
+    field(FLNK, "$(P)$(R)DacNameCalc1") 
+}
+record(calcout, "$(P)$(R)DacNameCalc1")
+{
+    field(INPA, "$(P)$(R)DacNumber")
+    field(CALC, "(A>=0)&&(A<=9)")
+    field(OCAL, "A+1")
+    field(OUT, "$(P)$(R)DacNameSel1.SELN PP")
+    field(OOPT, "When Non-zero")
+    field(DOPT, "Use OCAL")
+    field(FLNK, "$(P)$(R)DacNameCalc2")
+}
+record(calcout, "$(P)$(R)DacNameCalc2")
+{
+    field(INPA, "$(P)$(R)DacNumber")
+    field(CALC, "(A>=10)&&(A<=19)")
+    field(OCAL, "A-9")
+    field(OUT, "$(P)$(R)DacNameSel2.SELN PP")
+    field(OOPT, "When Non-zero")
+    field(DOPT, "Use OCAL")
+    field(FLNK, "$(P)$(R)DacNameCalc3")
+}
+record(calcout, "$(P)$(R)DacNameCalc3")
+{
+    field(INPA, "$(P)$(R)DacNumber")
+    field(CALC, "(A>=20)&&(A<=29)")
+    field(OCAL, "A-19")
+    field(OUT, "$(P)$(R)DacNameSel3.SELN PP")
+    field(OOPT, "When Non-zero")
+    field(DOPT, "Use OCAL")
+}
+#record(sseq, "$(P)$(R)DacNameSel1")
+#{
+#    field(SELM, "Specified")
+#    field(STR1, "None")
+#    field(STR2, "Threshd 0")
+#    field(STR3, "Threshd 1")
+#    field(STR4, "Threshd 2")
+#    field(STR5, "Threshd 3")
+#    field(STR6, "Threshd 4")
+#    field(STR7, "Threshd 5")
+#    field(STR8, "Threshd 6")
+#    field(STR9, "Threshd 7")
+#    field(STRA, "Preamp")
+#    field(LNK1, "$(P)$(R)DacName PP")
+#    field(LNK2, "$(P)$(R)DacName PP")
+#    field(LNK3, "$(P)$(R)DacName PP")
+#    field(LNK4, "$(P)$(R)DacName PP")
+#    field(LNK5, "$(P)$(R)DacName PP")
+#    field(LNK6, "$(P)$(R)DacName PP")
+#    field(LNK7, "$(P)$(R)DacName PP")
+#    field(LNK8, "$(P)$(R)DacName PP")
+#    field(LNK9, "$(P)$(R)DacName PP")
+#    field(LNKA, "$(P)$(R)DacName PP")
+#}
+#record(sseq, "$(P)$(R)DacNameSel2")
+#{
+#    field(SELM, "Specified")
+#    field(STR1, "Ikrum")
+#    field(STR2, "Shaper")
+#    field(STR3, "Disc")
+#    field(STR4, "Disc_LS")
+#    field(STR5, "ThreshdN")
+#    field(STR6, "DAC_pixel")
+#    field(STR7, "Delay")
+#    field(STR8, "TP_BuffIn")
+#    field(STR9, "TP_BuffOut")
+#    field(STRA, "RPZ")
+#    field(LNK1, "$(P)$(R)DacName PP")
+#    field(LNK2, "$(P)$(R)DacName PP")
+#    field(LNK3, "$(P)$(R)DacName PP")
+#    field(LNK4, "$(P)$(R)DacName PP")
+#    field(LNK5, "$(P)$(R)DacName PP")
+#    field(LNK6, "$(P)$(R)DacName PP")
+#    field(LNK7, "$(P)$(R)DacName PP")
+#    field(LNK8, "$(P)$(R)DacName PP")
+#    field(LNK9, "$(P)$(R)DacName PP")
+#    field(LNKA, "$(P)$(R)DacName PP")
+#}
+#record(sseq, "$(P)$(R)DacNameSel3")
+#{
+#    field(SELM, "Specified")
+#    field(STR1, "GND")
+#    field(STR2, "TP_REF")
+#    field(STR3, "FBK")
+#    field(STR4, "Cas")
+#    field(STR5, "TP_REFA")
+#    field(STR6, "TP_REFB")
+#    field(STR7, "BandgapQ")
+#    field(STR8, "BandgapT")
+#    field(STR9, "DacBias")
+#    field(STRA, "DacCcBias")
+#    field(LNK1, "$(P)$(R)DacName PP")
+#    field(LNK2, "$(P)$(R)DacName PP")
+#    field(LNK3, "$(P)$(R)DacName PP")
+#    field(LNK4, "$(P)$(R)DacName PP")
+#    field(LNK5, "$(P)$(R)DacName PP")
+#    field(LNK6, "$(P)$(R)DacName PP")
+#    field(LNK7, "$(P)$(R)DacName PP")
+#    field(LNK8, "$(P)$(R)DacName PP")
+#    field(LNK9, "$(P)$(R)DacName PP")
+#    field(LNKA, "$(P)$(R)DacName PP")
+#}
+record(stringout, "$(P)$(R)DacName")
+{
+    field(VAL, "")
+}
+
+#
+# These records should really be in their own template file rather than
+# sharing the global register template file.  They are adfem plugin records.
+#
+
+# The number of corrupt images signalled by the FEM library
+# %gdatag,template,simplePv,$(gda_name=).corruptimages,$(gda_desc=)
+# %gdatag,pv,ro,$(gda_name=).corruptimages,RECORD,$(gda_desc=)
+#% archiver 10 Monitor
+record(longin, "$(P)$(R)CorruptImages_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))ADFEM_CORRUPTIMAGES")
+}
+
+# Manual/auto mode for the loading of DAC and pixel arrays into the Medipix chips.
+# %gdatag,template,simpleBinary,$(gda_name=).autoload,$(gda_desc=)
+# %gdatag,binary,rw,$(gda_name=).autoload,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(bo, "$(P)$(R)AutoLoad")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))ADFEM_AUTOLOAD")
+    field(ZNAM, "Manual")
+    field(ONAM, "Auto")
+    field(PINI, "1")
+}
+
+# Low voltage control
+# This PV is slaved to the master in a very specific fashion and should
+# not be individually manipulated.  So no GDA nor autosave tags.
+record(calcout, "$(P)$(R)LvControlDownload")
+{
+    field(INPA, "$(P):CONFIG:ACQUIRE:LvControl CP")
+    field(INPB, "$(P)$(R)LvControlLocal")
+    field(CALC, "A#B")
+    field(OCAL, "A")
+    field(OOPT, "When Non-zero")
+    field(DOPT, "Use OCAL")
+    field(OUT,  "$(P)$(R)LvControlLocal PP")
+}
+record(bo, "$(P)$(R)LvControlLocal")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))LV_ON_OFF")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
+}
+
+# DAC scan DAC selection.
+# %gdatag,template,simplePv,$(gda_name=).scandac,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).scandac,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(longout, "$(P)$(R)ScanDac")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))SCAN_DAC")
+    field(PINI, "1")
+}
+
+# DAC scan DAC selection.
+# %gdatag,template,simplePv,$(gda_name=).scandac_RBV,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).scandac_RBV,RECORD,$(gda_desc=)
+record(longin, "$(P)$(R)ScanDac_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))SCAN_DAC")
+}
+
+# DAC scan start value.
+# %gdatag,template,simplePv,$(gda_name=).scanstart,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).scanstart,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(longout, "$(P)$(R)ScanStart")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))SCAN_START")
+    field(PINI, "1")
+}
+
+# DAC scan start value.
+# %gdatag,template,simplePv,$(gda_name=).scanstart_RBV,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).scanstart_RBV,RECORD,$(gda_desc=)
+record(longin, "$(P)$(R)ScanStart_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))SCAN_START")
+}
+
+# DAC scan stop value.
+# %gdatag,template,simplePv,$(gda_name=).scanstop,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).scanstop,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(longout, "$(P)$(R)ScanStop")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))SCAN_STOP")
+    field(PINI, "1")
+}
+
+# DAC scan stop value.
+# %gdatag,template,simplePv,$(gda_name=).scanstop_RBV,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).scanstop_RBV,RECORD,$(gda_desc=)
+record(longin, "$(P)$(R)ScanStop_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))SCAN_STOP")
+}
+
+# DAC scan step value.
+# %gdatag,template,simplePv,$(gda_name=).scanstep,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).scanstep,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(longout, "$(P)$(R)ScanStep")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))SCAN_STEP")
+    field(PINI, "1")
+}
+
+# DAC scan step value.
+# %gdatag,template,simplePv,$(gda_name=).scanstep_RBV,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).scanstep_RBV,RECORD,$(gda_desc=)
+record(longin, "$(P)$(R)ScanStep_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))SCAN_STEP")
+}
+
+# Burst mode frame unload period in seconds.
+# %gdatag,template,simplePv,$(gda_name=).burstsubmitperiod,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).burstsubmitperiod,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(ao, "$(P)$(R)BurstSubmitPeriod")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))BURST_SUBMIT_PERIOD")
+    field(PINI, "1")
+    field(EGU,  "s")
+    field(PREC, "3")
+}
+
+# Burst mode frame unload period in seconds.
+# %gdatag,template,simplePv,$(gda_name=).burstsubmitperiod_RBV,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).burstsubmitperiod_RBV,RECORD,$(gda_desc=)
+record(ai, "$(P)$(R)BurstSubmitPeriod_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))BURST_SUBMIT_PERIOD")
+    field(EGU,  "s")
+    field(PREC, "3")
+}
+
+# Extra trigger mode added to AD standard PV
+record(mbbo, "$(P)$(R)TriggerMode")
+{
+   field(TWST, "Sync")
+   field(TWVL, "2")
+}
+record(mbbi, "$(P)$(R)TriggerMode_RBV")
+{
+   field(TWST, "Sync")
+   field(TWVL, "2")
+}
+
+# Development mode FEM initialise command
+# Process to execute
+record(longout, "$(P)$(R)InitialiseFem")
+{
+	field(DTYP, "asynInt32")
+	field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))INIT_FEM")
+}
+
+# DAC initialise file name
+# %gdatag,template,simplePv,$(gda_name=).DacIniFilename,$(gda_desc=)
+# %gdatag,array,rw,$(gda_name=).DacIniFilename,RECORD,$(gda_desc=)
+# %autosave 2
+record(waveform, "$(P)$(R)DacIniFilename")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))DAC_INI_FILE_NAME")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+}
+# %gdatag,template,simplePv,$(gda_name=).DacIniFilename_RBV,$(gda_desc=)
+# %gdatag,array,rw,$(gda_name=).DacIniFilename_RBV,RECORD,$(gda_desc=)
+record(waveform, "$(P)$(R)DacIniFilename_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))DAC_INI_FILE_NAME")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+}
+
+# Load DAC initialisation file
+# %gdatag,template,simplePv,$(gda_name=).LoadDacFile,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).LoadDacFile,RECORD,$(gda_desc=)
+record(longout, "$(P)$(R)LoadDacFile")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))LOAD_DAC_FILE")
+    field(PINI, "1")
+}
+
+# Control of test pulses.
+# %gdatag,template,simplePv,$(gda_name=).TestPulseEnable,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).TestPulseEnable,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(bo, "$(P)$(R)TestPulseEnable")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_ENABLETESTPULSES")
+    field(PINI, "1")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
+}
+record(bi, "$(P)$(R)TestPulseEnable_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_ENABLETESTPULSES")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
+}
+
+##########################################
+# Calibration file status
+
+# Control of calibration file loading.
+# %gdatag,template,simplePv,$(gda_name=).AutoLoadCalFiles,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).AutoLoadCalFiles,RECORD,$(gda_desc=)
+# % autosave 2 
+#% archiver 10 Monitor
+record(bo, "$(P)$(R)AutoLoadCalFiles")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))AUTO_LOAD_CAL_FILES")
+    field(PINI, "1")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
+}
+record(bi, "$(P)$(R)AutoLoadCalFiles_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))AUTO_LOAD_CAL_FILES")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
+}
+
+# Some calibration is loaded.  This is set if any calibration file was loaded.
+# %gdatag,template,simplePv,$(gda_name=).SomeCalLoaded_RBV,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).SomeCalLoaded_RBV,RECORD,$(gda_desc=)
+record(longin, "$(P)$(R)SomeCalLoaded_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))SOME_CAL_LOADED")
+}
+
+# DAC calibration file loaded.
+# %gdatag,template,simplePv,$(gda_name=).AutoLoadedDacs_RBV,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).AutoLoadedDacs_RBV,RECORD,$(gda_desc=)
+record(longin, "$(P)$(R)AutoLoadedDacs_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))AUTO_LOADED_DACS")
+}
+
+# Threshold 0 file loaded.
+# %gdatag,template,simplePv,$(gda_name=).AutoLoadedThreshold0_RBV,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).AutoLoadedThreshold0_RBV,RECORD,$(gda_desc=)
+record(longin, "$(P)$(R)AutoLoadedThreshold0_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))AUTO_LOADED_THRESHOLD0")
+}
+
+# Threshold 1 file loaded.
+# %gdatag,template,simplePv,$(gda_name=).AutoLoadedThreshold1_RBV,$(gda_desc=)
+# %gdatag,pv,rw,$(gda_name=).AutoLoadedThreshold1_RBV,RECORD,$(gda_desc=)
+record(longin, "$(P)$(R)AutoLoadedThreshold1_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))AUTO_LOADED_THRESHOLD1")
+}
+
+# Calibration file root
+# %gdatag,template,simplePv,$(gda_name=).CalFileRoot,$(gda_desc=)
+# %gdatag,array,rw,$(gda_name=).CalFileRoot,RECORD,$(gda_desc=)
+# %autosave 2
+record(waveform, "$(P)$(R)CalFileRoot")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))CAL_FILE_ROOT")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+}
+# %gdatag,template,simplePv,$(gda_name=).CalFileRoot_RBV,$(gda_desc=)
+# %gdatag,array,rw,$(gda_name=).CalFileRoot_RBV,RECORD,$(gda_desc=)
+record(waveform, "$(P)$(R)CalFileRoot_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))CAL_FILE_ROOT")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+}
+
+###################################################################
+#  Override the acquisition mode                                  # 
+###################################################################
+record(mbbo, "$(P)$(R)ImageMode")
+{
+   field(TWST, "")
+}
+record(mbbi, "$(P)$(R)ImageMode_RBV")
+{
+   field(TWST, "")
+}
