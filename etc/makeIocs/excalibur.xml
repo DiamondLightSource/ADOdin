@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<components arch="linux-x86_64">
+	<OdinData.OdinData IP="127.0.0.1" MACRO="ODINDATA" META="5558" READY="5001" RELEASE="5002" name="OdinData"/>
+	<ADOdin.ExcaliburDetector MACRO="EXCALIBUR" name="Excal"/>
+	<ADOdin.odinDetector ADDR="0" DETECTOR="Excal" ODIN_DATA="OdinData" P="ODINDETECTOR" PORT="ODN.CAM" R=":CAM:" SERVER="127.0.0.1" TIMEOUT="1"/>
+	<ADOdin.excaliburDetectorTemplate P="ODINDETECTOR" PORT="ODN.CAM" R=":CAM:" TIMEOUT="1" name="ODN.EXC"/>
+</components>

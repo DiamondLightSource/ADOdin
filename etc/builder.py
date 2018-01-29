@@ -4,10 +4,31 @@ from iocbuilder.modules.asyn import AsynPort
 from iocbuilder.modules.ADCore import ADCore, ADBaseTemplate, makeTemplateInstance
 from iocbuilder.modules.restClient import restClient
 from iocbuilder.modules.OdinData import OdinData
-from iocbuilder.modules.ExcaliburDetector import ExcaliburDetector
 
 
-__all__ = ['odinDetector']
+__all__ = ['odinDetector', 'ExcaliburDetector']
+
+
+class excaliburDetectorTemplate(AutoSubstitution):
+    TemplateFile = "excaliburDetector.template"
+
+
+class ExcaliburDetector(Device):
+
+    """Store configuration for Excalibur Detector."""
+
+    NAME = "excalibur"
+
+    # Device attributes
+    AutoInstantiate = True
+
+    def __init__(self, MACRO):
+        self.__super.__init__()
+        # Update attributes with parameters
+        self.__dict__.update(locals())
+
+    ArgInfo = makeArgInfo(__init__,
+                          MACRO=Simple('Dependency MACRO as in configure/RELEASE', str))
 
 
 class odinDetectorTemplate(AutoSubstitution):
@@ -65,4 +86,5 @@ class odinDetector(AsynPort):
         print 'odinDataDetectorConfig("%(DETECTOR_NAME)s", "$(%(DETECTOR_MACRO)s)")' % self.__dict__
         print "# odinDetectorConfig(const char *portName, const char *serverPort, " \
               "int maxBuffers, size_t maxMemory, int priority, int stackSize)"
-        print 'odinDetectorConfig("%(PORT)s", %(SERVER)s, %(BUFFERS)s, %(MEMORY)d)' % self.__dict__
+        print 'odinDetectorConfig("%(PORT)s", %(SERVER)s, %(DETECTOR_NAME)s, %(BUFFERS)s, %(MEMORY)d)' % self.__dict__
+
