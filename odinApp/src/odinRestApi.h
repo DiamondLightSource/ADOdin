@@ -15,6 +15,7 @@ typedef enum
   SSRoot,
   SSAdapters,
   SSDetector,
+  SSDetectorConfig,
   SSDetectorStatus,
   SSDetectorCommand,
   SSDataStatus,
@@ -31,10 +32,14 @@ class OdinRestAPI : public RestAPI
 {
  public:
   const std::string mDetectorName;
+  const std::string mPluginName;
   std::string sysStr(sys_t sys);
   int lookupAccessMode(std::string subSystem, rest_access_mode_t &accessMode);
 
-  OdinRestAPI(const std::string& detectorName, const std::string& hostname, int port,
+  OdinRestAPI(const std::string& detectorName,
+              const std::string& hostname,
+              const std::string& pluginName,
+              int port,
               size_t numSockets=5);
 
   int connectDetector();

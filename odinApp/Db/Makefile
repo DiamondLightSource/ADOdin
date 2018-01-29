@@ -12,6 +12,7 @@ include $(TOP)/configure/CONFIG
 # databases, templates, substitutions like this
 
 DB += odin.template
+DB += excaliburDetector.template
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add

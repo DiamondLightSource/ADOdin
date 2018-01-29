@@ -76,7 +76,9 @@
     "Host: %s" EOH
 
 // Static public members
-const std::string RestAPI::PARAM_VALUE = "value";  // Set key for RestParam fetch response
+const std::string RestAPI::PARAM_ACCESS_MODE = "access";          // Set key for RestParam access mode
+const std::string RestAPI::PARAM_ENUM_VALUES = "allowed_values";  // Set key for RestParam enum values
+const std::string RestAPI::PARAM_VALUE       = "value";           // Set key for RestParam fetch response
 
 const std::string OdinRestAPI::CONNECT           = "connect";
 const std::string OdinRestAPI::START_ACQUISITION = "start_acquisition";
@@ -86,23 +88,28 @@ const std::string OdinRestAPI::EMPTY_JSON_STRING = "\"\"";
 const std::string OdinRestAPI::FILE_WRITER_PLUGIN = PLUGIN_INDEX_FILE_WRITER;
 
 
-OdinRestAPI::OdinRestAPI(const std::string& detectorName, const std::string& hostname, int port,
+OdinRestAPI::OdinRestAPI(const std::string& detectorName,
+                         const std::string& hostname,
+                         const std::string& pluginName,
+                         int port,
                          size_t numSockets) :
     RestAPI(hostname, port, numSockets),
-    mDetectorName(detectorName)
+    mDetectorName(detectorName),
+    mPluginName(pluginName)
 {
   const std::string api = "/api/" API_VERSION "/";
 
   sysStr_[SSRoot]               = "/";
   sysStr_[SSAdapters]           = api + "/adapters";
   sysStr_[SSDetector]           = api + detectorName + "/";
+  sysStr_[SSDetectorConfig]     = api + detectorName + "/config/";
   sysStr_[SSDetectorStatus]     = api + detectorName + "/status/";
   sysStr_[SSDetectorCommand]    = api + detectorName + "/command/";
   sysStr_[SSDataStatus]         = api + ODIN_DATA_ADAPTER "/status/";
-  sysStr_[SSDataStatusDetector] = api + ODIN_DATA_ADAPTER "/status/" + detectorName + "/";
+  sysStr_[SSDataStatusDetector] = api + ODIN_DATA_ADAPTER "/status/" + pluginName + "/";
   sysStr_[SSDataStatusHDF]      = api + ODIN_DATA_ADAPTER "/status/" PLUGIN_INDEX_FILE_WRITER "/";
   sysStr_[SSDataConfig]         = api + ODIN_DATA_ADAPTER "/config/";
-  sysStr_[SSDataConfigDetector] = api + ODIN_DATA_ADAPTER "/config/" + detectorName + "/";
+  sysStr_[SSDataConfigDetector] = api + ODIN_DATA_ADAPTER "/config/" + pluginName + "/";
   sysStr_[SSDataConfigHDF]      = api + ODIN_DATA_ADAPTER "/config/" PLUGIN_INDEX_FILE_WRITER "/";
 }
 
@@ -241,9 +248,13 @@ int OdinRestAPI::lookupAccessMode(
         std::string subSystem, rest_access_mode_t &accessMode)
 {
     long ssEnum = std::distance(sysStr_, std::find(sysStr_, sysStr_ + SSCount, subSystem));
+
     switch(ssEnum)
     {
-      case SSRoot: case SSDetector: case SSDetectorStatus:
+      case SSDetector:
+        accessMode = REST_ACC_RW;
+        return EXIT_SUCCESS;
+      case SSRoot: case SSDetectorStatus:
         accessMode = REST_ACC_RO;
         return EXIT_SUCCESS;
       case SSDetectorCommand:
