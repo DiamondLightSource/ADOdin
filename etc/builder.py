@@ -4,31 +4,14 @@ from iocbuilder.modules.asyn import AsynPort
 from iocbuilder.modules.ADCore import ADCore, ADBaseTemplate, makeTemplateInstance
 from iocbuilder.modules.restClient import restClient
 from iocbuilder.modules.OdinData import OdinData
+from iocbuilder.modules.ExcaliburDetector import ExcaliburProcessPlugin
 
 
-__all__ = ['odinDetector', 'ExcaliburDetector']
+__all__ = ['odinDetector']
 
 
 class excaliburDetectorTemplate(AutoSubstitution):
     TemplateFile = "excaliburDetector.template"
-
-
-class ExcaliburDetector(Device):
-
-    """Store configuration for Excalibur Detector."""
-
-    NAME = "excalibur"
-
-    # Device attributes
-    AutoInstantiate = True
-
-    def __init__(self, MACRO):
-        self.__super.__init__()
-        # Update attributes with parameters
-        self.__dict__.update(locals())
-
-    ArgInfo = makeArgInfo(__init__,
-                          MACRO=Simple('Dependency MACRO as in configure/RELEASE', str))
 
 
 class odinDetectorTemplate(AutoSubstitution):
@@ -39,7 +22,7 @@ class odinDetector(AsynPort):
 
     """Create an odin detector"""
 
-    Dependencies = (ADCore, restClient, OdinData, ExcaliburDetector)
+    Dependencies = (ADCore, restClient, OdinData, ExcaliburProcessPlugin)
 
     # This tells xmlbuilder to use PORT instead of name as the row ID
     UniqueName = "PORT"
@@ -66,7 +49,7 @@ class odinDetector(AsynPort):
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
         PORT=Simple('Port name for the detector', str),
         SERVER=Simple('Server host name', str),
-        DETECTOR=Ident('Odin detector configuration', ExcaliburDetector),
+        DETECTOR=Ident('Odin detector configuration', ExcaliburProcessPlugin),
         ODIN_DATA=Ident('OdinData configuration', OdinData),
         BUFFERS=Simple('Maximum number of NDArray buffers to be created for plugin callbacks', int),
         MEMORY=Simple('Max memory to allocate, should be maxw*maxh*nbuffer for driver and all '
