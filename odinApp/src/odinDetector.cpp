@@ -273,6 +273,9 @@ asynStatus OdinDetector::writeInt32(asynUser *pasynUser, epicsInt32 value) {
   } else if (RestParam * p = mParams.getByIndex(function)){
     p->put(value);
   }
+  else if (RestParam * p = mParams.getByIndex(function)){
+    p->put(value);
+  }
 
   if (status) {
     asynPrint(
