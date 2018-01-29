@@ -1,5 +1,7 @@
 #include "odinDetector.h"
 
+#include <sstream>
+
 #include <epicsExport.h>
 #include <epicsString.h>
 #include <iocsh.h>
@@ -334,8 +336,17 @@ asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
   static const char *functionName = "drvUserCreate";
   asynStatus status = asynSuccess;
   int index;
-  RestParam *generatedParam = 0;
+  RestParam * generatedParam;
   std::string value;
+
+  // Retrieve the name of the variable
+  char * httpRequest = epicsStrDup(drvInfo + 4);
+
+  std::stringstream temp;
+  temp << httpRequest;
+  std::string uri = temp.str();
+  std::string name;
+  name = uri.substr(uri.rfind("/" + 1));
 
   // Accepted parameter formats for HTTP parameters
   //
@@ -346,9 +357,13 @@ asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
   if (findParam(drvInfo, &index) && strlen(drvInfo) > 4 && strncmp(drvInfo, "OD", 2) == 0 &&
       drvInfo[3] == '_') {
 
-    if (mUserParameters.count(drvInfo) == 0){
-      // Retrieve the name of the variable
-      char *httpRequest = epicsStrDup(drvInfo + 4);
+    RestParam * existingParam = mParams.getByName(drvInfo);
+    if (existingParam == NULL || existingParam->getName() != name) {
+      // If param doesn't already exist -- Create it
+      // If param does already exist and is bound the the same URI
+      // -- Ignore - this is probably the *_RBV record
+      // If param does already exist, but it is bound to a different URI
+      // -- Let it try to create it and throw an exception, as it would if manually created
 
       asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
                 "%s:%s: Creating new parameter with URI: %s\n",
@@ -363,7 +378,6 @@ asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
         generatedParam = createRESTParam(drvInfo, REST_P_INT, SSDetector, httpRequest, 0);
         generatedParam->fetch();
         // Store the parameter
-        mUserParameters[drvInfo] = generatedParam;
         break;
       case 'E':
         // Create the parameter
@@ -373,7 +387,6 @@ asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
         generatedParam = createRESTParam(drvInfo, REST_P_ENUM, SSDetector, httpRequest, 0);
         generatedParam->fetch();
         // Store the parameter
-        mUserParameters[drvInfo] = generatedParam;
         break;
         case 'D':
           // Create the parameter
@@ -383,7 +396,6 @@ asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
           generatedParam = createRESTParam(drvInfo, REST_P_DOUBLE, SSDetector, httpRequest, 0);
           generatedParam->fetch();
           // Store the parameter
-          mUserParameters[drvInfo] = generatedParam;
           break;
         case 'S':
           // Create the parameter
@@ -393,7 +405,6 @@ asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
           generatedParam = createRESTParam(drvInfo, REST_P_STRING, SSDetector, httpRequest, 0);
           generatedParam->fetch();
           // Store the parameter
-          mUserParameters[drvInfo] = generatedParam;
           break;
         default:
           asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
