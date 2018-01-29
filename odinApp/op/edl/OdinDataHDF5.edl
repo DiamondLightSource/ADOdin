@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2372
-y 816
+x 2374
+y 842
 w 387
 h 203
 font "arial-medium-r-12.0"
@@ -422,7 +422,7 @@ buttonLabel "Advanced"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "NDFileDetails"
+  0 "OdinDataHDF5Advanced"
 }
 setPosition {
   0 "button"
