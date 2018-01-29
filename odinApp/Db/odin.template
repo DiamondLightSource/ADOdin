@@ -65,18 +65,87 @@ record(ai, "$(P)$(R)NumPending_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(longout, "$(P)$(R)NumProcesses")
+record(longin, "$(P)$(R)NumProcesses0_RBV")
 {
     field(DTYP, "asynInt32")
-    field(OUT, "@asyn($(PORT),0)ODIN_NUM_PROCESSES")
+    field(INP, "@asyn($(PORT),0,$(TIMEOUT))ODIN_NUM_PROCESSES")
+    field(PINI, "NO")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin, "$(P)$(R)NumProcesses1_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP, "@asyn($(PORT),1,$(TIMEOUT))ODIN_NUM_PROCESSES")
+    field(PINI, "NO")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin, "$(P)$(R)ProcessRank0_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP, "@asyn($(PORT),0,$(TIMEOUT))ODIN_PROCESS_RANK")
+    field(PINI, "NO")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin, "$(P)$(R)ProcessRank1_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP, "@asyn($(PORT),1,$(TIMEOUT))ODIN_PROCESS_RANK")
+    field(PINI, "NO")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout, "$(P)$(R)BlockSize")
+{
     field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_BLOCK_SIZE")
     info(autosaveFields, "VAL")
 }
 
-record(longin, "$(P)$(R)NumProcesses_RBV")
+record(longin, "$(P)$(R)BlockSize_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP, "@asyn($(PORT),0)ODIN_NUM_PROCESSES")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_BLOCK_SIZE")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout, "$(P)$(R)BlocksPerFile")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_BLOCKS_PER_FILE")
+    info(autosaveFields, "VAL")
+}
+
+record(longin, "$(P)$(R)BlocksPerFile_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_BLOCKS_PER_FILE")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout, "$(P)$(R)EarliestHDF5Version")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_EARLIEST_VERSION")
+    info(autosaveFields, "VAL")
+}
+
+record(longin, "$(P)$(R)EarliestHDF5Version_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_EARLIEST_VERSION")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin, "$(P)$(R)NumProcesses1_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP, "@asyn($(PORT),1,$(TIMEOUT))ODIN_NUM_PROCESSES")
     field(PINI, "NO")
     field(SCAN, "I/O Intr")
 }
@@ -104,7 +173,7 @@ record(waveform, "$(P)$(R)FilePath")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_PATH")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_PATH")
     field(FTVL, "CHAR")
     field(NELM, "256")
     info(autosaveFields, "VAL")
@@ -113,7 +182,7 @@ record(waveform, "$(P)$(R)FilePath")
 record(waveform, "$(P)$(R)FilePath_RBV")
 {
     field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_PATH")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_PATH")
     field(FTVL, "CHAR")
     field(NELM, "256")
     field(SCAN, "I/O Intr")
@@ -122,7 +191,7 @@ record(waveform, "$(P)$(R)FilePath_RBV")
 record(bi, "$(P)$(R)FilePathExists_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_PATH_EXISTS")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_PATH_EXISTS")
     field(ZNAM, "No")
     field(ZSV,  "MAJOR")
     field(ONAM, "Yes")
@@ -135,7 +204,7 @@ record(waveform, "$(P)$(R)FileName")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_NAME")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_NAME")
     field(FTVL, "CHAR")
     field(NELM, "256")
     info(autosaveFields, "VAL")
@@ -144,7 +213,7 @@ record(waveform, "$(P)$(R)FileName")
 record(waveform, "$(P)$(R)FileName_RBV")
 {
     field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_NAME")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_NAME")
     field(FTVL, "CHAR")
     field(NELM, "256")
     field(SCAN, "I/O Intr")
@@ -155,7 +224,7 @@ record(waveform, "$(P)$(R)FileTemplate")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_TEMPLATE")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_TEMPLATE")
     field(FTVL, "CHAR")
     field(NELM, "256")
     info(autosaveFields, "VAL")
@@ -164,7 +233,7 @@ record(waveform, "$(P)$(R)FileTemplate")
 record(waveform, "$(P)$(R)FileTemplate_RBV")
 {
     field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_TEMPLATE")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_TEMPLATE")
     field(FTVL, "CHAR")
     field(NELM, "256")
     field(SCAN, "I/O Intr")
@@ -174,25 +243,27 @@ record(waveform, "$(P)$(R)FileTemplate_RBV")
 record(waveform, "$(P)$(R)FullFileName_RBV")
 {
     field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FULL_FILE_NAME")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FULL_FILE_NAME")
     field(FTVL, "CHAR")
     field(NELM, "256")
     field(SCAN, "I/O Intr")
 }
 
 # Capture data
+# -- Map capture demand to 'write' command RestParam
 record(busy, "$(P)$(R)Capture")
 {
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CAPTURE")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_WRITE")
     field(ZNAM, "Done")
     field(ONAM, "Capture")
 }
 
+# -- Map capture readback to 'writing' status RestParam
 record(bi, "$(P)$(R)Capture_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CAPTURE")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_WRITING")
     field(ZNAM, "Done")
     field(ZSV,  "NO_ALARM")
     field(ONAM, "Capturing")
@@ -204,7 +275,7 @@ record(longout, "$(P)$(R)NumCapture")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))NUM_CAPTURE")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_NUM_CAPTURE")
     field(VAL,  "1")
     info(autosaveFields, "VAL")
 }
@@ -212,14 +283,14 @@ record(longout, "$(P)$(R)NumCapture")
 record(longin, "$(P)$(R)NumCapture_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))NUM_CAPTURE")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_NUM_CAPTURE")
     field(SCAN, "I/O Intr")
 }
 
 record(longin, "$(P)$(R)NumCaptured_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))NUM_CAPTURED")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_NUM_CAPTURED")
     field(SCAN, "I/O Intr")
 }
 
@@ -227,7 +298,7 @@ record(longin, "$(P)$(R)NumCaptured_RBV")
 record(longout, "$(P)$(R)ImageWidth")
 {
     field(DTYP, "asynInt32")
-    field(OUT, "@asyn($(PORT),0)ODIN_HDF5_IMAGE_WIDTH")
+    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_IMAGE_WIDTH")
     field(PINI, "YES")
     info(autosaveFields, "VAL")
 }
@@ -235,7 +306,7 @@ record(longout, "$(P)$(R)ImageWidth")
 record(longin, "$(P)$(R)ImageWidth_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP, "@asyn($(PORT),0)ODIN_HDF5_IMAGE_WIDTH")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_IMAGE_WIDTH")
     field(PINI, "NO")
     field(SCAN, "I/O Intr")
 }
@@ -243,7 +314,7 @@ record(longin, "$(P)$(R)ImageWidth_RBV")
 record(longout, "$(P)$(R)ImageHeight")
 {
     field(DTYP, "asynInt32")
-    field(OUT, "@asyn($(PORT),0)ODIN_HDF5_IMAGE_HEIGHT")
+    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_IMAGE_HEIGHT")
     field(PINI, "YES")
     info(autosaveFields, "VAL")
 }
@@ -251,7 +322,7 @@ record(longout, "$(P)$(R)ImageHeight")
 record(longin, "$(P)$(R)ImageHeight_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP, "@asyn($(PORT),0)ODIN_HDF5_IMAGE_HEIGHT")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_IMAGE_HEIGHT")
     field(PINI, "NO")
     field(SCAN, "I/O Intr")
 }
@@ -259,7 +330,7 @@ record(longin, "$(P)$(R)ImageHeight_RBV")
 record(longout, "$(P)$(R)NumColChunks")
 {
     field(DTYP, "asynInt32")
-    field(OUT, "@asyn($(PORT),0)ODIN_HDF5_CHUNK_WIDTH")
+    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_WIDTH")
     field(PINI, "YES")
     info(autosaveFields, "VAL")
 }
@@ -267,7 +338,7 @@ record(longout, "$(P)$(R)NumColChunks")
 record(longin, "$(P)$(R)NumColChunks_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP, "@asyn($(PORT),0)ODIN_HDF5_CHUNK_WIDTH")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_WIDTH")
     field(PINI, "NO")
     field(SCAN, "I/O Intr")
 }
@@ -275,7 +346,7 @@ record(longin, "$(P)$(R)NumColChunks_RBV")
 record(longout, "$(P)$(R)NumRowChunks")
 {
     field(DTYP, "asynInt32")
-    field(OUT, "@asyn($(PORT),0)ODIN_HDF5_CHUNK_HEIGHT")
+    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_HEIGHT")
     field(PINI, "YES")
     info(autosaveFields, "VAL")
 }
@@ -283,7 +354,7 @@ record(longout, "$(P)$(R)NumRowChunks")
 record(longin, "$(P)$(R)NumRowChunks_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP, "@asyn($(PORT),0)ODIN_HDF5_CHUNK_HEIGHT")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_HEIGHT")
     field(PINI, "NO")
     field(SCAN, "I/O Intr")
 }
@@ -291,7 +362,7 @@ record(longin, "$(P)$(R)NumRowChunks_RBV")
 record(longout, "$(P)$(R)NumFramesChunks")
 {
     field(DTYP, "asynInt32")
-    field(OUT, "@asyn($(PORT),0)ODIN_HDF5_CHUNK_DEPTH")
+    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_DEPTH")
     field(PINI, "YES")
     info(autosaveFields, "VAL")
 }
@@ -299,7 +370,7 @@ record(longout, "$(P)$(R)NumFramesChunks")
 record(longin, "$(P)$(R)NumFramesChunks_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP, "@asyn($(PORT),0)ODIN_HDF5_CHUNK_DEPTH")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_DEPTH")
     field(PINI, "NO")
     field(SCAN, "I/O Intr")
 }
@@ -308,7 +379,7 @@ record(longin, "$(P)$(R)NumFramesChunks_RBV")
 record(longout, "$(P)$(R)BoundaryAlign")
 {
     field(DTYP, "asynInt32")
-    field(OUT, "@asyn($(PORT),0)ODIN_HDF5_CHUNK_BOUNDARY_ALIGN")
+    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_BOUNDARY_ALIGNMENT")
     field(PINI, "YES")
     field(VAL, "0")
     field(EGU, "bytes")
@@ -318,7 +389,7 @@ record(longout, "$(P)$(R)BoundaryAlign")
 record(longin, "$(P)$(R)BoundaryAlign_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP, "@asyn($(PORT),0)ODIN_HDF5_CHUNK_BOUNDARY_ALIGN")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_BOUNDARY_ALIGNMENT")
     field(PINI, "NO")
     field(SCAN, "I/O Intr")
     field(EGU, "bytes")
@@ -327,7 +398,7 @@ record(longin, "$(P)$(R)BoundaryAlign_RBV")
 record(longout, "$(P)$(R)BoundaryThreshold")
 {
     field(DTYP, "asynInt32")
-    field(OUT, "@asyn($(PORT),0)ODIN_HDF5_CHUNK_BOUNDARY_THRESHOLD")
+    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_BOUNDARY_THRESHOLD")
     field(PINI, "YES")
     field(VAL, "1")
     field(EGU, "bytes")
@@ -337,7 +408,7 @@ record(longout, "$(P)$(R)BoundaryThreshold")
 record(longin, "$(P)$(R)BoundaryThreshold_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP, "@asyn($(PORT),0)ODIN_HDF5_CHUNK_BOUNDARY_THRESHOLD")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_BOUNDARY_THRESHOLD")
     field(PINI, "NO")
     field(SCAN, "I/O Intr")
     field(EGU, "bytes")
@@ -346,7 +417,7 @@ record(longin, "$(P)$(R)BoundaryThreshold_RBV")
 record(longout, "$(P)$(R)NumFramesFlush")
 {
     field(DTYP, "asynInt32")
-    field(OUT, "@asyn($(PORT),0)ODIN_HDF5_NUM_FRAMES_FLUSH")
+    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_NUM_FRAMES_FLUSH")
     field(PINI, "NO")
     info(autosaveFields, "VAL")
 }
@@ -354,7 +425,7 @@ record(longout, "$(P)$(R)NumFramesFlush")
 record(longin, "$(P)$(R)NumFramesFlush_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP, "@asyn($(PORT),0)ODIN_HDF5_NUM_FRAMES_FLUSH")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_NUM_FRAMES_FLUSH")
     field(PINI, "NO")
     field(SCAN, "I/O Intr")
 }
@@ -362,32 +433,34 @@ record(longin, "$(P)$(R)NumFramesFlush_RBV")
 record(mbbo, "$(P)$(R)Compression")
 {
     field(DTYP, "asynInt32")
-    field(OUT, "@asyn($(PORT),0)ODIN_HDF5_COMPRESSION")
+    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_COMPRESSION")
+    field(PINI, "YES")
     field(ZRST, "None")
     field(ZRVL, "0")
+    field(ONST, "LZ4")
+    field(ONVL, "1")
+    field(TWST, "BSLZ4")
+    field(TWVL, "2")
     info(autosaveFields, "VAL")
 }
 
 record(mbbi, "$(P)$(R)Compression_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP, "@asyn($(PORT),0)ODIN_HDF5_COMPRESSION")
-    field(PINI, "NO")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_COMPRESSION")
     field(SCAN, "I/O Intr")
     field(ZRST, "None")
     field(ZRVL, "0")
-    field(ONST, "nbit")
+    field(ONST, "LZ4")
     field(ONVL, "1")
-    field(TWST, "szip")
+    field(TWST, "BSLZ4")
     field(TWVL, "2")
-    field(THST, "zlib")
-    field(THVL, "3")
 }
 
 record(ao, "$(P)$(R)FillValue")
 {
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),0)ODIN_HDF5_FILL_VALUE")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILL_VALUE")
     field(PINI, "NO")
     field(PREC, "1")
 }
@@ -395,7 +468,7 @@ record(ao, "$(P)$(R)FillValue")
 record(ai, "$(P)$(R)FillValue_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),0)ODIN_HDF5_FILL_VALUE")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILL_VALUE")
     field(PINI, "YES")
     field(SCAN, "I/O Intr")
     field(PREC, "1")

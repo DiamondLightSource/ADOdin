@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <components arch="linux-x86_64">
-	<OdinData.OdinData MACRO="ODINDATA" IP="127.0.0.1" META="5558" READY="5001" RELEASE="5002" name="OdinData"/>
+	<OdinData.OdinData MACRO="ODINDATA" IP="127.0.0.1" META="5558" READY="5001" RELEASE="5002" name="OdinData1"/>
+	<OdinData.OdinData MACRO="ODINDATA" IP="127.0.0.1" META="6558" READY="6001" RELEASE="6002" name="OdinData2"/>
 	<ExcaliburDetector.ExcaliburDetector MACRO="EXCALIBURDETECTOR" name="Excalibur"/>
-	<ADOdin.odinDetector ADDR="0" DETECTOR="Excalibur" ODIN_DATA="OdinData" P="ODINDETECTOR" PORT="ODN.CAM" R=":CAM:" SERVER="127.0.0.1" TIMEOUT="1"/>
+	<ADOdin.odinDetector ADDR="0" DETECTOR="Excalibur" ODIN_DATA_1="OdinData1" ODIN_DATA_2="OdinData2" P="ODINDETECTOR" PORT="ODN.CAM" R=":CAM:" SERVER="127.0.0.1" TIMEOUT="1"/>
 </components>

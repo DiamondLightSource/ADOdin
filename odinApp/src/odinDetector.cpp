@@ -11,13 +11,13 @@ static const std::string DRIVER_VERSION("0-1");
 static const char *driverName = "OdinDetector";
 
 // These parameters are optionally configured by ioc init commands
-std::string      OdinDetector::mOdinDataLibraryPath = "";
-std::string      OdinDetector::mIPAddress           = "";
-int              OdinDetector::mReadyPort           =  0;
-int              OdinDetector::mReleasePort         =  0;
-int              OdinDetector::mMetaPort            =  0;
-std::string      OdinDetector::mProcessPluginName   = "";
-std::string      OdinDetector::mDetectorLibraryPath = "";
+std::string              OdinDetector::mOdinDataLibraryPath = "";
+std::vector<std::string> OdinDetector::mIPAddresses;
+std::vector<int>         OdinDetector::mReadyPorts;
+std::vector<int>         OdinDetector::mReleasePorts;
+std::vector<int>         OdinDetector::mMetaPorts;
+std::string              OdinDetector::mProcessPluginName   = "";
+std::string              OdinDetector::mDetectorLibraryPath = "";
 
 /* Constructor for Odin driver; most parameters are simply passed to ADDriver::ADDriver.
  * After calling the base class constructor this method creates a thread to collect the detector
@@ -62,7 +62,7 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname,
               "OdinData library path not set; not configuring processes\n");
   }
   else {
-    mAPI.configureSharedMemoryChannels(mIPAddress, mReadyPort, mReleasePort);
+    mAPI.configureSharedMemoryChannels(mIPAddresses, mReadyPorts, mReleasePorts);
     mAPI.loadFileWriterPlugin(mOdinDataLibraryPath);
     createOdinDataParams();
     if (mProcessPluginName.empty() || mDetectorLibraryPath.empty()) {
@@ -83,11 +83,16 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname,
 
 void OdinDetector::configureOdinData(const char * libraryPath, const char * ipAddress,
                                      int readyPort, int releasePort, int metaPort) {
-  mOdinDataLibraryPath = std::string(libraryPath);
-  mIPAddress = ipAddress;
-  mReadyPort = readyPort;
-  mReleasePort = releasePort;
-  mMetaPort = metaPort;
+  if (mOdinDataLibraryPath.empty()) {
+    mOdinDataLibraryPath = std::string(libraryPath);
+  }
+  else {
+    assert(mOdinDataLibraryPath == libraryPath);
+  }
+  mIPAddresses.push_back(ipAddress);
+  mReadyPorts.push_back(readyPort);
+  mReleasePorts.push_back(releasePort);
+  mMetaPorts.push_back(metaPort);
 }
 
 void OdinDetector::configureDetector(const char * detectorName, const char * libraryPath) {
@@ -96,9 +101,9 @@ void OdinDetector::configureDetector(const char * detectorName, const char * lib
 }
 
 RestParam *OdinDetector::createRESTParam(std::string const & asynName, rest_param_type_t restType,
-                                         sys_t subSystem, std::string const & name, int arrayIndex)
+                                         sys_t subSystem, std::string const & name, bool arrayValue)
 {
-  RestParam *p = mParams.create(asynName, restType, mAPI.sysStr(subSystem), name, arrayIndex);
+  RestParam *p = mParams.create(asynName, restType, mAPI.sysStr(subSystem), name, arrayValue);
   return p;
 }
 
@@ -126,12 +131,44 @@ int OdinDetector::createDetectorParams()
 
 int OdinDetector::createOdinDataParams()
 {
-  mProcesses  = createRESTParam(OdinNumProcesses,
-                                REST_P_INT,    SSDataStatusHDF, "processes", 0);
-  mFilePath   = createRESTParam(NDFilePathString,
-                                REST_P_STRING, SSDataStatusHDF, "file_path", 0);
-  mFileName   = createRESTParam(NDFileNameString,
-                                REST_P_STRING, SSDataStatusHDF, "file_name", 0);
+  mProcesses              = createRESTParam(OdinNumProcesses,               REST_P_INT,
+                                            SSDataConfigHDFProcess, "number",               true);
+  mProcessRank            = createRESTParam(OdinProcessRank,                REST_P_INT,
+                                            SSDataConfigHDFProcess, "rank",                 true);
+  mFilePath               = createRESTParam(NDFilePathString,               REST_P_STRING,
+                                            SSDataConfigHDF,        "file/path",            true);
+  mFileName               = createRESTParam(NDFileNameString,               REST_P_STRING,
+                                            SSDataConfigHDF,        "file/name",            true);
+  mBlockSize              = createRESTParam(OdinHDF5BlockSize,              REST_P_INT,
+                                            SSDataConfigHDFProcess, "frames_per_block",     true);
+  mBlocksPerFile          = createRESTParam(OdinHDF5BlocksPerFile,          REST_P_INT,
+                                            SSDataConfigHDFProcess, "blocks_per_file",      true);
+  mEarliestVersion        = createRESTParam(OdinHDF5EarliestVersion,        REST_P_BOOL,
+                                            SSDataConfigHDFProcess, "earliest_version",     true);
+  mMasterDataset          = createRESTParam(OdinHDF5MasterDataset,          REST_P_STRING,
+                                            SSDataConfigHDF,        "master",               true);
+  mOffsetAdjustment       = createRESTParam(OdinHDF5OffsetAdjustment,       REST_P_INT,
+                                            SSDataConfigHDF,        "offset",               true);
+  mAcquisitionID          = createRESTParam(OdinHDF5AcquisitionID,          REST_P_STRING,
+                                            SSDataConfigHDF,        "acquisition_id",       true);
+  mCloseFileTimeout       = createRESTParam(OdinHDF5CloseFileTimeout,       REST_P_INT,
+                                            SSDataConfigHDF,        "timeout_timer_period", true);
+  mStartCloseTimeout      = createRESTParam(OdinHDF5StartCloseTimeout,      REST_P_INT,
+                                            SSDataConfigHDF,        "start_timeout_timer",  true);
+  mNumCapture             = createRESTParam(OdinHDF5NumCapture,             REST_P_INT,
+                                            SSDataConfigHDF,        "frames",               true);
+  mCapture                = createRESTParam(OdinHDF5Write,                  REST_P_INT,
+                                            SSDataConfigHDF,        "write",                true);
+  mChunkBoundaryAlignment = createRESTParam(OdinHDF5ChunkBoundaryAlignment, REST_P_INT,
+                                            SSDataConfigHDF,        "alignment_value",      true);
+  mChunkBoundaryThreshold = createRESTParam(OdinHDF5ChunkBoundaryThreshold, REST_P_INT,
+                                            SSDataConfigHDF,        "alignment_threshold",  true);
+
+  mWriting                = createRESTParam(OdinHDF5Writing,                REST_P_BOOL,
+                                            SSDataStatusHDF,        "writing",              true);
+  mNumCaptured            = createRESTParam(OdinHDF5NumCaptured,            REST_P_INT,
+                                            SSDataStatusHDF,        "frames_written",       true);
+
   return 0;
 }
 
@@ -143,6 +180,7 @@ asynStatus OdinDetector::getStatus()
   status |= mConnected->fetch();
   status |= mNumPending->fetch();
   status |= mProcesses->fetch();
+  status |= mProcessRank->fetch();
   status |= mFilePath->fetch();
   status |= mFileName->fetch();
 
@@ -316,6 +354,14 @@ asynStatus OdinDetector::writeOctet(asynUser *pasynUser, const char *value,
 
   *nActual = nChars;
   return status;
+}
+
+asynStatus OdinDetector::callParamCallbacks()
+{
+  int status = 0;
+  status |= (int) ADDriver::callParamCallbacks(0);
+  status |= (int) ADDriver::callParamCallbacks(1);
+  return (asynStatus) status;
 }
 
 /* Report status of the driver.
