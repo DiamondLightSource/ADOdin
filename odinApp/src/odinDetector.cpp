@@ -47,7 +47,7 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname,
                    ASYN_MULTIDEVICE,          /* ASYN_MULTIDEVICE=1 */
                1,                             /* autoConnect=1 */
                priority, stackSize),
-    mAPI(detectorName, serverHostname, mProcessPluginName, 8080),
+    mAPI(detectorName, serverHostname, mProcessPluginName, 8888),
     mParams(this, &mAPI, pasynUserSelf) {
 
   strncpy(mHostname, serverHostname, sizeof(mHostname));
@@ -57,6 +57,9 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname,
 
   mAPIVersion = createODRESTParam(OdinRestAPIVersion, REST_P_STRING, SSRoot, "api");
   mFirstParam = mAPIVersion->getIndex();
+
+  // Bind the num_images parameter to NIMAGES asyn parameter
+  createRESTParam(ADNumImagesString, REST_P_INT, SSDetector, "config/num_images");
 
   if (mOdinDataLibraryPath.empty()) {
     asynPrint(pasynUserSelf, ASYN_TRACE_WARNING,
@@ -278,11 +281,12 @@ asynStatus OdinDetector::writeInt32(asynUser *pasynUser, epicsInt32 value) {
   if (function == ADReadStatus) {
     status = getStatus();
   }
-  else if(function < mFirstParam) {
-    status = ADDriver::writeInt32(pasynUser, value);
-  }
   else if (RestParam * p = mParams.getByIndex(function)) {
     p->put(value);
+  }
+
+  if(function < mFirstParam) {
+    status = ADDriver::writeInt32(pasynUser, value);
   }
 
   if (status) {
