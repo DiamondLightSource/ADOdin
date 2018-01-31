@@ -78,6 +78,7 @@ class OdinDetector : public ADDriver
   static void configureDetector(const char * detectorName, const char * libraryPath);
   static std::string mProcessPluginName;
   static std::string mDetectorLibraryPath;
+  static size_t mODCount;
 
  private:
   char mHostname[512];
@@ -86,8 +87,10 @@ class OdinDetector : public ADDriver
 
   int mFirstParam;
 
-  RestParam * createRESTParam(const std::string& asynName, rest_param_type_t restType,
-                              sys_t subSystem, const std::string& name, bool arrayValue = false);
+  RestParam * createRESTParam(const std::string &asynName, rest_param_type_t restType,
+                              sys_t subSystem, const std::string &name, size_t arraySize = 0);
+  RestParam * createODRESTParam(const std::string &asynName, rest_param_type_t restType,
+                                sys_t subSystem, const std::string &name);
   RestParam * mAPIVersion;
   RestParam * mConnected;
   RestParam * mNumPending;
