@@ -76,7 +76,7 @@ class odinDetector(AsynPort):
         # Put the actual macros in the src boot script to be substituted by `make`
         print '# odinDataConfig(const char * libraryPath, int ipAddress, int ctrlPort, ' \
               'int readyPort, int releasePort, int metaPort)'
-        print 'Configure up to 8 OdinData processes'
+        # Configure up to 8 OdinData processes
         for process in self.ODIN_DATA_PROCESSES:
             print 'odinDataConfig("$(%(MACRO)s)", %(ip)s, ' \
                   '%(ready)s, %(release)s, %(meta)s)' % process.__dict__
