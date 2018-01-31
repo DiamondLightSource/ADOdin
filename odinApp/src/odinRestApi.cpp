@@ -81,7 +81,7 @@ const std::string RestAPI::PARAM_VALUE       = "value";           // Set key for
 const std::string OdinRestAPI::CONNECT           = "connect";
 const std::string OdinRestAPI::START_ACQUISITION = "start_acquisition";
 const std::string OdinRestAPI::STOP_ACQUISITION  = "stop_acquisition";
-const std::string OdinRestAPI::EMPTY_JSON_STRING = "\"\"";
+const std::string OdinRestAPI::EMPTY_JSON_STRING = "";
 
 const std::string OdinRestAPI::FILE_WRITER_PLUGIN = PLUGIN_INDEX_FILE_WRITER;
 
