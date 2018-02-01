@@ -490,25 +490,41 @@ asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
   asynStatus status = asynSuccess;
   int index;
   RestParam * generatedParam;
+  int arraySize = 0;
   std::string value;
-
-  // Retrieve the name of the variable
-  char * httpRequest = epicsStrDup(drvInfo + 4);
-
-  std::stringstream temp;
-  temp << httpRequest;
-  std::string uri = temp.str();
-  std::string name;
-  name = uri.substr(uri.rfind("/" + 1));
+  char * httpRequest = 0;
 
   // Accepted parameter formats for HTTP parameters
   //
-  // ODI_...  => Integer parameter
-  // ODE_...  => Enum parameter
-  // ODS_...  => String parameter
-  // ODD_...  => Double parameter
-  if (findParam(drvInfo, &index) && strlen(drvInfo) > 4 && strncmp(drvInfo, "OD", 2) == 0 &&
-      drvInfo[3] == '_') {
+  // _ODI_...  => Integer parameter
+  // _ODE_...  => Enum parameter
+  // _ODS_...  => String parameter
+  // _ODD_...  => Double parameter
+  // _ODIn_... => Array size n of Integer parameter
+  // _ODEn_... => Array size n of Enum parameter
+  // _ODSn_... => Array size n of String parameter
+  // _ODDn_... => Array size n of Double parameter
+  if (findParam(drvInfo, &index) && strlen(drvInfo) > 5 && strncmp(drvInfo, "_OD", 2) == 0 &&
+      (drvInfo[4] == '_' or drvInfo[5] == '_')) {
+printf("In here for parameter %s\n", drvInfo);
+    // Decide if the parameter is an array
+    if (drvInfo[5] == '_'){
+      // drvInfo[4] contains the array size for this parameter
+      arraySize = drvInfo[4] - '0';
+    }
+
+    // Retrieve the name of the variable
+    if (arraySize == 0){
+      httpRequest = epicsStrDup(drvInfo + 5);
+    } else {
+      httpRequest = epicsStrDup(drvInfo + 6);
+    }
+
+    std::stringstream temp;
+    temp << httpRequest;
+    std::string uri = temp.str();
+    std::string name;
+    name = uri.substr(uri.rfind("/" + 1));
 
     RestParam * existingParam = mParams.getByName(drvInfo);
     if (existingParam == NULL || existingParam->getName() != name) {
@@ -521,14 +537,14 @@ asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
       asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
                 "%s:%s: Creating new parameter with URI: %s\n",
                 driverName, functionName, httpRequest);
-      // Check for I, D or S in drvInfo[2]
-      switch (drvInfo[2]) {
+      // Check for I, D or S in drvInfo[3]
+      switch (drvInfo[3]) {
       case 'I':
         // Create the parameter
         asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
                   "%s:%s: Integer parameter: %s\n",
                   driverName, functionName, drvInfo);
-        generatedParam = createRESTParam(drvInfo, REST_P_INT, SSDetector, httpRequest, 0);
+        generatedParam = createRESTParam(drvInfo, REST_P_INT, SSDetector, httpRequest, arraySize);
         generatedParam->fetch();
         // Store the parameter
         break;
@@ -537,7 +553,7 @@ asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
         asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
                   "%s:%s: Enum parameter: %s\n",
                   driverName, functionName, drvInfo);
-        generatedParam = createRESTParam(drvInfo, REST_P_ENUM, SSDetector, httpRequest, 0);
+        generatedParam = createRESTParam(drvInfo, REST_P_ENUM, SSDetector, httpRequest, arraySize);
         generatedParam->fetch();
         // Store the parameter
         break;
@@ -546,7 +562,7 @@ asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
           asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
                     "%s:%s: Double parameter: %s\n",
                     driverName, functionName, drvInfo);
-          generatedParam = createRESTParam(drvInfo, REST_P_DOUBLE, SSDetector, httpRequest, 0);
+          generatedParam = createRESTParam(drvInfo, REST_P_DOUBLE, SSDetector, httpRequest, arraySize);
           generatedParam->fetch();
           // Store the parameter
           break;
@@ -555,14 +571,14 @@ asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
           asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
                     "%s:%s: String parameter: %s\n",
                     driverName, functionName, drvInfo);
-          generatedParam = createRESTParam(drvInfo, REST_P_STRING, SSDetector, httpRequest, 0);
+          generatedParam = createRESTParam(drvInfo, REST_P_STRING, SSDetector, httpRequest, arraySize);
           generatedParam->fetch();
           // Store the parameter
           break;
         default:
           asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
-                    "%s:%s: Expected ODx_... where x is one of I, D or S. Got '%c'\n",
-                    driverName, functionName, drvInfo[2]);
+                    "%s:%s: Expected _ODx_... where x is one of I, D or S. Got '%c'\n",
+                    driverName, functionName, drvInfo[3]);
           status = asynError;
       }
     }
