@@ -13,6 +13,8 @@ __all__ = ["OdinDetector", "OdinData"]
 class excaliburDetectorTemplate(AutoSubstitution):
     TemplateFile = "excaliburDetector.template"
 
+class excaliburFemStatusTemplate(AutoSubstitution):
+    TemplateFile = "excaliburFemStatus.template"
 
 class OdinDetectorTemplate(AutoSubstitution):
     TemplateFile = "odinDetector.template"
