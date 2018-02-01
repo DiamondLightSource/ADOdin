@@ -14,6 +14,7 @@ include $(TOP)/configure/CONFIG
 DB += odinDetector.template
 DB += odinData.template
 DB += excaliburDetector.template
+DB += excaliburFemStatus.template
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add
