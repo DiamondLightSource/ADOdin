@@ -29,7 +29,7 @@ class odinDetector(AsynPort):
 
     _SpecificTemplate = odinDetectorTemplate
 
-    def __init__(self, PORT, SERVER, DETECTOR,
+    def __init__(self, PORT, SERVER, ODIN_SERVER_PORT, DETECTOR,
                  ODIN_DATA_1=None, ODIN_DATA_2=None, ODIN_DATA_3=None, ODIN_DATA_4=None,
                  ODIN_DATA_5=None, ODIN_DATA_6=None, ODIN_DATA_7=None, ODIN_DATA_8=None,
                  BUFFERS = 0, MEMORY = 0, **args):
@@ -56,6 +56,7 @@ class odinDetector(AsynPort):
         PORT=Simple('Port name for the detector', str),
         SERVER=Simple('Server host name', str),
         DETECTOR=Ident('Odin detector configuration', ExcaliburProcessPlugin),
+        ODIN_SERVER_PORT=Simple('Odin server port', int),
         ODIN_DATA_1=Ident('OdinData process 1 configuration', OdinData),
         ODIN_DATA_2=Ident('OdinData process 2 configuration', OdinData),
         ODIN_DATA_3=Ident('OdinData process 3 configuration', OdinData),
@@ -82,10 +83,11 @@ class odinDetector(AsynPort):
                   '%(ready)s, %(release)s, %(meta)s)' % process.__dict__
         print '# odinDataDetectorConfig(const char * detectorName, const char * libraryPath)'
         print 'odinDataDetectorConfig("%(DETECTOR_NAME)s", "$(%(DETECTOR_MACRO)s)")' % self.__dict__
-        print "# odinDetectorConfig(const char *portName, const char *serverPort, " \
+        print "# odinDetectorConfig(const char * portName, const char * serverPort, " \
+              "int odinServerPort, const char * detectorName, " \
               "int maxBuffers, size_t maxMemory, int priority, int stackSize)"
-        print 'odinDetectorConfig("%(PORT)s", %(SERVER)s, %(DETECTOR_NAME)s, %(BUFFERS)s, %(MEMORY)d)' % self.__dict__
-
+        print 'odinDetectorConfig("%(PORT)s", %(SERVER)s, %(ODIN_SERVER_PORT)s, ' \
+              '%(DETECTOR_NAME)s, %(BUFFERS)s, %(MEMORY)d)' % self.__dict__
 
 
 class OdinDataMeta(object):

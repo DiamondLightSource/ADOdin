@@ -2,6 +2,6 @@
 <components arch="linux-x86_64">
 	<OdinData.OdinData IP="127.0.0.1" MACRO="ODINDATA" META="5558" READY="5001" RELEASE="5002" name="OdinData"/>
 	<ExcaliburDetector.ExcaliburProcessPlugin MACRO="EXCALIBURDETECTOR" name="Excalibur"/>
-	<ADOdin.odinDetector ADDR="0" DETECTOR="Excalibur" ODIN_DATA_1="OdinData" P="ODINDETECTOR" PORT="ODN.CAM" R=":CAM:" SERVER="127.0.0.1" TIMEOUT="1"/>
+	<ADOdin.odinDetector ADDR="0" DETECTOR="Excalibur" ODIN_DATA_1="OdinData" ODIN_SERVER_PORT="8888" P="ODINDETECTOR" PORT="ODN.CAM" R=":CAM:" SERVER="127.0.0.1" TIMEOUT="1"/>
 	<ADOdin.excaliburDetectorTemplate P="ODINDETECTOR" PORT="ODN.CAM" R=":CAM:" TIMEOUT="1" name="ODN.EXC"/>
 </components>
