@@ -47,8 +47,6 @@ class OdinDetector : public ADDriver
   OdinDetector(const char * portName, const char * serverHostname,
                const char * detectorName, int maxBuffers,
                size_t maxMemory, int priority, int stackSize);
-  int createDetectorParams();
-  int createOdinDataParams();
 
   // These are the methods that we override from ADDriver
   virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
@@ -84,6 +82,11 @@ class OdinDetector : public ADDriver
   char mHostname[512];
   OdinRestAPI mAPI;
   RestParamSet mParams;
+
+  int initialise();
+  bool mInitialised;
+  int createDetectorParams();
+  int createOdinDataParams();
 
   int mFirstParam;
 

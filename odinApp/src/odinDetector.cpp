@@ -61,28 +61,42 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname,
   // Bind the num_images parameter to NIMAGES asyn parameter
   createRESTParam(ADNumImagesString, REST_P_INT, SSDetector, "config/num_images");
 
+  if (initialise()) {
+    asynPrint(pasynUserSelf, ASYN_TRACE_ERROR, "Failed to initialise\n");
+  }
+  else {
+    mInitialised = true;
+  }
+
+  createOdinDataParams();
+  createDetectorParams();
+  mParams.fetchAll();
+}
+
+int OdinDetector::initialise()
+{
+  int status = 0;
+
   if (mOdinDataLibraryPath.empty()) {
     asynPrint(pasynUserSelf, ASYN_TRACE_WARNING,
               "OdinData library path not set; not configuring processes\n");
   }
   else {
-    mAPI.configureSharedMemoryChannels(mIPAddresses, mReadyPorts, mReleasePorts);
-    mAPI.loadFileWriterPlugin(mOdinDataLibraryPath);
-    createOdinDataParams();
+    status |= mAPI.configureSharedMemoryChannels(mIPAddresses, mReadyPorts, mReleasePorts);
+    status |= mAPI.loadFileWriterPlugin(mOdinDataLibraryPath);
     if (mProcessPluginName.empty() || mDetectorLibraryPath.empty()) {
       asynPrint(pasynUserSelf, ASYN_TRACE_WARNING,
                 "Detector name and library path not set; not loading detector ProcessPlugin\n");
     }
     else {
-      mAPI.loadProcessPlugin(mDetectorLibraryPath, mProcessPluginName);
-      mAPI.connectToFrameReceiver(mProcessPluginName);
-      mAPI.connectToProcessPlugin(mAPI.FILE_WRITER_PLUGIN);
-      mAPI.connectDetector();
-      createDetectorParams();
+      status |= mAPI.loadProcessPlugin(mDetectorLibraryPath, mProcessPluginName);
+      status |= mAPI.connectToFrameReceiver(mProcessPluginName);
+      status |= mAPI.connectToProcessPlugin(mAPI.FILE_WRITER_PLUGIN);
+      mAPI.connectDetector(); // Don't return failure if detector not available
     }
   }
 
-  mParams.fetchAll();
+  return status;
 }
 
 void OdinDetector::configureOdinData(const char * libraryPath, const char * ipAddress,
