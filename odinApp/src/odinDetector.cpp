@@ -37,7 +37,7 @@ std::string              OdinDetector::mDetectorLibraryPath = "";
  * \param[in] stackSize The stack size for the asyn port driver thread if
  *            ASYN_CANBLOCK is set in asynFlags.
  */
-OdinDetector::OdinDetector(const char *portName, const char *serverHostname,
+OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int odinServerPort,
                            const char *detectorName, int maxBuffers,
                            size_t maxMemory, int priority, int stackSize)
 
@@ -47,7 +47,7 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname,
                    ASYN_MULTIDEVICE,          /* ASYN_MULTIDEVICE=1 */
                1,                             /* autoConnect=1 */
                priority, stackSize),
-    mAPI(detectorName, serverHostname, mProcessPluginName, 8888),
+    mAPI(detectorName, serverHostname, mProcessPluginName, odinServerPort),
     mParams(this, &mAPI, pasynUserSelf) {
 
   strncpy(mHostname, serverHostname, sizeof(mHostname));
@@ -497,16 +497,11 @@ asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
   return status;
 }
 
-extern "C" int odinDetectorConfig(const char *portName,
-                                  const char *serverPort,
+extern "C" int odinDetectorConfig(const char *portName, const char *serverPort, int odinServerPort,
                                   const char *detectorName,
-                                  int maxBuffers,
-                                  size_t maxMemory,
-                                  int priority,
-                                  int stackSize) {
-  new OdinDetector(portName, serverPort, detectorName,
-                   maxBuffers, maxMemory, priority,
-                   stackSize);
+                                  int maxBuffers, size_t maxMemory, int priority, int stackSize) {
+  new OdinDetector(portName, serverPort, odinServerPort, detectorName,
+                   maxBuffers, maxMemory, priority, stackSize);
   return asynSuccess;
 }
 
@@ -523,26 +518,26 @@ extern "C" int odinDataDetectorConfig(const char * detectorName, const char * li
 
 // Code for iocsh registration
 static const iocshArg odinDetectorConfigArg0 = {"Port name", iocshArgString};
-static const iocshArg odinDetectorConfigArg1 = {"Server host name",
-                                                iocshArgString};
-static const iocshArg odinDetectorConfigArg2 = {"Detector name", iocshArgString};
-static const iocshArg odinDetectorConfigArg3 = {"maxBuffers", iocshArgInt};
-static const iocshArg odinDetectorConfigArg4 = {"maxMemory", iocshArgInt};
-static const iocshArg odinDetectorConfigArg5 = {"priority", iocshArgInt};
-static const iocshArg odinDetectorConfigArg6 = {"stackSize", iocshArgInt};
+static const iocshArg odinDetectorConfigArg1 = {"Server host name", iocshArgString};
+static const iocshArg odinDetectorConfigArg2 = {"Odin server port", iocshArgInt};
+static const iocshArg odinDetectorConfigArg3 = {"Detector name", iocshArgString};
+static const iocshArg odinDetectorConfigArg4 = {"maxBuffers", iocshArgInt};
+static const iocshArg odinDetectorConfigArg5 = {"maxMemory", iocshArgInt};
+static const iocshArg odinDetectorConfigArg6 = {"priority", iocshArgInt};
+static const iocshArg odinDetectorConfigArg7 = {"stackSize", iocshArgInt};
 static const iocshArg *const odinDetectorConfigArgs[] = {
     &odinDetectorConfigArg0, &odinDetectorConfigArg1,
     &odinDetectorConfigArg2, &odinDetectorConfigArg3,
     &odinDetectorConfigArg4, &odinDetectorConfigArg5,
-    &odinDetectorConfigArg6};
+    &odinDetectorConfigArg6, &odinDetectorConfigArg7};
 
 static const iocshFuncDef configOdinDetector = {"odinDetectorConfig",
-                                                7, odinDetectorConfigArgs};
+                                                8, odinDetectorConfigArgs};
 
 static void configOdinDetectorCallFunc(const iocshArgBuf *args) {
-  odinDetectorConfig(args[0].sval, args[1].sval, args[2].sval,
-                     args[3].ival, args[4].ival, args[5].ival,
-                     args[6].ival);
+  odinDetectorConfig(args[0].sval, args[1].sval, args[2].ival,
+                     args[3].sval, args[4].ival, args[5].ival,
+                     args[6].ival, args[7].ival);
 }
 
 static void odinDetectorRegister() {
