@@ -259,7 +259,7 @@ int OdinRestAPI::lookupAccessMode(
 
     switch(ssEnum)
     {
-      case SSDetector: case SSDataConfig: case SSDataConfigHDF:
+      case SSDetector: case SSDataConfig: case SSDataConfigHDF: case SSDataConfigHDFProcess:
         accessMode = REST_ACC_RW;
         return EXIT_SUCCESS;
       case SSRoot: case SSDetectorStatus:
