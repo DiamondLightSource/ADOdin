@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2374
-y 842
-w 387
-h 203
+x 2376
+y 868
+w 386
+h 202
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -133,33 +133,11 @@ beginObjectProperties
 major 4
 minor 6
 release 0
-x 225
-y 70
-w 150
-h 20
-controlPv "$(P)$(R)FileName_RBV"
-font "helvetica-medium-r-10.0"
-fgColor index 16
-bgColor index 10
-limitsFromDb
-nullColor index 0
-smartRefresh
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 6
-release 0
 x 95
 y 70
 w 120
 h 20
-controlPv "$(P)$(R)FileName"
+controlPv "$(P)$(R)AcquisitionID"
 font "helvetica-medium-r-10.0"
 fgColor index 25
 bgColor index 3
@@ -470,5 +448,27 @@ offLabel "Timeout"
 3d
 useEnumNumeric
 font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 6
+release 0
+x 225
+y 70
+w 150
+h 20
+controlPv "$(P)$(R)AcquisitionID_RBV"
+font "helvetica-medium-r-10.0"
+fgColor index 16
+bgColor index 10
+limitsFromDb
+nullColor index 0
+smartRefresh
+useHexPrefix
+newPos
+objType "controls"
 endObjectProperties
 
