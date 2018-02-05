@@ -184,7 +184,7 @@ int OdinDetector::createOdinDataParams()
                                               SSDataConfigHDF, "start_timeout_timer");
   mNumCapture             = createODRESTParam(OdinHDF5NumCapture, REST_P_INT,
                                               SSDataConfigHDF, "frames");
-  mCapture                = createODRESTParam(OdinHDF5Write, REST_P_INT,
+  mCapture                = createODRESTParam(OdinHDF5Write, REST_P_BOOL,
                                               SSDataConfigHDF, "write");
   mChunkBoundaryAlignment = createODRESTParam(OdinHDF5ChunkBoundaryAlignment, REST_P_INT,
                                               SSDataConfigHDF, "alignment_value");
