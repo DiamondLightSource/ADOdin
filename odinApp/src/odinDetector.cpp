@@ -332,10 +332,14 @@ asynStatus OdinDetector::writeInt32(asynUser *pasynUser, epicsInt32 value) {
 asynStatus OdinDetector::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
 {
   int function = pasynUser->reason;
-  asynStatus status = asynSuccess;
+  int status = 0;
   const char *functionName = "writeFloat64";
 
-  status = ADDriver::writeFloat64(pasynUser, value);
+  if (RestParam * p = mParams.getByIndex(function)) {
+    status |= p->put(value);
+  }
+
+  status |= ADDriver::writeFloat64(pasynUser, value);
 
   if (status) {
     asynPrint(pasynUser, ASYN_TRACE_ERROR,
@@ -349,7 +353,7 @@ asynStatus OdinDetector::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
     callParamCallbacks();
   }
 
-  return status;
+  return (asynStatus) status;
 }
 
 /** Called when asyn clients call pasynOctet->write().
@@ -363,10 +367,14 @@ asynStatus OdinDetector::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
 asynStatus OdinDetector::writeOctet(asynUser *pasynUser, const char *value,
                                     size_t nChars, size_t *nActual) {
   int function = pasynUser->reason;
-  asynStatus status = asynSuccess;
+  int status = 0;
   const char *functionName = "writeOctet";
 
-  status = ADDriver::writeOctet(pasynUser, value, nChars, nActual);
+  if (RestParam * p = mParams.getByIndex(function)) {
+    status |= p->put(value);
+  }
+
+  status |= ADDriver::writeOctet(pasynUser, value, nChars, nActual);
 
   if (status) {
     asynPrint(pasynUser, ASYN_TRACE_ERROR,
@@ -381,7 +389,7 @@ asynStatus OdinDetector::writeOctet(asynUser *pasynUser, const char *value,
   }
 
   *nActual = nChars;
-  return status;
+  return (asynStatus) status;
 }
 
 asynStatus OdinDetector::callParamCallbacks()
