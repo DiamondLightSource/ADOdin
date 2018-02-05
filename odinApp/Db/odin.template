@@ -102,6 +102,7 @@ record(longout, "$(P)$(R)BlockSize")
     field(PINI, "YES")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_BLOCK_SIZE")
+    field(VAL,  "1")
     info(autosaveFields, "VAL")
 }
 
@@ -142,12 +143,46 @@ record(longin, "$(P)$(R)EarliestHDF5Version_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(longin, "$(P)$(R)NumProcesses1_RBV")
+record(waveform, "$(P)$(R)AcquisitionID")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_ACQUISITION_ID")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    info(autosaveFields, "VAL")
+}
+
+record(waveform, "$(P)$(R)AcquisitionID_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_ACQUISITION_ID")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout, "$(P)$(R)CloseFileTimeout")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CLOSE_FILE_TIMEOUT")
+    info(autosaveFields, "VAL")
+}
+
+record(longin, "$(P)$(R)CloseFileTimeout_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP, "@asyn($(PORT),1,$(TIMEOUT))ODIN_NUM_PROCESSES")
-    field(PINI, "NO")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CLOSE_FILE_TIMEOUT")
     field(SCAN, "I/O Intr")
+}
+
+record(bo, "$(P)$(R)StartCloseTimeout")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_START_CLOSE_TIMEOUT")
+    field(ZNAM, "Done")
+    field(ONAM, "Timeout")
 }
 
 ### HDF5 records to match NDFileHDF5 plugin API
@@ -173,7 +208,7 @@ record(waveform, "$(P)$(R)FilePath")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_PATH")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_PATH")
     field(FTVL, "CHAR")
     field(NELM, "256")
     info(autosaveFields, "VAL")
@@ -182,7 +217,7 @@ record(waveform, "$(P)$(R)FilePath")
 record(waveform, "$(P)$(R)FilePath_RBV")
 {
     field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_PATH")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_PATH")
     field(FTVL, "CHAR")
     field(NELM, "256")
     field(SCAN, "I/O Intr")
@@ -191,23 +226,12 @@ record(waveform, "$(P)$(R)FilePath_RBV")
 record(bi, "$(P)$(R)FilePathExists_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_PATH_EXISTS")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_PATH_EXISTS")
     field(ZNAM, "No")
     field(ZSV,  "MAJOR")
     field(ONAM, "Yes")
     field(OSV,  "NO_ALARM")
     field(SCAN, "I/O Intr")
-}
-
-# File name
-record(waveform, "$(P)$(R)FileName")
-{
-    field(PINI, "YES")
-    field(DTYP, "asynOctetWrite")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_NAME")
-    field(FTVL, "CHAR")
-    field(NELM, "256")
-    info(autosaveFields, "VAL")
 }
 
 record(waveform, "$(P)$(R)FileName_RBV")
@@ -381,7 +405,7 @@ record(longout, "$(P)$(R)BoundaryAlign")
     field(DTYP, "asynInt32")
     field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_BOUNDARY_ALIGNMENT")
     field(PINI, "YES")
-    field(VAL, "0")
+    field(VAL, "1")
     field(EGU, "bytes")
     info(autosaveFields, "VAL")
 }
