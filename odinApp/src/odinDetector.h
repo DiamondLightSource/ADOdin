@@ -28,6 +28,7 @@
 #define OdinHDF5FullFileName           "ODIN_HDF5_FULL_FILE_NAME"
 #define OdinHDF5NumCapture             "ODIN_HDF5_NUM_CAPTURE"
 #define OdinHDF5NumCaptured            "ODIN_HDF5_NUM_CAPTURED"
+#define OdinHDF5NumCapturedSum         "ODIN_HDF5_NUM_CAPTURED_SUM"
 #define OdinHDF5Write                  "ODIN_HDF5_WRITE"
 #define OdinHDF5Writing                "ODIN_HDF5_WRITING"
 #define OdinHDF5ImageWidth             "ODIN_HDF5_IMAGE_WIDTH"
@@ -128,6 +129,7 @@ class OdinDetector : public ADDriver
   int mChunkDepth;
   int mChunkHeight;
   int mChunkWidth;
+  int mNumCapturedSum;
 
   asynStatus getStatus();
   int configureImageDims();

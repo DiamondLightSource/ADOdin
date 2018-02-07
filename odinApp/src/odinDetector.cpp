@@ -1,6 +1,7 @@
 #include "odinDetector.h"
 
 #include <sstream>
+#include <numeric>
 
 #include <epicsExport.h>
 #include <epicsString.h>
@@ -200,6 +201,8 @@ int OdinDetector::createOdinDataParams()
   mNumCaptured            = createODRESTParam(OdinHDF5NumCaptured, REST_P_INT,
                                               SSDataStatusHDF, "frames_written");
 
+  createParam(OdinHDF5NumCapturedSum, asynParamInt32, &mNumCapturedSum);
+
   return 0;
 }
 
@@ -214,6 +217,10 @@ asynStatus OdinDetector::getStatus()
   status |= mProcessRank->fetch();
   status |= mFilePath->fetch();
   status |= mFileName->fetch();
+
+  std::vector<int> numCaptured(mODCount);
+  mNumCaptured->get(numCaptured);
+  setIntegerParam(mNumCapturedSum, std::accumulate(numCaptured.begin(), numCaptured.end(), 0));
 
   if(status) {
     return asynError;

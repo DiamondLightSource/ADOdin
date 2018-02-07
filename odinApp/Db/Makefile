@@ -11,7 +11,8 @@ include $(TOP)/configure/CONFIG
 # Create and install (or just install)
 # databases, templates, substitutions like this
 
-DB += odin.template
+DB += odinDetector.template
+DB += odinData.template
 DB += excaliburDetector.template
 
 #----------------------------------------------------
