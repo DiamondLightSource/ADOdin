@@ -14,13 +14,18 @@ class excaliburDetectorTemplate(AutoSubstitution):
     TemplateFile = "excaliburDetector.template"
 
 
-class odinDetectorTemplate(AutoSubstitution):
-    TemplateFile = "odin.template"
+class OdinDetectorTemplate(AutoSubstitution):
+    TemplateFile = "odinDetector.template"
+
+
+class OdinDataTemplate(AutoSubstitution):
+    TemplateFile = "odinData.template"
 
 
 class OdinData(Device):
 
     """Store configuration for OdinData."""
+    INDEX = 1  # Unique index for each OdinData instance
 
     # Device attributes
     AutoInstantiate = True
@@ -29,6 +34,12 @@ class OdinData(Device):
         self.__super.__init__()
         # Update attributes with parameters
         self.__dict__.update(locals())
+
+        # Create unique R MACRO for template file - OD1, OD2 etc.
+        self.R = ":OD{}:".format(self.INDEX)
+        OdinData.INDEX += 1
+
+        self.instantiated = False  # Make sure instances are only used once
 
     ArgInfo = makeArgInfo(__init__,
                           IP=Simple("IP address of server hosting processes", str),
@@ -48,7 +59,7 @@ class OdinDetector(AsynPort):
     # This tells xmlbuilder to use PORT instead of name as the row ID
     UniqueName = "PORT"
 
-    _SpecificTemplate = odinDetectorTemplate
+    _SpecificTemplate = OdinDetectorTemplate
 
     def __init__(self, PORT, SERVER, ODIN_SERVER_PORT, DATASET="data",
                  ODIN_DATA_1=None, ODIN_DATA_2=None, ODIN_DATA_3=None, ODIN_DATA_4=None,
@@ -65,10 +76,18 @@ class OdinDetector(AsynPort):
         for idx in range(1, 9):
             odin_data = eval("ODIN_DATA_{}".format(idx))
             if odin_data is not None:
+                if odin_data.instantiated:
+                    raise ValueError("Same OdinData object given twice")
+                else:
+                    odin_data.instantiated = True
                 self.ODIN_DATA_PROCESSES.append(
                     OdinDataMeta(odin_data.IP, odin_data.READY, odin_data.RELEASE, odin_data.META,
                                  odin_data.FILE_WRITER, DATASET, odin_data.DETECTOR)
                 )
+                # Use some OdinDetector macros to instantiate an odinData.template
+                args["PORT"] = PORT
+                args["R"] = odin_data.R
+                OdinDataTemplate(**args)
 
         self.DETECTOR_NAME = OdinDataMeta.DETECTOR_NAME
 
