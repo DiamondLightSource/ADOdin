@@ -30,10 +30,6 @@
 #define FILE_PATH                   "path"
 #define FILE_WRITE                  "write"
 #define DATASET                     "dataset"
-#define DATASET_CMD                 "cmd"
-#define DATASET_CMD_CREATE          "create"
-#define DATASET_NAME                "name"
-#define DATASET_DATATYPE            "datatype"
 #define DATASET_DIMS                "dims"
 #define DATASET_CHUNKS              "chunks"
 
@@ -113,6 +109,8 @@ OdinRestAPI::OdinRestAPI(const std::string& detectorName,
   sysStr_[SSDataConfigHDF]        = api + ODIN_DATA_ADAPTER "/config/" PLUGIN_INDEX_FILE_WRITER "/";
   sysStr_[SSDataConfigHDFProcess] = api + ODIN_DATA_ADAPTER "/config/" PLUGIN_INDEX_FILE_WRITER
                                     "/process/";
+  sysStr_[SSDataConfigHDFDataset] = api + ODIN_DATA_ADAPTER "/config/" PLUGIN_INDEX_FILE_WRITER
+                                    "/dataset/";
 }
 
 std::string OdinRestAPI::sysStr(sys_t sys)
@@ -238,18 +236,22 @@ int OdinRestAPI::stopWrite() {
   return put(sysStr(SSDataConfig), PLUGIN_INDEX_FILE_WRITER, writeDict.str());
 }
 
-int OdinRestAPI::createDataset(const std::string& name, int dataType,
-                               std::vector<int>& imageDims, std::vector<int>& chunkDims) {
-  std::vector<JsonDict> datasetConfig;
-  datasetConfig.push_back(JsonDict(DATASET_CMD, DATASET_CMD_CREATE));
-  datasetConfig.push_back(JsonDict(DATASET_NAME, name.c_str()));
-  datasetConfig.push_back(JsonDict(DATASET_DATATYPE, dataType));
-  datasetConfig.push_back(JsonDict(DATASET_DIMS, imageDims));
-  datasetConfig.push_back(JsonDict(DATASET_CHUNKS, chunkDims));
-  JsonDict datasetDict = JsonDict(datasetConfig);
-  JsonDict configDict = JsonDict(DATASET, datasetDict);
+int OdinRestAPI::createDataset(const std::string& name) {
+  JsonDict configDict = JsonDict(DATASET, name.c_str());
 
   return put(sysStr(SSDataConfig), PLUGIN_INDEX_FILE_WRITER, configDict.str());
+}
+
+int OdinRestAPI::setImageDims(const std::string& datasetName, std::vector<int>& imageDims) {
+  JsonDict dimsDict = JsonDict(DATASET_DIMS, imageDims);
+
+  return put(sysStr(SSDataConfigHDF), DATASET "/" + datasetName, dimsDict.str());
+}
+
+int OdinRestAPI::setChunkDims(const std::string& datasetName, std::vector<int>& chunkDims) {
+  JsonDict dimsDict = JsonDict(DATASET_CHUNKS, chunkDims);
+
+  return put(sysStr(SSDataConfigHDF), DATASET "/" + datasetName, dimsDict.str());
 }
 
 int OdinRestAPI::lookupAccessMode(
@@ -260,6 +262,7 @@ int OdinRestAPI::lookupAccessMode(
     switch(ssEnum)
     {
       case SSDetector: case SSDataConfig: case SSDataConfigHDF: case SSDataConfigHDFProcess:
+      case SSDataConfigHDFDataset:
         accessMode = REST_ACC_RW;
         return EXIT_SUCCESS;
       case SSRoot: case SSDetectorStatus:

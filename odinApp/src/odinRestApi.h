@@ -25,6 +25,7 @@ typedef enum
   SSDataConfigDetector,
   SSDataConfigHDF,
   SSDataConfigHDFProcess,
+  SSDataConfigHDFDataset,
 
   SSCount
 } sys_t;
@@ -62,8 +63,9 @@ class OdinRestAPI : public RestAPI
   int connectToProcessPlugin(const std::string& index);
   // -- Acquisition Control
   int createFile(const std::string& name, const std::string& path);
-  int createDataset(const std::string& name, int dataType,
-                    std::vector<int>& imageDims, std::vector<int>& chunkDims);
+  int createDataset(const std::string& name);
+  int setImageDims(const std::string& datasetName, std::vector<int>& imageDims);
+  int setChunkDims(const std::string& datasetName, std::vector<int>& chunkDims);
   int startWrite();
   int stopWrite();
 

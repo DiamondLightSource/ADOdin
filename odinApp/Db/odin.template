@@ -481,6 +481,47 @@ record(mbbi, "$(P)$(R)Compression_RBV")
     field(TWVL, "2")
 }
 
+# Reduce data type options set in NDArrayBase
+record(mbbo, "$(P)$(R)DataType")
+{
+    field(ZRST, "UInt8")
+    field(ZRVL, "0")
+    field(ONST, "UInt16")
+    field(ONVL, "1")
+    field(TWST, "UInt32")
+    field(TWVL, "2")
+    field(THST, "UInt64")
+    field(THVL, "3")
+    field(FRST, "")
+    field(FRVL, "")
+    field(FVST, "")
+    field(FVVL, "")
+    field(SXST, "")
+    field(SXVL, "")
+    field(SVST, "")
+    field(SVVL, "")
+}
+
+record(mbbi, "$(P)$(R)DataType_RBV")
+{
+    field(ZRST, "UInt8")
+    field(ZRVL, "0")
+    field(ONST, "UInt16")
+    field(ONVL, "1")
+    field(TWST, "UInt32")
+    field(TWVL, "2")
+    field(THST, "UInt64")
+    field(THVL, "3")
+    field(FRST, "")
+    field(FRVL, "")
+    field(FVST, "")
+    field(FVVL, "")
+    field(SXST, "")
+    field(SXVL, "")
+    field(SVST, "")
+    field(SVVL, "")
+}
+
 record(ao, "$(P)$(R)FillValue")
 {
     field(DTYP, "asynFloat64")

@@ -66,14 +66,17 @@ class OdinDetector : public ADDriver
   asynStatus acquireStop();
 
   // IOC Init Methods
-  static void configureOdinData(const char * libraryPath, const char * ipAddress,
-                                int readyPort, int releasePort, int metaPort);
-  static std::string mOdinDataLibraryPath;
+  static void configureOdinDataProcess(const char * ipAddress, int readyPort, int releasePort,
+                                       int metaPort);
   static std::vector<std::string> mIPAddresses;
   static std::vector<int> mReadyPorts;
   static std::vector<int> mReleasePorts;
   static std::vector<int> mMetaPorts;
-  static void configureDetector(const char * detectorName, const char * libraryPath);
+  static std::string mDatasetName;
+  static void configureOdinData(const char * odinDataLibraryPath,
+                                const char * detectorName, const char * libraryPath,
+                                const char * datasetName);
+  static std::string mOdinDataLibraryPath;
   static std::string mProcessPluginName;
   static std::string mDetectorLibraryPath;
   static size_t mODCount;
@@ -114,6 +117,7 @@ class OdinDetector : public ADDriver
   RestParam * mChunkBoundaryAlignment;
   RestParam * mChunkBoundaryThreshold;
   RestParam * mCompression;
+  RestParam * mDataType;
 
   RestParam * mWriting;
   RestParam * mNumCaptured;
@@ -126,8 +130,8 @@ class OdinDetector : public ADDriver
   int mChunkWidth;
 
   asynStatus getStatus();
-  std::vector<int> getImageDimensions();
-  std::vector<int> getChunkDimensions();
+  int configureImageDims();
+  int configureChunkDims();
 
 };
 

@@ -17,6 +17,7 @@ std::vector<int>         OdinDetector::mReadyPorts;
 std::vector<int>         OdinDetector::mReleasePorts;
 std::vector<int>         OdinDetector::mMetaPorts;
 size_t                   OdinDetector::mODCount = 0;
+std::string              OdinDetector::mDatasetName         = "";
 std::string              OdinDetector::mProcessPluginName   = "";
 std::string              OdinDetector::mDetectorLibraryPath = "";
 
@@ -84,6 +85,7 @@ int OdinDetector::initialise()
   else {
     status |= mAPI.configureSharedMemoryChannels(mIPAddresses, mReadyPorts, mReleasePorts);
     status |= mAPI.loadFileWriterPlugin(mOdinDataLibraryPath);
+    status |= mAPI.createDataset(mDatasetName);
     if (mProcessPluginName.empty() || mDetectorLibraryPath.empty()) {
       asynPrint(pasynUserSelf, ASYN_TRACE_WARNING,
                 "Detector name and library path not set; not loading detector ProcessPlugin\n");
@@ -99,14 +101,8 @@ int OdinDetector::initialise()
   return status;
 }
 
-void OdinDetector::configureOdinData(const char * libraryPath, const char * ipAddress,
-                                     int readyPort, int releasePort, int metaPort) {
-  if (mOdinDataLibraryPath.empty()) {
-    mOdinDataLibraryPath = std::string(libraryPath);
-  }
-  else {
-    assert(mOdinDataLibraryPath == libraryPath);
-  }
+void OdinDetector::configureOdinDataProcess(const char * ipAddress, int readyPort, int releasePort,
+                                            int metaPort) {
   mIPAddresses.push_back(ipAddress);
   mReadyPorts.push_back(readyPort);
   mReleasePorts.push_back(releasePort);
@@ -114,9 +110,13 @@ void OdinDetector::configureOdinData(const char * libraryPath, const char * ipAd
   mODCount++;
 }
 
-void OdinDetector::configureDetector(const char * detectorName, const char * libraryPath) {
+void OdinDetector::configureOdinData(const char * odinDataLibraryPath,
+                                     const char * detectorName, const char * detectorLibraryPath,
+                                     const char * datasetName) {
+  mOdinDataLibraryPath = std::string(odinDataLibraryPath);
   mProcessPluginName = std::string(detectorName);
-  mDetectorLibraryPath = std::string(libraryPath);
+  mDetectorLibraryPath = std::string(detectorLibraryPath);
+  mDatasetName = std::string(datasetName);
 }
 
 RestParam * OdinDetector::createODRESTParam(const std::string& asynName, rest_param_type_t restType,
@@ -190,6 +190,10 @@ int OdinDetector::createOdinDataParams()
                                               SSDataConfigHDF, "alignment_value");
   mChunkBoundaryThreshold = createODRESTParam(OdinHDF5ChunkBoundaryThreshold, REST_P_INT,
                                               SSDataConfigHDF, "alignment_threshold");
+  mDataType               = createODRESTParam(OdinHDF5Compression, REST_P_INT,
+                                              SSDataConfigHDFDataset, mDatasetName + "/compression");
+  mCompression            = createODRESTParam(NDDataTypeString, REST_P_INT,
+                                              SSDataConfigHDFDataset, mDatasetName + "/datatype");
 
   mWriting                = createODRESTParam(OdinHDF5Writing, REST_P_BOOL,
                                               SSDataStatusHDF, "writing");
@@ -223,9 +227,6 @@ asynStatus OdinDetector::acquireStart(const std::string &fileName, const std::st
                                       const std::string &datasetName, int dataType)
 {
   mAPI.createFile(fileName, filePath);
-  std::vector<int> imageDims = getImageDimensions();
-  std::vector<int> chunkDims = getChunkDimensions();
-  mAPI.createDataset(datasetName, dataType, imageDims, chunkDims);
   mAPI.startWrite();
   mAPI.startAcquisition();
   return asynSuccess;
@@ -238,26 +239,31 @@ asynStatus OdinDetector::acquireStop()
   return asynSuccess;
 }
 
-std::vector<int> OdinDetector::getImageDimensions()
+int OdinDetector::configureImageDims()
 {
-  std::vector<int> dims(2);
-  getIntegerParam(mImageHeight, &dims[0]);
-  getIntegerParam(mImageWidth, &dims[1]);
-  asynPrint(pasynUserSelf, ASYN_TRACE_FLOW, "Image Dimensions: [%d, %d]\n", dims[0], dims[1]);
+  int status = 0;
+  std::vector<int> imageDims(2);
+  status |= (int) getIntegerParam(mImageHeight, &imageDims[0]);
+  status |= (int) getIntegerParam(mImageWidth, &imageDims[1]);
+  asynPrint(pasynUserSelf, ASYN_TRACE_FLOW,
+            "Image Dimensions: [%d, %d]\n", imageDims[0], imageDims[1]);
 
-  return dims;
+  status |= mAPI.setImageDims(mDatasetName, imageDims);
+  return status;
 }
 
-std::vector<int> OdinDetector::getChunkDimensions()
+int OdinDetector::configureChunkDims()
 {
-  std::vector<int> dims(3);
-  getIntegerParam(mChunkDepth, &dims[0]);
-  getIntegerParam(mChunkHeight, &dims[1]);
-  getIntegerParam(mChunkWidth, &dims[2]);
+  int status = 0;
+  std::vector<int> chunkDims(3);
+  status |= (int) getIntegerParam(mChunkDepth, &chunkDims[0]);
+  status |= (int) getIntegerParam(mChunkHeight, &chunkDims[1]);
+  status |= (int) getIntegerParam(mChunkWidth, &chunkDims[2]);
   asynPrint(pasynUserSelf, ASYN_TRACE_FLOW,
-            "Chunk Dimensions: [%d, %d, %d]\n", dims[0], dims[1], dims[2]);
+            "Chunk Dimensions: [%d, %d, %d]\n", chunkDims[0], chunkDims[1], chunkDims[2]);
 
-  return dims;
+  status |= mAPI.setChunkDims(mDatasetName, chunkDims);
+  return status;
 }
 
 /* Called when asyn clients call pasynInt32->write().
@@ -294,6 +300,12 @@ asynStatus OdinDetector::writeInt32(asynUser *pasynUser, epicsInt32 value) {
 
   if (function == ADReadStatus) {
     status = getStatus();
+  }
+  else if (function == mImageHeight || function == mImageWidth) {
+    configureImageDims();
+  }
+  else if (function == mChunkDepth || function == mChunkHeight || function == mChunkWidth) {
+    configureChunkDims();
   }
   else if (RestParam * p = mParams.getByIndex(function)) {
     p->put(value);
@@ -513,14 +525,16 @@ extern "C" int odinDetectorConfig(const char *portName, const char *serverPort, 
   return asynSuccess;
 }
 
-extern "C" int odinDataConfig(const char * libraryPath, const char * ipAddress,
-                              int readyPort, int releasePort, int metaPort) {
-  OdinDetector::configureOdinData(libraryPath, ipAddress, readyPort, releasePort, metaPort);
+extern "C" int odinDataProcessConfig(const char * ipAddress, int readyPort, int releasePort,
+                                     int metaPort) {
+  OdinDetector::configureOdinDataProcess(ipAddress, readyPort, releasePort, metaPort);
   return asynSuccess;
 }
 
-extern "C" int odinDataDetectorConfig(const char * detectorName, const char * libraryPath) {
-  OdinDetector::configureDetector(detectorName, libraryPath);
+extern "C" int odinDataConfig(const char * odinDataLibraryPath,
+                              const char * detectorName, const char * libraryPath,
+                              const char * datasetName) {
+  OdinDetector::configureOdinData(odinDataLibraryPath, detectorName, libraryPath, datasetName);
   return asynSuccess;
 }
 
@@ -539,8 +553,7 @@ static const iocshArg *const odinDetectorConfigArgs[] = {
     &odinDetectorConfigArg4, &odinDetectorConfigArg5,
     &odinDetectorConfigArg6, &odinDetectorConfigArg7};
 
-static const iocshFuncDef configOdinDetector = {"odinDetectorConfig",
-                                                8, odinDetectorConfigArgs};
+static const iocshFuncDef configOdinDetector = {"odinDetectorConfig", 8, odinDetectorConfigArgs};
 
 static void configOdinDetectorCallFunc(const iocshArgBuf *args) {
   odinDetectorConfig(args[0].sval, args[1].sval, args[2].ival,
@@ -556,20 +569,17 @@ extern "C" {
 epicsExportRegistrar(odinDetectorRegister);
 }
 
-static const iocshArg odinDataConfigArg0 = {"Dynamic library path", iocshArgString};
-static const iocshArg odinDataConfigArg1 = {"IP address of OdinData processes", iocshArgString};
-static const iocshArg odinDataConfigArg2 = {"Ready port", iocshArgInt};
-static const iocshArg odinDataConfigArg3 = {"Release port", iocshArgInt};
-static const iocshArg odinDataConfigArg4 = {"Meta port", iocshArgInt};
+static const iocshArg odinDataConfigArg0 = {"OdinData dynamic library path", iocshArgString};
+static const iocshArg odinDataConfigArg1 = {"Detector name", iocshArgString};
+static const iocshArg odinDataConfigArg2 = {"Detector library path", iocshArgString};
+static const iocshArg odinDataConfigArg3 = {"Name of dataset", iocshArgString};
 static const iocshArg *const odinDataConfigArgs[] = {
-    &odinDataConfigArg0, &odinDataConfigArg1,
-    &odinDataConfigArg2, &odinDataConfigArg3, &odinDataConfigArg4};
+    &odinDataConfigArg0, &odinDataConfigArg1, &odinDataConfigArg2, &odinDataConfigArg3};
 
-static const iocshFuncDef configOdinData = {"odinDataConfig", 5, odinDataConfigArgs};
+static const iocshFuncDef configOdinData = {"odinDataConfig", 4, odinDataConfigArgs};
 
 static void configOdinDataCallFunc(const iocshArgBuf *args) {
-  odinDataConfig(args[0].sval, args[1].sval,
-                 args[2].ival, args[3].ival, args[4].ival);
+  odinDataConfig(args[0].sval, args[1].sval, args[2].sval, args[3].sval);
 }
 
 static void odinDataRegister() {
@@ -580,22 +590,25 @@ extern "C" {
 epicsExportRegistrar(odinDataRegister);
 }
 
-static const iocshArg odinDataDetectorConfigArg0 = {"Detector name", iocshArgString};
-static const iocshArg odinDataDetectorConfigArg1 = {"Dynamic library path", iocshArgString};
-static const iocshArg *const odinDataDetectorConfigArgs[] = {
-    &odinDataDetectorConfigArg0, &odinDataDetectorConfigArg1};
+static const iocshArg odinDataProcessConfigArg0 = {"IP address", iocshArgString};
+static const iocshArg odinDataProcessConfigArg1 = {"Ready port", iocshArgInt};
+static const iocshArg odinDataProcessConfigArg2 = {"Release port", iocshArgInt};
+static const iocshArg odinDataProcessConfigArg3 = {"Meta port", iocshArgInt};
+static const iocshArg *const odinDataProcessConfigArgs[] = {
+    &odinDataProcessConfigArg0, &odinDataProcessConfigArg1, &odinDataProcessConfigArg2,
+    &odinDataProcessConfigArg3};
 
-static const iocshFuncDef configOdinDataDetector = {"odinDataDetectorConfig", 2,
-                                                    odinDataDetectorConfigArgs};
+static const iocshFuncDef configOdinDataProcess = {
+    "odinDataProcessConfig", 4, odinDataProcessConfigArgs};
 
-static void configOdinDataDetectorCallFunc(const iocshArgBuf *args) {
-  odinDataDetectorConfig(args[0].sval, args[1].sval);
+static void configOdinDataProcessCallFunc(const iocshArgBuf *args) {
+  odinDataProcessConfig(args[0].sval, args[1].ival, args[2].ival, args[3].ival);
 }
 
-static void odinDataDetectorRegister() {
-  iocshRegister(&configOdinDataDetector, configOdinDataDetectorCallFunc);
+static void odinDataProcessRegister() {
+  iocshRegister(&configOdinDataProcess, configOdinDataProcessCallFunc);
 }
 
 extern "C" {
-epicsExportRegistrar(odinDataDetectorRegister);
+epicsExportRegistrar(odinDataProcessRegister);
 }
