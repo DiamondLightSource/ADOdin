@@ -202,6 +202,8 @@ int OdinDetector::createOdinDataParams()
                                               SSDataStatusHDF, "frames_written");
 
   createParam(OdinHDF5NumCapturedSum, asynParamInt32, &mNumCapturedSum);
+  createParam(OdinHDF5WritingAny,     asynParamInt32, &mWritingAny);
+  createParam(OdinHDF5FileTemplate,   asynParamOctet, &mFileTemplate);
 
   return 0;
 }
@@ -217,10 +219,16 @@ asynStatus OdinDetector::getStatus()
   status |= mProcessRank->fetch();
   status |= mFilePath->fetch();
   status |= mFileName->fetch();
+  status |= mNumCaptured->fetch();
+  status |= mWriting->fetch();
 
   std::vector<int> numCaptured(mODCount);
   mNumCaptured->get(numCaptured);
   setIntegerParam(mNumCapturedSum, std::accumulate(numCaptured.begin(), numCaptured.end(), 0));
+
+  std::vector<bool> writing(mODCount);
+  mWriting->get(writing);
+  setIntegerParam(mWritingAny, std::accumulate(writing.begin(), writing.end(), 0) == 0 ? 0 : 1);
 
   if(status) {
     return asynError;
@@ -388,6 +396,16 @@ asynStatus OdinDetector::writeOctet(asynUser *pasynUser, const char *value,
   int function = pasynUser->reason;
   int status = 0;
   const char *functionName = "writeOctet";
+
+  if (function == mFileTemplate || function == mAcquisitionID->getIndex()) {
+    std::string acquisitionID, fileTemplate;
+    mAcquisitionID->get(acquisitionID);
+    getStringParam(mFileTemplate, fileTemplate);
+
+    char buffer[fileTemplate.size() + acquisitionID.size() + 5];
+    snprintf(buffer, sizeof(buffer), fileTemplate.c_str(), acquisitionID.c_str(), 1);
+    mFileName->put(buffer);
+  }
 
   if (RestParam * p = mParams.getByIndex(function)) {
     status |= p->put(value);

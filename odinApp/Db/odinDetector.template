@@ -113,6 +113,21 @@ record(longin, "$(P)$(R)BlockSize_RBV")
     field(SCAN, "I/O Intr")
 }
 
+record(longout, "$(P)$(R)FrameOffset")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_OFFSET_ADJUSTMENT")
+    info(autosaveFields, "VAL")
+}
+
+record(longin, "$(P)$(R)FrameOffset_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_OFFSET_ADJUSTMENT")
+    field(SCAN, "I/O Intr")
+}
+
 record(longout, "$(P)$(R)BlocksPerFile")
 {
     field(PINI, "YES")
@@ -128,18 +143,22 @@ record(longin, "$(P)$(R)BlocksPerFile_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(longout, "$(P)$(R)EarliestHDF5Version")
+record(bo, "$(P)$(R)EarliestHDF5Version")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_EARLIEST_VERSION")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
     info(autosaveFields, "VAL")
 }
 
-record(longin, "$(P)$(R)EarliestHDF5Version_RBV")
+record(bi, "$(P)$(R)EarliestHDF5Version_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_EARLIEST_VERSION")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
     field(SCAN, "I/O Intr")
 }
 
