@@ -3,8 +3,8 @@
 	<OdinData.FileWriterPlugin MACRO="ODINDATA" name="FileWriter"/>
 	<ExcaliburDetector.ExcaliburProcessPlugin MACRO="EXCALIBURDETECTOR" name="Excalibur"/>
 	<ADOdin.OdinData DETECTOR="Excalibur" FILE_WRITER="FileWriter" IP="127.0.0.1" META="5558" READY="5001" RELEASE="5002" name="OdinData"/>
-	<ADOdin.OdinDetector ADDR="0" ODIN_DATA_1="OdinData" ODIN_SERVER_PORT="8888" P="ODINDETECTOR" PORT="ODN.CAM" R=":CAM:" SERVER="p99-excalibur01" TIMEOUT="1"/>
-	<ADOdin.excaliburDetectorTemplate P="ODINDETECTOR" PORT="ODN.CAM" R=":CAM:" TIMEOUT="1" name="ODN.EXC"/>
-	<ADOdin.excaliburFemStatusTemplate ADDRESS="0" P="ODINDETECTOR" PORT="ODN.CAM" R=":CAM:F1:" TIMEOUT="1" TOTAL="2" name="FEM1"/>
-	<ADOdin.excaliburFemStatusTemplate ADDRESS="1" P="ODINDETECTOR" PORT="ODN.CAM" R=":CAM:F2:" TIMEOUT="1" TOTAL="2" name="FEM2"/>
+	<ADOdin.OdinDetector ADDR="0" ODIN_DATA_1="OdinData" ODIN_SERVER_PORT="8888" P="EXCAL_TEST" PORT="ODN.CAM" R=":CAM:" SERVER="p99-excalibur01" TIMEOUT="1"/>
+	<ADOdin.excaliburDetectorTemplate P="EXCAL_TEST" PORT="ODN.CAM" R=":CAM:" TIMEOUT="1" name="ODN.EXC"/>
+	<ADOdin.excaliburFemStatusTemplate ADDRESS="0" P="EXCAL_TEST" PORT="ODN.CAM" R=":CAM:F1:" TIMEOUT="1" TOTAL="2" name="FEM1"/>
+	<ADOdin.excaliburFemStatusTemplate ADDRESS="1" P="EXCAL_TEST" PORT="ODN.CAM" R=":CAM:F2:" TIMEOUT="1" TOTAL="2" name="FEM2"/>
 </components>
