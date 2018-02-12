@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <numeric>
+#include <algorithm>
 
 #include <epicsExport.h>
 #include <epicsString.h>
@@ -147,8 +148,20 @@ int OdinDetector::createDetectorParams()
 {
   mConnected = createRESTParam(OdinDetectorConnected, REST_P_BOOL,
                                SSDetectorStatus, "connected");
-  mNumImages = createRESTParam(ADNumImagesString, REST_P_INT,
-                               SSDetectorConfig, "num_images");
+
+  // Bind the num_images parameter to NIMAGES asyn parameter
+  mNumImages = createRESTParam(ADNumImagesString, REST_P_INT, SSDetector, "config/num_images");
+  // Bind the exposure time parameter to
+  createRESTParam(ADAcquireTimeString, REST_P_DOUBLE, SSDetector, "config/exposure_time");
+  // Bind the detector details
+  createRESTParam(ADManufacturerString, REST_P_STRING, SSDetector, "status/manufacturer");
+  createRESTParam(ADModelString, REST_P_STRING, SSDetector, "status/model");
+  // Bind the sensor size parameters
+  createRESTParam(ADMaxSizeXString, REST_P_INT, SSDetector, "status/sensor/width");
+  createRESTParam(ADMaxSizeYString, REST_P_INT, SSDetector, "status/sensor/height");
+
+  // Create a parameter to store the acquisition complete status
+  mAcqComplete = createRESTParam("ACQ_COMPLETE", REST_P_BOOL, SSDetector, "status/acquisition_complete");
 
   return 0;
 }
@@ -226,18 +239,10 @@ int OdinDetector::createOdinDataParams()
 asynStatus OdinDetector::getStatus()
 {
   int status = 0;
+  int acquiring = 0;
 
   // Fetch status items
-  status |= mProcesses->fetch();
-  status |= mFilePath->fetch();
-  status |= mFileName->fetch();
-
-  status |= mProcessConnected->fetch();
-  status |= mProcessRank->fetch();
-  status |= mWriting->fetch();
-  status |= mFullFileName->fetch();
-  status |= mNumCaptured->fetch();
-  status |= mNumExpected->fetch();
+  status = mParams.fetchAll();
 
   std::vector<int> numCaptured(mODCount);
   mNumCaptured->get(numCaptured);
@@ -259,6 +264,22 @@ asynStatus OdinDetector::getStatus()
       initialise(index);
     }
     setIntegerParam(mProcessInitialised, mInitialised[index]);
+  }
+
+  getIntegerParam(ADAcquire, &acquiring);
+  if (acquiring){
+    // Now fetch the current acquisition status
+    bool acq_state = false;
+    mAcqComplete->get(acq_state);
+    // We are in an acquisition, check the status
+    if (acq_state){
+      // The acquisition has completed, reset the status
+      setIntegerParam(ADAcquire, 0);
+      setStringParam(ADStatusMessage, "Acquisition has completed");
+    } else {
+      setStringParam(ADStatusMessage, "Acquiring...");
+    }
+    callParamCallbacks();
   }
 
   if(status) {
@@ -506,7 +527,6 @@ asynStatus OdinDetector::drvUserCreate(asynUser *pasynUser,
   // _ODDn_... => Array size n of Double parameter
   if (findParam(drvInfo, &index) && strlen(drvInfo) > 5 && strncmp(drvInfo, "_OD", 2) == 0 &&
       (drvInfo[4] == '_' or drvInfo[5] == '_')) {
-printf("In here for parameter %s\n", drvInfo);
     // Decide if the parameter is an array
     if (drvInfo[5] == '_'){
       // drvInfo[4] contains the array size for this parameter

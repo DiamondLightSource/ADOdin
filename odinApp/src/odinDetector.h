@@ -131,6 +131,8 @@ class OdinDetector : public ADDriver
   RestParam * mNumCaptured;
   RestParam * mNumExpected;
 
+  RestParam * mAcqComplete;
+
   // Internal PVs
   int mImageHeight;
   int mImageWidth;
