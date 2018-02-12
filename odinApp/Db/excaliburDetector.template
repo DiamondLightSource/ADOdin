@@ -10,6 +10,15 @@
 # This associates the template with an edm screen
 # % gui, $(PORT), edmtab, excaliburMain.edl, P=$(P),R=$(R)
 
+
+# Number of frames taken in current acquisition.
+record(longin, "$(P)$(R)ArrayCounter_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_status/frames_acquired")
+}
+
 # Operation mode.
 # %gdatag,template,simpleMbbinary,$(gda_name=).operationMode,$(gda_desc=)
 # %gdatag,mbbinary,rw,$(gda_name=).operationMode,RECORD,$(gda_desc=)
@@ -138,7 +147,7 @@ record(ao, "$(P)$(R)EnergyThreshold")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))ENERGY_THRESHOLD")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_config/energy_threshold")
     field(EGU,  "keV")
     field(PINI, "1")
 }
@@ -150,7 +159,7 @@ record(ai, "$(P)$(R)EnergyThreshold_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))ENERGY_THRESHOLD")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_config/energy_threshold")
     field(EGU,  "keV")
 }
 
@@ -878,7 +887,7 @@ record(waveform, "$(P)$(R)CalFileRoot")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))CAL_FILE_ROOT")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_config/cal_file_root")
     field(FTVL, "CHAR")
     field(NELM, "256")
 }
@@ -887,7 +896,7 @@ record(waveform, "$(P)$(R)CalFileRoot")
 record(waveform, "$(P)$(R)CalFileRoot_RBV")
 {
     field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))CAL_FILE_ROOT")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_config/cal_file_root")
     field(FTVL, "CHAR")
     field(NELM, "256")
     field(SCAN, "I/O Intr")
