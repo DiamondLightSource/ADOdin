@@ -9,6 +9,9 @@
 #   TOTAL   - Total number of FEMs
 #   TIMEOUT - Timeout
 
+# This associates an edm screen with the template
+# % gui, $(name=), edm, excaliburFemStatus.edl, P=$(P),R=$(R)
+
 #
 # %gdatag,template,simplePv,$(gda_name=).MOLY_TEMPERATURE,$(gda_desc=)
 # %gdatag,pv,ro,$(gda_name=).MOLY_TEMPERATURE,RECORD,$(gda_desc=)
