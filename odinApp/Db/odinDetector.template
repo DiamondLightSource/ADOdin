@@ -277,7 +277,7 @@ record(bi, "$(P)$(R)Capture_RBV")
     field(ZNAM, "Done")
     field(ZSV,  "NO_ALARM")
     field(ONAM, "Capturing")
-    field(OSV,  "MINOR")
+    field(OSV,  "NO_ALARM")
     field(SCAN, "I/O Intr")
 }
 

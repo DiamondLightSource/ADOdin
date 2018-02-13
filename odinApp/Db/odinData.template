@@ -29,9 +29,7 @@ record(bi, "$(P)$(R)Writing_RBV")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_WRITING")
     field(ZNAM, "Done")
-    field(ZSV,  "NO_ALARM")
     field(ONAM, "Writing")
-    field(OSV,  "MINOR")
     field(SCAN, "I/O Intr")
 }
 
