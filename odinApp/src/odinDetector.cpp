@@ -179,7 +179,7 @@ int OdinDetector::createOdinDataParams()
                                               SSDataConfigHDF, "acquisition_id");
   mCloseFileTimeout       = createODRESTParam(OdinHDF5CloseFileTimeout, REST_P_INT,
                                               SSDataConfigHDF, "timeout_timer_period");
-  mStartCloseTimeout      = createODRESTParam(OdinHDF5StartCloseTimeout, REST_P_INT,
+  mStartCloseTimeout      = createODRESTParam(OdinHDF5StartCloseTimeout, REST_P_BOOL,
                                               SSDataConfigHDF, "start_timeout_timer");
   mNumCapture             = createODRESTParam(OdinHDF5NumCapture, REST_P_INT,
                                               SSDataConfigHDF, "frames");
