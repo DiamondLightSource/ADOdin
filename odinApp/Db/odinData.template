@@ -8,12 +8,30 @@
 # % gui, $(PORT), readback, Write filename,   $(P)$(R)FullFileName_RBV
 # % gui, $(PORT), readback, N captured,   $(P)$(R)NumCaptured_RBV
 
+record(longin, "$(P)$(R)ProcessConnected_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_PROCESS_CONNECTED")
+    field(PINI, "NO")
+    field(SCAN, "I/O Intr")
+}
 
 record(longin, "$(P)$(R)ProcessRank_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP, "@asyn($(PORT),0,$(TIMEOUT))ODIN_PROCESS_RANK")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_PROCESS_RANK")
     field(PINI, "NO")
+    field(SCAN, "I/O Intr")
+}
+
+record(bi, "$(P)$(R)Writing_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_WRITING")
+    field(ZNAM, "Done")
+    field(ZSV,  "NO_ALARM")
+    field(ONAM, "Writing")
+    field(OSV,  "MINOR")
     field(SCAN, "I/O Intr")
 }
 
@@ -41,13 +59,9 @@ record(longin, "$(P)$(R)NumCaptured_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(bi, "$(P)$(R)Writing_RBV")
+record(longin, "$(P)$(R)NumExpected_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_WRITING")
-    field(ZNAM, "Done")
-    field(ZSV,  "NO_ALARM")
-    field(ONAM, "Writing")
-    field(OSV,  "MINOR")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_NUM_EXPECTED")
     field(SCAN, "I/O Intr")
 }

@@ -65,34 +65,10 @@ record(ai, "$(P)$(R)NumPending_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "$(P)$(R)NumProcesses0_RBV")
+record(longin, "$(P)$(R)NumProcesses_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP, "@asyn($(PORT),0,$(TIMEOUT))ODIN_NUM_PROCESSES")
-    field(PINI, "NO")
-    field(SCAN, "I/O Intr")
-}
-
-record(longin, "$(P)$(R)NumProcesses1_RBV")
-{
-    field(DTYP, "asynInt32")
-    field(INP, "@asyn($(PORT),1,$(TIMEOUT))ODIN_NUM_PROCESSES")
-    field(PINI, "NO")
-    field(SCAN, "I/O Intr")
-}
-
-record(longin, "$(P)$(R)ProcessRank0_RBV")
-{
-    field(DTYP, "asynInt32")
-    field(INP, "@asyn($(PORT),0,$(TIMEOUT))ODIN_PROCESS_RANK")
-    field(PINI, "NO")
-    field(SCAN, "I/O Intr")
-}
-
-record(longin, "$(P)$(R)ProcessRank1_RBV")
-{
-    field(DTYP, "asynInt32")
-    field(INP, "@asyn($(PORT),1,$(TIMEOUT))ODIN_PROCESS_RANK")
     field(PINI, "NO")
     field(SCAN, "I/O Intr")
 }

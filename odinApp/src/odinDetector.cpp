@@ -161,8 +161,6 @@ int OdinDetector::createOdinDataParams()
 {
   mProcesses              = createODRESTParam(OdinNumProcesses, REST_P_INT,
                                               SSDataConfigHDFProcess, "number");
-  mProcessRank            = createODRESTParam(OdinProcessRank, REST_P_INT,
-                                              SSDataConfigHDFProcess, "rank");
   mFilePath               = createODRESTParam(NDFilePathString, REST_P_STRING,
                                               SSDataConfigHDF, "file/path");
   mFileName               = createODRESTParam(NDFileNameString, REST_P_STRING,
@@ -196,10 +194,18 @@ int OdinDetector::createOdinDataParams()
   mCompression            = createODRESTParam(NDDataTypeString, REST_P_INT,
                                               SSDataConfigHDFDataset, mDatasetName + "/datatype");
 
+  mProcessConnected       = createODRESTParam(OdinProcessConnected, REST_P_BOOL,
+                                              SSDataStatus, "connected");
+  mProcessRank            = createODRESTParam(OdinProcessRank, REST_P_INT,
+                                              SSDataConfigHDFProcess, "rank");
   mWriting                = createODRESTParam(OdinHDF5Writing, REST_P_BOOL,
                                               SSDataStatusHDF, "writing");
+  mFullFileName           = createODRESTParam(OdinHDF5FullFileName, REST_P_STRING,
+                                              SSDataStatusHDF, "file_name");
   mNumCaptured            = createODRESTParam(OdinHDF5NumCaptured, REST_P_INT,
                                               SSDataStatusHDF, "frames_written");
+  mNumExpected            = createODRESTParam(OdinHDF5NumExpected, REST_P_INT,
+                                              SSDataStatusHDF, "frames_max");
 
   createParam(OdinHDF5NumCapturedSum, asynParamInt32, &mNumCapturedSum);
   createParam(OdinHDF5WritingAny,     asynParamInt32, &mWritingAny);
@@ -216,11 +222,15 @@ asynStatus OdinDetector::getStatus()
   status |= mConnected->fetch();
   status |= mNumPending->fetch();
   status |= mProcesses->fetch();
-  status |= mProcessRank->fetch();
   status |= mFilePath->fetch();
   status |= mFileName->fetch();
-  status |= mNumCaptured->fetch();
+
+  status |= mProcessConnected->fetch();
+  status |= mProcessRank->fetch();
   status |= mWriting->fetch();
+  status |= mFullFileName->fetch();
+  status |= mNumCaptured->fetch();
+  status |= mNumExpected->fetch();
 
   std::vector<int> numCaptured(mODCount);
   mNumCaptured->get(numCaptured);

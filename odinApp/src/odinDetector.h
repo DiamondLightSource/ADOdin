@@ -12,6 +12,7 @@
 // OdinData
 #define OdinNumProcesses               "ODIN_NUM_PROCESSES"
 #define OdinProcessRank                "ODIN_PROCESS_RANK"
+#define OdinProcessConnected           "ODIN_PROCESS_CONNECTED"
 // -- HDF5
 #define OdinHDF5BlockSize              "ODIN_HDF5_BLOCK_SIZE"
 #define OdinHDF5BlocksPerFile          "ODIN_HDF5_BLOCKS_PER_FILE"
@@ -28,6 +29,7 @@
 #define OdinHDF5FullFileName           "ODIN_HDF5_FULL_FILE_NAME"
 #define OdinHDF5NumCapture             "ODIN_HDF5_NUM_CAPTURE"
 #define OdinHDF5NumCaptured            "ODIN_HDF5_NUM_CAPTURED"
+#define OdinHDF5NumExpected            "ODIN_HDF5_NUM_EXPECTED"
 #define OdinHDF5NumCapturedSum         "ODIN_HDF5_NUM_CAPTURED_SUM"
 #define OdinHDF5Write                  "ODIN_HDF5_WRITE"
 #define OdinHDF5Writing                "ODIN_HDF5_WRITING"
@@ -103,7 +105,6 @@ class OdinDetector : public ADDriver
   RestParam * mConnected;
   RestParam * mNumPending;
   RestParam * mProcesses;
-  RestParam * mProcessRank;
   RestParam * mFilePath;
   RestParam * mFileName;
   RestParam * mBlockSize;
@@ -121,8 +122,12 @@ class OdinDetector : public ADDriver
   RestParam * mCompression;
   RestParam * mDataType;
 
+  RestParam * mProcessConnected;
+  RestParam * mProcessRank;
   RestParam * mWriting;
+  RestParam * mFullFileName;
   RestParam * mNumCaptured;
+  RestParam * mNumExpected;
 
   // Internal PVs
   int mImageHeight;
