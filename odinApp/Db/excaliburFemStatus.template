@@ -9,15 +9,12 @@
 #   TOTAL   - Total number of FEMs
 #   TIMEOUT - Timeout
 
-# This associates an edm screen with the template
-# % gui, $(name=), edm, excaliburFemStatus.edl, P=$(P),R=$(R)
-
 #
 # %gdatag,template,simplePv,$(gda_name=).MOLY_TEMPERATURE,$(gda_desc=)
 # %gdatag,pv,ro,$(gda_name=).MOLY_TEMPERATURE,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
-record(ai, "$(P)$(R)MOLY_TEMPERATURE")
+record(ai, "$(P)$(R)$(ADDRESS):MOLY_TEMPERATURE")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynFloat64")
@@ -36,7 +33,7 @@ record(ai, "$(P)$(R)MOLY_TEMPERATURE")
 # %gdatag,pv,ro,$(gda_name=).LOCAL_TEMP,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
-record(ai, "$(P)$(R)LOCAL_TEMP")
+record(ai, "$(P)$(R)$(ADDRESS):LOCAL_TEMP")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynFloat64")
@@ -55,7 +52,7 @@ record(ai, "$(P)$(R)LOCAL_TEMP")
 # %gdatag,pv,ro,$(gda_name=).REMOTE_DIODE_TEMP,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
-record(ai, "$(P)$(R)REMOTE_DIODE_TEMP")
+record(ai, "$(P)$(R)$(ADDRESS):REMOTE_DIODE_TEMP")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynFloat64")
@@ -74,7 +71,7 @@ record(ai, "$(P)$(R)REMOTE_DIODE_TEMP")
 # %gdatag,pv,ro,$(gda_name=).MOLY_HUMIDITY,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
-record(ai, "$(P)$(R)MOLY_HUMIDITY")
+record(ai, "$(P)$(R)$(ADDRESS):MOLY_HUMIDITY")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynFloat64")
@@ -92,7 +89,7 @@ record(ai, "$(P)$(R)MOLY_HUMIDITY")
 # %gdatag,template,simpleBinary,$(gda_name=).P1V5_AVDD_1_POK,$(gda_desc=)
 # %gdatag,binary,ro,$(gda_name=).P1V5_AVDD_1_POK,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
-record(bi, "$(P)$(R)P1V5_AVDD_1_POK")
+record(bi, "$(P)$(R)$(ADDRESS):P1V5_AVDD_1_POK")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
@@ -105,7 +102,7 @@ record(bi, "$(P)$(R)P1V5_AVDD_1_POK")
 # %gdatag,template,simpleBinary,$(gda_name=).P1V5_AVDD_2_POK,$(gda_desc=)
 # %gdatag,binary,ro,$(gda_name=).P1V5_AVDD_2_POK,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
-record(bi, "$(P)$(R)P1V5_AVDD_2_POK")
+record(bi, "$(P)$(R)$(ADDRESS):P1V5_AVDD_2_POK")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
@@ -118,7 +115,7 @@ record(bi, "$(P)$(R)P1V5_AVDD_2_POK")
 # %gdatag,template,simpleBinary,$(gda_name=).P1V5_AVDD_3_POK,$(gda_desc=)
 # %gdatag,binary,ro,$(gda_name=).P1V5_AVDD_3_POK,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
-record(bi, "$(P)$(R)P1V5_AVDD_3_POK")
+record(bi, "$(P)$(R)$(ADDRESS):P1V5_AVDD_3_POK")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
@@ -131,7 +128,7 @@ record(bi, "$(P)$(R)P1V5_AVDD_3_POK")
 # %gdatag,template,simpleBinary,$(gda_name=).P1V5_AVDD_4_POK,$(gda_desc=)
 # %gdatag,binary,ro,$(gda_name=).P1V5_AVDD_4_POK,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
-record(bi, "$(P)$(R)P1V5_AVDD_4_POK")
+record(bi, "$(P)$(R)$(ADDRESS):P1V5_AVDD_4_POK")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
@@ -144,7 +141,7 @@ record(bi, "$(P)$(R)P1V5_AVDD_4_POK")
 # %gdatag,template,simpleBinary,$(gda_name=).P1V5_VDD_1_POK,$(gda_desc=)
 # %gdatag,binary,ro,$(gda_name=).P1V5_VDD_1_POK,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
-record(bi, "$(P)$(R)P1V5_VDD_1_POK")
+record(bi, "$(P)$(R)$(ADDRESS):P1V5_VDD_1_POK")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
@@ -157,7 +154,7 @@ record(bi, "$(P)$(R)P1V5_VDD_1_POK")
 # %gdatag,template,simpleBinary,$(gda_name=).P2V5_DVDD_1_POK,$(gda_desc=)
 # %gdatag,binary,ro,$(gda_name=).P2V5_DVDD_1_POK,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
-record(bi, "$(P)$(R)P2V5_DVDD_1_POK")
+record(bi, "$(P)$(R)$(ADDRESS):P2V5_DVDD_1_POK")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
@@ -167,14 +164,14 @@ record(bi, "$(P)$(R)P2V5_DVDD_1_POK")
 }
 
 # Overall alarm record for the per FEM housekeeping
-record(calc, "$(P)$(R)DEVSTA10")
+record(calc, "$(P)$(R)$(ADDRESS):DEVSTA10")
 {
     field(INPA, "$(P)$(R)DEVSTA11 MS CP")
     field(INPB, "$(P)$(R)EFuseIdMatches MS CP")
     field(INPC, "$(P)$(R)FemInitOk MS CP")
     field(ACKT, "NO")
 }
-record(calc, "$(P)$(R)DEVSTA11")
+record(calc, "$(P)$(R)$(ADDRESS):DEVSTA11")
 {
     field(INPA, "$(P)$(R)MOLY_TEMPERATURE MS CP")
     field(INPB, "$(P)$(R)LOCAL_TEMP MS CP")
@@ -192,14 +189,14 @@ record(calc, "$(P)$(R)DEVSTA11")
 # Copy the current efuseid to the saved efuseid
 # %gdatag,template,simpleBinary,$(gda_name=).RecordEFuseId,$(gda_desc=)
 # %gdatag,binary,rw,$(gda_name=).RecordEFuseId,RECORD,$(gda_desc=)
-record(bo, "$(P)$(R)RecordEFuseId")
+record(bo, "$(P)$(R)$(ADDRESS):RecordEFuseId")
 {
     field(VAL,  "0")
     field(ZNAM, "Idle")
     field(ONAM, "Record")
     field(FLNK, "$(P)$(R)RecordEFuseId_TFR") 
 }
-record(seq, "$(P)$(R)RecordEFuseId_TFR")
+record(seq, "$(P)$(R)$(ADDRESS):RecordEFuseId_TFR")
 {
     field(SELM, "All")
     field(DOL1, "$(P):FEM:1:EFuseId.VAL")
@@ -225,7 +222,7 @@ record(seq, "$(P)$(R)RecordEFuseId_TFR")
 # Non-zero if the current efuseid matches the saved efuseid
 # %gdatag,template,simpleBinary,$(gda_name=).EFuseIdMatches,$(gda_desc=)
 # %gdatag,binary,ro,$(gda_name=).EFuseIdMatches,RECORD,$(gda_desc=)
-record(calc, "$(P)$(R)EFuseIdMatches")
+record(calc, "$(P)$(R)$(ADDRESS):EFuseIdMatches")
 {
     field(INPA, "$(P):FEM:1:EFuseId")
     field(INPB, "$(P):FEM:1:SavedEFuseId")
@@ -240,7 +237,7 @@ record(calc, "$(P)$(R)EFuseIdMatches")
     field(LLSV,  "MAJOR")
     field(LOLO,  "0")
 }
-record(calc, "$(P)$(R)EFuseIdMatches2")
+record(calc, "$(P)$(R)$(ADDRESS):EFuseIdMatches2")
 {
     field(SCAN, "1 second")
     field(INPA, "$(P):FEM:5:EFuseId")
@@ -258,7 +255,7 @@ record(calc, "$(P)$(R)EFuseIdMatches2")
 # Non-zero if the FEM initialised OK
 # %gdatag,template,simpleBinary,$(gda_name=).FemInitOk,$(gda_desc=)
 # %gdatag,binary,ro,$(gda_name=).FemInitOk,RECORD,$(gda_desc=)
-record(bi, "$(P)$(R)FemInitOk")
+record(bi, "$(P)$(R)$(ADDRESS):FemInitOk")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
@@ -270,7 +267,7 @@ record(bi, "$(P)$(R)FemInitOk")
 # %gdatag,template,simplePv,$(gda_name=).FemCommsFaults,$(gda_desc=)
 # %gdatag,pv,ro,$(gda_name=).FemCommsFaults,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
-record(longin, "$(P)$(R)FemCommsFaults")
+record(longin, "$(P)$(R)$(ADDRESS):FemCommsFaults")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
@@ -278,7 +275,7 @@ record(longin, "$(P)$(R)FemCommsFaults")
     field(INP,  "@asyn($(PORT),0,$(TIMEOUT))FEM_COMMS_FAULTS")
 }
 
-record(longout, "$(P)$(R)ResetFemCommsFaults")
+record(longout, "$(P)$(R)$(ADDRESS):ResetFemCommsFaults")
 {
     field(DTYP, "asynInt32")
     field(VAL,  "0")

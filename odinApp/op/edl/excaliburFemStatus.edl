@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 790
-y 287
+x 792
+y 313
 w 81
 h 406
 font "arial-medium-r-18.0"
@@ -35,7 +35,7 @@ x 5
 y 30
 w 70
 h 20
-controlPv "$(P):F$(FEM):MOLY_TEMPERATURE"
+controlPv "$(P)$(FEM):MOLY_TEMPERATURE"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -74,7 +74,7 @@ x 5
 y 55
 w 70
 h 20
-controlPv "$(P):F$(FEM):LOCAL_TEMP"
+controlPv "$(P)$(FEM):LOCAL_TEMP"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -93,7 +93,7 @@ x 5
 y 80
 w 70
 h 20
-controlPv "$(P):F$(FEM):REMOTE_DIODE_TEMP"
+controlPv "$(P)$(FEM):REMOTE_DIODE_TEMP"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -112,7 +112,7 @@ x 5
 y 105
 w 70
 h 20
-controlPv "$(P):F$(FEM):MOLY_HUMIDITY"
+controlPv "$(P)$(FEM):MOLY_HUMIDITY"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -131,7 +131,7 @@ x 5
 y 130
 w 20
 h 20
-controlPv "$(P):F$(FEM):P1V5_AVDD_1_POK"
+controlPv "$(P)$(FEM):P1V5_AVDD_1_POK"
 lineColor index 14
 onColor index 15
 offColor index 20
@@ -149,7 +149,7 @@ x 5
 y 155
 w 20
 h 20
-controlPv "$(P):F$(FEM):P1V5_AVDD_2_POK"
+controlPv "$(P)$(FEM):P1V5_AVDD_2_POK"
 lineColor index 14
 onColor index 15
 offColor index 20
@@ -167,7 +167,7 @@ x 5
 y 180
 w 20
 h 20
-controlPv "$(P):F$(FEM):P1V5_AVDD_3_POK"
+controlPv "$(P)$(FEM):P1V5_AVDD_3_POK"
 lineColor index 14
 onColor index 15
 offColor index 20
@@ -185,7 +185,7 @@ x 5
 y 205
 w 20
 h 20
-controlPv "$(P):F$(FEM):P1V5_AVDD_4_POK"
+controlPv "$(P)$(FEM):P1V5_AVDD_4_POK"
 lineColor index 14
 onColor index 15
 offColor index 20
@@ -203,7 +203,7 @@ x 5
 y 230
 w 20
 h 20
-controlPv "$(P):F$(FEM):P1V5_VDD_1_POK"
+controlPv "$(P)$(FEM):P1V5_VDD_1_POK"
 lineColor index 14
 onColor index 15
 offColor index 20
@@ -221,7 +221,7 @@ x 5
 y 255
 w 20
 h 20
-controlPv "$(P):F$(FEM):P2V5_DVDD_1_POK"
+controlPv "$(P)$(FEM):P2V5_DVDD_1_POK"
 lineColor index 14
 onColor index 15
 offColor index 20

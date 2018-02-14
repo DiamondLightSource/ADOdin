@@ -14,6 +14,7 @@ include $(TOP)/configure/CONFIG
 DB += odinDetector.template
 DB += odinData.template
 DB += excaliburDetector.template
+DB += excalibur2FemStatus.template
 DB += excaliburFemStatus.template
 
 #----------------------------------------------------

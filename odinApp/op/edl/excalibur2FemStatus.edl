@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 817
-y 101
+x 1029
+y 129
 w 740
 h 860
 font "arial-medium-r-18.0"
@@ -1965,7 +1965,7 @@ x 570
 y 470
 w 75
 h 20
-controlPv "$(P):1:HK:MOLY_TEMPERATURE.HIGH"
+controlPv "$(P)0:MOLY_TEMPERATURE.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -1982,7 +1982,7 @@ x 650
 y 470
 w 75
 h 20
-controlPv "$(P):1:HK:MOLY_TEMPERATURE.LOW"
+controlPv "$(P)0:MOLY_TEMPERATURE.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -2058,7 +2058,7 @@ x 570
 y 495
 w 75
 h 20
-controlPv "$(P):1:HK:LOCAL_TEMP.HIGH"
+controlPv "$(P)0:LOCAL_TEMP.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -2075,7 +2075,7 @@ x 650
 y 495
 w 75
 h 20
-controlPv "$(P):1:HK:LOCAL_TEMP.LOW"
+controlPv "$(P)0:LOCAL_TEMP.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -2111,7 +2111,7 @@ x 570
 y 520
 w 75
 h 20
-controlPv "$(P):1:HK:REMOTE_DIODE_TEMP.HIGH"
+controlPv "$(P)0:REMOTE_DIODE_TEMP.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -2128,7 +2128,7 @@ x 650
 y 520
 w 75
 h 20
-controlPv "$(P):1:HK:REMOTE_DIODE_TEMP.LOW"
+controlPv "$(P)0:REMOTE_DIODE_TEMP.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -2164,7 +2164,7 @@ x 570
 y 545
 w 75
 h 20
-controlPv "$(P):1:HK:MOLY_HUMIDITY.HIGH"
+controlPv "$(P)0:MOLY_HUMIDITY.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -2181,7 +2181,7 @@ x 650
 y 545
 w 75
 h 20
-controlPv "$(P):1:HK:MOLY_HUMIDITY.LOW"
+controlPv "$(P)0:MOLY_HUMIDITY.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -2827,7 +2827,7 @@ onColor index 3
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):1:HK:FEMRESET.PROC"
+controlPv "$(P):HK:FEMRESET.PROC"
 pressValue "1"
 onLabel "Reset Fems"
 offLabel "Reset Fems"
@@ -2845,7 +2845,7 @@ x 610
 y 790
 w 120
 h 20
-controlPv "$(P):1:HK:FEMRESETSTATE"
+controlPv "$(P):HK:FEMRESETSTATE"
 fgColor index 16
 bgColor index 10
 fill
@@ -2876,7 +2876,7 @@ displayFileName {
   0 "excaliburFemStatus.edl"
 }
 symbols {
-  0 "FEM=1"
+  0 "FEM=0"
 }
 noScroll
 endObjectProperties
@@ -2904,7 +2904,7 @@ displayFileName {
   0 "excaliburFemStatus.edl"
 }
 symbols {
-  0 "FEM=2"
+  0 "FEM=1"
 }
 noScroll
 endObjectProperties
