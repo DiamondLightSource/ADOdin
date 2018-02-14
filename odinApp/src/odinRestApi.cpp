@@ -115,6 +115,10 @@ OdinRestAPI::OdinRestAPI(const std::string& detectorName,
                                     "/dataset/";
 }
 
+bool OdinRestAPI::connected(){
+  return (this->connectedSockets()>0);
+}
+
 std::string OdinRestAPI::sysStr(sys_t sys)
 {
   return sysStr_[sys];
