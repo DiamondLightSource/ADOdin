@@ -19,6 +19,11 @@ record(longin, "$(P)$(R)ArrayCounter_RBV")
     field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_status/frames_acquired")
 }
 
+record(bo, "$(P)$(R)ReadStatus")
+{
+    field(SCAN, "1 second")
+}
+
 # Operation mode.
 # %gdatag,template,simpleMbbinary,$(gda_name=).operationMode,$(gda_desc=)
 # %gdatag,mbbinary,rw,$(gda_name=).operationMode,RECORD,$(gda_desc=)
