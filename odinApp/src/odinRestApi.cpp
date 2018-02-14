@@ -4,6 +4,7 @@
 #include <algorithm>
 
 #include "jsonDict.h"
+#include "odinDataConfig.h"
 
 // REST Strings
 #define API_VERSION              "0.1"
@@ -26,6 +27,7 @@
 #define FILE_WRITER_LIB             "libHdf5Plugin.so"
 #define ODIN_DATA_LIB_PATH          "prefix/lib"
 #define FILE                        "file"
+#define FILE_PROCESS_RANK           "process/rank"
 #define FILE_NAME                   "name"
 #define FILE_PATH                   "path"
 #define FILE_WRITE                  "write"
@@ -142,25 +144,19 @@ int OdinRestAPI::stopAcquisition()
   return put(sysStr(SSDetectorCommand), STOP_ACQUISITION, "", EMPTY_JSON_STRING);
 }
 
-int OdinRestAPI::configureSharedMemoryChannels(std::vector<std::string>& ipAddresses,
-                                               std::vector<int> readyPorts,
-                                               std::vector<int> releasePorts)
+int OdinRestAPI::configureSharedMemoryChannels(ODConfiguration config)
 {
-  int status = 0;
-  for (int index = 0; (size_t) index != ipAddresses.size(); ++index) {
-    std::stringstream ready, release, endpoint;
-    ready << "tcp://" << ipAddresses[index] << ":" << readyPorts[index];
-    release << "tcp://" << ipAddresses[index] << ":" << releasePorts[index];
-    endpoint << FR_SETUP << "/" << index;
+  std::stringstream ready, release, endpoint;
+  ready << "tcp://" << config.ipAddress << ":" << config.readyPort;
+  release << "tcp://" << config.ipAddress << ":" << config.releasePort;
+  endpoint << FR_SETUP << "/" << config.rank;
 
-    std::vector<JsonDict> channelConfig;
-    channelConfig.push_back(JsonDict(FR_READY_CNXN, ready.str().c_str()));
-    channelConfig.push_back(JsonDict(FR_RELEASE_CNXN, release.str().c_str()));
-    JsonDict channelDict = JsonDict(channelConfig);
+  std::vector<JsonDict> channelConfig;
+  channelConfig.push_back(JsonDict(FR_READY_CNXN, ready.str().c_str()));
+  channelConfig.push_back(JsonDict(FR_RELEASE_CNXN, release.str().c_str()));
+  JsonDict channelDict = JsonDict(channelConfig);
 
-    status |= put(sysStr(SSDataConfig), endpoint.str(), channelDict.str());
-  }
-  return status;
+  return put(sysStr(SSDataConfig), endpoint.str(), channelDict.str());
 }
 
 int OdinRestAPI::loadPlugin(const std::string& modulePath,

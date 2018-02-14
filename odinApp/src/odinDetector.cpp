@@ -12,15 +12,12 @@ static const std::string DRIVER_VERSION("0-1");
 static const char *driverName = "OdinDetector";
 
 // These parameters are optionally configured by ioc init commands
-std::string              OdinDetector::mOdinDataLibraryPath = "";
-std::vector<std::string> OdinDetector::mIPAddresses;
-std::vector<int>         OdinDetector::mReadyPorts;
-std::vector<int>         OdinDetector::mReleasePorts;
-std::vector<int>         OdinDetector::mMetaPorts;
-size_t                   OdinDetector::mODCount = 0;
-std::string              OdinDetector::mDatasetName         = "";
-std::string              OdinDetector::mProcessPluginName   = "";
-std::string              OdinDetector::mDetectorLibraryPath = "";
+std::string                  OdinDetector::mOdinDataLibraryPath = "";
+std::vector<ODConfiguration> OdinDetector::mODConfig                ;
+size_t                       OdinDetector::mODCount             =  0;
+std::string                  OdinDetector::mDatasetName         = "";
+std::string                  OdinDetector::mProcessPluginName   = "";
+std::string                  OdinDetector::mDetectorLibraryPath = "";
 
 /* Constructor for Odin driver; most parameters are simply passed to ADDriver::ADDriver.
  * After calling the base class constructor this method creates a thread to collect the detector
@@ -63,28 +60,38 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
   // Bind the num_images parameter to NIMAGES asyn parameter
   createRESTParam(ADNumImagesString, REST_P_INT, SSDetector, "config/num_images");
 
-  if (initialise()) {
-    asynPrint(pasynUserSelf, ASYN_TRACE_ERROR, "Failed to initialise\n");
-  }
-  else {
-    mInitialised = true;
+  if (initialiseAll()) {
+    asynPrint(pasynUserSelf, ASYN_TRACE_ERROR, "Failed to initialise all OdinData processes\n");
   }
 
-  createOdinDataParams();
+  if (std::accumulate(mInitialised.begin(), mInitialised.end(), 0) > 0) {
+    createOdinDataParams();
+  }
   createDetectorParams();
   mParams.fetchAll();
 }
 
-int OdinDetector::initialise()
+int OdinDetector::initialiseAll()
 {
   int status = 0;
+  mInitialised.resize(mODCount);
+  for (int index = 0; index != (int) mODConfig.size(); ++index) {
+    status |= initialise(index);
+  }
+  return status;
+}
+
+int OdinDetector::initialise(int index)
+{
+  int status = 0;
+  mInitialised[index] = 0;
 
   if (mOdinDataLibraryPath.empty()) {
     asynPrint(pasynUserSelf, ASYN_TRACE_WARNING,
               "OdinData library path not set; not configuring processes\n");
   }
   else {
-    status |= mAPI.configureSharedMemoryChannels(mIPAddresses, mReadyPorts, mReleasePorts);
+    status |= mAPI.configureSharedMemoryChannels(mODConfig[index]);
     status |= mAPI.loadFileWriterPlugin(mOdinDataLibraryPath);
     status |= mAPI.createDataset(mDatasetName);
     if (mProcessPluginName.empty() || mDetectorLibraryPath.empty()) {
@@ -99,15 +106,19 @@ int OdinDetector::initialise()
     }
   }
 
+  if (status) {
+    asynPrint(pasynUserSelf, ASYN_TRACE_WARNING,
+              "Failed to initialise OdinData process rank %d\n", index);
+  }
+  else {
+    mInitialised[index] = 1;
+  }
   return status;
 }
 
 void OdinDetector::configureOdinDataProcess(const char * ipAddress, int readyPort, int releasePort,
                                             int metaPort) {
-  mIPAddresses.push_back(ipAddress);
-  mReadyPorts.push_back(readyPort);
-  mReleasePorts.push_back(releasePort);
-  mMetaPorts.push_back(metaPort);
+  mODConfig.push_back(ODConfiguration(mODCount, ipAddress, readyPort, releasePort, metaPort));
   mODCount++;
 }
 
@@ -207,6 +218,7 @@ int OdinDetector::createOdinDataParams()
   mNumExpected            = createODRESTParam(OdinHDF5NumExpected, REST_P_INT,
                                               SSDataStatusHDF, "frames_max");
 
+  createParam(OdinProcessInitialised, asynParamInt32, &mProcessInitialised);
   createParam(OdinHDF5NumCapturedSum, asynParamInt32, &mNumCapturedSum);
   createParam(OdinHDF5WritingAny,     asynParamInt32, &mWritingAny);
   createParam(OdinHDF5FileTemplate,   asynParamOctet, &mFileTemplate);
@@ -239,6 +251,20 @@ asynStatus OdinDetector::getStatus()
   std::vector<bool> writing(mODCount);
   mWriting->get(writing);
   setIntegerParam(mWritingAny, std::accumulate(writing.begin(), writing.end(), 0) == 0 ? 0 : 1);
+
+  bool connected;
+  for (int index = 0; index != (int) mODConfig.size(); ++index) {
+    mProcessConnected->get(connected, index);
+    if (!connected && mInitialised[index] == 1) {
+      // Lost connection - Set not initialised
+      mInitialised[index] = 0;
+    }
+    else if (mInitialised[index] == 0 && connected) {
+      // Restored connection - Re-initialise
+      initialise(index);
+    }
+    setIntegerParam(mProcessInitialised, mInitialised[index]);
+  }
 
   if(status) {
     return asynError;

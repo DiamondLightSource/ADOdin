@@ -16,6 +16,14 @@ record(longin, "$(P)$(R)ProcessConnected_RBV")
     field(SCAN, "I/O Intr")
 }
 
+record(longin, "$(P)$(R)ProcessInitialised_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_PROCESS_INITIALISED")
+    field(PINI, "NO")
+    field(SCAN, "I/O Intr")
+}
+
 record(longin, "$(P)$(R)ProcessRank_RBV")
 {
     field(DTYP, "asynInt32")

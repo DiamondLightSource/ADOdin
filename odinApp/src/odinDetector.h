@@ -2,6 +2,7 @@
 #define EIGER_DETECTOR_H
 
 #include "ADDriver.h"
+#include "odinDataConfig.h"
 #include "odinRestApi.h"
 
 // Odin Server
@@ -13,6 +14,7 @@
 #define OdinNumProcesses               "ODIN_NUM_PROCESSES"
 #define OdinProcessRank                "ODIN_PROCESS_RANK"
 #define OdinProcessConnected           "ODIN_PROCESS_CONNECTED"
+#define OdinProcessInitialised         "ODIN_PROCESS_INITIALISED"
 // -- HDF5
 #define OdinHDF5BlockSize              "ODIN_HDF5_BLOCK_SIZE"
 #define OdinHDF5BlocksPerFile          "ODIN_HDF5_BLOCKS_PER_FILE"
@@ -72,10 +74,7 @@ class OdinDetector : public ADDriver
   // IOC Init Methods
   static void configureOdinDataProcess(const char * ipAddress, int readyPort, int releasePort,
                                        int metaPort);
-  static std::vector<std::string> mIPAddresses;
-  static std::vector<int> mReadyPorts;
-  static std::vector<int> mReleasePorts;
-  static std::vector<int> mMetaPorts;
+  static std::vector<ODConfiguration> mODConfig;
   static std::string mDatasetName;
   static void configureOdinData(const char * odinDataLibraryPath,
                                 const char * detectorName, const char * libraryPath,
@@ -90,8 +89,9 @@ class OdinDetector : public ADDriver
   OdinRestAPI mAPI;
   RestParamSet mParams;
 
-  int initialise();
-  bool mInitialised;
+  int initialise(int index);
+  int initialiseAll();
+  std::vector<int> mInitialised;
   int createDetectorParams();
   int createOdinDataParams();
 
@@ -135,6 +135,8 @@ class OdinDetector : public ADDriver
   int mChunkDepth;
   int mChunkHeight;
   int mChunkWidth;
+
+  int mProcessInitialised;
   int mNumCapturedSum;
   int mWritingAny;
   int mFileTemplate;

@@ -9,6 +9,8 @@
 #include "restApi.h"
 #include "restParam.h"
 
+#include "odinDataConfig.h"
+
 // Subsystems
 typedef enum
 {
@@ -51,9 +53,7 @@ class OdinRestAPI : public RestAPI
 
   // OdinData Methods
   // -- Initialisation
-  int configureSharedMemoryChannels(std::vector<std::string>& ipAddresses,
-                                    std::vector<int> readyPorts,
-                                    std::vector<int> releasePorts);
+  int configureSharedMemoryChannels(ODConfiguration config);
   int loadPlugin(const std::string& modulePath,
                  const std::string& name, const std::string& index, const std::string& library);
   int loadProcessPlugin(const std::string& modulePath, const std::string& pluginIndex);
