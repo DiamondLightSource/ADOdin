@@ -281,3 +281,11 @@ record(longout, "$(P)$(R)$(ADDRESS):ResetFemCommsFaults")
     field(VAL,  "0")
     field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))RESET_FEM_COMMS_FAULTS")
 }
+
+record(longin, "$(P)$(R)$(ADDRESS):CalibrationStatus_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/calibration")
+}
