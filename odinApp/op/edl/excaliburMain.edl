@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 502
-y 89
+x 504
+y 115
 w 390
 h 820
 font "arial-bold-r-12.0"
@@ -88,25 +88,6 @@ value {
 }
 endObjectProperties
 
-# (Byte)
-object ByteClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 35
-y 285
-w 20
-h 120
-controlPv "$(P)$(R)ConnectionStatus"
-lineColor index 14
-onColor index 15
-offColor index 19
-lineWidth 2
-endian "little"
-numBits 6
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -155,13 +136,13 @@ minor 1
 release 1
 x 5
 y 250
-w 82
+w 102
 h 13
 font "arial-medium-r-12.0"
 fgColor index 14
 bgColor index 5
 value {
-  "  Node Status  "
+  "  FEM Calibration  "
 }
 autoSize
 border
@@ -1329,63 +1310,6 @@ major 10
 minor 0
 release 0
 x 135
-y 345
-w 50
-h 20
-controlPv "$(Q):4:FEM:ArrayCounter_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 135
-y 365
-w 50
-h 20
-controlPv "$(Q):5:FEM:ArrayCounter_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 135
-y 385
-w 50
-h 20
-controlPv "$(Q):6:FEM:ArrayCounter_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 135
 y 285
 w 50
 h 20
@@ -1409,25 +1333,6 @@ y 305
 w 50
 h 20
 controlPv "$(Q):2:FEM:ArrayCounter_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 135
-y 325
-w 50
-h 20
-controlPv "$(Q):3:FEM:ArrayCounter_RBV"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -1808,26 +1713,6 @@ fgColor index 25
 bgColor index 3
 fill
 font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 30
-y 265
-w 30
-h 20
-font "arial-bold-r-12.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "IOC"
-}
 endObjectProperties
 
 # (Static Text)
@@ -2234,25 +2119,6 @@ newPos
 objType "controls"
 endObjectProperties
 
-# (Byte)
-object ByteClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 105
-y 285
-w 20
-h 20
-controlPv "$(PREFIX):1:FEM:SomeCalLoaded_RBV"
-lineColor index 14
-onColor index 15
-offColor index 19
-lineWidth 2
-endian "little"
-numBits 1
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -2278,180 +2144,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 15
-y 325
-w 20
-h 20
-font "helvetica-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "3:"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 15
-y 345
-w 20
-h 20
-font "helvetica-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "4:"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 15
-y 365
-w 20
-h 20
-font "helvetica-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "5:"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 15
-y 385
-w 20
-h 20
-font "helvetica-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "6:"
-}
-endObjectProperties
-
-# (Byte)
-object ByteClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 105
-y 305
-w 20
-h 20
-controlPv "$(PREFIX):2:FEM:SomeCalLoaded_RBV"
-lineColor index 14
-onColor index 15
-offColor index 19
-lineWidth 2
-endian "little"
-numBits 1
-endObjectProperties
-
-# (Byte)
-object ByteClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 105
-y 325
-w 20
-h 20
-controlPv "$(PREFIX):3:FEM:SomeCalLoaded_RBV"
-lineColor index 14
-onColor index 15
-offColor index 19
-lineWidth 2
-endian "little"
-numBits 1
-endObjectProperties
-
-# (Byte)
-object ByteClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 105
-y 345
-w 20
-h 20
-controlPv "$(PREFIX):4:FEM:SomeCalLoaded_RBV"
-lineColor index 14
-onColor index 15
-offColor index 19
-lineWidth 2
-endian "little"
-numBits 1
-endObjectProperties
-
-# (Byte)
-object ByteClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 105
-y 365
-w 20
-h 20
-controlPv "$(PREFIX):5:FEM:SomeCalLoaded_RBV"
-lineColor index 14
-onColor index 15
-offColor index 19
-lineWidth 2
-endian "little"
-numBits 1
-endObjectProperties
-
-# (Byte)
-object ByteClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 105
-y 385
-w 20
-h 20
-controlPv "$(PREFIX):6:FEM:SomeCalLoaded_RBV"
-lineColor index 14
-onColor index 15
-offColor index 19
-lineWidth 2
-endian "little"
-numBits 1
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 100
+x 45
 y 265
-w 30
+w 65
 h 20
 font "arial-bold-r-12.0"
 fontAlign "center"
@@ -2459,7 +2154,7 @@ fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Cal"
+  "Calibrated"
 }
 endObjectProperties
 
@@ -2559,5 +2254,351 @@ offColor index 20
 lineWidth 2
 endian "little"
 numBits 1
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 30
+y 285
+w 100
+h 15
+controlPv "$(P)$(R)F0:CalibrationStatus_RBV"
+lineColor index 14
+onColor index 15
+offColor index 19
+lineWidth 2
+endian "little"
+numBits 5
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 30
+y 305
+w 100
+h 15
+controlPv "$(P)$(R)F1:CalibrationStatus_RBV"
+lineColor index 14
+onColor index 15
+offColor index 19
+lineWidth 2
+endian "little"
+numBits 5
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 15
+y 325
+w 170
+h 20
+
+beginGroup
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 135
+y 325
+w 50
+h 20
+controlPv "$(Q):3:FEM:ArrayCounter_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 15
+y 325
+w 20
+h 20
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "3:"
+}
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 30
+y 325
+w 100
+h 15
+controlPv "$(P)$(R)F2:CalibrationStatus_RBV"
+lineColor index 14
+onColor index 15
+offColor index 19
+lineWidth 2
+endian "little"
+numBits 5
+endObjectProperties
+
+endGroup
+
+visPv "$(P)$(R)F:NumberFEMs_RBV"
+visMin "3"
+visMax "7"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 15
+y 345
+w 170
+h 20
+
+beginGroup
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 135
+y 345
+w 50
+h 20
+controlPv "$(Q):4:FEM:ArrayCounter_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 15
+y 345
+w 20
+h 20
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "4:"
+}
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 30
+y 345
+w 100
+h 15
+controlPv "$(P)$(R)F3:CalibrationStatus_RBV"
+lineColor index 14
+onColor index 15
+offColor index 19
+lineWidth 2
+endian "little"
+numBits 5
+endObjectProperties
+
+endGroup
+
+visPv "$(P)$(R)F:NumberFEMs_RBV"
+visMin "4"
+visMax "7"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 15
+y 365
+w 170
+h 20
+
+beginGroup
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 135
+y 365
+w 50
+h 20
+controlPv "$(Q):5:FEM:ArrayCounter_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 15
+y 365
+w 20
+h 20
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "5:"
+}
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 30
+y 365
+w 100
+h 15
+controlPv "$(P)$(R)F4:CalibrationStatus_RBV"
+lineColor index 14
+onColor index 15
+offColor index 19
+lineWidth 2
+endian "little"
+numBits 5
+endObjectProperties
+
+endGroup
+
+visPv "$(P)$(R)NumberFEMs_RBV"
+visMin "5"
+visMax "7"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 15
+y 385
+w 170
+h 20
+
+beginGroup
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 135
+y 385
+w 50
+h 20
+controlPv "$(Q):6:FEM:ArrayCounter_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 15
+y 385
+w 20
+h 20
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "6:"
+}
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 30
+y 385
+w 100
+h 15
+controlPv "$(P)$(R)F5:CalibrationStatus_RBV"
+lineColor index 14
+onColor index 15
+offColor index 19
+lineWidth 2
+endian "little"
+numBits 5
+endObjectProperties
+
+endGroup
+
+visPv "$(P)$(R)F:NumberFEMs_RBV"
+visMin "6"
+visMax "7"
 endObjectProperties
 
