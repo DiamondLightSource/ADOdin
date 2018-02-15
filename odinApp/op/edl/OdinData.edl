@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2397
-y 222
+x 2835
+y 257
 w 457
 h 446
 font "arial-bold-r-12.0"
@@ -67,10 +67,10 @@ major 4
 minor 0
 release 0
 x 415
-y 30
+y 100
 w 25
 h 25
-controlPv "$(P)$(R)Capture_RBV"
+controlPv "$(P)$(R)Writing_RBV"
 lineColor index 14
 onColor index 15
 offColor index 19
@@ -123,7 +123,7 @@ major 4
 minor 1
 release 1
 x 345
-y 30
+y 100
 w 55
 h 25
 font "arial-bold-r-12.0"
@@ -142,7 +142,7 @@ major 4
 minor 0
 release 0
 x 415
-y 65
+y 135
 w 25
 h 25
 controlPv "$(P)$(R)Configured"
@@ -160,7 +160,7 @@ major 4
 minor 1
 release 1
 x 345
-y 65
+y 135
 w 55
 h 25
 font "arial-bold-r-12.0"
@@ -180,7 +180,7 @@ minor 1
 release 1
 x 15
 y 90
-w 115
+w 125
 h 25
 font "arial-bold-r-12.0"
 fgColor index 14
@@ -256,14 +256,14 @@ minor 1
 release 1
 x 15
 y 30
-w 130
+w 125
 h 25
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Data Frames Written:"
+  "Data Frames:"
 }
 endObjectProperties
 
@@ -292,10 +292,10 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 205
-y 35
-w 75
-h 13
+x 15
+y 125
+w 125
+h 25
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
@@ -312,8 +312,8 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 285
-y 30
+x 150
+y 125
 w 50
 h 25
 controlPv "$(P)$(R)BuffersFree0"
@@ -323,5 +323,176 @@ bgColor index 10
 fill
 font "arial-bold-r-10.0"
 fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 215
+y 30
+w 50
+h 25
+controlPv "$(P)$(R)NumExpected_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-10.0"
+fontAlign "center"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 15
+y 175
+w 125
+h 25
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Process Rank:"
+}
+autoSize
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 150
+y 175
+w 50
+h 25
+controlPv "$(P)$(R)ProcessRank_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-10.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 150
+y 245
+w 285
+h 25
+controlPv "$(P)$(R)FullFileName_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-10.0"
+fontAlign "center"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 15
+y 245
+w 125
+h 25
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Full File Name:"
+}
+autoSize
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 415
+y 30
+w 25
+h 25
+controlPv "$(P)$(R)ProcessConnected_RBV"
+lineColor index 14
+onColor index 15
+offColor index 19
+lineWidth 2
+numBits 1
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 330
+y 30
+w 70
+h 25
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Connected:"
+}
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 415
+y 65
+w 25
+h 25
+controlPv "$(P)$(R)ProcessInitialised_RBV"
+lineColor index 14
+onColor index 15
+offColor index 19
+lineWidth 2
+numBits 1
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 330
+y 65
+w 70
+h 25
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Initialised:"
+}
 endObjectProperties
 
