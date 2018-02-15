@@ -57,9 +57,6 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
   mAPIVersion = createODRESTParam(OdinRestAPIVersion, REST_P_STRING, SSRoot, "api");
   mFirstParam = mAPIVersion->getIndex();
 
-  // Bind the num_images parameter to NIMAGES asyn parameter
-  createRESTParam(ADNumImagesString, REST_P_INT, SSDetector, "config/num_images");
-
   if (initialiseAll()) {
     asynPrint(pasynUserSelf, ASYN_TRACE_ERROR, "Failed to initialise all OdinData processes\n");
   }
@@ -148,22 +145,10 @@ RestParam * OdinDetector::createRESTParam(const std::string& asynName, rest_para
 
 int OdinDetector::createDetectorParams()
 {
-  mConnected  = createODRESTParam(OdinConnected, REST_P_BOOL,
-                                  SSDetectorStatus, "connected");
-  mNumPending = createODRESTParam(OdinNumPending, REST_P_UINT,
-                                  SSDetectorStatus, "num_pending");
-
-  createParam(OdinHDF5ImageHeight, asynParamInt32, &mImageHeight);
-  createParam(OdinHDF5ImageWidth,  asynParamInt32, &mImageWidth);
-  createParam(OdinHDF5ChunkDepth,  asynParamInt32, &mChunkDepth);
-  createParam(OdinHDF5ChunkHeight, asynParamInt32, &mChunkHeight);
-  createParam(OdinHDF5ChunkWidth,  asynParamInt32, &mChunkWidth);
-
-  setIntegerParam(mImageHeight, 512);
-  setIntegerParam(mImageWidth,  2048);
-  setIntegerParam(mChunkDepth,  1);
-  setIntegerParam(mChunkHeight, 512);
-  setIntegerParam(mChunkWidth,  2048);
+  mConnected = createRESTParam(OdinDetectorConnected, REST_P_BOOL,
+                               SSDetectorStatus, "connected");
+  mNumImages = createRESTParam(ADNumImagesString, REST_P_INT,
+                               SSDetectorConfig, "num_images");
 
   return 0;
 }
@@ -222,6 +207,17 @@ int OdinDetector::createOdinDataParams()
   createParam(OdinHDF5NumCapturedSum, asynParamInt32, &mNumCapturedSum);
   createParam(OdinHDF5WritingAny,     asynParamInt32, &mWritingAny);
   createParam(OdinHDF5FileTemplate,   asynParamOctet, &mFileTemplate);
+  createParam(OdinHDF5ImageHeight,    asynParamInt32, &mImageHeight);
+  createParam(OdinHDF5ImageWidth,     asynParamInt32, &mImageWidth);
+  createParam(OdinHDF5ChunkDepth,     asynParamInt32, &mChunkDepth);
+  createParam(OdinHDF5ChunkHeight,    asynParamInt32, &mChunkHeight);
+  createParam(OdinHDF5ChunkWidth,     asynParamInt32, &mChunkWidth);
+
+  setIntegerParam(mImageHeight, 512);
+  setIntegerParam(mImageWidth,  2048);
+  setIntegerParam(mChunkDepth,  1);
+  setIntegerParam(mChunkHeight, 512);
+  setIntegerParam(mChunkWidth,  2048);
 
   return 0;
 }
@@ -231,8 +227,6 @@ asynStatus OdinDetector::getStatus()
   int status = 0;
 
   // Fetch status items
-  status |= mConnected->fetch();
-  status |= mNumPending->fetch();
   status |= mProcesses->fetch();
   status |= mFilePath->fetch();
   status |= mFileName->fetch();

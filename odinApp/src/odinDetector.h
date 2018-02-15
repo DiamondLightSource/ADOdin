@@ -8,8 +8,7 @@
 // Odin Server
 #define OdinRestAPIVersion             "ODIN_REST_API_VERSION"
 // Detector
-#define OdinConnected                  "ODIN_CONNECTED"
-#define OdinNumPending                 "ODIN_NUM_PENDING"
+#define OdinDetectorConnected          "ODIN_DETECTOR_CONNECTED"
 // OdinData
 #define OdinNumProcesses               "ODIN_NUM_PROCESSES"
 #define OdinProcessRank                "ODIN_PROCESS_RANK"
@@ -102,8 +101,10 @@ class OdinDetector : public ADDriver
   RestParam * createODRESTParam(const std::string &asynName, rest_param_type_t restType,
                                 sys_t subSystem, const std::string &name);
   RestParam * mAPIVersion;
+
   RestParam * mConnected;
-  RestParam * mNumPending;
+  RestParam * mNumImages;
+
   RestParam * mProcesses;
   RestParam * mFilePath;
   RestParam * mFileName;
