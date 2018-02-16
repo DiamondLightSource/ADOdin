@@ -93,6 +93,7 @@ class OdinDetector : public ADDriver
   std::vector<int> mInitialised;
   int createDetectorParams();
   int createOdinDataParams();
+  bool mOdinDataParamsCreated;
 
   int mFirstParam;
 

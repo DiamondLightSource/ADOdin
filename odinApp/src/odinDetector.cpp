@@ -219,6 +219,7 @@ int OdinDetector::createOdinDataParams()
   setIntegerParam(mChunkHeight, 512);
   setIntegerParam(mChunkWidth,  2048);
 
+  mOdinDataParamsCreated = true;
   return 0;
 }
 
@@ -427,14 +428,16 @@ asynStatus OdinDetector::writeOctet(asynUser *pasynUser, const char *value,
   int status = 0;
   const char *functionName = "writeOctet";
 
-  if (function == mFileTemplate || function == mAcquisitionID->getIndex()) {
-    std::string acquisitionID, fileTemplate;
-    mAcquisitionID->get(acquisitionID);
-    getStringParam(mFileTemplate, fileTemplate);
+  if (mOdinDataParamsCreated) {
+    if (function == mFileTemplate || function == mAcquisitionID->getIndex()) {
+      std::string acquisitionID, fileTemplate;
+      mAcquisitionID->get(acquisitionID);
+      getStringParam(mFileTemplate, fileTemplate);
 
-    char buffer[fileTemplate.size() + acquisitionID.size() + 5];
-    snprintf(buffer, sizeof(buffer), fileTemplate.c_str(), acquisitionID.c_str(), 1);
-    mFileName->put(buffer);
+      char buffer[fileTemplate.size() + acquisitionID.size() + 5];
+      snprintf(buffer, sizeof(buffer), fileTemplate.c_str(), acquisitionID.c_str(), 1);
+      mFileName->put(buffer);
+    }
   }
 
   if (RestParam * p = mParams.getByIndex(function)) {
