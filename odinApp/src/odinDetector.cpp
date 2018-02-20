@@ -285,26 +285,28 @@ asynStatus OdinDetector::getStatus()
     }
   }
 
-  std::vector<int> numCaptured(mODCount);
-  mNumCaptured->get(numCaptured);
-  setIntegerParam(mNumCapturedSum, std::accumulate(numCaptured.begin(), numCaptured.end(), 0));
+  if (mOdinDataParamsCreated) {
+    std::vector<int> numCaptured(mODCount);
+    mNumCaptured->get(numCaptured);
+    setIntegerParam(mNumCapturedSum, std::accumulate(numCaptured.begin(), numCaptured.end(), 0));
 
-  std::vector<bool> writing(mODCount);
-  mWriting->get(writing);
-  setIntegerParam(mWritingAny, std::accumulate(writing.begin(), writing.end(), 0) == 0 ? 0 : 1);
+    std::vector<bool> writing(mODCount);
+    mWriting->get(writing);
+    setIntegerParam(mWritingAny, std::accumulate(writing.begin(), writing.end(), 0) == 0 ? 0 : 1);
 
-  bool connected;
-  for (int index = 0; index != (int) mODConfig.size(); ++index) {
-    mProcessConnected->get(connected, index);
-    if (!connected && mInitialised[index] == 1) {
-      // Lost connection - Set not initialised
-      mInitialised[index] = 0;
+    bool connected;
+    for (int index = 0; index != (int) mODConfig.size(); ++index) {
+      mProcessConnected->get(connected, index);
+      if (!connected && mInitialised[index] == 1) {
+        // Lost connection - Set not initialised
+        mInitialised[index] = 0;
+      }
+      else if (mInitialised[index] == 0 && connected) {
+        // Restored connection - Re-initialise
+        initialise(index);
+      }
+      setIntegerParam(mProcessInitialised, mInitialised[index]);
     }
-    else if (mInitialised[index] == 0 && connected) {
-      // Restored connection - Re-initialise
-      initialise(index);
-    }
-    setIntegerParam(mProcessInitialised, mInitialised[index]);
   }
 
   getIntegerParam(ADAcquire, &acquiring);
