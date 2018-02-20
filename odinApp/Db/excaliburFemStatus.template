@@ -1,0 +1,291 @@
+# femHousekeeping.template
+# Defines the housekeeping parameters available from all FEMs.
+#
+# Parameters:
+#   P       - EPICS name prefix
+#   R       - EPICS plugin name
+#   PORT    - Asyn port
+#   ADDRESS - Asyn address
+#   TOTAL   - Total number of FEMs
+#   TIMEOUT - Timeout
+
+#
+# %gdatag,template,simplePv,$(gda_name=).MOLY_TEMPERATURE,$(gda_desc=)
+# %gdatag,pv,ro,$(gda_name=).MOLY_TEMPERATURE,RECORD,$(gda_desc=)
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)$(ADDRESS):MOLY_TEMPERATURE")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/moly_temp")
+    field(EGU,  "C")
+    field(LOW,  "0")
+    field(HIGH, "35.0")
+    field(PREC, "2")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+#
+# %gdatag,template,simplePv,$(gda_name=).LOCAL_TEMP,$(gda_desc=)
+# %gdatag,pv,ro,$(gda_name=).LOCAL_TEMP,RECORD,$(gda_desc=)
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)$(ADDRESS):LOCAL_TEMP")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/fem_local_temp")
+    field(EGU,  "C")
+    field(LOW,  "0")
+    field(HIGH, "35.0")
+    field(PREC, "2")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+#
+# %gdatag,template,simplePv,$(gda_name=).REMOTE_DIODE_TEMP,$(gda_desc=)
+# %gdatag,pv,ro,$(gda_name=).REMOTE_DIODE_TEMP,RECORD,$(gda_desc=)
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)$(ADDRESS):REMOTE_DIODE_TEMP")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/fem_remote_temp")
+    field(EGU,  "C")
+    field(LOW,  "0.0")
+    field(HIGH, "35.0")
+    field(PREC, "2")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+#
+# %gdatag,template,simplePv,$(gda_name=).MOLY_HUMIDITY,$(gda_desc=)
+# %gdatag,pv,ro,$(gda_name=).MOLY_HUMIDITY,RECORD,$(gda_desc=)
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)$(ADDRESS):MOLY_HUMIDITY")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/moly_humidity")
+    field(EGU,  "%RH")
+    field(LOW,  "0.0")
+    field(HIGH, "70.0")
+    field(PREC, "2")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+#
+# %gdatag,template,simpleBinary,$(gda_name=).P1V5_AVDD_1_POK,$(gda_desc=)
+# %gdatag,binary,ro,$(gda_name=).P1V5_AVDD_1_POK,RECORD,$(gda_desc=)
+#% archiver 10 Monitor
+record(bi, "$(P)$(R)$(ADDRESS):P1V5_AVDD_1_POK")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/supply_p1v5_avdd1")
+    field(ZSV,  "MAJOR")
+}
+
+#
+# %gdatag,template,simpleBinary,$(gda_name=).P1V5_AVDD_2_POK,$(gda_desc=)
+# %gdatag,binary,ro,$(gda_name=).P1V5_AVDD_2_POK,RECORD,$(gda_desc=)
+#% archiver 10 Monitor
+record(bi, "$(P)$(R)$(ADDRESS):P1V5_AVDD_2_POK")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/supply_p1v5_avdd2")
+    field(ZSV,  "MAJOR")
+}
+
+#
+# %gdatag,template,simpleBinary,$(gda_name=).P1V5_AVDD_3_POK,$(gda_desc=)
+# %gdatag,binary,ro,$(gda_name=).P1V5_AVDD_3_POK,RECORD,$(gda_desc=)
+#% archiver 10 Monitor
+record(bi, "$(P)$(R)$(ADDRESS):P1V5_AVDD_3_POK")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/supply_p1v5_avdd3")
+    field(ZSV,  "MAJOR")
+}
+
+#
+# %gdatag,template,simpleBinary,$(gda_name=).P1V5_AVDD_4_POK,$(gda_desc=)
+# %gdatag,binary,ro,$(gda_name=).P1V5_AVDD_4_POK,RECORD,$(gda_desc=)
+#% archiver 10 Monitor
+record(bi, "$(P)$(R)$(ADDRESS):P1V5_AVDD_4_POK")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/supply_p1v5_avdd4")
+    field(ZSV,  "MAJOR")
+}
+
+#
+# %gdatag,template,simpleBinary,$(gda_name=).P1V5_VDD_1_POK,$(gda_desc=)
+# %gdatag,binary,ro,$(gda_name=).P1V5_VDD_1_POK,RECORD,$(gda_desc=)
+#% archiver 10 Monitor
+record(bi, "$(P)$(R)$(ADDRESS):P1V5_VDD_1_POK")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/supply_p1v5_vdd1")
+    field(ZSV,  "MAJOR")
+}
+
+#
+# %gdatag,template,simpleBinary,$(gda_name=).P2V5_DVDD_1_POK,$(gda_desc=)
+# %gdatag,binary,ro,$(gda_name=).P2V5_DVDD_1_POK,RECORD,$(gda_desc=)
+#% archiver 10 Monitor
+record(bi, "$(P)$(R)$(ADDRESS):P2V5_DVDD_1_POK")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/supply_p2v5_dvdd1")
+    field(ZSV,  "MAJOR")
+}
+
+# Overall alarm record for the per FEM housekeeping
+record(calc, "$(P)$(R)$(ADDRESS):DEVSTA10")
+{
+    field(INPA, "$(P)$(R)DEVSTA11 MS CP")
+    field(INPB, "$(P)$(R)EFuseIdMatches MS CP")
+    field(INPC, "$(P)$(R)FemInitOk MS CP")
+    field(ACKT, "NO")
+}
+record(calc, "$(P)$(R)$(ADDRESS):DEVSTA11")
+{
+    field(INPA, "$(P)$(R)MOLY_TEMPERATURE MS CP")
+    field(INPB, "$(P)$(R)LOCAL_TEMP MS CP")
+    field(INPC, "$(P)$(R)REMOTE_DIODE_TEMP MS CP")
+    field(INPD, "$(P)$(R)MOLY_HUMIDITY MS CP")
+    field(INPE, "$(P)$(R)P1V5_AVDD_1_POK MS CP")
+    field(INPF, "$(P)$(R)P1V5_AVDD_2_POK MS CP")
+    field(INPG, "$(P)$(R)P1V5_AVDD_3_POK MS CP")
+    field(INPH, "$(P)$(R)P1V5_AVDD_4_POK MS CP")
+    field(INPI, "$(P)$(R)P1V5_VDD_1_POK MS CP")
+    field(INPJ, "$(P)$(R)P2V5_DVDD_1_POK MS CP")
+    field(ACKT, "NO")
+}
+
+# Copy the current efuseid to the saved efuseid
+# %gdatag,template,simpleBinary,$(gda_name=).RecordEFuseId,$(gda_desc=)
+# %gdatag,binary,rw,$(gda_name=).RecordEFuseId,RECORD,$(gda_desc=)
+record(bo, "$(P)$(R)$(ADDRESS):RecordEFuseId")
+{
+    field(VAL,  "0")
+    field(ZNAM, "Idle")
+    field(ONAM, "Record")
+    field(FLNK, "$(P)$(R)RecordEFuseId_TFR") 
+}
+record(seq, "$(P)$(R)$(ADDRESS):RecordEFuseId_TFR")
+{
+    field(SELM, "All")
+    field(DOL1, "$(P):FEM:1:EFuseId.VAL")
+    field(LNK1, "$(P):FEM:1:SavedEFuseId.VAL PP")
+    field(DOL2, "$(P):FEM:2:EFuseId.VAL")
+    field(LNK2, "$(P):FEM:2:SavedEFuseId.VAL PP")
+    field(DOL3, "$(P):FEM:3:EFuseId.VAL")
+    field(LNK3, "$(P):FEM:3:SavedEFuseId.VAL PP")
+    field(DOL4, "$(P):FEM:4:EFuseId.VAL")
+    field(LNK4, "$(P):FEM:4:SavedEFuseId.VAL PP")
+    field(DOL5, "$(P):FEM:5:EFuseId.VAL")
+    field(LNK5, "$(P):FEM:5:SavedEFuseId.VAL PP")
+    field(DOL6, "$(P):FEM:6:EFuseId.VAL")
+    field(LNK6, "$(P):FEM:6:SavedEFuseId.VAL PP")
+    field(DOL7, "$(P):FEM:7:EFuseId.VAL")
+    field(LNK7, "$(P):FEM:7:SavedEFuseId.VAL PP")
+    field(DOL8, "$(P):FEM:8:EFuseId.VAL")
+    field(LNK8, "$(P):FEM:8:SavedEFuseId.VAL PP")
+    field(DOL9, "0")
+    field(LNK9, "$(P)$(R)RecordEFuseId")
+}
+
+# Non-zero if the current efuseid matches the saved efuseid
+# %gdatag,template,simpleBinary,$(gda_name=).EFuseIdMatches,$(gda_desc=)
+# %gdatag,binary,ro,$(gda_name=).EFuseIdMatches,RECORD,$(gda_desc=)
+record(calc, "$(P)$(R)$(ADDRESS):EFuseIdMatches")
+{
+    field(INPA, "$(P):FEM:1:EFuseId")
+    field(INPB, "$(P):FEM:1:SavedEFuseId")
+    field(INPC, "$(P):FEM:2:EFuseId")
+    field(INPD, "$(P):FEM:2:SavedEFuseId")
+    field(INPE, "$(P):FEM:3:EFuseId")
+    field(INPF, "$(P):FEM:3:SavedEFuseId")
+    field(INPG, "$(P):FEM:4:EFuseId")
+    field(INPH, "$(P):FEM:4:SavedEFuseId")
+    field(INPI, "$(P)$(R)EFuseIdMatches2.VAL") 
+    field(CALC, "(A=B)&&(C=D)&&(E=F)&&(G=H)&&I")
+    field(LLSV,  "MAJOR")
+    field(LOLO,  "0")
+}
+record(calc, "$(P)$(R)$(ADDRESS):EFuseIdMatches2")
+{
+    field(SCAN, "1 second")
+    field(INPA, "$(P):FEM:5:EFuseId")
+    field(INPB, "$(P):FEM:5:SavedEFuseId")
+    field(INPC, "$(P):FEM:6:EFuseId")
+    field(INPD, "$(P):FEM:6:SavedEFuseId")
+    field(INPE, "$(P):FEM:7:EFuseId")
+    field(INPF, "$(P):FEM:7:SavedEFuseId")
+    field(INPG, "$(P):FEM:8:EFuseId")
+    field(INPH, "$(P):FEM:8:SavedEFuseId")
+    field(CALC, "(A=B)&&(C=D)&&(E=F)&&(G=H)")
+    field(FLNK, "$(P)$(R)EFuseIdMatches")
+}
+
+# Non-zero if the FEM initialised OK
+# %gdatag,template,simpleBinary,$(gda_name=).FemInitOk,$(gda_desc=)
+# %gdatag,binary,ro,$(gda_name=).FemInitOk,RECORD,$(gda_desc=)
+record(bi, "$(P)$(R)$(ADDRESS):FemInitOk")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))FEM_INIT_OK")
+    field(ZSV,  "MAJOR")
+}
+
+# %gdatag,template,simplePv,$(gda_name=).FemCommsFaults,$(gda_desc=)
+# %gdatag,pv,ro,$(gda_name=).FemCommsFaults,RECORD,$(gda_desc=)
+#% archiver 10 Monitor
+record(longin, "$(P)$(R)$(ADDRESS):FemCommsFaults")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))FEM_COMMS_FAULTS")
+}
+
+record(longout, "$(P)$(R)$(ADDRESS):ResetFemCommsFaults")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))RESET_FEM_COMMS_FAULTS")
+}
+
+record(longin, "$(P)$(R)$(ADDRESS):CalibrationStatus_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/calibration")
+}

@@ -81,7 +81,7 @@ const std::string RestAPI::PARAM_VALUE       = "value";           // Set key for
 const std::string OdinRestAPI::CONNECT           = "connect";
 const std::string OdinRestAPI::START_ACQUISITION = "start_acquisition";
 const std::string OdinRestAPI::STOP_ACQUISITION  = "stop_acquisition";
-const std::string OdinRestAPI::EMPTY_JSON_STRING = "\"\"";
+const std::string OdinRestAPI::EMPTY_JSON_STRING = "";
 
 const std::string OdinRestAPI::FILE_WRITER_PLUGIN = PLUGIN_INDEX_FILE_WRITER;
 
@@ -113,6 +113,10 @@ OdinRestAPI::OdinRestAPI(const std::string& detectorName,
                                     "/process/";
   sysStr_[SSDataConfigHDFDataset] = api + ODIN_DATA_ADAPTER "/config/" PLUGIN_INDEX_FILE_WRITER
                                     "/dataset/";
+}
+
+bool OdinRestAPI::connected(){
+  return (this->connectedSockets()>0);
 }
 
 std::string OdinRestAPI::sysStr(sys_t sys)

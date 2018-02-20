@@ -13,6 +13,21 @@ __all__ = ["OdinDetector", "OdinData"]
 class excaliburDetectorTemplate(AutoSubstitution):
     TemplateFile = "excaliburDetector.template"
 
+class excaliburFemStatusTemplate(AutoSubstitution):
+    WarnMacros = False
+    TemplateFile = "excaliburFemStatus.template"
+
+def add_excalibur_fem_status(cls):
+    """Convenience function to add excaliburFemStatusTemplate attributes to a class that
+    includes it via an msi include statement rather than verbatim"""
+    cls.Arguments = excaliburFemStatusTemplate.Arguments + [x for x in cls.Arguments if x not in excaliburFemStatusTemplate.Arguments]
+    cls.ArgInfo = excaliburFemStatusTemplate.ArgInfo + cls.ArgInfo.filtered(without=excaliburFemStatusTemplate.ArgInfo.Names())
+    cls.Defaults.update(excaliburFemStatusTemplate.Defaults)
+    return cls
+
+@add_excalibur_fem_status
+class excalibur2FemStatusTemplate(AutoSubstitution):
+    TemplateFile = "excalibur2FemStatus.template"
 
 class OdinDetectorTemplate(AutoSubstitution):
     TemplateFile = "odinDetector.template"

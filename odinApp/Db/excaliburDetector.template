@@ -7,6 +7,23 @@
 #   PORT    - Asyn port
 #   TIMEOUT - Timeout
 
+# This associates the template with an edm screen
+# % gui, $(PORT), edmtab, excaliburMain.edl, P=$(P),R=$(R)
+
+
+# Number of frames taken in current acquisition.
+record(longin, "$(P)$(R)ArrayCounter_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_status/frames_acquired")
+}
+
+record(bo, "$(P)$(R)ReadStatus")
+{
+    field(SCAN, "1 second")
+}
+
 # Operation mode.
 # %gdatag,template,simpleMbbinary,$(gda_name=).operationMode,$(gda_desc=)
 # %gdatag,mbbinary,rw,$(gda_name=).operationMode,RECORD,$(gda_desc=)
@@ -16,7 +33,7 @@ record(mbbo, "$(P)$(R)OperationMode")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))ODE_config/operation_mode")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/operation_mode")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(TWVL, "2")
@@ -37,7 +54,7 @@ record(mbbi, "$(P)$(R)OperationMode_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))ODE_config/operation_mode")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/operation_mode")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(TWVL, "2")
@@ -60,7 +77,7 @@ record(mbbo, "$(P)$(R)CounterDepth")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_COUNTERDEPTH")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/counter_depth")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(TWVL, "2")
@@ -80,7 +97,7 @@ record(mbbi, "$(P)$(R)CounterDepth_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_COUNTERDEPTH")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/counter_depth")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(TWVL, "2")
@@ -135,7 +152,7 @@ record(ao, "$(P)$(R)EnergyThreshold")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))ENERGY_THRESHOLD")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_config/energy_threshold")
     field(EGU,  "keV")
     field(PINI, "1")
 }
@@ -147,7 +164,7 @@ record(ai, "$(P)$(R)EnergyThreshold_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))ENERGY_THRESHOLD")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_config/energy_threshold")
     field(EGU,  "keV")
 }
 
@@ -160,7 +177,7 @@ record(longout, "$(P)$(R)NumTestPulses")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_NUMTESTPULSES")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/num_test_pulses")
     field(PINI, "1")
 }
 
@@ -171,7 +188,7 @@ record(longin, "$(P)$(R)NumTestPulses_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_NUMTESTPULSES")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/num_test_pulses")
 }
 
 ###############################
@@ -209,7 +226,7 @@ record(mbbo, "$(P)$(R)ReadWriteMode")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_READWRITEMODE")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/read_write_mode")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(ZRST, "Sequential")
@@ -225,7 +242,7 @@ record(mbbi, "$(P)$(R)ReadWriteMode_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_READWRITEMODE")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/read_write_mode")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(ZRST, "Sequential")
@@ -242,11 +259,11 @@ record(mbbo, "$(P)$(R)DiscCsmSpm")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_THRESHOLDSEL")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/disc_csm_spm")
     field(ZRVL, "0")
     field(ONVL, "1")
-    field(ZRST, "Threshold 0")
-    field(ONST, "Threshold 1")
+    field(ZRST, "DiscL")
+    field(ONST, "DiscH")
     field(PINI, "1")
 }
 
@@ -258,11 +275,11 @@ record(mbbi, "$(P)$(R)DiscCsmSpm_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_THRESHOLDSEL")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/disc_csm_spm")
     field(ZRVL, "0")
     field(ONVL, "1")
-    field(ZRST, "Threshold 0")
-    field(ONST, "Threshold 1")
+    field(ZRST, "DiscL")
+    field(ONST, "DiscH")
 }
 
 # Equalization mode.  Actually part of the operation mode register but the FEM
@@ -275,7 +292,7 @@ record(mbbo, "$(P)$(R)EqualizationMode")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_EQUALIZATIONMODE")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/equalization_mode")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(ZRST, "Off")
@@ -291,7 +308,7 @@ record(mbbi, "$(P)$(R)EqualizationMode_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_EQUALIZATIONMODE")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/equalization_mode")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(ZRST, "Off")
@@ -308,7 +325,7 @@ record(mbbo, "$(P)$(R)CsmSpmMode")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_CSMSPMMODE")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/csm_spm_mode")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(ZRST, "Single Pixel")
@@ -324,7 +341,7 @@ record(mbbi, "$(P)$(R)CsmSpmMode_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_CSMSPMMODE")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/csm_spm_mode")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(ZRST, "Single Pixel")
@@ -341,7 +358,7 @@ record(mbbo, "$(P)$(R)GainMode")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_GAINMODE")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/gain_mode")
     field(ZRVL, "0")
     field(ONVL, "1")  # Previously 2
     field(TWVL, "2")  # Previously 1
@@ -361,7 +378,7 @@ record(mbbi, "$(P)$(R)GainMode_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_GAINMODE")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/gain_mode")
     field(ZRVL, "0")
     field(ONVL, "1")  # Previously 2
     field(TWVL, "2")  # Previously 1
@@ -414,7 +431,7 @@ record(mbbo, "$(P)$(R)LfsrBypass")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_LFSRBYPASS")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/lfsr_bypass")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(ZRST, "Off")
@@ -430,7 +447,7 @@ record(mbbi, "$(P)$(R)LfsrBypass_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_LFSRBYPASS")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/lfsr_bypass")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(ZRST, "Off")
@@ -875,7 +892,7 @@ record(waveform, "$(P)$(R)CalFileRoot")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))CAL_FILE_ROOT")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_config/cal_file_root")
     field(FTVL, "CHAR")
     field(NELM, "256")
 }
@@ -884,7 +901,7 @@ record(waveform, "$(P)$(R)CalFileRoot")
 record(waveform, "$(P)$(R)CalFileRoot_RBV")
 {
     field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))CAL_FILE_ROOT")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_config/cal_file_root")
     field(FTVL, "CHAR")
     field(NELM, "256")
     field(SCAN, "I/O Intr")

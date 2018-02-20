@@ -46,6 +46,7 @@ class OdinRestAPI : public RestAPI
               int port,
               size_t numSockets=5);
 
+  bool connected();
   int connectDetector();
   int disconnectDetector();
   int startAcquisition();
