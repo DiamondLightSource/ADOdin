@@ -1,9 +1,9 @@
 #ifndef EIGER_DETECTOR_H
 #define EIGER_DETECTOR_H
 
-#include "OdinClient.h"
+#include "ADDriver.h"
 #include "odinDataConfig.h"
-#include "odinDetectorRestApi.h"
+#include "odinRestApi.h"
 
 // Odin Server
 #define OdinRestAPIVersion             "ODIN_REST_API_VERSION"
@@ -46,7 +46,7 @@
 #define OdinHDF5Compression            "ODIN_HDF5_COMPRESSION"
 #define OdinHDF5FillValue              "ODIN_HDF5_FILL_VALUE"
 
-class OdinDetector : public OdinClient
+class OdinDetector : public ADDriver
 {
  public:
   OdinDetector(const char * portName, const char * serverHostname, int odinServerPort,
@@ -70,17 +70,66 @@ class OdinDetector : public OdinClient
                           const std::string &datasetName, int dataType);
   asynStatus acquireStop();
 
+  // IOC Init Methods
+  static void configureOdinDataProcess(const char * ipAddress, int readyPort, int releasePort,
+                                       int metaPort);
+  static std::vector<ODConfiguration> mODConfig;
+  static std::string mDatasetName;
+  static void configureOdinData(const char * odinDataLibraryPath,
+                                const char * detectorName, const char * libraryPath,
+                                const char * datasetName);
+  static std::string mOdinDataLibraryPath;
+  static std::string mProcessPluginName;
+  static std::string mDetectorLibraryPath;
+  static size_t mODCount;
 
  private:
   char mHostname[512];
-  OdinDetectorRestAPI mAPI;
+  OdinRestAPI mAPI;
+  RestParamSet mParams;
 
+  int initialise(int index);
+  int initialiseAll();
   std::vector<int> mInitialised;
   int createDetectorParams();
+  int createOdinDataParams();
   bool mOdinDataParamsCreated;
+
+  int mFirstParam;
+
+  RestParam * createRESTParam(const std::string &asynName, rest_param_type_t restType,
+                              sys_t subSystem, const std::string &name, size_t arraySize = 0);
+  RestParam * createODRESTParam(const std::string &asynName, rest_param_type_t restType,
+                                sys_t subSystem, const std::string &name);
+  RestParam * mAPIVersion;
 
   RestParam * mConnected;
   RestParam * mNumImages;
+
+  RestParam * mProcesses;
+  RestParam * mFilePath;
+  RestParam * mFileName;
+  RestParam * mBlockSize;
+  RestParam * mBlocksPerFile;
+  RestParam * mEarliestVersion;
+  RestParam * mMasterDataset;
+  RestParam * mOffsetAdjustment;
+  RestParam * mAcquisitionID;
+  RestParam * mCloseFileTimeout;
+  RestParam * mStartCloseTimeout;
+  RestParam * mNumCapture;
+  RestParam * mCapture;
+  RestParam * mChunkBoundaryAlignment;
+  RestParam * mChunkBoundaryThreshold;
+  RestParam * mCompression;
+  RestParam * mDataType;
+
+  RestParam * mProcessConnected;
+  RestParam * mProcessRank;
+  RestParam * mWriting;
+  RestParam * mFullFileName;
+  RestParam * mNumCaptured;
+  RestParam * mNumExpected;
 
   RestParam * mAcqComplete;
   RestParam * mErrorMessage;
@@ -98,6 +147,9 @@ class OdinDetector : public OdinClient
   int mFileTemplate;
 
   asynStatus getStatus();
+  int configureImageDims();
+  int configureChunkDims();
+
 };
 
 #endif
