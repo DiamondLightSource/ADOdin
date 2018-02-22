@@ -147,9 +147,9 @@ int OdinDataDriver::createOdinDataParams()
   mCapture                = createODRESTParam(OdinHDF5Write, REST_P_BOOL,
                                               SSDataConfigHDF, "write");
   mChunkBoundaryAlignment = createODRESTParam(OdinHDF5ChunkBoundaryAlignment, REST_P_INT,
-                                              SSDataConfigHDF, "alignment_value");
+                                              SSDataConfigHDFProcess, "alignment_value");
   mChunkBoundaryThreshold = createODRESTParam(OdinHDF5ChunkBoundaryThreshold, REST_P_INT,
-                                              SSDataConfigHDF, "alignment_threshold");
+                                              SSDataConfigHDFProcess, "alignment_threshold");
   mDataType               = createODRESTParam(OdinHDF5Compression, REST_P_INT,
                                               SSDataConfigHDFDataset, mDatasetName + "/compression");
   mCompression            = createODRESTParam(NDDataTypeString, REST_P_INT,
@@ -167,6 +167,9 @@ int OdinDataDriver::createOdinDataParams()
                                               SSDataStatusHDF, "frames_written");
   mNumExpected            = createODRESTParam(OdinHDF5NumExpected, REST_P_INT,
                                               SSDataStatusHDF, "frames_max");
+
+  mCapture->setCommand();
+  mStartCloseTimeout->setCommand();
 
   createParam(OdinProcessInitialised, asynParamInt32, &mProcessInitialised);
   createParam(OdinHDF5NumCapturedSum, asynParamInt32, &mNumCapturedSum);
@@ -337,7 +340,12 @@ asynStatus OdinDataDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) {
     configureChunkDims();
   }
   else if (RestParam * p = this->getParamByIndex(function)) {
-    p->put(value);
+    if (function == mCapture->getIndex() || function == mStartCloseTimeout->getIndex()) {
+      p->put((bool) value);
+    }
+    else {
+      p->put(value);
+    }
   }
 
   if(function < mFirstParam) {
