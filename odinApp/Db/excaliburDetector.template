@@ -20,9 +20,26 @@ record(longin, "$(P)$(R)ArrayCounter_RBV")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_status/frames_acquired")
 }
 
+# Number of frames taken in current acquisition.
+record(ai, "$(P)$(R)ArrayRateRaw_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/frame_rate")
+}
+
+record(calc, "$(P)$(R)ArrayRate_RBV")
+{
+    field(INPA, "$(P)$(R)ArrayRateRaw_RBV NPP NMS")   # New rate value
+    field(CALC, "A")
+    field(PREC, "1" )
+    field(EGU,  "Hz" )
+    field(SCAN, "1 second")
+}
+
 record(bo, "$(P)$(R)ReadStatus")
 {
-    field(SCAN, "1 second")
+    field(SCAN, ".1 second")
 }
 
 # Operation mode.
