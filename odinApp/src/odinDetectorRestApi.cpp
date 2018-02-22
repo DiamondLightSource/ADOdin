@@ -52,24 +52,22 @@ int OdinDetectorRestAPI::stopAcquisition()
   return put(sysStr(SSDetectorCommand), STOP_ACQUISITION, "", EMPTY_JSON_STRING);
 }
 
-int OdinDetectorRestAPI::lookupAccessMode(
-        std::string subSystem, rest_access_mode_t &accessMode)
+int OdinDetectorRestAPI::lookupAccessMode(std::string subSystem, rest_access_mode_t& accessMode)
 {
     long ssEnum = std::distance(sysStr_, std::find(sysStr_, sysStr_ + SSCount, subSystem));
 
     switch(ssEnum)
     {
-      case SSDetector: case SSDataConfig: case SSDataConfigHDF: case SSDataConfigHDFProcess:
-      case SSDataConfigHDFDataset:
+      case SSDetector:
         accessMode = REST_ACC_RW;
         return EXIT_SUCCESS;
-      case SSRoot: case SSDetectorStatus:
+      case SSDetectorStatus:
         accessMode = REST_ACC_RO;
         return EXIT_SUCCESS;
       case SSDetectorCommand:
         accessMode = REST_ACC_WO;
         return EXIT_SUCCESS;
       default:
-        return EXIT_FAILURE;
+        return OdinRestAPI::lookupAccessMode(subSystem, accessMode);
     }
 }

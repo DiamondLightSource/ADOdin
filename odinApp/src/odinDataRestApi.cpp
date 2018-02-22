@@ -169,24 +169,20 @@ int OdinDataRestAPI::setChunkDims(const std::string& datasetName, std::vector<in
   return put(sysStr(SSDataConfigHDF), DATASET "/" + datasetName, dimsDict.str());
 }
 
-int OdinDataRestAPI::lookupAccessMode(
-        std::string subSystem, rest_access_mode_t &accessMode)
+int OdinDataRestAPI::lookupAccessMode(std::string subSystem, rest_access_mode_t& accessMode)
 {
     long ssEnum = std::distance(sysStr_, std::find(sysStr_, sysStr_ + SSCount, subSystem));
 
     switch(ssEnum)
     {
-      case SSDetector: case SSDataConfig: case SSDataConfigHDF: case SSDataConfigHDFProcess:
-      case SSDataConfigHDFDataset:
+      case SSDataConfig: case SSDataConfigDetector: case SSDataConfigHDF:
+      case SSDataConfigHDFProcess: case SSDataConfigHDFDataset:
         accessMode = REST_ACC_RW;
         return EXIT_SUCCESS;
-      case SSRoot: case SSDetectorStatus:
+      case SSDataStatus: case SSDataStatusHDF: case SSDataStatusDetector:
         accessMode = REST_ACC_RO;
         return EXIT_SUCCESS;
-      case SSDetectorCommand:
-        accessMode = REST_ACC_WO;
-        return EXIT_SUCCESS;
-        default:
-          return EXIT_FAILURE;
+      default:
+        return OdinRestAPI::lookupAccessMode(subSystem, accessMode);
     }
 }

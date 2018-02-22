@@ -71,3 +71,17 @@ std::string OdinRestAPI::sysStr(sys_t sys)
 {
   return sysStr_[sys];
 }
+
+int OdinRestAPI::lookupAccessMode(std::string subSystem, rest_access_mode_t& accessMode)
+{
+  long ssEnum = std::distance(sysStr_, std::find(sysStr_, sysStr_ + SSCount, subSystem));
+
+  switch(ssEnum)
+  {
+    case SSRoot: case SSAdapters:
+      accessMode = REST_ACC_RO;
+      return EXIT_SUCCESS;
+    default:
+      return EXIT_FAILURE;
+  }
+}

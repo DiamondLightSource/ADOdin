@@ -41,7 +41,7 @@ class OdinRestAPI : public RestAPI
 {
  public:
   std::string sysStr(sys_t sys);
-  int lookupAccessMode(std::string subSystem, rest_access_mode_t &accessMode) = 0;
+  int lookupAccessMode(std::string subSystem, rest_access_mode_t &accessMode);
 
   OdinRestAPI(const std::string& hostname,
               int port,
