@@ -33,8 +33,6 @@ public:
 protected:
   RestParam * createRESTParam(const std::string &asynName, rest_param_type_t restType,
                               sys_t subSystem, const std::string &name, size_t arraySize = 0);
-  RestParam * createODRESTParam(const std::string &asynName, rest_param_type_t restType,
-                                sys_t subSystem, const std::string &name);
 
   asynStatus dynamicParam(asynUser *pasynUser,
                           const char *drvInfo,
@@ -47,6 +45,7 @@ protected:
 
   int mFirstParam;
   RestParam * mAPIVersion;
+  RestParam * mErrorMessage;
 
 private:
   char mHostname[512];

@@ -73,8 +73,6 @@ int OdinDetector::createDetectorParams()
 
   // Create a parameter to store the acquisition complete status
   mAcqComplete = createRESTParam("ACQ_COMPLETE", REST_P_BOOL, SSDetector, "status/acquisition_complete");
-  // Create a parameter to store any error message from the Odin server
-  mErrorMessage = createRESTParam("ERR_MESSAGE", REST_P_STRING, SSDetector, "status/error");
 
   return 0;
 }

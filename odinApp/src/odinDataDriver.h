@@ -50,8 +50,9 @@ class OdinDataDriver : public OdinClient
 {
  public:
   OdinDataDriver(const char * portName, const char * serverHostname, int odinServerPort,
-                 const char * detectorName, int maxBuffers,
-                 size_t maxMemory, int priority, int stackSize);
+                 const char * datasetName, const char * fileWriterLibraryPath,
+                 const char * detectorName, const char * processPluginLibraryPath,
+                 int maxBuffers, size_t maxMemory, int priority, int stackSize);
 
   // These are the methods that we override from ADDriver
   virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
@@ -74,13 +75,13 @@ class OdinDataDriver : public OdinClient
   static void configureOdinDataProcess(const char * ipAddress, int readyPort, int releasePort,
                                        int metaPort);
   static std::vector<ODConfiguration> mODConfig;
-  static std::string mDatasetName;
   static void configureOdinData(const char * odinDataLibraryPath,
                                 const char * detectorName, const char * libraryPath,
                                 const char * datasetName);
-  static std::string mOdinDataLibraryPath;
+  static std::string mDatasetName;
+  static std::string mFileWriterLibraryPath;
   static std::string mProcessPluginName;
-  static std::string mDetectorLibraryPath;
+  static std::string mProcessPluginLibraryPath;
   static size_t mODCount;
 
  private:
@@ -90,9 +91,12 @@ class OdinDataDriver : public OdinClient
   int initialise(int index);
   int initialiseAll();
   std::vector<int> mInitialised;
-  int createDetectorParams();
+//  int createDetectorParams();
   int createOdinDataParams();
   bool mOdinDataParamsCreated;
+
+  RestParam * createODRESTParam(const std::string &asynName, rest_param_type_t restType,
+                                sys_t subSystem, const std::string &name);
 
   int mFirstParam;
 
@@ -127,7 +131,6 @@ class OdinDataDriver : public OdinClient
   RestParam * mNumExpected;
 
   RestParam * mAcqComplete;
-  RestParam * mErrorMessage;
 
   // Internal PVs
   int mImageHeight;

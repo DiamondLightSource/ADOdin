@@ -12,6 +12,7 @@ include $(TOP)/configure/CONFIG
 # databases, templates, substitutions like this
 
 DB += odinDetector.template
+DB += odinDataDriver.template
 DB += odinData.template
 DB += excaliburDetector.template
 DB += excalibur2FemStatus.template
