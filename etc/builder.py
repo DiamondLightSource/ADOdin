@@ -172,8 +172,8 @@ class OdinDataDriver(AsynPort):
                       "attached plugins", int))
 
     # Device attributes
-    LibFileList = []
-    DbdFileList = []
+    LibFileList = ['odinDetector']
+    DbdFileList = ['odinDetectorSupport']
 
     def Initialise(self):
         # Put the actual macros in the src boot script to be substituted by `make`
