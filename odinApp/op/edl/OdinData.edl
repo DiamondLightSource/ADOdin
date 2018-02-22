@@ -5,8 +5,8 @@ minor 0
 release 1
 x 2835
 y 257
-w 457
-h 446
+w 456
+h 293
 font "arial-bold-r-12.0"
 ctlFont "arial-bold-r-12.0"
 btnFont "arial-bold-r-12.0"
@@ -34,7 +34,7 @@ release 0
 x 5
 y 10
 w 445
-h 430
+h 275
 lineColor index 14
 fill
 fillColor index 3
@@ -85,7 +85,7 @@ major 4
 minor 1
 release 1
 x 15
-y 380
+y 225
 w 45
 h 20
 font "arial-bold-r-12.0"
@@ -104,7 +104,7 @@ major 10
 minor 0
 release 0
 x 15
-y 405
+y 250
 w 425
 h 25
 controlPv "$(P)$(R)Status"
@@ -170,44 +170,6 @@ useDisplayBg
 value {
   "Queued:"
 }
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 15
-y 90
-w 125
-h 25
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Latest Fan Frame:"
-}
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 150
-y 90
-w 50
-h 25
-controlPv "$(P)$(R)LatestFanFrame"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-10.0"
-fontAlign "center"
 endObjectProperties
 
 # (Static Text)
@@ -293,7 +255,7 @@ major 4
 minor 1
 release 1
 x 15
-y 125
+y 90
 w 125
 h 25
 font "arial-bold-r-12.0"
@@ -313,7 +275,7 @@ major 10
 minor 0
 release 0
 x 150
-y 125
+y 90
 w 50
 h 25
 controlPv "$(P)$(R)BuffersFree0"
@@ -351,7 +313,7 @@ major 4
 minor 1
 release 1
 x 15
-y 175
+y 120
 w 125
 h 25
 font "arial-bold-r-12.0"
@@ -371,7 +333,7 @@ major 10
 minor 0
 release 0
 x 150
-y 175
+y 120
 w 50
 h 25
 controlPv "$(P)$(R)ProcessRank_RBV"
@@ -390,7 +352,7 @@ major 10
 minor 0
 release 0
 x 150
-y 245
+y 190
 w 285
 h 25
 controlPv "$(P)$(R)FullFileName_RBV"
@@ -409,7 +371,7 @@ major 4
 minor 1
 release 1
 x 15
-y 245
+y 190
 w 125
 h 25
 font "arial-bold-r-12.0"
