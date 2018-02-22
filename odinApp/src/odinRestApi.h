@@ -5,7 +5,6 @@
 #include <string>
 #include <epicsMutex.h>
 #include <osiSock.h>
-#include <cstdint>
 
 #include "restApi.h"
 #include "restParam.h"

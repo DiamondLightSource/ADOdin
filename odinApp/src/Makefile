@@ -3,8 +3,6 @@ include $(TOP)/configure/CONFIG
 #----------------------------------------
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 
-CXXFLAGS += -std=c++0x
-
 CXXFLAGS += -O0
 
 LIBRARY_IOC = odinDetector
