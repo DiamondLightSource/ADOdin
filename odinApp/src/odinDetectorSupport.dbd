@@ -1,1 +1,4 @@
 registrar("odinDetectorRegister")
+registrar("odinDataDriverRegister")
+registrar("odinDataRegister")
+registrar("odinDataProcessRegister")

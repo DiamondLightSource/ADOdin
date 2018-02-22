@@ -1,9 +1,9 @@
 #ifndef EIGER_DETECTOR_H
 #define EIGER_DETECTOR_H
 
-#include "ADDriver.h"
+#include "OdinClient.h"
 #include "odinDataConfig.h"
-#include "odinRestApi.h"
+#include "odinDataRestApi.h"
 
 // Odin Server
 #define OdinRestAPIVersion             "ODIN_REST_API_VERSION"
@@ -46,12 +46,12 @@
 #define OdinHDF5Compression            "ODIN_HDF5_COMPRESSION"
 #define OdinHDF5FillValue              "ODIN_HDF5_FILL_VALUE"
 
-class OdinDetector : public ADDriver
+class OdinDataDriver : public OdinClient
 {
  public:
-  OdinDetector(const char * portName, const char * serverHostname, int odinServerPort,
-               const char * detectorName, int maxBuffers,
-               size_t maxMemory, int priority, int stackSize);
+  OdinDataDriver(const char * portName, const char * serverHostname, int odinServerPort,
+                 const char * detectorName, int maxBuffers,
+                 size_t maxMemory, int priority, int stackSize);
 
   // These are the methods that we override from ADDriver
   virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
@@ -85,8 +85,7 @@ class OdinDetector : public ADDriver
 
  private:
   char mHostname[512];
-  OdinRestAPI mAPI;
-  RestParamSet mParams;
+  OdinDataRestAPI mAPI;
 
   int initialise(int index);
   int initialiseAll();
@@ -97,10 +96,6 @@ class OdinDetector : public ADDriver
 
   int mFirstParam;
 
-  RestParam * createRESTParam(const std::string &asynName, rest_param_type_t restType,
-                              sys_t subSystem, const std::string &name, size_t arraySize = 0);
-  RestParam * createODRESTParam(const std::string &asynName, rest_param_type_t restType,
-                                sys_t subSystem, const std::string &name);
   RestParam * mAPIVersion;
 
   RestParam * mConnected;
