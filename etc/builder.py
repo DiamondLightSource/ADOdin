@@ -33,6 +33,48 @@ class OdinDetectorTemplate(AutoSubstitution):
     TemplateFile = "odinDetector.template"
 
 
+class OdinDetector(AsynPort):
+
+    """Create an odin detector"""
+
+    Dependencies = (ADCore, restClient)
+
+    # This tells xmlbuilder to use PORT instead of name as the row ID
+    UniqueName = "PORT"
+
+    _SpecificTemplate = OdinDetectorTemplate  # TODO: Remove and force subclassing
+
+    def __init__(self, PORT, SERVER, ODIN_SERVER_PORT, DETECTOR, BUFFERS = 0, MEMORY = 0, **args):
+        # Init the superclass (AsynPort)
+        self.__super.__init__(PORT)
+        # Update the attributes of self from the commandline args
+        self.__dict__.update(locals())
+        # Make an instance of our template
+        makeTemplateInstance(self._SpecificTemplate, locals(), args)
+
+    # __init__ arguments
+    ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
+        PORT=Simple("Port name for the detector", str),
+        SERVER=Simple("Server host name", str),
+        ODIN_SERVER_PORT=Simple("Odin server port", int),
+        DETECTOR=Simple("Name of detector", str),
+        BUFFERS=Simple("Maximum number of NDArray buffers to be created for plugin callbacks", int),
+        MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "
+                      "attached plugins", int))
+
+    # Device attributes
+    LibFileList = ['odinDetector']
+    DbdFileList = ['odinDetectorSupport']
+
+    def Initialise(self):
+        print "# odinDetectorConfig(const char * portName, const char * serverPort, " \
+              "int odinServerPort, const char * detectorName, " \
+              "int maxBuffers, size_t maxMemory, int priority, int stackSize)"
+        print "odinDetectorConfig(\"%(PORT)s\", \"%(SERVER)s\", " \
+              "%(ODIN_SERVER_PORT)d, \"%(DETECTOR)s\", " \
+              "%(BUFFERS)d, %(MEMORY)d)" % self.__dict__
+
+
 class OdinDataTemplate(AutoSubstitution):
     TemplateFile = "odinData.template"
 
@@ -45,7 +87,7 @@ class OdinData(Device):
     # Device attributes
     AutoInstantiate = True
 
-    def __init__(self, IP, READY, RELEASE, META, FILE_WRITER, DETECTOR=None):
+    def __init__(self, IP, READY, RELEASE, META):
         self.__super.__init__()
         # Update attributes with parameters
         self.__dict__.update(locals())
@@ -60,23 +102,25 @@ class OdinData(Device):
                           IP=Simple("IP address of server hosting processes", str),
                           READY=Simple("Port for Ready Channel", int),
                           RELEASE=Simple("Port for Release Channel", int),
-                          META=Simple("Port for Meta Channel", int),
-                          FILE_WRITER=Ident("FileWriterPlugin configuration", FileWriterPlugin),
-                          DETECTOR=Ident("Odin detector configuration", ExcaliburProcessPlugin))
+                          META=Simple("Port for Meta Channel", int))
 
 
-class OdinDetector(AsynPort):
+class OdinDataDriverTemplate(AutoSubstitution):
+    TemplateFile = "odinDataDriver.template"
 
-    """Create an odin detector"""
+
+class OdinDataDriver(AsynPort):
+
+    """Create an OdinData driver"""
 
     Dependencies = (ADCore, restClient, FileWriterPlugin, ExcaliburProcessPlugin)
 
     # This tells xmlbuilder to use PORT instead of name as the row ID
     UniqueName = "PORT"
 
-    _SpecificTemplate = OdinDetectorTemplate
+    _SpecificTemplate = OdinDataDriverTemplate
 
-    def __init__(self, PORT, SERVER, ODIN_SERVER_PORT, DATASET="data",
+    def __init__(self, PORT, SERVER, ODIN_SERVER_PORT, PROCESS_PLUGIN, FILE_WRITER, DATASET="data",
                  ODIN_DATA_1=None, ODIN_DATA_2=None, ODIN_DATA_3=None, ODIN_DATA_4=None,
                  ODIN_DATA_5=None, ODIN_DATA_6=None, ODIN_DATA_7=None, ODIN_DATA_8=None,
                  BUFFERS = 0, MEMORY = 0, **args):
@@ -96,21 +140,24 @@ class OdinDetector(AsynPort):
                 else:
                     odin_data.instantiated = True
                 self.ODIN_DATA_PROCESSES.append(
-                    OdinDataMeta(odin_data.IP, odin_data.READY, odin_data.RELEASE, odin_data.META,
-                                 odin_data.FILE_WRITER, DATASET, odin_data.DETECTOR)
+                    OdinDataMeta(odin_data.IP, odin_data.READY, odin_data.RELEASE, odin_data.META)
                 )
-                # Use some OdinDetector macros to instantiate an odinData.template
+                # Use some OdinDataDriver macros to instantiate an odinData.template
                 args["PORT"] = PORT
                 args["R"] = odin_data.R
                 OdinDataTemplate(**args)
 
-        self.DETECTOR_NAME = OdinDataMeta.DETECTOR_NAME
+        self.FILE_WRITER_MACRO = FILE_WRITER.MACRO
+        self.DETECTOR = PROCESS_PLUGIN.NAME
+        self.PROCESS_PLUGIN_MACRO = PROCESS_PLUGIN.MACRO
 
     # __init__ arguments
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
         PORT=Simple("Port name for the detector", str),
         SERVER=Simple("Server host name", str),
         ODIN_SERVER_PORT=Simple("Odin server port", int),
+        PROCESS_PLUGIN=Ident("Odin detector configuration", ExcaliburProcessPlugin),
+        FILE_WRITER=Ident("FileWriterPlugin configuration", FileWriterPlugin),
         DATASET=Simple("Name of Dataset", str),
         ODIN_DATA_1=Ident("OdinData process 1 configuration", OdinData),
         ODIN_DATA_2=Ident("OdinData process 2 configuration", OdinData),
@@ -125,47 +172,34 @@ class OdinDetector(AsynPort):
                       "attached plugins", int))
 
     # Device attributes
-    LibFileList = ['odinDetector']
-    DbdFileList = ['odinDetectorSupport']
+    LibFileList = []
+    DbdFileList = []
 
     def Initialise(self):
         # Put the actual macros in the src boot script to be substituted by `make`
-        print "# odinDataConfig(const char * odinDataLibraryPath, " \
-              "const char * detectorName, const char * detectorLibraryPath, " \
-              "const char * datasetName)"
-        print "odinDataConfig(\"$(%(ODIN_DATA_MACRO)s)\", " \
-              "\"%(DETECTOR_NAME)s\", \"$(%(DETECTOR_MACRO)s)\", " \
-              "\"%(DATASET)s\")" % OdinDataMeta.__dict__
         # Configure up to 8 OdinData processes
         print "# odinDataProcessConfig(const char * ipAddress, int readyPort, " \
               "int releasePort, int metaPort)"
         for process in self.ODIN_DATA_PROCESSES:
             print "odinDataProcessConfig(\"%(IP)s\", %(READY)d, " \
                   "%(RELEASE)d, %(META)d)" % process.__dict__
-        print "# odinDetectorConfig(const char * portName, const char * serverPort, " \
-              "int odinServerPort, const char * detectorName, " \
-              "int maxBuffers, size_t maxMemory, int priority, int stackSize)"
-        print "odinDetectorConfig(\"%(PORT)s\", \"%(SERVER)s\", " \
-              "%(ODIN_SERVER_PORT)d, \"%(DETECTOR_NAME)s\", " \
+
+        print "# odinDataDriverConfig(const char * portName, const char * serverPort," \
+              "int odinServerPort, " \
+              "const char * datasetName, const char * fileWriterLibraryPath, " \
+              "const char * detectorName, const char * processPluginLibraryPath, " \
+              "int maxBuffers, size_t maxMemory)"
+        print "odinDataDriverConfig(\"%(PORT)s\", \"%(SERVER)s\", " \
+              "%(ODIN_SERVER_PORT)d, " \
+              "\"%(DATASET)s\", \"$(%(FILE_WRITER_MACRO)s)\", " \
+              "\"%(DETECTOR)s\", \"$(%(PROCESS_PLUGIN_MACRO)s)\", " \
               "%(BUFFERS)d, %(MEMORY)d)" % self.__dict__
 
 
 class OdinDataMeta(object):
 
-    ODIN_DATA_MACRO = ""
-    DETECTOR_NAME = ""
-    DETECTOR_MACRO = ""
-    DATASET = ""
-
-    def __init__(self, ip, ready, release, meta, fw_plugin, dataset, process_plugin):
+    def __init__(self, ip, ready, release, meta):
         self.IP = ip
         self.READY = ready
         self.RELEASE = release
         self.META = meta
-
-        if not any([OdinDataMeta.ODIN_DATA_MACRO, OdinDataMeta.DATASET,
-                    OdinDataMeta.DETECTOR_NAME, OdinDataMeta.DETECTOR_MACRO]):
-            OdinDataMeta.ODIN_DATA_MACRO = fw_plugin.MACRO
-            OdinDataMeta.DATASET = dataset
-            OdinDataMeta.DETECTOR_NAME = process_plugin.NAME
-            OdinDataMeta.DETECTOR_MACRO = process_plugin.MACRO
