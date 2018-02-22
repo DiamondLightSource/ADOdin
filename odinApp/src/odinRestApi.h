@@ -11,6 +11,9 @@
 
 #include "odinDataConfig.h"
 
+// REST Strings
+#define API_VERSION              "0.1"
+
 // Subsystems
 typedef enum
 {
@@ -32,52 +35,24 @@ typedef enum
   SSCount
 } sys_t;
 
+
 class OdinRestAPI : public RestAPI
 {
  public:
-  const std::string mDetectorName;
-  const std::string mPluginName;
   std::string sysStr(sys_t sys);
   int lookupAccessMode(std::string subSystem, rest_access_mode_t &accessMode);
 
-  OdinRestAPI(const std::string& detectorName,
-              const std::string& hostname,
-              const std::string& pluginName,
+  OdinRestAPI(const std::string& hostname,
               int port,
               size_t numSockets=5);
 
   bool connected();
-  int connectDetector();
-  int disconnectDetector();
-  int startAcquisition();
-  int stopAcquisition();
+  virtual ~OdinRestAPI(){};
 
-  // OdinData Methods
-  // -- Initialisation
-  int configureSharedMemoryChannels(ODConfiguration config);
-  int loadPlugin(const std::string& modulePath,
-                 const std::string& name, const std::string& index, const std::string& library);
-  int loadProcessPlugin(const std::string& modulePath, const std::string& pluginIndex);
-  int loadFileWriterPlugin(const std::string& odinDataPath);
-  int connectPlugins(const std::string& index, const std::string& connection);
-  int connectToFrameReceiver(const std::string& index);
-  int connectToProcessPlugin(const std::string& index);
-  // -- Acquisition Control
-  int createFile(const std::string& name, const std::string& path);
-  int createDataset(const std::string& name);
-  int setImageDims(const std::string& datasetName, std::vector<int>& imageDims);
-  int setChunkDims(const std::string& datasetName, std::vector<int>& chunkDims);
-  int startWrite();
-  int stopWrite();
-
-  static const std::string FILE_WRITER_PLUGIN;
-
- private:
-  std::string sysStr_ [SSCount];
-  static const std::string CONNECT;
-  static const std::string START_ACQUISITION;
-  static const std::string STOP_ACQUISITION;
+protected:
+  std::string sysStr_[SSCount];
   static const std::string EMPTY_JSON_STRING;
+
 };
 
 #endif

@@ -1,0 +1,527 @@
+# Macros:
+#% macro, P, Device Prefix
+#% macro, R, Device Suffix
+#% macro, PORT, Asyn Port name
+#% macro, TIMEOUT, Timeout
+#% macro, ADDR, Asyn Port address
+
+# % gui, $(PORT), demand, File path,   $(P)$(R)FilePath
+# % gui, $(PORT), readback, File path RBV,   $(P)$(R)FilePath_RBV
+# % gui, $(PORT), readback, File path exists,   $(P)$(R)FilePathExists_RBV
+# % gui, $(PORT), demand, File name,   $(P)$(R)FileName
+# % gui, $(PORT), readback, File name,   $(P)$(R)FileName_RBV
+# % gui, $(PORT), demand, File format,   $(P)$(R)FileTemplate
+# % gui, $(PORT), readback, File format,   $(P)$(R)FileTemplate_RBV
+# % gui, $(PORT), readback, Write filename,   $(P)$(R)FullFileName_RBV
+# % gui, $(PORT), demand, N to capture,   $(P)$(R)NumCapture
+# % gui, $(PORT), readback, N to capture,   $(P)$(R)NumCapture_RBV
+# % gui, $(PORT), readback, N captured,   $(P)$(R)NumCaptured_RBV
+# % gui, $(PORT), demand, Rows per chunk,   $(P)$(R)NumRowChunks
+# % gui, $(PORT), readback, Rows per chunk,   $(P)$(R)NumRowChunks_RBV
+# % gui, $(PORT), demand, Cols per chunk,   $(P)$(R)NumColChunks
+# % gui, $(PORT), readback, Cols per chunk,   $(P)$(R)NumColChunks_RBV
+# % gui, $(PORT), demand, Frames per chunk,   $(P)$(R)NumFramesChunks
+# % gui, $(PORT), readback, Frames per chunk,   $(P)$(R)NumFramesChunks_RBV
+# % gui, $(PORT), demand, Boundary alignment,   $(P)$(R)BoundaryAlign
+# % gui, $(PORT), readback, Boundary alignment,   $(P)$(R)BoundaryAlign_RBV
+# % gui, $(PORT), demand, Boundary threshold,   $(P)$(R)BoundaryThreshold
+# % gui, $(PORT), readback, Boundary threshold,   $(P)$(R)BoundaryThreshold_RBV
+# % gui, $(PORT), demand, Flush on Nth frame,   $(P)$(R)NumFramesFlush
+# % gui, $(PORT), readback, Flush on Nth frame,   $(P)$(R)NumFramesFlush_RBV
+# % gui, $(PORT), enum, Compression scheme,   $(P)$(R)Compression
+# % gui, $(PORT), readback, Compression scheme,   $(P)$(R)Compression_RBV
+
+include "ADBase.template"
+include "NDFile.template"
+
+record(ao,"$(P)$(R)AcquireTime") {
+    field(VAL, "1")
+}
+
+record(ao,"$(P)$(R)AcquirePeriod") {
+    field(VAL, "1")
+}
+
+record(stringin, "$(P)$(R)RestAPIVersion_RBV")
+{
+   field(DTYP, "asynOctetRead")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_REST_API_VERSION")
+   field(VAL,  "Unknown")
+   field(SCAN, "I/O Intr")
+}
+
+record(bi, "$(P)$(R)Connected_RBV") {
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_CONNECTED")
+    field(ZNAM, "Disconnected")
+    field(ONAM, "Connected")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin, "$(P)$(R)NumProcesses_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP, "@asyn($(PORT),0,$(TIMEOUT))ODIN_NUM_PROCESSES")
+    field(PINI, "NO")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout, "$(P)$(R)BlockSize")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_BLOCK_SIZE")
+    field(VAL,  "1")
+    info(autosaveFields, "VAL")
+}
+
+record(longin, "$(P)$(R)BlockSize_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_BLOCK_SIZE")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout, "$(P)$(R)FrameOffset")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_OFFSET_ADJUSTMENT")
+    info(autosaveFields, "VAL")
+}
+
+record(longin, "$(P)$(R)FrameOffset_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_OFFSET_ADJUSTMENT")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout, "$(P)$(R)BlocksPerFile")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_BLOCKS_PER_FILE")
+    info(autosaveFields, "VAL")
+}
+
+record(longin, "$(P)$(R)BlocksPerFile_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_BLOCKS_PER_FILE")
+    field(SCAN, "I/O Intr")
+}
+
+record(bo, "$(P)$(R)EarliestHDF5Version")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_EARLIEST_VERSION")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+    info(autosaveFields, "VAL")
+}
+
+record(bi, "$(P)$(R)EarliestHDF5Version_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_EARLIEST_VERSION")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+    field(SCAN, "I/O Intr")
+}
+
+record(waveform, "$(P)$(R)AcquisitionID")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_ACQUISITION_ID")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    info(autosaveFields, "VAL")
+}
+
+record(waveform, "$(P)$(R)AcquisitionID_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_ACQUISITION_ID")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout, "$(P)$(R)CloseFileTimeout")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CLOSE_FILE_TIMEOUT")
+    info(autosaveFields, "VAL")
+}
+
+record(longin, "$(P)$(R)CloseFileTimeout_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CLOSE_FILE_TIMEOUT")
+    field(SCAN, "I/O Intr")
+}
+
+record(bo, "$(P)$(R)StartCloseTimeout")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_START_CLOSE_TIMEOUT")
+    field(ZNAM, "Done")
+    field(ONAM, "Timeout")
+}
+
+### HDF5 records to match NDFileHDF5 plugin API
+
+record(mbbo, "$(P)$(R)FileFormat")
+{
+    field(ZRST, "HDF5")
+    field(ZRVL, "0")
+    field(ONST, "Invalid")
+    field(ONVL, "1")
+}
+
+record(mbbi, "$(P)$(R)FileFormat_RBV")
+{
+    field(ZRST, "HDF5")
+    field(ZRVL, "0")
+    field(ONST, "Undefined")
+    field(ONVL, "1")
+}
+
+# File path
+record(waveform, "$(P)$(R)FilePath")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_PATH")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    info(autosaveFields, "VAL")
+}
+
+record(waveform, "$(P)$(R)FilePath_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_PATH")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+}
+
+record(bi, "$(P)$(R)FilePathExists_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_PATH_EXISTS")
+    field(ZNAM, "No")
+    field(ZSV,  "MAJOR")
+    field(ONAM, "Yes")
+    field(OSV,  "NO_ALARM")
+    field(SCAN, "I/O Intr")
+}
+
+# File template
+record(waveform, "$(P)$(R)FileTemplate")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_TEMPLATE")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    info(autosaveFields, "VAL")
+}
+
+record(waveform, "$(P)$(R)FileTemplate_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_TEMPLATE")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+}
+
+# Full filename, including path
+record(waveform, "$(P)$(R)FullFileName_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FULL_FILE_NAME")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+}
+
+# Capture data
+# -- Map capture demand to 'write' command RestParam
+record(busy, "$(P)$(R)Capture")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_WRITE")
+    field(ZNAM, "Done")
+    field(ONAM, "Capture")
+}
+
+# -- Map capture readback to && of individual processes writing state
+record(bi, "$(P)$(R)Capture_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_WRITING_ANY")
+    field(ZNAM, "Done")
+    field(ZSV,  "NO_ALARM")
+    field(ONAM, "Capturing")
+    field(OSV,  "NO_ALARM")
+    field(SCAN, "I/O Intr")
+}
+
+record(busy, "$(P)$(R)StartTimeout")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_START_CLOSE_TIMEOUT")
+    field(ZNAM, "Done")
+    field(ONAM, "Capture")
+}
+
+record(longout, "$(P)$(R)NumCapture")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_NUM_CAPTURE")
+    field(VAL,  "1")
+    info(autosaveFields, "VAL")
+}
+
+record(longin, "$(P)$(R)NumCapture_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_NUM_CAPTURE")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin, "$(P)$(R)NumCaptured_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_NUM_CAPTURED_SUM")
+    field(SCAN, "I/O Intr")
+}
+
+# Dataset Dimensions
+record(longout, "$(P)$(R)ImageWidth")
+{
+    field(DTYP, "asynInt32")
+    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_IMAGE_WIDTH")
+    field(PINI, "YES")
+    info(autosaveFields, "VAL")
+}
+
+record(longin, "$(P)$(R)ImageWidth_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_IMAGE_WIDTH")
+    field(PINI, "NO")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout, "$(P)$(R)ImageHeight")
+{
+    field(DTYP, "asynInt32")
+    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_IMAGE_HEIGHT")
+    field(PINI, "YES")
+    info(autosaveFields, "VAL")
+}
+
+record(longin, "$(P)$(R)ImageHeight_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_IMAGE_HEIGHT")
+    field(PINI, "NO")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout, "$(P)$(R)NumColChunks")
+{
+    field(DTYP, "asynInt32")
+    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_WIDTH")
+    field(PINI, "YES")
+    info(autosaveFields, "VAL")
+}
+
+record(longin, "$(P)$(R)NumColChunks_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_WIDTH")
+    field(PINI, "NO")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout, "$(P)$(R)NumRowChunks")
+{
+    field(DTYP, "asynInt32")
+    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_HEIGHT")
+    field(PINI, "YES")
+    info(autosaveFields, "VAL")
+}
+
+record(longin, "$(P)$(R)NumRowChunks_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_HEIGHT")
+    field(PINI, "NO")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout, "$(P)$(R)NumFramesChunks")
+{
+    field(DTYP, "asynInt32")
+    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_DEPTH")
+    field(PINI, "YES")
+    info(autosaveFields, "VAL")
+}
+
+record(longin, "$(P)$(R)NumFramesChunks_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_DEPTH")
+    field(PINI, "NO")
+    field(SCAN, "I/O Intr")
+}
+
+# File Properties
+record(longout, "$(P)$(R)BoundaryAlign")
+{
+    field(DTYP, "asynInt32")
+    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_BOUNDARY_ALIGNMENT")
+    field(PINI, "YES")
+    field(VAL, "1")
+    field(EGU, "bytes")
+    info(autosaveFields, "VAL")
+}
+
+record(longin, "$(P)$(R)BoundaryAlign_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_BOUNDARY_ALIGNMENT")
+    field(PINI, "NO")
+    field(SCAN, "I/O Intr")
+    field(EGU, "bytes")
+}
+
+record(longout, "$(P)$(R)BoundaryThreshold")
+{
+    field(DTYP, "asynInt32")
+    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_BOUNDARY_THRESHOLD")
+    field(PINI, "YES")
+    field(VAL, "1")
+    field(EGU, "bytes")
+    info(autosaveFields, "VAL")
+}
+
+record(longin, "$(P)$(R)BoundaryThreshold_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_CHUNK_BOUNDARY_THRESHOLD")
+    field(PINI, "NO")
+    field(SCAN, "I/O Intr")
+    field(EGU, "bytes")
+}
+
+record(longout, "$(P)$(R)NumFramesFlush")
+{
+    field(DTYP, "asynInt32")
+    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_NUM_FRAMES_FLUSH")
+    field(PINI, "NO")
+    info(autosaveFields, "VAL")
+}
+
+record(longin, "$(P)$(R)NumFramesFlush_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_NUM_FRAMES_FLUSH")
+    field(PINI, "NO")
+    field(SCAN, "I/O Intr")
+}
+
+record(mbbo, "$(P)$(R)Compression")
+{
+    field(DTYP, "asynInt32")
+    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_COMPRESSION")
+    field(PINI, "YES")
+    field(ZRST, "None")
+    field(ZRVL, "0")
+    field(ONST, "LZ4")
+    field(ONVL, "1")
+    field(TWST, "BSLZ4")
+    field(TWVL, "2")
+    info(autosaveFields, "VAL")
+}
+
+record(mbbi, "$(P)$(R)Compression_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_COMPRESSION")
+    field(SCAN, "I/O Intr")
+    field(ZRST, "None")
+    field(ZRVL, "0")
+    field(ONST, "LZ4")
+    field(ONVL, "1")
+    field(TWST, "BSLZ4")
+    field(TWVL, "2")
+}
+
+# Reduce data type options set in NDArrayBase
+record(mbbo, "$(P)$(R)DataType")
+{
+    field(ZRST, "UInt8")
+    field(ZRVL, "0")
+    field(ONST, "UInt16")
+    field(ONVL, "1")
+    field(TWST, "UInt32")
+    field(TWVL, "2")
+    field(THST, "UInt64")
+    field(THVL, "3")
+    field(FRST, "")
+    field(FRVL, "")
+    field(FVST, "")
+    field(FVVL, "")
+    field(SXST, "")
+    field(SXVL, "")
+    field(SVST, "")
+    field(SVVL, "")
+}
+
+record(mbbi, "$(P)$(R)DataType_RBV")
+{
+    field(ZRST, "UInt8")
+    field(ZRVL, "0")
+    field(ONST, "UInt16")
+    field(ONVL, "1")
+    field(TWST, "UInt32")
+    field(TWVL, "2")
+    field(THST, "UInt64")
+    field(THVL, "3")
+    field(FRST, "")
+    field(FRVL, "")
+    field(FVST, "")
+    field(FVVL, "")
+    field(SXST, "")
+    field(SXVL, "")
+    field(SVST, "")
+    field(SVVL, "")
+}
+
+record(ao, "$(P)$(R)FillValue")
+{
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILL_VALUE")
+    field(PINI, "NO")
+    field(PREC, "1")
+}
+
+record(ai, "$(P)$(R)FillValue_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILL_VALUE")
+    field(PINI, "YES")
+    field(SCAN, "I/O Intr")
+    field(PREC, "1")
+}
