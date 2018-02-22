@@ -805,7 +805,7 @@ record(bo, "$(P)$(R)TestPulseEnable")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_ENABLETESTPULSES")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/test_pulse_enable")
     field(PINI, "1")
     field(ZNAM, "Off")
     field(ONAM, "On")
@@ -814,7 +814,7 @@ record(bi, "$(P)$(R)TestPulseEnable_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_ENABLETESTPULSES")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/test_pulse_enable")
     field(ZNAM, "Off")
     field(ONAM, "On")
 }
