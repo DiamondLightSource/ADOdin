@@ -7,8 +7,6 @@
 
 // Odin Server
 #define OdinRestAPIVersion             "ODIN_REST_API_VERSION"
-// Detector
-#define OdinDetectorConnected          "ODIN_DETECTOR_CONNECTED"
 // OdinData
 #define OdinNumProcesses               "ODIN_NUM_PROCESSES"
 #define OdinProcessRank                "ODIN_PROCESS_RANK"
