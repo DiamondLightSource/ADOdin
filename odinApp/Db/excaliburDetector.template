@@ -16,7 +16,7 @@ record(longin, "$(P)$(R)ArrayCounter_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_status/frames_acquired")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_status/frames_acquired")
 }
 
 record(bo, "$(P)$(R)ReadStatus")
