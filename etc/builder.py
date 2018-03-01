@@ -1,5 +1,5 @@
 from iocbuilder import AutoSubstitution, Device
-from iocbuilder.arginfo import makeArgInfo, Simple, Ident
+from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.asyn import AsynPort
 from iocbuilder.modules.ADCore import ADCore, ADBaseTemplate, makeTemplateInstance
 from iocbuilder.modules.restClient import restClient
@@ -7,27 +7,8 @@ from iocbuilder.modules.OdinData import FileWriterPlugin
 from iocbuilder.modules.ExcaliburDetector import ExcaliburProcessPlugin
 
 
-__all__ = ["OdinDetector", "OdinData"]
+__all__ = ["ExcaliburDetector", "OdinDetector", "OdinData"]
 
-
-class excaliburDetectorTemplate(AutoSubstitution):
-    TemplateFile = "excaliburDetector.template"
-
-class excaliburFemStatusTemplate(AutoSubstitution):
-    WarnMacros = False
-    TemplateFile = "excaliburFemStatus.template"
-
-def add_excalibur_fem_status(cls):
-    """Convenience function to add excaliburFemStatusTemplate attributes to a class that
-    includes it via an msi include statement rather than verbatim"""
-    cls.Arguments = excaliburFemStatusTemplate.Arguments + [x for x in cls.Arguments if x not in excaliburFemStatusTemplate.Arguments]
-    cls.ArgInfo = excaliburFemStatusTemplate.ArgInfo + cls.ArgInfo.filtered(without=excaliburFemStatusTemplate.ArgInfo.Names())
-    cls.Defaults.update(excaliburFemStatusTemplate.Defaults)
-    return cls
-
-@add_excalibur_fem_status
-class excalibur2FemStatusTemplate(AutoSubstitution):
-    TemplateFile = "excalibur2FemStatus.template"
 
 class OdinDetectorTemplate(AutoSubstitution):
     TemplateFile = "odinDetector.template"
@@ -73,6 +54,79 @@ class OdinDetector(AsynPort):
         print "odinDetectorConfig(\"%(PORT)s\", \"%(SERVER)s\", " \
               "%(ODIN_SERVER_PORT)d, \"%(DETECTOR)s\", " \
               "%(BUFFERS)d, %(MEMORY)d)" % self.__dict__
+
+
+class ExcaliburDetectorTemplate(AutoSubstitution):
+    TemplateFile = "excaliburDetector.template"
+
+
+class ExcaliburFemStatusTemplate(AutoSubstitution):
+    WarnMacros = False
+    TemplateFile = "excaliburFemStatus.template"
+
+
+def add_excalibur_fem_status(cls):
+    """Convenience function to add excaliburFemStatusTemplate attributes to a class that
+    includes it via an msi include statement rather than verbatim"""
+    cls.Arguments = ExcaliburFemStatusTemplate.Arguments + \
+                    [x for x in cls.Arguments if x not in ExcaliburFemStatusTemplate.Arguments]
+    cls.ArgInfo = ExcaliburFemStatusTemplate.ArgInfo + cls.ArgInfo.filtered(
+        without=ExcaliburFemStatusTemplate.ArgInfo.Names())
+    cls.Defaults.update(ExcaliburFemStatusTemplate.Defaults)
+    return cls
+
+
+@add_excalibur_fem_status
+class Excalibur2FemStatusTemplate(AutoSubstitution):
+    TemplateFile = "excalibur2FemStatus.template"
+
+
+class ExcaliburDetector(OdinDetector):
+
+    """Create an Excalibur detector"""
+
+    DETECTOR = "excalibur"
+    SENSOR_OPTIONS = {  # (AutoSubstitution Template, Number of FEMs)
+        "1M": (Excalibur2FemStatusTemplate, 2),
+        "3M": (None, 6)
+    }
+
+    # This tells xmlbuilder to use PORT instead of name as the row ID
+    UniqueName = "PORT"
+
+    _SpecificTemplate = ExcaliburDetectorTemplate
+
+    def __init__(self, PORT, SERVER, ODIN_SERVER_PORT, SENSOR, BUFFERS = 0, MEMORY = 0, **args):
+        # Init the superclass (OdinDetector)
+        self.__super.__init__(PORT, SERVER, ODIN_SERVER_PORT, self.DETECTOR,
+                              BUFFERS, MEMORY, **args)
+        # Update the attributes of self from the commandline args
+        self.__dict__.update(locals())
+        # Make an instance of our template
+        makeTemplateInstance(self._SpecificTemplate, locals(), args)
+
+        assert SENSOR in self.SENSOR_OPTIONS.keys()
+        # Instantiate template corresponding to SENSOR, passing through some of own args
+        status_template = self.SENSOR_OPTIONS[SENSOR][0]
+        status_args = {
+            "P": args["P"],
+            "R": args["R"] + ":F",
+            "ADDRESS": "0",
+            "PORT": PORT,
+            "TIMEOUT": args["TIMEOUT"],
+            "TOTAL": self.SENSOR_OPTIONS[SENSOR][1]
+        }
+        status_template(**status_args)
+
+    # __init__ arguments
+    ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
+        PORT=Simple("Port name for the detector", str),
+        SERVER=Simple("Server host name", str),
+        ODIN_SERVER_PORT=Simple("Odin server port", int),
+        SENSOR=Choice("Sensor type", ["1M", "3M"]),
+        BUFFERS=Simple("Maximum number of NDArray buffers to be created for plugin callbacks", int),
+        MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "
+                      "attached plugins", int))
 
 
 class OdinDataTemplate(AutoSubstitution):
