@@ -50,14 +50,6 @@ record(stringin, "$(P)$(R)RestAPIVersion_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(bi, "$(P)$(R)Connected_RBV") {
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_CONNECTED")
-    field(ZNAM, "Disconnected")
-    field(ONAM, "Connected")
-    field(SCAN, "I/O Intr")
-}
-
 record(longin, "$(P)$(R)NumProcesses_RBV")
 {
     field(DTYP, "asynInt32")
