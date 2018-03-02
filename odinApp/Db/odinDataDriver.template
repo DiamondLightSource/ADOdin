@@ -31,6 +31,9 @@
 # % gui, $(PORT), enum, Compression scheme,   $(P)$(R)Compression
 # % gui, $(PORT), readback, Compression scheme,   $(P)$(R)Compression_RBV
 
+# This associates the template with an edm screen
+# % gui, $(PORT), edmtab, OdinDataHDF5.edl, P=$(P),R=$(R)
+
 include "ADBase.template"
 include "NDFile.template"
 
@@ -48,14 +51,6 @@ record(stringin, "$(P)$(R)RestAPIVersion_RBV")
    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_REST_API_VERSION")
    field(VAL,  "Unknown")
    field(SCAN, "I/O Intr")
-}
-
-record(bi, "$(P)$(R)Connected_RBV") {
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_CONNECTED")
-    field(ZNAM, "Disconnected")
-    field(ONAM, "Connected")
-    field(SCAN, "I/O Intr")
 }
 
 record(longin, "$(P)$(R)NumProcesses_RBV")
