@@ -10,6 +10,7 @@
 # This associates the template with an edm screen
 # % gui, $(PORT), edmtab, excaliburMain.edl, P=$(P),R=$(R)
 
+include "ADBase.template"
 
 # Number of frames taken in current acquisition.
 record(longin, "$(P)$(R)ArrayCounter_RBV")
