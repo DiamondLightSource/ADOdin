@@ -168,6 +168,17 @@ record(bo, "$(P)$(R)StartCloseTimeout")
     field(ONAM, "Timeout")
 }
 
+record(bi, "$(P)$(R)TimeoutActive_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_TIMEOUT_ACTIVE_ANY")
+    field(ZNAM, "Done")
+    field(ZSV,  "NO_ALARM")
+    field(ONAM, "Timeout Active")
+    field(OSV,  "NO_ALARM")
+    field(SCAN, "I/O Intr")
+}
+
 ### HDF5 records to match NDFileHDF5 plugin API
 
 record(mbbo, "$(P)$(R)FileFormat")

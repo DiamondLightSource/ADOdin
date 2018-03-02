@@ -302,9 +302,9 @@ major 4
 minor 1
 release 0
 x 15
-y 150
-w 70
-h 35
+y 155
+w 65
+h 30
 fgColor index 19
 onColor index 4
 offColor index 3
@@ -325,10 +325,10 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 105
-y 155
-w 25
-h 25
+x 90
+y 160
+w 20
+h 20
 controlPv "$(P)$(R)Capture_RBV"
 lineColor index 14
 onColor index 15
@@ -343,10 +343,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 225
-y 150
-w 70
-h 35
+x 230
+y 155
+w 65
+h 30
 fgColor index 21
 onColor index 4
 offColor index 3
@@ -432,10 +432,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 150
-y 150
-w 70
-h 35
+x 120
+y 155
+w 65
+h 30
 fgColor index 22
 onColor index 4
 offColor index 3
@@ -470,5 +470,23 @@ smartRefresh
 useHexPrefix
 newPos
 objType "controls"
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 195
+y 160
+w 20
+h 20
+controlPv "$(P)$(R)TimeoutActive_RBV"
+lineColor index 14
+onColor index 15
+offColor index 19
+lineWidth 2
+numBits 1
 endObjectProperties
 

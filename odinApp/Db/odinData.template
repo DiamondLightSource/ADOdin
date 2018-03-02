@@ -44,6 +44,15 @@ record(bi, "$(P)$(R)Writing_RBV")
     field(SCAN, "I/O Intr")
 }
 
+record(bi, "$(P)$(R)TimeoutActive_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_TIMEOUT_ACTIVE")
+    field(ZNAM, "Done")
+    field(ONAM, "Timeout Active")
+    field(SCAN, "I/O Intr")
+}
+
 # Full filename, including path
 record(waveform, "$(P)$(R)FullFileName_RBV")
 {

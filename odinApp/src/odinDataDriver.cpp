@@ -162,6 +162,8 @@ int OdinDataDriver::createOdinDataParams()
                                               SSDataConfigHDFProcess, "rank");
   mWriting                = createODRESTParam(OdinHDF5Writing, REST_P_BOOL,
                                               SSDataStatusHDF, "writing");
+  mTimeoutActive          = createODRESTParam(OdinHDF5TimeoutActive, REST_P_BOOL,
+                                              SSDataStatusHDF, "timeout_active");
   mFullFileName           = createODRESTParam(OdinHDF5FullFileName, REST_P_STRING,
                                               SSDataStatusHDF, "file_name");
   mNumCaptured            = createODRESTParam(OdinHDF5NumCaptured, REST_P_INT,
@@ -172,15 +174,16 @@ int OdinDataDriver::createOdinDataParams()
   mCapture->setCommand();
   mStartCloseTimeout->setCommand();
 
-  createParam(OdinProcessInitialised, asynParamInt32, &mProcessInitialised);
-  createParam(OdinHDF5NumCapturedSum, asynParamInt32, &mNumCapturedSum);
-  createParam(OdinHDF5WritingAny,     asynParamInt32, &mWritingAny);
-  createParam(OdinHDF5FileTemplate,   asynParamOctet, &mFileTemplate);
-  createParam(OdinHDF5ImageHeight,    asynParamInt32, &mImageHeight);
-  createParam(OdinHDF5ImageWidth,     asynParamInt32, &mImageWidth);
-  createParam(OdinHDF5ChunkDepth,     asynParamInt32, &mChunkDepth);
-  createParam(OdinHDF5ChunkHeight,    asynParamInt32, &mChunkHeight);
-  createParam(OdinHDF5ChunkWidth,     asynParamInt32, &mChunkWidth);
+  createParam(OdinProcessInitialised,   asynParamInt32, &mProcessInitialised);
+  createParam(OdinHDF5NumCapturedSum,   asynParamInt32, &mNumCapturedSum);
+  createParam(OdinHDF5WritingAny,       asynParamInt32, &mWritingAny);
+  createParam(OdinHDF5TimeoutActiveAny, asynParamInt32, &mTimeoutActiveAny);
+  createParam(OdinHDF5FileTemplate,     asynParamOctet, &mFileTemplate);
+  createParam(OdinHDF5ImageHeight,      asynParamInt32, &mImageHeight);
+  createParam(OdinHDF5ImageWidth,       asynParamInt32, &mImageWidth);
+  createParam(OdinHDF5ChunkDepth,       asynParamInt32, &mChunkDepth);
+  createParam(OdinHDF5ChunkHeight,      asynParamInt32, &mChunkHeight);
+  createParam(OdinHDF5ChunkWidth,       asynParamInt32, &mChunkWidth);
 
   setIntegerParam(mImageHeight, 512);
   setIntegerParam(mImageWidth,  2048);
@@ -234,6 +237,11 @@ asynStatus OdinDataDriver::getStatus()
     std::vector<bool> writing(mODCount);
     mWriting->get(writing);
     setIntegerParam(mWritingAny, std::accumulate(writing.begin(), writing.end(), 0) == 0 ? 0 : 1);
+
+    std::vector<bool> timeoutActive(mODCount);
+    mTimeoutActive->get(timeoutActive);
+    setIntegerParam(mTimeoutActiveAny,
+                    std::accumulate(timeoutActive.begin(), timeoutActive.end(), 0) == 0 ? 0 : 1);
 
     bool connected;
     for (int index = 0; index != (int) mODConfig.size(); ++index) {

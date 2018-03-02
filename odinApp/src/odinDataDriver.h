@@ -21,6 +21,8 @@
 #define OdinHDF5AcquisitionID          "ODIN_HDF5_ACQUISITION_ID"
 #define OdinHDF5CloseFileTimeout       "ODIN_HDF5_CLOSE_FILE_TIMEOUT"
 #define OdinHDF5StartCloseTimeout      "ODIN_HDF5_START_CLOSE_TIMEOUT"
+#define OdinHDF5TimeoutActive          "ODIN_HDF5_TIMEOUT_ACTIVE"
+#define OdinHDF5TimeoutActiveAny       "ODIN_HDF5_TIMEOUT_ACTIVE_ANY"
 #define OdinHDF5FilePath               "ODIN_HDF5_FILE_PATH"
 #define OdinHDF5FilePathExists         "ODIN_HDF5_FILE_PATH_EXISTS"
 #define OdinHDF5FileName               "ODIN_HDF5_FILE_NAME"
@@ -124,6 +126,7 @@ class OdinDataDriver : public OdinClient
   RestParam * mProcessConnected;
   RestParam * mProcessRank;
   RestParam * mWriting;
+  RestParam * mTimeoutActive;
   RestParam * mFullFileName;
   RestParam * mNumCaptured;
   RestParam * mNumExpected;
@@ -140,6 +143,7 @@ class OdinDataDriver : public OdinClient
   int mProcessInitialised;
   int mNumCapturedSum;
   int mWritingAny;
+  int mTimeoutActiveAny;
   int mFileTemplate;
 
   asynStatus getStatus();
