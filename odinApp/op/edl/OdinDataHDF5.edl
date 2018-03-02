@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2376
-y 868
+x 1957
+y 272
 w 386
 h 202
 font "arial-medium-r-12.0"
@@ -442,7 +442,7 @@ offColor index 3
 topShadowColor index 1
 botShadowColor index 11
 controlPv "$(P)$(R)StartTimeout"
-pressValue "0"
+pressValue "1"
 onLabel "Timeout"
 offLabel "Timeout"
 3d
