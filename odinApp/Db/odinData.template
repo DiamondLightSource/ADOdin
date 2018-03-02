@@ -8,6 +8,9 @@
 # % gui, $(PORT), readback, Write filename,   $(P)$(R)FullFileName_RBV
 # % gui, $(PORT), readback, N captured,   $(P)$(R)NumCaptured_RBV
 
+# This associates the template with an edm screen
+# % gui, $(PORT), edmtab, OdinData.edl, P=$(P),R=$(R)
+
 record(longin, "$(P)$(R)ProcessConnected_RBV")
 {
     field(DTYP, "asynInt32")
