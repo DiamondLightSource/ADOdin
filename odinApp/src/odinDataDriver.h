@@ -26,6 +26,7 @@
 #define OdinHDF5FilePath               "ODIN_HDF5_FILE_PATH"
 #define OdinHDF5FilePathExists         "ODIN_HDF5_FILE_PATH_EXISTS"
 #define OdinHDF5FileName               "ODIN_HDF5_FILE_NAME"
+#define OdinHDF5FileExtension          "ODIN_HDF5_FILE_EXTENSION"
 #define OdinHDF5FileTemplate           "ODIN_HDF5_FILE_TEMPLATE"
 #define OdinHDF5FullFileName           "ODIN_HDF5_FULL_FILE_NAME"
 #define OdinHDF5NumCapture             "ODIN_HDF5_NUM_CAPTURE"
@@ -108,6 +109,7 @@ class OdinDataDriver : public OdinClient
   RestParam * mProcesses;
   RestParam * mFilePath;
   RestParam * mFileName;
+  RestParam * mFileExtension;
   RestParam * mBlockSize;
   RestParam * mBlocksPerFile;
   RestParam * mEarliestVersion;

@@ -126,6 +126,8 @@ int OdinDataDriver::createOdinDataParams()
                                               SSDataConfigHDF, "file/path");
   mFileName               = createODRESTParam(NDFileNameString, REST_P_STRING,
                                               SSDataConfigHDF, "file/name");
+  mFileExtension          = createODRESTParam(OdinHDF5FileExtension, REST_P_STRING,
+                                              SSDataConfigHDF, "file/extension");
   mBlockSize              = createODRESTParam(OdinHDF5BlockSize, REST_P_INT,
                                               SSDataConfigHDFProcess, "frames_per_block");
   mBlocksPerFile          = createODRESTParam(OdinHDF5BlocksPerFile, REST_P_INT,
