@@ -30,7 +30,7 @@ OdinClient::OdinClient(const char * portName,
                        size_t maxMemory,
                        int priority,
                        int stackSize) :
-  ADDriver(portName, 2, 0, maxBuffers, maxMemory,
+  ADDriver(portName, 10, 0, maxBuffers, maxMemory,
            asynEnumMask, asynEnumMask,    /* Add Enum interface */
            ASYN_CANBLOCK |                /* ASYN_CANBLOCK=1 */
            ASYN_MULTIDEVICE,          /* ASYN_MULTIDEVICE=1 */
