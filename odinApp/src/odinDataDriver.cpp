@@ -152,9 +152,9 @@ int OdinDataDriver::createOdinDataParams()
                                               SSDataConfigHDFProcess, "alignment_value");
   mChunkBoundaryThreshold = createODRESTParam(OdinHDF5ChunkBoundaryThreshold, REST_P_INT,
                                               SSDataConfigHDFProcess, "alignment_threshold");
-  mDataType               = createODRESTParam(OdinHDF5Compression, REST_P_INT,
+  mDataType               = createODRESTParam(NDDataTypeString, REST_P_INT,
                                               SSDataConfigHDFDataset, mDatasetName + "/datatype");
-  mCompression            = createODRESTParam(NDDataTypeString, REST_P_INT,
+  mCompression            = createODRESTParam(OdinHDF5Compression, REST_P_INT,
                                               SSDataConfigHDFDataset, mDatasetName + "/compression");
 
 
