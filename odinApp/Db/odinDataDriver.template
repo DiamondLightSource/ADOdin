@@ -228,21 +228,58 @@ record(bi, "$(P)$(R)FilePathExists_RBV")
     field(SCAN, "I/O Intr")
 }
 
-# File template
-record(waveform, "$(P)$(R)FileTemplate")
+record(waveform, "$(P)$(R)FileName")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_TEMPLATE")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_NAME")
     field(FTVL, "CHAR")
     field(NELM, "256")
     info(autosaveFields, "VAL")
 }
 
-record(waveform, "$(P)$(R)FileTemplate_RBV")
+record(waveform, "$(P)$(R)FileName_RBV")
 {
     field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_TEMPLATE")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_NAME")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+}
+
+# File template
+record(waveform, "$(P)$(R)FileTemplate")
+{
+     field(PINI, "YES")
+     field(DTYP, "asynOctetWrite")
+     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_TEMPLATE")
+     field(FTVL, "CHAR")
+     field(NELM, "256")
+     info(autosaveFields, "VAL")
+}
+ 
+record(waveform, "$(P)$(R)FileTemplate_RBV")
+{
+     field(DTYP, "asynOctetRead")
+     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_TEMPLATE")
+     field(FTVL, "CHAR")
+     field(NELM, "256")
+     field(SCAN, "I/O Intr")
+ }
+ 
+record(waveform, "$(P)$(R)FileExtension")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_EXTENSION")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+}
+
+record(waveform, "$(P)$(R)FileExtension_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_EXTENSION")
     field(FTVL, "CHAR")
     field(NELM, "256")
     field(SCAN, "I/O Intr")
@@ -515,19 +552,19 @@ record(mbbi, "$(P)$(R)DataType_RBV")
     field(SVVL, "")
 }
 
-record(ao, "$(P)$(R)FillValue")
-{
-    field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILL_VALUE")
-    field(PINI, "NO")
-    field(PREC, "1")
-}
-
-record(ai, "$(P)$(R)FillValue_RBV")
-{
-    field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILL_VALUE")
-    field(PINI, "YES")
-    field(SCAN, "I/O Intr")
-    field(PREC, "1")
-}
+#record(ao, "$(P)$(R)FillValue")
+#{
+#    field(DTYP, "asynFloat64")
+#    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILL_VALUE")
+#    field(PINI, "NO")
+#    field(PREC, "1")
+#}
+#
+#record(ai, "$(P)$(R)FillValue_RBV")
+#{
+#    field(DTYP, "asynFloat64")
+#    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILL_VALUE")
+#    field(PINI, "YES")
+#    field(SCAN, "I/O Intr")
+#    field(PREC, "1")
+#}
