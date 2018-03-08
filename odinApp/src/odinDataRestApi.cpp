@@ -9,6 +9,7 @@
 
 // REST Strings
 #define ODIN_DATA_ADAPTER        "odin_data"
+#define ODIN_DATA_FR_ADAPTER     "fr"
 
 // OdinData JSON Strings
 #define PLUGIN                      "plugin"
@@ -50,15 +51,17 @@ OdinDataRestAPI::OdinDataRestAPI(const std::string& hostname,
 {
   const std::string api = "/api/" API_VERSION "/";
 
-  sysStr_[SSDataStatus]           = api + ODIN_DATA_ADAPTER "/status/";
-  sysStr_[SSDataStatusDetector]   = api + ODIN_DATA_ADAPTER "/status/" + pluginName + "/";
-  sysStr_[SSDataStatusHDF]        = api + ODIN_DATA_ADAPTER "/status/" PLUGIN_INDEX_FILE_WRITER "/";
-  sysStr_[SSDataConfig]           = api + ODIN_DATA_ADAPTER "/config/";
-  sysStr_[SSDataConfigDetector]   = api + ODIN_DATA_ADAPTER "/config/" + pluginName + "/";
-  sysStr_[SSDataConfigHDF]        = api + ODIN_DATA_ADAPTER "/config/" PLUGIN_INDEX_FILE_WRITER "/";
-  sysStr_[SSDataConfigHDFProcess] = api + ODIN_DATA_ADAPTER "/config/" PLUGIN_INDEX_FILE_WRITER
+  sysStr_[SSDataRoot]               = api;
+  sysStr_[SSDataFRConfig]           = api + ODIN_DATA_FR_ADAPTER "/config/";
+  sysStr_[SSDataFWStatus]           = api + ODIN_DATA_ADAPTER "/status/";
+  sysStr_[SSDataFWStatusDetector]   = api + ODIN_DATA_ADAPTER "/status/" + pluginName + "/";
+  sysStr_[SSDataFWStatusHDF]        = api + ODIN_DATA_ADAPTER "/status/" PLUGIN_INDEX_FILE_WRITER "/";
+  sysStr_[SSDataFWConfig]           = api + ODIN_DATA_ADAPTER "/config/";
+  sysStr_[SSDataFWConfigDetector]   = api + ODIN_DATA_ADAPTER "/config/" + pluginName + "/";
+  sysStr_[SSDataFWConfigHDF]        = api + ODIN_DATA_ADAPTER "/config/" PLUGIN_INDEX_FILE_WRITER "/";
+  sysStr_[SSDataFWConfigHDFProcess] = api + ODIN_DATA_ADAPTER "/config/" PLUGIN_INDEX_FILE_WRITER
                                     "/process/";
-  sysStr_[SSDataConfigHDFDataset] = api + ODIN_DATA_ADAPTER "/config/" PLUGIN_INDEX_FILE_WRITER
+  sysStr_[SSDataFWConfigHDFDataset] = api + ODIN_DATA_ADAPTER "/config/" PLUGIN_INDEX_FILE_WRITER
                                     "/dataset/";
 }
 
@@ -74,7 +77,7 @@ int OdinDataRestAPI::configureSharedMemoryChannels(ODConfiguration config)
   channelConfig.push_back(JsonDict(FR_RELEASE_CNXN, release.str().c_str()));
   JsonDict channelDict = JsonDict(channelConfig);
 
-  return put(sysStr(SSDataConfig), endpoint.str(), channelDict.str());
+  return put(sysStr(SSDataFWConfig), endpoint.str(), channelDict.str());
 }
 
 int OdinDataRestAPI::loadPlugin(const std::string& modulePath,
@@ -90,7 +93,7 @@ int OdinDataRestAPI::loadPlugin(const std::string& modulePath,
   JsonDict loadDict = JsonDict(loadConfig);
   JsonDict config = JsonDict(PLUGIN_LOAD, loadDict);
 
-  return put(sysStr(SSDataConfig), PLUGIN, config.str());
+  return put(sysStr(SSDataFWConfig), PLUGIN, config.str());
 }
 
 int OdinDataRestAPI::loadProcessPlugin(const std::string& modulePath, const std::string& pluginIndex)
@@ -118,7 +121,7 @@ int OdinDataRestAPI::connectPlugins(const std::string& index, const std::string&
   JsonDict connectionDict = JsonDict(connectionConfig);
   JsonDict configDict = JsonDict(PLUGIN_CONNECT, connectionDict);
 
-  return put(sysStr(SSDataConfig), PLUGIN, configDict.str());
+  return put(sysStr(SSDataFWConfig), PLUGIN, configDict.str());
 }
 
 int OdinDataRestAPI::connectToFrameReceiver(const std::string& index) {
@@ -138,35 +141,35 @@ int OdinDataRestAPI::createFile(const std::string& name, const std::string& path
   JsonDict fileDict = JsonDict(fileConfig);
   JsonDict configDict = JsonDict(FILE, fileDict);
 
-  return put(sysStr(SSDataConfig), PLUGIN_INDEX_FILE_WRITER, configDict.str());
+  return put(sysStr(SSDataFWConfig), PLUGIN_INDEX_FILE_WRITER, configDict.str());
 }
 
 int OdinDataRestAPI::startWrite() {
   JsonDict writeDict = JsonDict(FILE_WRITE, true);
-  return put(sysStr(SSDataConfig), PLUGIN_INDEX_FILE_WRITER, writeDict.str());
+  return put(sysStr(SSDataFWConfig), PLUGIN_INDEX_FILE_WRITER, writeDict.str());
 }
 
 int OdinDataRestAPI::stopWrite() {
   JsonDict writeDict = JsonDict(FILE_WRITE, false);
-  return put(sysStr(SSDataConfig), PLUGIN_INDEX_FILE_WRITER, writeDict.str());
+  return put(sysStr(SSDataFWConfig), PLUGIN_INDEX_FILE_WRITER, writeDict.str());
 }
 
 int OdinDataRestAPI::createDataset(const std::string& name) {
   JsonDict configDict = JsonDict(DATASET, name.c_str());
 
-  return put(sysStr(SSDataConfig), PLUGIN_INDEX_FILE_WRITER, configDict.str());
+  return put(sysStr(SSDataFWConfig), PLUGIN_INDEX_FILE_WRITER, configDict.str());
 }
 
 int OdinDataRestAPI::setImageDims(const std::string& datasetName, std::vector<int>& imageDims) {
   JsonDict dimsDict = JsonDict(DATASET_DIMS, imageDims);
 
-  return put(sysStr(SSDataConfigHDF), DATASET "/" + datasetName, dimsDict.str());
+  return put(sysStr(SSDataFWConfigHDF), DATASET "/" + datasetName, dimsDict.str());
 }
 
 int OdinDataRestAPI::setChunkDims(const std::string& datasetName, std::vector<int>& chunkDims) {
   JsonDict dimsDict = JsonDict(DATASET_CHUNKS, chunkDims);
 
-  return put(sysStr(SSDataConfigHDF), DATASET "/" + datasetName, dimsDict.str());
+  return put(sysStr(SSDataFWConfigHDF), DATASET "/" + datasetName, dimsDict.str());
 }
 
 int OdinDataRestAPI::lookupAccessMode(std::string subSystem, rest_access_mode_t& accessMode)
@@ -175,11 +178,11 @@ int OdinDataRestAPI::lookupAccessMode(std::string subSystem, rest_access_mode_t&
 
     switch(ssEnum)
     {
-      case SSDataConfig: case SSDataConfigDetector: case SSDataConfigHDF:
-      case SSDataConfigHDFProcess: case SSDataConfigHDFDataset:
+    case SSDataFRConfig: case SSDataFWConfig: case SSDataFWConfigDetector: case SSDataFWConfigHDF:
+      case SSDataFWConfigHDFProcess: case SSDataFWConfigHDFDataset:
         accessMode = REST_ACC_RW;
         return EXIT_SUCCESS;
-      case SSDataStatus: case SSDataStatusHDF: case SSDataStatusDetector:
+      case SSDataFWStatus: case SSDataFWStatusHDF: case SSDataFWStatusDetector:
         accessMode = REST_ACC_RO;
         return EXIT_SUCCESS;
       default:
