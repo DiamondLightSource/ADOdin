@@ -57,8 +57,7 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
 
 int OdinDetector::createDetectorParams()
 {
-  mConnected = createRESTParam(OdinDetectorConnected, REST_P_BOOL,
-                               SSDetectorStatus, "connected");
+  //mConnected = createRESTParam(OdinDetectorConnected, REST_P_BOOL, SSDetectorStatus, "connected");
 
   // Bind the num_images parameter to NIMAGES asyn parameter
   mNumImages = createRESTParam(ADNumImagesString, REST_P_INT, SSDetector, "config/num_images");
