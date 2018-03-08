@@ -194,6 +194,7 @@ class OdinDataDriver(AsynPort):
                 )
                 # Use some OdinDataDriver macros to instantiate an odinData.template
                 args["PORT"] = PORT
+                args["ADDR"] = idx - 1
                 args["R"] = odin_data.R
                 OdinDataTemplate(**args)
 
