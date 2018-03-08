@@ -7,6 +7,8 @@
 
 // Odin Server
 #define OdinRestAPIVersion             "ODIN_REST_API_VERSION"
+// Frame Receiver Configuration
+#define OdinFRConfig                   "ODIN_FR_CONFIG"
 // OdinData
 #define OdinNumProcesses               "ODIN_NUM_PROCESSES"
 #define OdinProcessRank                "ODIN_PROCESS_RANK"
@@ -102,6 +104,8 @@ class OdinDataDriver : public OdinClient
   int mFirstParam;
 
   RestParam * mAPIVersion;
+
+  RestParam * mFRConfiguration;
 
   RestParam * mConnected;
   RestParam * mNumImages;

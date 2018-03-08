@@ -120,58 +120,60 @@ void OdinDataDriver::configureOdinDataProcess(const char * ipAddress, int readyP
 
 int OdinDataDriver::createOdinDataParams()
 {
+  mFRConfiguration        = createODRESTParam(OdinFRConfig, REST_P_STRING,
+                                              SSDataFRConfig, "config_file");
   mProcesses              = createODRESTParam(OdinNumProcesses, REST_P_INT,
-                                              SSDataConfigHDFProcess, "number");
+                                              SSDataFWConfigHDFProcess, "number");
   mFilePath               = createODRESTParam(NDFilePathString, REST_P_STRING,
-                                              SSDataConfigHDF, "file/path");
+                                              SSDataFWConfigHDF, "file/path");
   mFileName               = createODRESTParam(NDFileNameString, REST_P_STRING,
-                                              SSDataConfigHDF, "file/name");
+                                              SSDataFWConfigHDF, "file/name");
   mFileExtension          = createODRESTParam(OdinHDF5FileExtension, REST_P_STRING,
-                                              SSDataConfigHDF, "file/extension");
+                                              SSDataFWConfigHDF, "file/extension");
   mBlockSize              = createODRESTParam(OdinHDF5BlockSize, REST_P_INT,
-                                              SSDataConfigHDFProcess, "frames_per_block");
+                                              SSDataFWConfigHDFProcess, "frames_per_block");
   mBlocksPerFile          = createODRESTParam(OdinHDF5BlocksPerFile, REST_P_INT,
-                                              SSDataConfigHDFProcess, "blocks_per_file");
+                                              SSDataFWConfigHDFProcess, "blocks_per_file");
   mEarliestVersion        = createODRESTParam(OdinHDF5EarliestVersion, REST_P_BOOL,
-                                              SSDataConfigHDFProcess, "earliest_version");
+                                              SSDataFWConfigHDFProcess, "earliest_version");
   mMasterDataset          = createODRESTParam(OdinHDF5MasterDataset, REST_P_STRING,
-                                              SSDataConfigHDF, "master");
+                                              SSDataFWConfigHDF, "master");
   mOffsetAdjustment       = createODRESTParam(OdinHDF5OffsetAdjustment, REST_P_INT,
-                                              SSDataConfigHDF, "offset");
+                                              SSDataFWConfigHDF, "offset");
   mAcquisitionID          = createODRESTParam(OdinHDF5AcquisitionID, REST_P_STRING,
-                                              SSDataConfigHDF, "acquisition_id");
+                                              SSDataFWConfigHDF, "acquisition_id");
   mCloseFileTimeout       = createODRESTParam(OdinHDF5CloseFileTimeout, REST_P_INT,
-                                              SSDataConfigHDF, "timeout_timer_period");
+                                              SSDataFWConfigHDF, "timeout_timer_period");
   mStartCloseTimeout      = createODRESTParam(OdinHDF5StartCloseTimeout, REST_P_BOOL,
-                                              SSDataConfigHDF, "start_timeout_timer");
+                                              SSDataFWConfigHDF, "start_timeout_timer");
   mNumCapture             = createODRESTParam(OdinHDF5NumCapture, REST_P_INT,
-                                              SSDataConfigHDF, "frames");
+                                              SSDataFWConfigHDF, "frames");
   mCapture                = createODRESTParam(OdinHDF5Write, REST_P_BOOL,
-                                              SSDataConfigHDF, "write");
+                                              SSDataFWConfigHDF, "write");
   mChunkBoundaryAlignment = createODRESTParam(OdinHDF5ChunkBoundaryAlignment, REST_P_INT,
-                                              SSDataConfigHDFProcess, "alignment_value");
+                                              SSDataFWConfigHDFProcess, "alignment_value");
   mChunkBoundaryThreshold = createODRESTParam(OdinHDF5ChunkBoundaryThreshold, REST_P_INT,
-                                              SSDataConfigHDFProcess, "alignment_threshold");
+                                              SSDataFWConfigHDFProcess, "alignment_threshold");
   mDataType               = createODRESTParam(NDDataTypeString, REST_P_INT,
-                                              SSDataConfigHDFDataset, mDatasetName + "/datatype");
+                                              SSDataFWConfigHDFDataset, mDatasetName + "/datatype");
   mCompression            = createODRESTParam(OdinHDF5Compression, REST_P_INT,
-                                              SSDataConfigHDFDataset, mDatasetName + "/compression");
+                                              SSDataFWConfigHDFDataset, mDatasetName + "/compression");
 
 
   mProcessConnected       = createODRESTParam(OdinProcessConnected, REST_P_BOOL,
-                                              SSDataStatus, "connected");
+                                              SSDataFWStatus, "connected");
   mProcessRank            = createODRESTParam(OdinProcessRank, REST_P_INT,
-                                              SSDataConfigHDFProcess, "rank");
+                                              SSDataFWConfigHDFProcess, "rank");
   mWriting                = createODRESTParam(OdinHDF5Writing, REST_P_BOOL,
-                                              SSDataStatusHDF, "writing");
+                                              SSDataFWStatusHDF, "writing");
   mTimeoutActive          = createODRESTParam(OdinHDF5TimeoutActive, REST_P_BOOL,
-                                              SSDataStatusHDF, "timeout_active");
+                                              SSDataFWStatusHDF, "timeout_active");
   mFullFileName           = createODRESTParam(OdinHDF5FullFileName, REST_P_STRING,
-                                              SSDataStatusHDF, "file_name");
+                                              SSDataFWStatusHDF, "file_name");
   mNumCaptured            = createODRESTParam(OdinHDF5NumCaptured, REST_P_INT,
-                                              SSDataStatusHDF, "frames_written");
+                                              SSDataFWStatusHDF, "frames_written");
   mNumExpected            = createODRESTParam(OdinHDF5NumExpected, REST_P_INT,
-                                              SSDataStatusHDF, "frames_max");
+                                              SSDataFWStatusHDF, "frames_max");
 
   mCapture->setCommand();
   mStartCloseTimeout->setCommand();
@@ -490,7 +492,7 @@ asynStatus OdinDataDriver::drvUserCreate(asynUser *pasynUser,
 {
   asynStatus status = asynSuccess;
 
-  status = this->dynamicParam(pasynUser, drvInfo, pptypeName, psize, SSDataConfig);
+  status = this->dynamicParam(pasynUser, drvInfo, pptypeName, psize, SSDataRoot);
 
   if (status == asynSuccess) {
     // Now return baseclass result
