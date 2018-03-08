@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 504
-y 115
+x 506
+y 141
 w 390
 h 820
 font "arial-bold-r-12.0"
@@ -2188,7 +2188,7 @@ x 290
 y 470
 w 20
 h 20
-controlPv "$(PREFIX):CONFIG:ACQUIRE:LvControl"
+controlPv "$(P)$(R)F:CONFIG:ACQUIRE:LvControl"
 lineColor index 14
 onColor index 15
 offColor index 20
@@ -2247,7 +2247,7 @@ x 290
 y 495
 w 20
 h 20
-controlPv "$(PREFIX):1:HK:BIAS_ON_OFF"
+controlPv "$(P)$(R)F:BIAS_ON_OFF"
 lineColor index 14
 onColor index 15
 offColor index 20
