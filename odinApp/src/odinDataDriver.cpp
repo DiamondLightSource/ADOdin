@@ -257,7 +257,7 @@ asynStatus OdinDataDriver::getStatus()
         // Restored connection - Re-initialise
         initialise(index);
       }
-      setIntegerParam(mProcessInitialised, mInitialised[index]);
+      setIntegerParam(index, mProcessInitialised, mInitialised[index]);
     }
   }
 
