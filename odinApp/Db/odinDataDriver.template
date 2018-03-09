@@ -246,26 +246,6 @@ record(waveform, "$(P)$(R)FileName_RBV")
     field(NELM, "256")
     field(SCAN, "I/O Intr")
 }
-
-# File template
-record(waveform, "$(P)$(R)FileTemplate")
-{
-     field(PINI, "YES")
-     field(DTYP, "asynOctetWrite")
-     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_TEMPLATE")
-     field(FTVL, "CHAR")
-     field(NELM, "256")
-     info(autosaveFields, "VAL")
-}
- 
-record(waveform, "$(P)$(R)FileTemplate_RBV")
-{
-     field(DTYP, "asynOctetRead")
-     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_FILE_TEMPLATE")
-     field(FTVL, "CHAR")
-     field(NELM, "256")
-     field(SCAN, "I/O Intr")
- }
  
 record(waveform, "$(P)$(R)FileExtension")
 {

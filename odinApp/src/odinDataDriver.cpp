@@ -182,7 +182,6 @@ int OdinDataDriver::createOdinDataParams()
   createParam(OdinHDF5NumCapturedSum,   asynParamInt32, &mNumCapturedSum);
   createParam(OdinHDF5WritingAny,       asynParamInt32, &mWritingAny);
   createParam(OdinHDF5TimeoutActiveAny, asynParamInt32, &mTimeoutActiveAny);
-  createParam(OdinHDF5FileTemplate,     asynParamOctet, &mFileTemplate);
   createParam(OdinHDF5ImageHeight,      asynParamInt32, &mImageHeight);
   createParam(OdinHDF5ImageWidth,       asynParamInt32, &mImageWidth);
   createParam(OdinHDF5ChunkDepth,       asynParamInt32, &mChunkDepth);
