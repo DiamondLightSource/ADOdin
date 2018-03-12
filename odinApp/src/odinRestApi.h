@@ -17,23 +17,26 @@
 // Subsystems
 typedef enum
 {
+  // OdinClient API
   SSRoot,
   SSAdapters,
+  SSAdapterRoot,
+  // OdinDetector API
   SSDetector,
   SSDetectorConfig,
   SSDetectorStatus,
   SSDetectorCommand,
-  SSDataFWStatus,
-  SSDataFWStatusDetector,
-  SSDataFWStatusHDF,
-  SSDataRoot,
-  SSDataFWConfig,
-  SSDataFWConfigDetector,
-  SSDataFWConfigHDF,
-  SSDataFWConfigHDFProcess,
-  SSDataFWConfigHDFDataset,
-  SSDataFRConfig,
-  SSDataFRStatus,
+  // OdinData API
+  SSFPConfig,
+  SSFPConfigDetector,
+  SSFPConfigHDF,
+  SSFPConfigHDFProcess,
+  SSFPConfigHDFDataset,
+  SSFPStatus,
+  SSFPStatusDetector,
+  SSFPStatusHDF,
+  SSFRConfig,
+  SSFRStatus,
 
   SSCount
 } sys_t;
