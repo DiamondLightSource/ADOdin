@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2395
-y 528
+x 481
+y 98
 w 419
 h 544
 font "arial-bold-r-12.0"
@@ -850,7 +850,7 @@ fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Timeout Period:"
+  "Timeout Period (ms):"
 }
 endObjectProperties
 
