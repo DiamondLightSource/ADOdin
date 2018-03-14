@@ -30,7 +30,7 @@ OdinClient::OdinClient(const char * portName,
                        size_t maxMemory,
                        int priority,
                        int stackSize) :
-  ADDriver(portName, 2, 0, maxBuffers, maxMemory,
+  ADDriver(portName, 10, 0, maxBuffers, maxMemory,
            asynEnumMask, asynEnumMask,    /* Add Enum interface */
            ASYN_CANBLOCK |                /* ASYN_CANBLOCK=1 */
            ASYN_MULTIDEVICE,          /* ASYN_MULTIDEVICE=1 */
@@ -49,7 +49,7 @@ void OdinClient::registerAPI(OdinRestAPI *api)
 {
   mAPI = api;
   mParams = new RestParamSet(this, mAPI, pasynUserSelf);
-  mAPIVersion = createRESTParam(OdinRestAPIVersion, REST_P_STRING, SSRoot, "api");
+  mAPIVersion = createRESTParam(OdinRestAPIVersion, REST_P_STRING, SSDetector, "api");
   // Create a parameter to store any error message from the Odin server
   mErrorMessage = createRESTParam("ERR_MESSAGE", REST_P_STRING, SSDetector, "status/error");
   mFirstParam = mAPIVersion->getIndex();

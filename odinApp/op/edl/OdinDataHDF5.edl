@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1957
-y 272
+x 52
+y 76
 w 386
 h 202
 font "arial-medium-r-12.0"
@@ -68,14 +68,14 @@ minor 1
 release 1
 x 10
 y 75
-w 45
+w 70
 h 15
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Acq. ID"
+  "File Name"
 }
 endObjectProperties
 
@@ -137,7 +137,7 @@ x 95
 y 70
 w 120
 h 20
-controlPv "$(P)$(R)AcquisitionID"
+controlPv "$(P)$(R)FileName"
 font "helvetica-medium-r-10.0"
 fgColor index 25
 bgColor index 3
@@ -168,7 +168,7 @@ fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "File Template"
+  "File Extension"
 }
 endObjectProperties
 
@@ -182,7 +182,7 @@ x 95
 y 95
 w 120
 h 20
-controlPv "$(P)$(R)FileTemplate"
+controlPv "$(P)$(R)FileExtension"
 font "helvetica-medium-r-10.0"
 fgColor index 25
 bgColor index 3
@@ -208,7 +208,7 @@ x 225
 y 95
 w 150
 h 20
-controlPv "$(P)$(R)FileTemplate_RBV"
+controlPv "$(P)$(R)FileExtension_RBV"
 font "helvetica-medium-r-10.0"
 fgColor index 16
 bgColor index 10
@@ -460,7 +460,7 @@ x 225
 y 70
 w 150
 h 20
-controlPv "$(P)$(R)AcquisitionID_RBV"
+controlPv "$(P)$(R)FileName_RBV"
 font "helvetica-medium-r-10.0"
 fgColor index 16
 bgColor index 10

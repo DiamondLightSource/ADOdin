@@ -20,9 +20,26 @@ record(longin, "$(P)$(R)ArrayCounter_RBV")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_status/frames_acquired")
 }
 
+# Number of frames taken in current acquisition.
+record(ai, "$(P)$(R)ArrayRateRaw_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/frame_rate")
+}
+
+record(calc, "$(P)$(R)ArrayRate_RBV")
+{
+    field(INPA, "$(P)$(R)ArrayRateRaw_RBV NPP NMS")   # New rate value
+    field(CALC, "A")
+    field(PREC, "1" )
+    field(EGU,  "Hz" )
+    field(SCAN, "1 second")
+}
+
 record(bo, "$(P)$(R)ReadStatus")
 {
-    field(SCAN, "1 second")
+    field(SCAN, ".1 second")
 }
 
 # Operation mode.
@@ -601,28 +618,6 @@ record(bo, "$(P)$(R)AutoLoad")
     field(PINI, "1")
 }
 
-# Low voltage control
-# This PV is slaved to the master in a very specific fashion and should
-# not be individually manipulated.  So no GDA nor autosave tags.
-record(calcout, "$(P)$(R)LvControlDownload")
-{
-    field(INPA, "$(P):CONFIG:ACQUIRE:LvControl CP")
-    field(INPB, "$(P)$(R)LvControlLocal")
-    field(CALC, "A#B")
-    field(OCAL, "A")
-    field(OOPT, "When Non-zero")
-    field(DOPT, "Use OCAL")
-    field(OUT,  "$(P)$(R)LvControlLocal PP")
-}
-record(bo, "$(P)$(R)LvControlLocal")
-{
-    field(DTYP, "asynInt32")
-    field(VAL,  "0")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))LV_ON_OFF")
-    field(ZNAM, "Off")
-    field(ONAM, "On")
-}
-
 # DAC scan DAC selection.
 # %gdatag,template,simplePv,$(gda_name=).scandac,$(gda_desc=)
 # %gdatag,pv,rw,$(gda_name=).scandac,RECORD,$(gda_desc=)
@@ -805,7 +800,7 @@ record(bo, "$(P)$(R)TestPulseEnable")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_ENABLETESTPULSES")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/test_pulse_enable")
     field(PINI, "1")
     field(ZNAM, "Off")
     field(ONAM, "On")
@@ -814,7 +809,7 @@ record(bi, "$(P)$(R)TestPulseEnable_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_ENABLETESTPULSES")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/test_pulse_enable")
     field(ZNAM, "Off")
     field(ONAM, "On")
 }
@@ -909,6 +904,19 @@ record(waveform, "$(P)$(R)CalFileRoot_RBV")
 }
 
 ###################################################################
+#  UDP farm mode setup configuration file                         # 
+###################################################################
+# %autosave 2
+record(waveform, "$(P)$(R)UdpConfigFile")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_config/udp_file")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+}
+
+###################################################################
 #  Override the acquisition mode                                  # 
 ###################################################################
 record(mbbo, "$(P)$(R)ImageMode")
@@ -919,3 +927,4 @@ record(mbbi, "$(P)$(R)ImageMode_RBV")
 {
    field(TWST, "")
 }
+

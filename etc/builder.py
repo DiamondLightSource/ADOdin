@@ -56,6 +56,10 @@ class ExcaliburDetectorTemplate(AutoSubstitution):
     TemplateFile = "excaliburDetector.template"
 
 
+class ExcaliburFemHousekeepingTemplate(AutoSubstitution):
+    TemplateFile = "excaliburFemHousekeeping.template"
+
+
 class ExcaliburFemStatusTemplate(AutoSubstitution):
     WarnMacros = False
     TemplateFile = "excaliburFemStatus.template"
@@ -101,6 +105,16 @@ class ExcaliburDetector(OdinDetector):
         # Make an instance of our template
         makeTemplateInstance(self._SpecificTemplate, locals(), args)
 
+        # Add the FME house keeping template
+        fem_hk_template = ExcaliburFemHousekeepingTemplate
+        fem_hk_args = {
+            "P": args["P"],
+            "R": args["R"] + "F:",
+            "PORT": PORT,
+            "TIMEOUT": args["TIMEOUT"]
+        }
+        fem_hk_template(**fem_hk_args)
+        
         assert SENSOR in self.SENSOR_OPTIONS.keys()
         # Instantiate template corresponding to SENSOR, passing through some of own args
         status_template = self.SENSOR_OPTIONS[SENSOR][0]

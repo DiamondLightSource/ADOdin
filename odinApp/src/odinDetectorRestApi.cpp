@@ -20,12 +20,10 @@ OdinDetectorRestAPI::OdinDetectorRestAPI(const std::string& detectorName,
     OdinRestAPI(hostname, port, numSockets),
     mDetectorName(detectorName)
 {
-  const std::string api = "/api/" API_VERSION "/";
-
-  sysStr_[SSDetector]             = api + detectorName + "/";
-  sysStr_[SSDetectorConfig]       = api + detectorName + "/config/";
-  sysStr_[SSDetectorStatus]       = api + detectorName + "/status/";
-  sysStr_[SSDetectorCommand]      = api + detectorName + "/command/";
+  sysStr_[SSDetector]             = sysStr_[SSAdapterRoot] + detectorName + "/";
+  sysStr_[SSDetectorConfig]       = sysStr_[SSDetector]    + "config/";
+  sysStr_[SSDetectorStatus]       = sysStr_[SSDetector]    + "status/";
+  sysStr_[SSDetectorCommand]      = sysStr_[SSDetector]    + "command/";
 }
 
 int OdinDetectorRestAPI::connectDetector()

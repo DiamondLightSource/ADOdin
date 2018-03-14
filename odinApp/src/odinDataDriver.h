@@ -7,6 +7,8 @@
 
 // Odin Server
 #define OdinRestAPIVersion             "ODIN_REST_API_VERSION"
+// Frame Receiver Configuration
+#define OdinFRConfig                   "ODIN_FR_CONFIG"
 // OdinData
 #define OdinNumProcesses               "ODIN_NUM_PROCESSES"
 #define OdinProcessRank                "ODIN_PROCESS_RANK"
@@ -26,7 +28,7 @@
 #define OdinHDF5FilePath               "ODIN_HDF5_FILE_PATH"
 #define OdinHDF5FilePathExists         "ODIN_HDF5_FILE_PATH_EXISTS"
 #define OdinHDF5FileName               "ODIN_HDF5_FILE_NAME"
-#define OdinHDF5FileTemplate           "ODIN_HDF5_FILE_TEMPLATE"
+#define OdinHDF5FileExtension          "ODIN_HDF5_FILE_EXTENSION"
 #define OdinHDF5FullFileName           "ODIN_HDF5_FULL_FILE_NAME"
 #define OdinHDF5NumCapture             "ODIN_HDF5_NUM_CAPTURE"
 #define OdinHDF5NumCaptured            "ODIN_HDF5_NUM_CAPTURED"
@@ -102,12 +104,15 @@ class OdinDataDriver : public OdinClient
 
   RestParam * mAPIVersion;
 
+  RestParam * mFRConfiguration;
+
   RestParam * mConnected;
   RestParam * mNumImages;
 
   RestParam * mProcesses;
   RestParam * mFilePath;
   RestParam * mFileName;
+  RestParam * mFileExtension;
   RestParam * mBlockSize;
   RestParam * mBlocksPerFile;
   RestParam * mEarliestVersion;

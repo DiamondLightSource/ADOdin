@@ -57,10 +57,9 @@ OdinRestAPI::OdinRestAPI(const std::string& hostname,
                          size_t numSockets) :
     RestAPI(hostname, port, numSockets)
 {
-  const std::string api = "/api/" API_VERSION "/";
-
-  sysStr_[SSRoot]                 = "/";
-  sysStr_[SSAdapters]             = api + "/adapters";
+  sysStr_[SSRoot]        = "/";
+  sysStr_[SSAdapterRoot] = "/api/" API_VERSION "/";
+  sysStr_[SSAdapters]    = sysStr_[SSAdapterRoot] + "adapters";
 }
 
 bool OdinRestAPI::connected(){
