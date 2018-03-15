@@ -1,5 +1,5 @@
-#ifndef EIGER_DETECTOR_H
-#define EIGER_DETECTOR_H
+#ifndef ODIN_DATA_DRIVER_H
+#define ODIN_DATA_DRIVER_H
 
 #include "OdinClient.h"
 #include "odinDataConfig.h"

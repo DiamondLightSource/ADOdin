@@ -2,10 +2,8 @@
 
 #include <stdexcept>
 #include <algorithm>
-#include <stdlib.h>
 
 #include "jsonDict.h"
-#include "odinDataConfig.h"
 
 // REST Strings
 #define FRAME_PROCESSOR_ADAPTER     "odin_data"

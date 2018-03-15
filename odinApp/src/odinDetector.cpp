@@ -5,9 +5,7 @@
 #include <algorithm>
 
 #include <epicsExport.h>
-#include <epicsString.h>
 #include <iocsh.h>
-#include <drvSup.h>
 
 static const std::string DRIVER_VERSION("0-1");
 static const char *driverName = "OdinDetector";

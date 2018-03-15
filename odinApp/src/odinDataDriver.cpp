@@ -5,9 +5,7 @@
 #include <algorithm>
 
 #include <epicsExport.h>
-#include <epicsString.h>
 #include <iocsh.h>
-#include <drvSup.h>
 
 static const char *driverName = "OdinDataDriver";
 

@@ -2,10 +2,8 @@
 
 #include <stdexcept>
 #include <algorithm>
-#include <stdlib.h>
 
 #include "jsonDict.h"
-#include "odinDataConfig.h"
 
 
 const std::string OdinDetectorRestAPI::CONNECT           = "connect";

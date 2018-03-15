@@ -5,8 +5,9 @@
  *      Author: gnx91527
  */
 
-#ifndef ODINAPP_SRC_ODINCLIENT_H_
-#define ODINAPP_SRC_ODINCLIENT_H_
+#ifndef ODIN_CLIENT_H
+#define ODIN_CLIENT_H
+
 #include "ADDriver.h"
 #include "odinDataConfig.h"
 #include "odinRestApi.h"
