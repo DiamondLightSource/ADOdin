@@ -59,11 +59,8 @@ OdinDataDriver::OdinDataDriver(const char * portName, const char * serverHostnam
     asynPrint(pasynUserSelf, ASYN_TRACE_ERROR, "Failed to initialise all OdinData processes\n");
   }
 
-  if (std::accumulate(mInitialised.begin(), mInitialised.end(), 0) > 0) {
-    createOdinDataParams();
-  }
-//  createDetectorParams();
-  this->fetchParams();
+  createParams();
+  fetchParams();
 }
 
 int OdinDataDriver::initialiseAll()
@@ -116,8 +113,9 @@ void OdinDataDriver::configureOdinDataProcess(const char * ipAddress, int readyP
   mODCount++;
 }
 
-int OdinDataDriver::createOdinDataParams()
+int OdinDataDriver::createParams()
 {
+  // Configuration parameters shared by each OD process
   mFRConfiguration        = createODRESTParam(OdinFRConfig, REST_P_STRING,
                                               SSFRConfig, "config_file");
   mProcesses              = createODRESTParam(OdinNumProcesses, REST_P_INT,
@@ -156,8 +154,7 @@ int OdinDataDriver::createOdinDataParams()
                                               SSFPConfigHDFDataset, mDatasetName + "/datatype");
   mCompression            = createODRESTParam(OdinHDF5Compression, REST_P_INT,
                                               SSFPConfigHDFDataset, mDatasetName + "/compression");
-
-
+  // Per OD Process Status Parameters
   mProcessConnected       = createODRESTParam(OdinProcessConnected, REST_P_BOOL,
                                               SSFPStatus, "connected");
   mProcessRank            = createODRESTParam(OdinProcessRank, REST_P_INT,
@@ -176,6 +173,7 @@ int OdinDataDriver::createOdinDataParams()
   mCapture->setCommand();
   mStartCloseTimeout->setCommand();
 
+  // Internal parameters
   createParam(OdinProcessInitialised,   asynParamInt32, &mProcessInitialised);
   createParam(OdinHDF5NumCapturedSum,   asynParamInt32, &mNumCapturedSum);
   createParam(OdinHDF5WritingAny,       asynParamInt32, &mWritingAny);
@@ -192,7 +190,6 @@ int OdinDataDriver::createOdinDataParams()
   setIntegerParam(mChunkHeight, 512);
   setIntegerParam(mChunkWidth,  2048);
 
-  mOdinDataParamsCreated = true;
   return 0;
 }
 
@@ -230,33 +227,31 @@ asynStatus OdinDataDriver::getStatus()
     }
   }
 
-  if (mOdinDataParamsCreated) {
-    std::vector<int> numCaptured(mODCount);
-    mNumCaptured->get(numCaptured);
-    setIntegerParam(mNumCapturedSum, std::accumulate(numCaptured.begin(), numCaptured.end(), 0));
+  std::vector<int> numCaptured(mODCount);
+  mNumCaptured->get(numCaptured);
+  setIntegerParam(mNumCapturedSum, std::accumulate(numCaptured.begin(), numCaptured.end(), 0));
 
-    std::vector<bool> writing(mODCount);
-    mWriting->get(writing);
-    setIntegerParam(mWritingAny, std::accumulate(writing.begin(), writing.end(), 0) == 0 ? 0 : 1);
+  std::vector<bool> writing(mODCount);
+  mWriting->get(writing);
+  setIntegerParam(mWritingAny, std::accumulate(writing.begin(), writing.end(), 0) == 0 ? 0 : 1);
 
-    std::vector<bool> timeoutActive(mODCount);
-    mTimeoutActive->get(timeoutActive);
-    setIntegerParam(mTimeoutActiveAny,
-                    std::accumulate(timeoutActive.begin(), timeoutActive.end(), 0) == 0 ? 0 : 1);
+  std::vector<bool> timeoutActive(mODCount);
+  mTimeoutActive->get(timeoutActive);
+  setIntegerParam(mTimeoutActiveAny,
+                  std::accumulate(timeoutActive.begin(), timeoutActive.end(), 0) == 0 ? 0 : 1);
 
-    bool connected;
-    for (int index = 0; index != (int) mODConfig.size(); ++index) {
-      mProcessConnected->get(connected, index);
-      if (!connected && mInitialised[index] == 1) {
-        // Lost connection - Set not initialised
-        mInitialised[index] = 0;
-      }
-      else if (mInitialised[index] == 0 && connected) {
-        // Restored connection - Re-initialise
-        initialise(index);
-      }
-      setIntegerParam(index, mProcessInitialised, mInitialised[index]);
+  bool connected;
+  for (int index = 0; index != (int) mODConfig.size(); ++index) {
+    mProcessConnected->get(connected, index);
+    if (!connected && mInitialised[index] == 1) {
+      // Lost connection - Set not initialised
+      mInitialised[index] = 0;
     }
+    else if (mInitialised[index] == 0 && connected) {
+      // Restored connection - Re-initialise
+      initialise(index);
+    }
+    setIntegerParam(index, mProcessInitialised, mInitialised[index]);
   }
 
   if(status) {
@@ -429,16 +424,14 @@ asynStatus OdinDataDriver::writeOctet(asynUser *pasynUser, const char *value,
   int status = 0;
   const char *functionName = "writeOctet";
 
-  if (mOdinDataParamsCreated) {
-    if (function == mFileTemplate || function == mAcquisitionID->getIndex()) {
-      std::string acquisitionID, fileTemplate;
-      mAcquisitionID->get(acquisitionID);
-      getStringParam(mFileTemplate, fileTemplate);
+  if (function == mFileTemplate || function == mAcquisitionID->getIndex()) {
+    std::string acquisitionID, fileTemplate;
+    mAcquisitionID->get(acquisitionID);
+    getStringParam(mFileTemplate, fileTemplate);
 
-      char buffer[fileTemplate.size() + acquisitionID.size() + 5];
-      snprintf(buffer, sizeof(buffer), fileTemplate.c_str(), acquisitionID.c_str(), 1);
-      mFileName->put(buffer);
-    }
+    char buffer[fileTemplate.size() + acquisitionID.size() + 5];
+    snprintf(buffer, sizeof(buffer), fileTemplate.c_str(), acquisitionID.c_str(), 1);
+    mFileName->put(buffer);
   }
 
   if (RestParam * p = this->getParamByIndex(function)) {

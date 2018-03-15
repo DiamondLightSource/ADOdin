@@ -93,22 +93,16 @@ class OdinDataDriver : public OdinClient
   int initialise(int index);
   int initialiseAll();
   std::vector<int> mInitialised;
-//  int createDetectorParams();
-  int createOdinDataParams();
-  bool mOdinDataParamsCreated;
+  int createParams();
 
   RestParam * createODRESTParam(const std::string &asynName, rest_param_type_t restType,
                                 sys_t subSystem, const std::string &name);
 
   int mFirstParam;
-
   RestParam * mAPIVersion;
-
   RestParam * mFRConfiguration;
-
   RestParam * mConnected;
   RestParam * mNumImages;
-
   RestParam * mProcesses;
   RestParam * mFilePath;
   RestParam * mFileName;
@@ -136,20 +130,17 @@ class OdinDataDriver : public OdinClient
   RestParam * mNumCaptured;
   RestParam * mNumExpected;
 
-  RestParam * mAcqComplete;
-
   // Internal PVs
-  int mImageHeight;
-  int mImageWidth;
-  int mChunkDepth;
-  int mChunkHeight;
-  int mChunkWidth;
-
   int mProcessInitialised;
   int mNumCapturedSum;
   int mWritingAny;
   int mTimeoutActiveAny;
   int mFileTemplate;
+  int mImageHeight;
+  int mImageWidth;
+  int mChunkDepth;
+  int mChunkHeight;
+  int mChunkWidth;
 
   asynStatus getStatus();
   int configureImageDims();
