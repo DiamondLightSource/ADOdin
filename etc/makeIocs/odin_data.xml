@@ -2,6 +2,6 @@
 <components arch="linux-x86_64">
 	<OdinData.FileWriterPlugin MACRO="ODINDATA" name="FileWriter"/>
 	<ExcaliburDetector.ExcaliburProcessPlugin MACRO="EXCALIBURDETECTOR" name="Excalibur"/>
-	<ADOdin.OdinData IP="127.0.0.1" META="5558" READY="5001" RELEASE="5002" name="OdinData1"/>
-	<ADOdin.OdinDataDriver ADDR="0" FILE_WRITER="FileWriter" ODIN_DATA_1="OdinData1" ODIN_SERVER_PORT="8080" P="ODINDETECTOR" PORT="ODN.OD" PROCESS_PLUGIN="Excalibur" R=":OD:" SERVER="127.0.0.1" TIMEOUT="1"/>
+	<ADOdin.OdinDataServer IP="127.0.0.1" PROCESSES="2" name="OdinDataServer1"/>
+	<ADOdin.OdinDataDriver ADDR="0" FILE_WRITER="FileWriter" ODIN_DATA_SERVER_1="OdinDataServer1" ODIN_SERVER_PORT="8080" P="ODINDETECTOR" PORT="ODN.OD" PROCESS_PLUGIN="Excalibur" R=":OD:" SERVER="127.0.0.1" TIMEOUT="1"/>
 </components>

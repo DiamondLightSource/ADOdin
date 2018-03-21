@@ -1,13 +1,21 @@
 from iocbuilder import AutoSubstitution, Device
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
+from iocbuilder.iocinit import IocDataStream
 from iocbuilder.modules.asyn import AsynPort
 from iocbuilder.modules.ADCore import ADCore, ADBaseTemplate, makeTemplateInstance
 from iocbuilder.modules.restClient import restClient
 from iocbuilder.modules.OdinData import FileWriterPlugin
 from iocbuilder.modules.ExcaliburDetector import ExcaliburProcessPlugin
 
+import os
+from string import Template
 
-__all__ = ["ExcaliburDetector", "OdinDetector", "OdinData"]
+FILE_WRITER_ROOT = FileWriterPlugin.ModuleVersion.LibPath()
+EXCALIBUR_ROOT = ExcaliburProcessPlugin.ModuleVersion.LibPath()
+
+DATA = os.path.join(os.path.dirname(__file__), "../data")
+
+__all__ = ["ExcaliburDetector", "OdinDataServer"]
 
 
 class OdinDetectorTemplate(AutoSubstitution):
@@ -105,7 +113,7 @@ class ExcaliburDetector(OdinDetector):
         # Make an instance of our template
         makeTemplateInstance(self._SpecificTemplate, locals(), args)
 
-        # Add the FME house keeping template
+        # Add the FEM housekeeping template
         fem_hk_template = ExcaliburFemHousekeepingTemplate
         fem_hk_args = {
             "P": args["P"],
@@ -145,7 +153,7 @@ class OdinDataTemplate(AutoSubstitution):
 
 class OdinData(Device):
 
-    """Store configuration for OdinData."""
+    """Store configuration for an OdinData process"""
     INDEX = 1  # Unique index for each OdinData instance
 
     # Device attributes
@@ -158,15 +166,46 @@ class OdinData(Device):
 
         # Create unique R MACRO for template file - OD1, OD2 etc.
         self.R = ":OD{}:".format(self.INDEX)
+        self.index = OdinData.INDEX
         OdinData.INDEX += 1
+
+    def create_config_file(self, template):
+        macros = dict(IP=self.IP, RD_PORT=self.READY, RL_PORT=self.RELEASE,
+                      FW_ROOT=FILE_WRITER_ROOT, PP_ROOT=EXCALIBUR_ROOT)
+        with open(os.path.join(DATA, template)) as template_file:
+            template_config = Template(template_file.read())
+
+        output = template_config.substitute(macros)
+
+        output_file = IocDataStream("fp{}.json".format(self.index))
+        output_file.write(output)
+
+
+class OdinDataServer(Device):
+
+    """Store configuration for an OdinDataServer"""
+    PORT_BASE = 5000
+
+    # Device attributes
+    AutoInstantiate = True
+
+    def __init__(self, IP, PROCESSES):
+        self.__super.__init__()
+        # Update attributes with parameters
+        self.__dict__.update(locals())
+
+        self.processes = []
+        for _ in range(PROCESSES):
+            self.processes.append(
+                OdinData(IP, self.PORT_BASE + 1, self.PORT_BASE + 2, self.PORT_BASE + 3)
+            )
+            self.PORT_BASE += 10
 
         self.instantiated = False  # Make sure instances are only used once
 
     ArgInfo = makeArgInfo(__init__,
                           IP=Simple("IP address of server hosting processes", str),
-                          READY=Simple("Port for Ready Channel", int),
-                          RELEASE=Simple("Port for Release Channel", int),
-                          META=Simple("Port for Meta Channel", int))
+                          PROCESSES=Simple("Number of OdinData processes on this server", int))
 
 
 class OdinDataDriverTemplate(AutoSubstitution):
@@ -177,7 +216,11 @@ class OdinDataDriver(AsynPort):
 
     """Create an OdinData driver"""
 
-    Dependencies = (ADCore, restClient, FileWriterPlugin, ExcaliburProcessPlugin)
+    CONFIG_TEMPLATES = {
+        ExcaliburProcessPlugin: "fp_excalibur.json"
+    }
+
+    Dependencies = (ADCore, restClient, FileWriterPlugin)
 
     # This tells xmlbuilder to use PORT instead of name as the row ID
     UniqueName = "PORT"
@@ -185,8 +228,9 @@ class OdinDataDriver(AsynPort):
     _SpecificTemplate = OdinDataDriverTemplate
 
     def __init__(self, PORT, SERVER, ODIN_SERVER_PORT, PROCESS_PLUGIN, FILE_WRITER, DATASET="data",
-                 ODIN_DATA_1=None, ODIN_DATA_2=None, ODIN_DATA_3=None, ODIN_DATA_4=None,
-                 ODIN_DATA_5=None, ODIN_DATA_6=None, ODIN_DATA_7=None, ODIN_DATA_8=None,
+                 ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None, ODIN_DATA_SERVER_3=None,
+                 ODIN_DATA_SERVER_4=None, ODIN_DATA_SERVER_5=None, ODIN_DATA_SERVER_6=None,
+                 ODIN_DATA_SERVER_7=None, ODIN_DATA_SERVER_8=None,
                  BUFFERS = 0, MEMORY = 0, **args):
         # Init the superclass (AsynPort)
         self.__super.__init__(PORT)
@@ -195,26 +239,28 @@ class OdinDataDriver(AsynPort):
         # Make an instance of our template
         makeTemplateInstance(self._SpecificTemplate, locals(), args)
 
-        self.ODIN_DATA_PROCESSES = []
-        for idx in range(1, 9):
-            odin_data = eval("ODIN_DATA_{}".format(idx))
-            if odin_data is not None:
-                if odin_data.instantiated:
-                    raise ValueError("Same OdinData object given twice")
-                else:
-                    odin_data.instantiated = True
-                self.ODIN_DATA_PROCESSES.append(
-                    OdinDataMeta(odin_data.IP, odin_data.READY, odin_data.RELEASE, odin_data.META)
-                )
-                # Use some OdinDataDriver macros to instantiate an odinData.template
-                args["PORT"] = PORT
-                args["ADDR"] = idx - 1
-                args["R"] = odin_data.R
-                OdinDataTemplate(**args)
-
         self.FILE_WRITER_MACRO = FILE_WRITER.MACRO
         self.DETECTOR = PROCESS_PLUGIN.NAME
         self.PROCESS_PLUGIN_MACRO = PROCESS_PLUGIN.MACRO
+
+        self.ODIN_DATA_PROCESSES = []
+        for idx in range(1, 9):
+            server = eval("ODIN_DATA_SERVER_{}".format(idx))
+            if server is not None:
+                if server.instantiated:
+                    raise ValueError("Same OdinDataServer object given twice")
+                else:
+                    server.instantiated = True
+
+                for odin_data in server.processes:
+                    self.ODIN_DATA_PROCESSES.append(odin_data)
+                    # Use some OdinDataDriver macros to instantiate an odinData.template
+                    args["PORT"] = PORT
+                    args["ADDR"] = odin_data.index - 1
+                    args["R"] = odin_data.R
+                    OdinDataTemplate(**args)
+
+                    odin_data.create_config_file(self.CONFIG_TEMPLATES[PROCESS_PLUGIN.__class__])
 
     # __init__ arguments
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
@@ -224,14 +270,14 @@ class OdinDataDriver(AsynPort):
         PROCESS_PLUGIN=Ident("Odin detector configuration", ExcaliburProcessPlugin),
         FILE_WRITER=Ident("FileWriterPlugin configuration", FileWriterPlugin),
         DATASET=Simple("Name of Dataset", str),
-        ODIN_DATA_1=Ident("OdinData process 1 configuration", OdinData),
-        ODIN_DATA_2=Ident("OdinData process 2 configuration", OdinData),
-        ODIN_DATA_3=Ident("OdinData process 3 configuration", OdinData),
-        ODIN_DATA_4=Ident("OdinData process 4 configuration", OdinData),
-        ODIN_DATA_5=Ident("OdinData process 5 configuration", OdinData),
-        ODIN_DATA_6=Ident("OdinData process 6 configuration", OdinData),
-        ODIN_DATA_7=Ident("OdinData process 7 configuration", OdinData),
-        ODIN_DATA_8=Ident("OdinData process 8 configuration", OdinData),
+        ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", OdinDataServer),
+        ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", OdinDataServer),
+        ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", OdinDataServer),
+        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", OdinDataServer),
+        ODIN_DATA_SERVER_5=Ident("OdinDataServer 5 configuration", OdinDataServer),
+        ODIN_DATA_SERVER_6=Ident("OdinDataServer 6 configuration", OdinDataServer),
+        ODIN_DATA_SERVER_7=Ident("OdinDataServer 7 configuration", OdinDataServer),
+        ODIN_DATA_SERVER_8=Ident("OdinDataServer 8 configuration", OdinDataServer),
         BUFFERS=Simple("Maximum number of NDArray buffers to be created for plugin callbacks", int),
         MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "
                       "attached plugins", int))
@@ -241,7 +287,6 @@ class OdinDataDriver(AsynPort):
     DbdFileList = ['odinDetectorSupport']
 
     def Initialise(self):
-        # Put the actual macros in the src boot script to be substituted by `make`
         # Configure up to 8 OdinData processes
         print "# odinDataProcessConfig(const char * ipAddress, int readyPort, " \
               "int releasePort, int metaPort)"
@@ -249,22 +294,11 @@ class OdinDataDriver(AsynPort):
             print "odinDataProcessConfig(\"%(IP)s\", %(READY)d, " \
                   "%(RELEASE)d, %(META)d)" % process.__dict__
 
-        print "# odinDataDriverConfig(const char * portName, const char * serverPort," \
+        print "# odinDataDriverConfig(const char * portName, const char * serverPort, " \
               "int odinServerPort, " \
-              "const char * datasetName, const char * fileWriterLibraryPath, " \
-              "const char * detectorName, const char * processPluginLibraryPath, " \
+              "const char * datasetName, const char * detectorName, " \
               "int maxBuffers, size_t maxMemory)"
         print "odinDataDriverConfig(\"%(PORT)s\", \"%(SERVER)s\", " \
               "%(ODIN_SERVER_PORT)d, " \
-              "\"%(DATASET)s\", \"$(%(FILE_WRITER_MACRO)s)\", " \
-              "\"%(DETECTOR)s\", \"$(%(PROCESS_PLUGIN_MACRO)s)\", " \
+              "\"%(DATASET)s\", \"%(DETECTOR)s\", " \
               "%(BUFFERS)d, %(MEMORY)d)" % self.__dict__
-
-
-class OdinDataMeta(object):
-
-    def __init__(self, ip, ready, release, meta):
-        self.IP = ip
-        self.READY = ready
-        self.RELEASE = release
-        self.META = meta
