@@ -7,7 +7,8 @@
 
 // Odin Server
 #define OdinRestAPIVersion             "ODIN_REST_API_VERSION"
-// Frame Receiver Configuration
+// Process Configuration
+#define OdinFPConfig                   "ODIN_FP_CONFIG"
 #define OdinFRConfig                   "ODIN_FR_CONFIG"
 // OdinData
 #define OdinNumProcesses               "ODIN_NUM_PROCESSES"
@@ -52,8 +53,7 @@ class OdinDataDriver : public OdinClient
 {
  public:
   OdinDataDriver(const char * portName, const char * serverHostname, int odinServerPort,
-                 const char * datasetName, const char * fileWriterLibraryPath,
-                 const char * detectorName, const char * processPluginLibraryPath,
+                 const char * datasetName, const char * detectorName,
                  int maxBuffers, size_t maxMemory, int priority, int stackSize);
 
   // These are the methods that we override from ADDriver
@@ -100,6 +100,7 @@ class OdinDataDriver : public OdinClient
 
   int mFirstParam;
   RestParam * mAPIVersion;
+  RestParam * mFPConfiguration;
   RestParam * mFRConfiguration;
   RestParam * mConnected;
   RestParam * mNumImages;
