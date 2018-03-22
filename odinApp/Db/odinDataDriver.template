@@ -532,26 +532,6 @@ record(mbbi, "$(P)$(R)DataType_RBV")
     field(SVVL, "")
 }
 
-record(waveform, "$(P)$(R)FPConfigFile")
-{
-     field(PINI, "YES")
-     field(DTYP, "asynOctetWrite")
-     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FP_CONFIG")
-     field(FTVL, "CHAR")
-     field(NELM, "256")
-     info(autosaveFields, "VAL")
-}
-
-record(waveform, "$(P)$(R)FRConfigFile")
-{
-     field(PINI, "YES")
-     field(DTYP, "asynOctetWrite")
-     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FR_CONFIG")
-     field(FTVL, "CHAR")
-     field(NELM, "256")
-     info(autosaveFields, "VAL")
-}
-
 #record(ao, "$(P)$(R)FillValue")
 #{
 #    field(DTYP, "asynFloat64")
