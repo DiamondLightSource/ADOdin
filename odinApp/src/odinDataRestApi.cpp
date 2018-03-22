@@ -6,7 +6,7 @@
 #include "jsonDict.h"
 
 // REST Strings
-#define FRAME_PROCESSOR_ADAPTER     "odin_data"
+#define FRAME_PROCESSOR_ADAPTER     "fp"
 #define FRAME_RECEIVER_ADAPTER      "fr"
 
 // OdinData JSON Strings
