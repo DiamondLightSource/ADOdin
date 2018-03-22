@@ -813,27 +813,44 @@ record(bo, "$(P)$(R)FEMRESETSTATE")
 # Low voltage control
 # This PV is slaved to the master in a very specific fashion and should
 # not be individually manipulated.  So no GDA nor autosave tags.
-record(calcout, "$(P)$(R)LvControlDownload")
-{
-    field(INPA, "$(P)$(R)CONFIG:ACQUIRE:LvControl CP")
-    field(INPB, "$(P)$(R)LvControlLocal")
-    field(CALC, "A#B")
-    field(OCAL, "A")
-    field(OOPT, "When Non-zero")
-    field(DOPT, "Use OCAL")
-    field(OUT,  "$(P)$(R)LvControlLocal PP")
-}
-record(bo, "$(P)$(R)LvControlLocal")
+#record(calcout, "$(P)$(R)LvControlDownload")
+#{
+#    field(INPA, "$(P)$(R)CONFIG:ACQUIRE:LvControl CP")
+#    field(INPB, "$(P)$(R)LvControlLocal")
+#    field(CALC, "A#B")
+#    field(OCAL, "A")
+#    field(OOPT, "When Non-zero")
+#    field(DOPT, "Use OCAL")
+#    field(OUT,  "$(P)$(R)LvControlLocal PP")
+#}
+#record(bo, "$(P)$(R)LvControlLocal")
+#{
+#    field(DTYP, "asynInt32")
+#    field(VAL,  "0")
+#    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/lv_enable")
+#    field(ZNAM, "Off")
+#    field(ONAM, "On")
+#}
+#record(bo, "$(P)$(R)CONFIG:ACQUIRE:LvControl")
+#{
+#    field(VAL,  "0")
+#    field(ZNAM, "Off")
+#    field(ONAM, "On")
+#}
+record(bo, "$(P)$(R)CONFIG:ACQUIRE:LvControl")
 {
     field(DTYP, "asynInt32")
     field(VAL,  "0")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_command/lv_enable")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/lv_enable")
     field(ZNAM, "Off")
     field(ONAM, "On")
 }
-record(bo, "$(P)$(R)CONFIG:ACQUIRE:LvControl")
+
+record(bi, "$(P)$(R)CONFIG:ACQUIRE:LvControl_RBV")
 {
-    field(VAL,  "0")
+    field(DTYP, "asynInt32")
+    field(SCAN,  "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/lv_enable")
     field(ZNAM, "Off")
     field(ONAM, "On")
 }
