@@ -416,10 +416,15 @@ asynStatus OdinDataDriver::writeOctet(asynUser *pasynUser, const char *value,
   }
 
   if (RestParam * p = this->getParamByIndex(function)) {
-    status |= p->put(value);
+    int address = -1;
+    if (function == mFPConfiguration->getIndex()) {
+      getAddress(pasynUser, &address);
+    }
+    status |= p->put(value, address);
   }
-
-  status |= ADDriver::writeOctet(pasynUser, value, nChars, nActual);
+  if(function < mFirstParam) {
+    status |= ADDriver::writeOctet(pasynUser, value, nChars, nActual);
+  }
 
   if (status) {
     asynPrint(pasynUser, ASYN_TRACE_ERROR,
