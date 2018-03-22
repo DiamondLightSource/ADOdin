@@ -89,6 +89,11 @@ class Excalibur2FemStatusTemplate(AutoSubstitution):
     TemplateFile = "excalibur2FemStatus.template"
 
 
+@add_excalibur_fem_status
+class Excalibur6FemStatusTemplate(AutoSubstitution):
+    TemplateFile = "excalibur6FemStatus.template"
+
+
 class ExcaliburDetector(OdinDetector):
 
     """Create an Excalibur detector"""
@@ -96,7 +101,7 @@ class ExcaliburDetector(OdinDetector):
     DETECTOR = "excalibur"
     SENSOR_OPTIONS = {  # (AutoSubstitution Template, Number of FEMs)
         "1M": (Excalibur2FemStatusTemplate, 2),
-        "3M": (None, 6)
+        "3M": (Excalibur6FemStatusTemplate, 6)
     }
 
     # This tells xmlbuilder to use PORT instead of name as the row ID
