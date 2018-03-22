@@ -11,6 +11,26 @@
 # This associates the template with an edm screen
 # % gui, $(PORT), edmtab, OdinData.edl, P=$(P),R=$(R)
 
+record(waveform, "$(P)$(R)FPConfigFile")
+{
+     field(PINI, "YES")
+     field(DTYP, "asynOctetWrite")
+     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FP_CONFIG")
+     field(FTVL, "CHAR")
+     field(NELM, "256")
+     info(autosaveFields, "VAL")
+}
+
+record(waveform, "$(P)$(R)FRConfigFile")
+{
+     field(PINI, "YES")
+     field(DTYP, "asynOctetWrite")
+     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FR_CONFIG")
+     field(FTVL, "CHAR")
+     field(NELM, "256")
+     info(autosaveFields, "VAL")
+}
+
 record(longin, "$(P)$(R)ProcessConnected_RBV")
 {
     field(DTYP, "asynInt32")
