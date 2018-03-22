@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1029
-y 129
+x 538
+y 60
 w 740
 h 860
 font "arial-medium-r-18.0"
@@ -174,7 +174,7 @@ x 120
 y 65
 w 70
 h 20
-controlPv "$(P):1:HK:P5V_A_VMON"
+controlPv "$(P):P5V_A_VMON"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -193,7 +193,7 @@ x 195
 y 65
 w 75
 h 20
-controlPv "$(P):1:HK:P5V_A_VMON.HIGH"
+controlPv "$(P):P5V_A_VMON.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -210,7 +210,7 @@ x 275
 y 65
 w 75
 h 20
-controlPv "$(P):1:HK:P5V_A_VMON.LOW"
+controlPv "$(P):P5V_A_VMON.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -246,7 +246,7 @@ x 120
 y 90
 w 70
 h 20
-controlPv "$(P):1:HK:P5V_B_VMON"
+controlPv "$(P):P5V_B_VMON"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -265,7 +265,7 @@ x 195
 y 90
 w 75
 h 20
-controlPv "$(P):1:HK:P5V_B_VMON.HIGH"
+controlPv "$(P):P5V_B_VMON.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -282,7 +282,7 @@ x 275
 y 90
 w 75
 h 20
-controlPv "$(P):1:HK:P5V_B_VMON.LOW"
+controlPv "$(P):P5V_B_VMON.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -318,7 +318,7 @@ x 120
 y 115
 w 70
 h 20
-controlPv "$(P):1:HK:P5V_FEMO0_IMON"
+controlPv "$(P):P5V_FEMO0_IMON"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -337,7 +337,7 @@ x 195
 y 115
 w 75
 h 20
-controlPv "$(P):1:HK:P5V_FEMO0_IMON.HIGH"
+controlPv "$(P):P5V_FEMO0_IMON.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -354,7 +354,7 @@ x 275
 y 115
 w 75
 h 20
-controlPv "$(P):1:HK:P5V_FEMO0_IMON.LOW"
+controlPv "$(P):P5V_FEMO0_IMON.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -390,7 +390,7 @@ x 120
 y 140
 w 70
 h 20
-controlPv "$(P):1:HK:P5V_FEMO1_IMON"
+controlPv "$(P):P5V_FEMO1_IMON"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -409,7 +409,7 @@ x 195
 y 140
 w 75
 h 20
-controlPv "$(P):1:HK:P5V_FEMO1_IMON.HIGH"
+controlPv "$(P):P5V_FEMO1_IMON.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -426,7 +426,7 @@ x 275
 y 140
 w 75
 h 20
-controlPv "$(P):1:HK:P5V_FEMO1_IMON.LOW"
+controlPv "$(P):P5V_FEMO1_IMON.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -462,7 +462,7 @@ x 120
 y 165
 w 70
 h 20
-controlPv "$(P):1:HK:P5V_FEMO2_IMON"
+controlPv "$(P):P5V_FEMO2_IMON"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -481,7 +481,7 @@ x 195
 y 165
 w 75
 h 20
-controlPv "$(P):1:HK:P5V_FEMO2_IMON.HIGH"
+controlPv "$(P):P5V_FEMO2_IMON.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -498,7 +498,7 @@ x 275
 y 165
 w 75
 h 20
-controlPv "$(P):1:HK:P5V_FEMO2_IMON.LOW"
+controlPv "$(P):P5V_FEMO2_IMON.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -534,7 +534,7 @@ x 120
 y 190
 w 70
 h 20
-controlPv "$(P):1:HK:P5V_FEMO3_IMON"
+controlPv "$(P):P5V_FEMO3_IMON"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -553,7 +553,7 @@ x 195
 y 190
 w 75
 h 20
-controlPv "$(P):1:HK:P5V_FEMO3_IMON.HIGH"
+controlPv "$(P):P5V_FEMO3_IMON.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -570,7 +570,7 @@ x 275
 y 190
 w 75
 h 20
-controlPv "$(P):1:HK:P5V_FEMO3_IMON.LOW"
+controlPv "$(P):P5V_FEMO3_IMON.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -606,7 +606,7 @@ x 120
 y 215
 w 70
 h 20
-controlPv "$(P):1:HK:P5V_FEMO4_IMON"
+controlPv "$(P):P5V_FEMO4_IMON"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -625,7 +625,7 @@ x 195
 y 215
 w 75
 h 20
-controlPv "$(P):1:HK:P5V_FEMO4_IMON.HIGH"
+controlPv "$(P):P5V_FEMO4_IMON.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -642,7 +642,7 @@ x 275
 y 215
 w 75
 h 20
-controlPv "$(P):1:HK:P5V_FEMO4_IMON.LOW"
+controlPv "$(P):P5V_FEMO4_IMON.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -678,7 +678,7 @@ x 120
 y 240
 w 70
 h 20
-controlPv "$(P):1:HK:P5V_FEMO5_IMON"
+controlPv "$(P):P5V_FEMO5_IMON"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -697,7 +697,7 @@ x 195
 y 240
 w 75
 h 20
-controlPv "$(P):1:HK:P5V_FEMO5_IMON.HIGH"
+controlPv "$(P):P5V_FEMO5_IMON.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -714,7 +714,7 @@ x 275
 y 240
 w 75
 h 20
-controlPv "$(P):1:HK:P5V_FEMO5_IMON.LOW"
+controlPv "$(P):P5V_FEMO5_IMON.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -750,7 +750,7 @@ x 120
 y 265
 w 70
 h 20
-controlPv "$(P):1:HK:P48V_VMON"
+controlPv "$(P):P48V_VMON"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -769,7 +769,7 @@ x 195
 y 265
 w 75
 h 20
-controlPv "$(P):1:HK:P48V_VMON.HIGH"
+controlPv "$(P):P48V_VMON.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -786,7 +786,7 @@ x 275
 y 265
 w 75
 h 20
-controlPv "$(P):1:HK:P48V_VMON.LOW"
+controlPv "$(P):P48V_VMON.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -822,7 +822,7 @@ x 120
 y 290
 w 70
 h 20
-controlPv "$(P):1:HK:P48V_IMON"
+controlPv "$(P):P48V_IMON"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -841,7 +841,7 @@ x 195
 y 290
 w 75
 h 20
-controlPv "$(P):1:HK:P48V_IMON.HIGH"
+controlPv "$(P):P48V_IMON.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -858,7 +858,7 @@ x 275
 y 290
 w 75
 h 20
-controlPv "$(P):1:HK:P48V_IMON.LOW"
+controlPv "$(P):P48V_IMON.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -894,7 +894,7 @@ x 120
 y 315
 w 70
 h 20
-controlPv "$(P):1:HK:P5VSUP_VMON"
+controlPv "$(P):P5VSUP_VMON"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -913,7 +913,7 @@ x 195
 y 315
 w 75
 h 20
-controlPv "$(P):1:HK:P5VSUP_VMON.HIGH"
+controlPv "$(P):P5VSUP_VMON.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -930,7 +930,7 @@ x 275
 y 315
 w 75
 h 20
-controlPv "$(P):1:HK:P5VSUP_VMON.LOW"
+controlPv "$(P):P5VSUP_VMON.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -966,7 +966,7 @@ x 120
 y 340
 w 70
 h 20
-controlPv "$(P):1:HK:P5VSUP_IMON"
+controlPv "$(P):P5VSUP_IMON"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -985,7 +985,7 @@ x 195
 y 340
 w 75
 h 20
-controlPv "$(P):1:HK:P5VSUP_IMON.HIGH"
+controlPv "$(P):P5VSUP_IMON.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -1002,7 +1002,7 @@ x 275
 y 340
 w 75
 h 20
-controlPv "$(P):1:HK:P5VSUP_IMON.LOW"
+controlPv "$(P):P5VSUP_IMON.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -1038,7 +1038,7 @@ x 495
 y 65
 w 70
 h 20
-controlPv "$(P):1:HK:HUMIDITY_MON"
+controlPv "$(P):HUMIDITY_MON"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -1057,7 +1057,7 @@ x 570
 y 65
 w 75
 h 20
-controlPv "$(P):1:HK:HUMIDITY_MON.HIGH"
+controlPv "$(P):HUMIDITY_MON.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -1074,7 +1074,7 @@ x 650
 y 65
 w 75
 h 20
-controlPv "$(P):1:HK:HUMIDITY_MON.LOW"
+controlPv "$(P):HUMIDITY_MON.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -1110,7 +1110,7 @@ x 495
 y 90
 w 70
 h 20
-controlPv "$(P):1:HK:AIR_TEMP_MON"
+controlPv "$(P):AIR_TEMP_MON"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -1129,7 +1129,7 @@ x 570
 y 90
 w 75
 h 20
-controlPv "$(P):1:HK:AIR_TEMP_MON.HIGH"
+controlPv "$(P):AIR_TEMP_MON.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -1146,7 +1146,7 @@ x 650
 y 90
 w 75
 h 20
-controlPv "$(P):1:HK:AIR_TEMP_MON.LOW"
+controlPv "$(P):AIR_TEMP_MON.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -1182,7 +1182,7 @@ x 495
 y 115
 w 70
 h 20
-controlPv "$(P):1:HK:COOLANT_TEMP_MON"
+controlPv "$(P):COOLANT_TEMP_MON"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -1201,7 +1201,7 @@ x 570
 y 115
 w 75
 h 20
-controlPv "$(P):1:HK:COOLANT_TEMP_MON.HIGH"
+controlPv "$(P):COOLANT_TEMP_MON.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -1218,7 +1218,7 @@ x 650
 y 115
 w 75
 h 20
-controlPv "$(P):1:HK:COOLANT_TEMP_MON.LOW"
+controlPv "$(P):COOLANT_TEMP_MON.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -1254,7 +1254,7 @@ x 495
 y 140
 w 70
 h 20
-controlPv "$(P):1:HK:COOLANT_FLOW_MON"
+controlPv "$(P):COOLANT_FLOW_MON"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -1273,7 +1273,7 @@ x 570
 y 140
 w 75
 h 20
-controlPv "$(P):1:HK:COOLANT_FLOW_MON.HIGH"
+controlPv "$(P):COOLANT_FLOW_MON.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -1290,7 +1290,7 @@ x 650
 y 140
 w 75
 h 20
-controlPv "$(P):1:HK:COOLANT_FLOW_MON.LOW"
+controlPv "$(P):COOLANT_FLOW_MON.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -1326,7 +1326,7 @@ x 495
 y 165
 w 70
 h 20
-controlPv "$(P):1:HK:P3V3_IMON"
+controlPv "$(P):P3V3_IMON"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -1345,7 +1345,7 @@ x 570
 y 165
 w 75
 h 20
-controlPv "$(P):1:HK:P3V3_IMON.HIGH"
+controlPv "$(P):P3V3_IMON.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -1362,7 +1362,7 @@ x 650
 y 165
 w 75
 h 20
-controlPv "$(P):1:HK:P3V3_IMON.LOW"
+controlPv "$(P):P3V3_IMON.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -1398,7 +1398,7 @@ x 495
 y 190
 w 70
 h 20
-controlPv "$(P):1:HK:P1V8_IMON_A"
+controlPv "$(P):P1V8_IMON_A"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -1417,7 +1417,7 @@ x 570
 y 190
 w 75
 h 20
-controlPv "$(P):1:HK:P1V8_IMON_A.HIGH"
+controlPv "$(P):P1V8_IMON_A.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -1434,7 +1434,7 @@ x 650
 y 190
 w 75
 h 20
-controlPv "$(P):1:HK:P1V8_IMON_A.LOW"
+controlPv "$(P):P1V8_IMON_A.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -1470,7 +1470,7 @@ x 495
 y 215
 w 70
 h 20
-controlPv "$(P):1:HK:BIAS_IMON"
+controlPv "$(P):BIAS_IMON"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -1489,7 +1489,7 @@ x 570
 y 215
 w 75
 h 20
-controlPv "$(P):1:HK:BIAS_IMON.HIGH"
+controlPv "$(P):BIAS_IMON.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -1506,7 +1506,7 @@ x 650
 y 215
 w 75
 h 20
-controlPv "$(P):1:HK:BIAS_IMON.LOW"
+controlPv "$(P):BIAS_IMON.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -1542,7 +1542,7 @@ x 495
 y 240
 w 70
 h 20
-controlPv "$(P):1:HK:P3V3_VMON"
+controlPv "$(P):P3V3_VMON"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -1561,7 +1561,7 @@ x 570
 y 240
 w 75
 h 20
-controlPv "$(P):1:HK:P3V3_VMON.HIGH"
+controlPv "$(P):P3V3_VMON.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -1578,7 +1578,7 @@ x 650
 y 240
 w 75
 h 20
-controlPv "$(P):1:HK:P3V3_VMON.LOW"
+controlPv "$(P):P3V3_VMON.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -1614,7 +1614,7 @@ x 495
 y 265
 w 70
 h 20
-controlPv "$(P):1:HK:P1V8_VMON_A"
+controlPv "$(P):P1V8_VMON_A"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -1633,7 +1633,7 @@ x 570
 y 265
 w 75
 h 20
-controlPv "$(P):1:HK:P1V8_VMON_A.HIGH"
+controlPv "$(P):P1V8_VMON_A.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -1650,7 +1650,7 @@ x 650
 y 265
 w 75
 h 20
-controlPv "$(P):1:HK:P1V8_VMON_A.LOW"
+controlPv "$(P):P1V8_VMON_A.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -1686,7 +1686,7 @@ x 495
 y 290
 w 70
 h 20
-controlPv "$(P):1:HK:BIAS_VMON"
+controlPv "$(P):BIAS_VMON"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -1705,7 +1705,7 @@ x 255
 y 390
 w 75
 h 20
-controlPv "$(P):1:HK:BIAS_LEVEL:DELTA"
+controlPv "$(P):BIAS_LEVEL:DELTA"
 fgColor index 25
 bgColor index 3
 fill
@@ -1741,7 +1741,7 @@ x 495
 y 315
 w 70
 h 20
-controlPv "$(P):1:HK:P1V8_IMON_B"
+controlPv "$(P):P1V8_IMON_B"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -1760,7 +1760,7 @@ x 570
 y 315
 w 75
 h 20
-controlPv "$(P):1:HK:P1V8_IMON_B.HIGH"
+controlPv "$(P):P1V8_IMON_B.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -1777,7 +1777,7 @@ x 650
 y 315
 w 75
 h 20
-controlPv "$(P):1:HK:P1V8_IMON_B.LOW"
+controlPv "$(P):P1V8_IMON_B.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -1813,7 +1813,7 @@ x 495
 y 340
 w 70
 h 20
-controlPv "$(P):1:HK:P1V8_VMON_B"
+controlPv "$(P):P1V8_VMON_B"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -1832,7 +1832,7 @@ x 570
 y 340
 w 75
 h 20
-controlPv "$(P):1:HK:P1V8_VMON_B.HIGH"
+controlPv "$(P):P1V8_VMON_B.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -1849,7 +1849,7 @@ x 650
 y 340
 w 75
 h 20
-controlPv "$(P):1:HK:P1V8_VMON_B.LOW"
+controlPv "$(P):P1V8_VMON_B.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -2198,7 +2198,7 @@ x 5
 y 365
 w 20
 h 20
-controlPv "$(P):1:HK:COOLANT_TEMP_STATUS"
+controlPv "$(P):COOLANT_TEMP_STATUS"
 lineColor index 14
 onColor index 15
 offColor index 20
@@ -2235,7 +2235,7 @@ x 150
 y 365
 w 20
 h 20
-controlPv "$(P):1:HK:HUMIDITY_STATUS"
+controlPv "$(P):HUMIDITY_STATUS"
 lineColor index 14
 onColor index 15
 offColor index 20
@@ -2253,7 +2253,7 @@ x 295
 y 365
 w 20
 h 20
-controlPv "$(P):1:HK:COOLANT_FLOW_STATUS"
+controlPv "$(P):COOLANT_FLOW_STATUS"
 lineColor index 14
 onColor index 15
 offColor index 20
@@ -2328,7 +2328,7 @@ x 440
 y 365
 w 20
 h 20
-controlPv "$(P):1:HK:AIR_TEMP_STATUS"
+controlPv "$(P):AIR_TEMP_STATUS"
 lineColor index 14
 onColor index 15
 offColor index 20
@@ -2365,7 +2365,7 @@ x 585
 y 365
 w 20
 h 20
-controlPv "$(P):1:HK:FAN_FAULT"
+controlPv "$(P):FAN_FAULT"
 lineColor index 14
 onColor index 19
 offColor index 15
@@ -2503,7 +2503,7 @@ selectColor index 3
 inconsistentColor index 0
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):1:HK:BIAS_ON_OFF"
+controlPv "$(P):BIAS_ON_OFF"
 font "arial-bold-r-10.0"
 orientation "horizontal"
 endObjectProperties
@@ -2537,7 +2537,7 @@ x 135
 y 390
 w 75
 h 20
-controlPv "$(P):1:HK:BIAS_LEVEL"
+controlPv "$(P):BIAS_LEVEL"
 fgColor index 25
 bgColor index 3
 fill
@@ -2689,7 +2689,7 @@ x 215
 y 415
 w 20
 h 20
-controlPv "$(P):1:HK:HvLvSoftTrip"
+controlPv "$(P):HvLvSoftTrip"
 lineColor index 14
 onColor index 20
 offColor index 15
@@ -2726,7 +2726,7 @@ x 320
 y 415
 w 20
 h 20
-controlPv "$(P):1:HK:HvLvSoftTripOverridden"
+controlPv "$(P):HvLvSoftTripOverridden"
 lineColor index 14
 onColor index 20
 offColor index 15
@@ -2744,7 +2744,7 @@ x 570
 y 290
 w 75
 h 20
-controlPv "$(P):1:HK:BIAS_VMON.HIGH"
+controlPv "$(P):BIAS_VMON.HIGH"
 fgColor index 16
 bgColor index 10
 fill
@@ -2762,7 +2762,7 @@ x 650
 y 290
 w 75
 h 20
-controlPv "$(P):1:HK:BIAS_VMON.LOW"
+controlPv "$(P):BIAS_VMON.LOW"
 fgColor index 16
 bgColor index 10
 fill
