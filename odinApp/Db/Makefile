@@ -17,6 +17,7 @@ DB += odinData.template
 DB += excaliburDetector.template
 DB += excaliburFemHousekeeping.template
 DB += excalibur2FemStatus.template
+DB += excalibur6FemStatus.template
 DB += excaliburFemStatus.template
 
 #----------------------------------------------------
