@@ -1,0 +1,71 @@
+# excaliburDetector.template
+#
+# Parameters:
+#   P       - EPICS name prefix
+#   R       - EPICS plugin name
+#   DET     - Detector R value
+#   PORT    - Asyn port
+#   TIMEOUT - Timeout
+
+record(calcout, "$(P)$(R)FPBitDepthCalc")
+{
+    field(INPA, "$(P)$(DET)CounterDepth CP")
+    field(CALC, "A+1")
+    field(OUT, "$(P)$(R)FPBitDepthFan.SELN")
+    field(FLNK, "$(P)$(R)FPBitDepthFan")
+}
+
+record(dfanout, "$(P)$(R)FPBitDepthFan")
+{
+    field(VAL, "1")
+    field(OUTA,  "$(P)$(R)FPBitDepth1.PROC PP")
+    field(OUTB,  "$(P)$(R)FPBitDepth6.PROC PP")
+    field(OUTC,  "$(P)$(R)FPBitDepth12.PROC PP")
+    field(OUTD,  "$(P)$(R)FPBitDepth24.PROC PP")
+    field(SELM, "Specified")
+
+}
+
+record(stringout, "$(P)$(R)FPBitDepth1")
+{
+    field(DTYP, "asynOctetWrite")
+    field(VAL,  "1-bit")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_fp/config/excalibur/bitdepth")
+}
+
+record(stringout, "$(P)$(R)FPBitDepth6")
+{
+    field(DTYP, "asynOctetWrite")
+    field(VAL,  "6-bit")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_fp/config/excalibur/bitdepth")
+}
+
+record(stringout, "$(P)$(R)FPBitDepth12")
+{
+    field(DTYP, "asynOctetWrite")
+    field(VAL,  "12-bit")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_fp/config/excalibur/bitdepth")
+}
+
+record(stringout, "$(P)$(R)FPBitDepth24")
+{
+    field(DTYP, "asynOctetWrite")
+    field(VAL,  "24-bit")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_fp/config/excalibur/bitdepth")
+}
+
+record(longout, "$(P)$(R)FPProcWidth")
+{
+    field(DOL, "$(P)$(R)ImageWidth CP")
+    field(OMSL, "closed_loop")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_fp/config/excalibur/width")
+}
+
+record(longout, "$(P)$(R)FPProcHeight")
+{
+    field(DOL, "$(P)$(R)ImageHeight CP")
+    field(OMSL, "closed_loop")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_fp/config/excalibur/height")
+}
