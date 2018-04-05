@@ -22,7 +22,7 @@ record(ai, "$(P)$(R)$(ADDRESS):MOLY_TEMPERATURE")
     field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/moly_temp")
     field(EGU,  "C")
     field(LOW,  "0")
-    field(HIGH, "35.0")
+    field(HIGH, "45.0")
     field(PREC, "2")
     field(HSV,  "MAJOR")
     field(LSV,  "MAJOR")
@@ -163,6 +163,207 @@ record(bi, "$(P)$(R)$(ADDRESS):P2V5_DVDD_1_POK")
     field(ZSV,  "MAJOR")
 }
 
+# The chip identity as programmed in the fuses.
+# %gdatag,template,simplePv,det1.1.chipid,
+# %gdatag,pv,ro,det1.1.chipid,RECORD,
+# % autosave 2 
+#% archiver 10 Monitor
+record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC0")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/efuseid_c0")
+    field(PINI, "1")
+}
+
+# The chip identity as programmed in the fuses.
+# %gdatag,template,simplePv,det1.1.chipid,
+# %gdatag,pv,ro,det1.1.chipid,RECORD,
+# % autosave 2 
+#% archiver 10 Monitor
+record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC1")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/efuseid_c1")
+    field(PINI, "1")
+}
+
+# The chip identity as programmed in the fuses.
+# %gdatag,template,simplePv,det1.1.chipid,
+# %gdatag,pv,ro,det1.1.chipid,RECORD,
+# % autosave 2 
+#% archiver 10 Monitor
+record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC2")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/efuseid_c2")
+    field(PINI, "1")
+}
+
+# The chip identity as programmed in the fuses.
+# %gdatag,template,simplePv,det1.1.chipid,
+# %gdatag,pv,ro,det1.1.chipid,RECORD,
+# % autosave 2 
+#% archiver 10 Monitor
+record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC3")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/efuseid_c3")
+    field(PINI, "1")
+}
+
+# The chip identity as programmed in the fuses.
+# %gdatag,template,simplePv,det1.1.chipid,
+# %gdatag,pv,ro,det1.1.chipid,RECORD,
+# % autosave 2 
+#% archiver 10 Monitor
+record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC4")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/efuseid_c4")
+    field(PINI, "1")
+}
+
+# The chip identity as programmed in the fuses.
+# %gdatag,template,simplePv,det1.1.chipid,
+# %gdatag,pv,ro,det1.1.chipid,RECORD,
+# % autosave 2 
+#% archiver 10 Monitor
+record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC5")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/efuseid_c5")
+    field(PINI, "1")
+}
+
+# The chip identity as programmed in the fuses.
+# %gdatag,template,simplePv,det1.1.chipid,
+# %gdatag,pv,ro,det1.1.chipid,RECORD,
+# % autosave 2 
+#% archiver 10 Monitor
+record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC6")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/efuseid_c6")
+    field(PINI, "1")
+}
+
+# The chip identity as programmed in the fuses.
+# %gdatag,template,simplePv,det1.1.chipid,
+# %gdatag,pv,ro,det1.1.chipid,RECORD,
+# % autosave 2 
+#% archiver 10 Monitor
+record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC7")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/efuseid_c7")
+    field(PINI, "1")
+}
+
+# The saved chip identity.
+# %gdatag,template,simplePv,det1.1.savedchipid,
+# %gdatag,pv,ro,det1.1.savedchipid,RECORD,
+# % autosave 2 
+#% archiver 10 Monitor
+record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC0")
+{
+    field(SCAN, "Passive")
+    field(VAL,  "0")
+}
+
+# The saved chip identity.
+# %gdatag,template,simplePv,det1.1.savedchipid,
+# %gdatag,pv,ro,det1.1.savedchipid,RECORD,
+# % autosave 2 
+#% archiver 10 Monitor
+record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC1")
+{
+    field(SCAN, "Passive")
+    field(VAL,  "0")
+}
+
+# The saved chip identity.
+# %gdatag,template,simplePv,det1.1.savedchipid,
+# %gdatag,pv,ro,det1.1.savedchipid,RECORD,
+# % autosave 2 
+#% archiver 10 Monitor
+record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC2")
+{
+    field(SCAN, "Passive")
+    field(VAL,  "0")
+}
+
+# The saved chip identity.
+# %gdatag,template,simplePv,det1.1.savedchipid,
+# %gdatag,pv,ro,det1.1.savedchipid,RECORD,
+# % autosave 2 
+#% archiver 10 Monitor
+record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC3")
+{
+    field(SCAN, "Passive")
+    field(VAL,  "0")
+}
+
+# The saved chip identity.
+# %gdatag,template,simplePv,det1.1.savedchipid,
+# %gdatag,pv,ro,det1.1.savedchipid,RECORD,
+# % autosave 2 
+#% archiver 10 Monitor
+record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC4")
+{
+    field(SCAN, "Passive")
+    field(VAL,  "0")
+}
+
+# The saved chip identity.
+# %gdatag,template,simplePv,det1.1.savedchipid,
+# %gdatag,pv,ro,det1.1.savedchipid,RECORD,
+# % autosave 2 
+#% archiver 10 Monitor
+record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC5")
+{
+    field(SCAN, "Passive")
+    field(VAL,  "0")
+}
+
+# The saved chip identity.
+# %gdatag,template,simplePv,det1.1.savedchipid,
+# %gdatag,pv,ro,det1.1.savedchipid,RECORD,
+# % autosave 2 
+#% archiver 10 Monitor
+record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC6")
+{
+    field(SCAN, "Passive")
+    field(VAL,  "0")
+}
+
+# The saved chip identity.
+# %gdatag,template,simplePv,det1.1.savedchipid,
+# %gdatag,pv,ro,det1.1.savedchipid,RECORD,
+# % autosave 2 
+#% archiver 10 Monitor
+record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC7")
+{
+    field(SCAN, "Passive")
+    field(VAL,  "0")
+}
+
+
 # Overall alarm record for the per FEM housekeeping
 record(calc, "$(P)$(R)$(ADDRESS):DEVSTA10")
 {
@@ -194,29 +395,29 @@ record(bo, "$(P)$(R)$(ADDRESS):RecordEFuseId")
     field(VAL,  "0")
     field(ZNAM, "Idle")
     field(ONAM, "Record")
-    field(FLNK, "$(P)$(R)RecordEFuseId_TFR") 
+    field(FLNK, "$(P)$(R)$(ADDRESS):RecordEFuseId_TFR") 
 }
 record(seq, "$(P)$(R)$(ADDRESS):RecordEFuseId_TFR")
 {
     field(SELM, "All")
-    field(DOL1, "$(P):FEM:1:EFuseId.VAL")
-    field(LNK1, "$(P):FEM:1:SavedEFuseId.VAL PP")
-    field(DOL2, "$(P):FEM:2:EFuseId.VAL")
-    field(LNK2, "$(P):FEM:2:SavedEFuseId.VAL PP")
-    field(DOL3, "$(P):FEM:3:EFuseId.VAL")
-    field(LNK3, "$(P):FEM:3:SavedEFuseId.VAL PP")
-    field(DOL4, "$(P):FEM:4:EFuseId.VAL")
-    field(LNK4, "$(P):FEM:4:SavedEFuseId.VAL PP")
-    field(DOL5, "$(P):FEM:5:EFuseId.VAL")
-    field(LNK5, "$(P):FEM:5:SavedEFuseId.VAL PP")
-    field(DOL6, "$(P):FEM:6:EFuseId.VAL")
-    field(LNK6, "$(P):FEM:6:SavedEFuseId.VAL PP")
-    field(DOL7, "$(P):FEM:7:EFuseId.VAL")
-    field(LNK7, "$(P):FEM:7:SavedEFuseId.VAL PP")
-    field(DOL8, "$(P):FEM:8:EFuseId.VAL")
-    field(LNK8, "$(P):FEM:8:SavedEFuseId.VAL PP")
+    field(DOL1, "$(P)$(R)$(ADDRESS):EFuseIdC0.VAL")
+    field(LNK1, "$(P)$(R)$(ADDRESS):SavedEFuseIdC0.VAL PP")
+    field(DOL2, "$(P)$(R)$(ADDRESS):EFuseIdC1.VAL")
+    field(LNK2, "$(P)$(R)$(ADDRESS):SavedEFuseIdC1.VAL PP")
+    field(DOL3, "$(P)$(R)$(ADDRESS):EFuseIdC2.VAL")
+    field(LNK3, "$(P)$(R)$(ADDRESS):SavedEFuseIdC2.VAL PP")
+    field(DOL4, "$(P)$(R)$(ADDRESS):EFuseIdC3.VAL")
+    field(LNK4, "$(P)$(R)$(ADDRESS):SavedEFuseIdC3.VAL PP")
+    field(DOL5, "$(P)$(R)$(ADDRESS):EFuseIdC4.VAL")
+    field(LNK5, "$(P)$(R)$(ADDRESS):SavedEFuseIdC4.VAL PP")
+    field(DOL6, "$(P)$(R)$(ADDRESS):EFuseIdC5.VAL")
+    field(LNK6, "$(P)$(R)$(ADDRESS):SavedEFuseIdC5.VAL PP")
+    field(DOL7, "$(P)$(R)$(ADDRESS):EFuseIdC6.VAL")
+    field(LNK7, "$(P)$(R)$(ADDRESS):SavedEFuseIdC6.VAL PP")
+    field(DOL8, "$(P)$(R)$(ADDRESS):EFuseIdC7.VAL")
+    field(LNK8, "$(P)$(R)$(ADDRESS):SavedEFuseIdC7.VAL PP")
     field(DOL9, "0")
-    field(LNK9, "$(P)$(R)RecordEFuseId")
+    field(LNK9, "$(P)$(R)$(ADDRESS):RecordEFuseId")
 }
 
 # Non-zero if the current efuseid matches the saved efuseid
@@ -224,15 +425,15 @@ record(seq, "$(P)$(R)$(ADDRESS):RecordEFuseId_TFR")
 # %gdatag,binary,ro,$(gda_name=).EFuseIdMatches,RECORD,$(gda_desc=)
 record(calc, "$(P)$(R)$(ADDRESS):EFuseIdMatches")
 {
-    field(INPA, "$(P):FEM:1:EFuseId")
-    field(INPB, "$(P):FEM:1:SavedEFuseId")
-    field(INPC, "$(P):FEM:2:EFuseId")
-    field(INPD, "$(P):FEM:2:SavedEFuseId")
-    field(INPE, "$(P):FEM:3:EFuseId")
-    field(INPF, "$(P):FEM:3:SavedEFuseId")
-    field(INPG, "$(P):FEM:4:EFuseId")
-    field(INPH, "$(P):FEM:4:SavedEFuseId")
-    field(INPI, "$(P)$(R)EFuseIdMatches2.VAL") 
+    field(INPA, "$(P)$(R)$(ADDRESS):EFuseIdC0")
+    field(INPB, "$(P)$(R)$(ADDRESS):SavedEFuseIdC0")
+    field(INPC, "$(P)$(R)$(ADDRESS):EFuseIdC1")
+    field(INPD, "$(P)$(R)$(ADDRESS):SavedEFuseIdC1")
+    field(INPE, "$(P)$(R)$(ADDRESS):EFuseIdC2")
+    field(INPF, "$(P)$(R)$(ADDRESS):SavedEFuseIdC2")
+    field(INPG, "$(P)$(R)$(ADDRESS):EFuseIdC3")
+    field(INPH, "$(P)$(R)$(ADDRESS):SavedEFuseIdC3")
+    field(INPI, "$(P)$(R)$(ADDRESS):EFuseIdMatches2.VAL") 
     field(CALC, "(A=B)&&(C=D)&&(E=F)&&(G=H)&&I")
     field(LLSV,  "MAJOR")
     field(LOLO,  "0")
@@ -240,16 +441,16 @@ record(calc, "$(P)$(R)$(ADDRESS):EFuseIdMatches")
 record(calc, "$(P)$(R)$(ADDRESS):EFuseIdMatches2")
 {
     field(SCAN, "1 second")
-    field(INPA, "$(P):FEM:5:EFuseId")
-    field(INPB, "$(P):FEM:5:SavedEFuseId")
-    field(INPC, "$(P):FEM:6:EFuseId")
-    field(INPD, "$(P):FEM:6:SavedEFuseId")
-    field(INPE, "$(P):FEM:7:EFuseId")
-    field(INPF, "$(P):FEM:7:SavedEFuseId")
-    field(INPG, "$(P):FEM:8:EFuseId")
-    field(INPH, "$(P):FEM:8:SavedEFuseId")
+    field(INPA, "$(P)$(R)$(ADDRESS):EFuseIdC4")
+    field(INPB, "$(P)$(R)$(ADDRESS):SavedEFuseIdC4")
+    field(INPC, "$(P)$(R)$(ADDRESS):EFuseIdC5")
+    field(INPD, "$(P)$(R)$(ADDRESS):SavedEFuseIdC5")
+    field(INPE, "$(P)$(R)$(ADDRESS):EFuseIdC6")
+    field(INPF, "$(P)$(R)$(ADDRESS):SavedEFuseIdC6")
+    field(INPG, "$(P)$(R)$(ADDRESS):EFuseIdC7")
+    field(INPH, "$(P)$(R)$(ADDRESS):SavedEFuseIdC7")
     field(CALC, "(A=B)&&(C=D)&&(E=F)&&(G=H)")
-    field(FLNK, "$(P)$(R)EFuseIdMatches")
+    field(FLNK, "$(P)$(R)$(ADDRESS):EFuseIdMatches")
 }
 
 # Non-zero if the FEM initialised OK
@@ -260,8 +461,16 @@ record(bi, "$(P)$(R)$(ADDRESS):FemInitOk")
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
     field(VAL,  "0")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))FEM_INIT_OK")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/fem_state")
     field(ZSV,  "MAJOR")
+}
+
+record(longin, "$(P)$(R)$(ADDRESS):FemFrames")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/fem_frames")
 }
 
 # %gdatag,template,simplePv,$(gda_name=).FemCommsFaults,$(gda_desc=)
