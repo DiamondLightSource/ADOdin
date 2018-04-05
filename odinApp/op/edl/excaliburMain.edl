@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 506
-y 141
+x 510
+y 193
 w 390
 h 820
 font "arial-bold-r-12.0"
@@ -136,13 +136,13 @@ minor 1
 release 1
 x 5
 y 250
-w 102
+w 76
 h 13
 font "arial-medium-r-12.0"
 fgColor index 14
 bgColor index 5
 value {
-  "  FEM Calibration  "
+  "  FEM Status  "
 }
 autoSize
 border
@@ -1313,9 +1313,8 @@ x 135
 y 285
 w 50
 h 20
-controlPv "$(Q):1:FEM:ArrayCounter_RBV"
+controlPv "$(P)$(R)0:FemFrames"
 fgColor index 16
-fgAlarm
 bgColor index 10
 fill
 font "arial-bold-r-12.0"
@@ -1332,9 +1331,8 @@ x 135
 y 305
 w 50
 h 20
-controlPv "$(Q):2:FEM:ArrayCounter_RBV"
+controlPv "$(P)$(R)1:FemFrames"
 fgColor index 16
-fgAlarm
 bgColor index 10
 fill
 font "arial-bold-r-12.0"
@@ -2174,7 +2172,7 @@ fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Arrays"
+  "Frames"
 }
 endObjectProperties
 
@@ -2188,7 +2186,7 @@ x 290
 y 470
 w 20
 h 20
-controlPv "$(P)$(R)F:CONFIG:ACQUIRE:LvControl"
+controlPv "$(P)$(R)CONFIG:ACQUIRE:LvControl_RBV"
 lineColor index 14
 onColor index 15
 offColor index 20
@@ -2247,7 +2245,7 @@ x 290
 y 495
 w 20
 h 20
-controlPv "$(P)$(R)F:BIAS_ON_OFF"
+controlPv "$(P)$(R)BIAS_ON_OFF"
 lineColor index 14
 onColor index 15
 offColor index 20
@@ -2266,7 +2264,7 @@ x 30
 y 285
 w 100
 h 15
-controlPv "$(P)$(R)F0:CalibrationStatus_RBV"
+controlPv "$(P)$(R)0:CalibrationStatus_RBV"
 lineColor index 14
 onColor index 15
 offColor index 19
@@ -2285,7 +2283,7 @@ x 30
 y 305
 w 100
 h 15
-controlPv "$(P)$(R)F1:CalibrationStatus_RBV"
+controlPv "$(P)$(R)1:CalibrationStatus_RBV"
 lineColor index 14
 onColor index 15
 offColor index 19
@@ -2317,9 +2315,8 @@ x 135
 y 325
 w 50
 h 20
-controlPv "$(Q):3:FEM:ArrayCounter_RBV"
+controlPv "$(P)$(R)2:FemFrames"
 fgColor index 16
-fgAlarm
 bgColor index 10
 fill
 font "arial-bold-r-12.0"
@@ -2355,7 +2352,7 @@ x 30
 y 325
 w 100
 h 15
-controlPv "$(P)$(R)F2:CalibrationStatus_RBV"
+controlPv "$(P)$(R)2:CalibrationStatus_RBV"
 lineColor index 14
 onColor index 15
 offColor index 19
@@ -2366,7 +2363,7 @@ endObjectProperties
 
 endGroup
 
-visPv "$(P)$(R)F:NumberFEMs_RBV"
+visPv "$(P)$(R)NumberFEMs_RBV"
 visMin "3"
 visMax "7"
 endObjectProperties
@@ -2394,9 +2391,8 @@ x 135
 y 345
 w 50
 h 20
-controlPv "$(Q):4:FEM:ArrayCounter_RBV"
+controlPv "$(P)$(R)3:FemFrames"
 fgColor index 16
-fgAlarm
 bgColor index 10
 fill
 font "arial-bold-r-12.0"
@@ -2432,7 +2428,7 @@ x 30
 y 345
 w 100
 h 15
-controlPv "$(P)$(R)F3:CalibrationStatus_RBV"
+controlPv "$(P)$(R)3:CalibrationStatus_RBV"
 lineColor index 14
 onColor index 15
 offColor index 19
@@ -2443,7 +2439,7 @@ endObjectProperties
 
 endGroup
 
-visPv "$(P)$(R)F:NumberFEMs_RBV"
+visPv "$(P)$(R)NumberFEMs_RBV"
 visMin "4"
 visMax "7"
 endObjectProperties
@@ -2471,9 +2467,8 @@ x 135
 y 365
 w 50
 h 20
-controlPv "$(Q):5:FEM:ArrayCounter_RBV"
+controlPv "$(P)$(R)4:FemFrames"
 fgColor index 16
-fgAlarm
 bgColor index 10
 fill
 font "arial-bold-r-12.0"
@@ -2509,7 +2504,7 @@ x 30
 y 365
 w 100
 h 15
-controlPv "$(P)$(R)F4:CalibrationStatus_RBV"
+controlPv "$(P)$(R)4:CalibrationStatus_RBV"
 lineColor index 14
 onColor index 15
 offColor index 19
@@ -2548,9 +2543,8 @@ x 135
 y 385
 w 50
 h 20
-controlPv "$(Q):6:FEM:ArrayCounter_RBV"
+controlPv "$(P)$(R)5:FemFrames"
 fgColor index 16
-fgAlarm
 bgColor index 10
 fill
 font "arial-bold-r-12.0"
@@ -2586,7 +2580,7 @@ x 30
 y 385
 w 100
 h 15
-controlPv "$(P)$(R)F5:CalibrationStatus_RBV"
+controlPv "$(P)$(R)5:CalibrationStatus_RBV"
 lineColor index 14
 onColor index 15
 offColor index 19
@@ -2597,7 +2591,7 @@ endObjectProperties
 
 endGroup
 
-visPv "$(P)$(R)F:NumberFEMs_RBV"
+visPv "$(P)$(R)NumberFEMs_RBV"
 visMin "6"
 visMax "7"
 endObjectProperties
