@@ -32,6 +32,7 @@ OdinDataRestAPI::OdinDataRestAPI(const std::string& hostname,
     mProcessPluginIndex("")
 
 {
+  sysStr_[SSDetector]           = sysStr_[SSAdapterRoot] + FRAME_PROCESSOR_ADAPTER + "/";
   sysStr_[SSFPStatus]           = sysStr_[SSAdapterRoot] + FRAME_PROCESSOR_ADAPTER "/status/";
   sysStr_[SSFPStatusDetector]   = sysStr_[SSFPStatus]    + pluginName + "/";
   sysStr_[SSFPStatusHDF]        = sysStr_[SSFPStatus]    + PLUGIN_INDEX_FILE_WRITER "/";
@@ -83,7 +84,7 @@ int OdinDataRestAPI::lookupAccessMode(std::string subSystem, rest_access_mode_t&
     switch(ssEnum)
     {
     case SSFRConfig: case SSFPConfig: case SSFPConfigDetector: case SSFPConfigHDF:
-      case SSFPConfigHDFProcess: case SSFPConfigHDFDataset:
+      case SSFPConfigHDFProcess: case SSFPConfigHDFDataset: case SSAdapterRoot:
         accessMode = REST_ACC_RW;
         return EXIT_SUCCESS;
       case SSFPStatus: case SSFPStatusHDF: case SSFPStatusDetector:
