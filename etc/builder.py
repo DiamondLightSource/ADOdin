@@ -5,7 +5,7 @@ from iocbuilder.modules.asyn import AsynPort
 from iocbuilder.modules.ADCore import ADCore, ADBaseTemplate, makeTemplateInstance
 from iocbuilder.modules.restClient import restClient
 from iocbuilder.modules.OdinData import FileWriterPlugin
-from iocbuilder.modules.ExcaliburDetector import ExcaliburProcessPlugin
+from iocbuilder.modules.ExcaliburDetector import ExcaliburProcessPlugin, ExcaliburReceiverPlugin
 
 import os
 from string import Template
@@ -62,6 +62,10 @@ class OdinDetector(AsynPort):
 
 class ExcaliburDetectorTemplate(AutoSubstitution):
     TemplateFile = "excaliburDetector.template"
+
+
+class ExcaliburFPTemplate(AutoSubstitution):
+    TemplateFile = "excaliburFP.template"
 
 
 class ExcaliburFemHousekeepingTemplate(AutoSubstitution):
@@ -122,7 +126,7 @@ class ExcaliburDetector(OdinDetector):
         fem_hk_template = ExcaliburFemHousekeepingTemplate
         fem_hk_args = {
             "P": args["P"],
-            "R": args["R"] + "F:",
+            "R": args["R"],
             "PORT": PORT,
             "TIMEOUT": args["TIMEOUT"]
         }
@@ -133,7 +137,7 @@ class ExcaliburDetector(OdinDetector):
         status_template = self.SENSOR_OPTIONS[SENSOR][0]
         status_args = {
             "P": args["P"],
-            "R": args["R"] + "F",
+            "R": args["R"],
             "ADDRESS": "0",
             "PORT": PORT,
             "TIMEOUT": args["TIMEOUT"],
@@ -174,7 +178,7 @@ class OdinData(Device):
         self.index = OdinData.INDEX
         OdinData.INDEX += 1
 
-    def create_config_file(self, template):
+    def create_config_file(self, prefix, template):
         macros = dict(IP=self.IP, RD_PORT=self.READY, RL_PORT=self.RELEASE,
                       FW_ROOT=FILE_WRITER_ROOT, PP_ROOT=EXCALIBUR_ROOT)
         with open(os.path.join(DATA, template)) as template_file:
@@ -182,7 +186,7 @@ class OdinData(Device):
 
         output = template_config.substitute(macros)
 
-        output_file = IocDataStream("fp{}.json".format(self.index))
+        output_file = IocDataStream("{}{}.json".format(prefix, self.index))
         output_file.write(output)
 
 
@@ -222,7 +226,8 @@ class OdinDataDriver(AsynPort):
     """Create an OdinData driver"""
 
     CONFIG_TEMPLATES = {
-        ExcaliburProcessPlugin: "fp_excalibur.json"
+        ExcaliburProcessPlugin: "fp_excalibur.json",
+        ExcaliburReceiverPlugin: "fr_excalibur.json"
     }
 
     Dependencies = (ADCore, restClient, FileWriterPlugin)
@@ -232,7 +237,7 @@ class OdinDataDriver(AsynPort):
 
     _SpecificTemplate = OdinDataDriverTemplate
 
-    def __init__(self, PORT, SERVER, ODIN_SERVER_PORT, PROCESS_PLUGIN, FILE_WRITER, DATASET="data",
+    def __init__(self, PORT, SERVER, ODIN_SERVER_PORT, PROCESS_PLUGIN, RECEIVER_PLUGIN, FILE_WRITER, DATASET="data",
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None, ODIN_DATA_SERVER_3=None,
                  ODIN_DATA_SERVER_4=None, ODIN_DATA_SERVER_5=None, ODIN_DATA_SERVER_6=None,
                  ODIN_DATA_SERVER_7=None, ODIN_DATA_SERVER_8=None,
@@ -265,7 +270,8 @@ class OdinDataDriver(AsynPort):
                     args["R"] = odin_data.R
                     OdinDataTemplate(**args)
 
-                    odin_data.create_config_file(self.CONFIG_TEMPLATES[PROCESS_PLUGIN.__class__])
+                    odin_data.create_config_file('fp', self.CONFIG_TEMPLATES[PROCESS_PLUGIN.__class__])
+                    odin_data.create_config_file('fr', self.CONFIG_TEMPLATES[RECEIVER_PLUGIN.__class__])
 
     # __init__ arguments
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
@@ -273,6 +279,7 @@ class OdinDataDriver(AsynPort):
         SERVER=Simple("Server host name", str),
         ODIN_SERVER_PORT=Simple("Odin server port", int),
         PROCESS_PLUGIN=Ident("Odin detector configuration", ExcaliburProcessPlugin),
+        RECEIVER_PLUGIN=Ident("Odin detector configuration", ExcaliburReceiverPlugin),
         FILE_WRITER=Ident("FileWriterPlugin configuration", FileWriterPlugin),
         DATASET=Simple("Name of Dataset", str),
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", OdinDataServer),
