@@ -36,7 +36,7 @@ include "excaliburFemStatus.template"
 # Number of FEMs is 6
 #
 ################################################################################
-record(longin, "$(P)$(R):NumberFEMs_RBV")
+record(longin, "$(P)$(R)NumberFEMs_RBV")
 {
     field(VAL,  "6")
 }
