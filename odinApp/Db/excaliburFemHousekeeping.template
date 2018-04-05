@@ -534,7 +534,7 @@ record(bo, "$(P)$(R)BIAS_ON_OFF")
 {
     field(DTYP, "asynInt32")
     field(VAL,  "0")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_command/hv_enable")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/hv_enable")
     field(ZNAM, "Off")
     field(ONAM, "On")
     field(FLNK, "$(P)$(R)BIAS_LEVEL:HIGH")
@@ -671,31 +671,31 @@ record(calc, "$(P)$(R)DEVSTA4")
 # go into alarm, switch off the HV supply and then the LV supply.
 record(calc, "$(P)$(R)HvLvSoftTrip1")
 {
-    field(INPA, "$(P):1:HK:MOLY_TEMPERATURE.SEVR CP")
-    field(INPB, "$(P):2:HK:MOLY_TEMPERATURE.SEVR CP")
-    field(INPC, "$(P):3:HK:MOLY_TEMPERATURE.SEVR CP")
-    field(INPD, "$(P):4:HK:MOLY_TEMPERATURE.SEVR CP")
-    field(INPE, "$(P):5:HK:MOLY_TEMPERATURE.SEVR CP")
-    field(INPF, "$(P):6:HK:MOLY_TEMPERATURE.SEVR CP")
+    field(INPA, "$(P)$(R)0:MOLY_TEMPERATURE.SEVR CP")
+    field(INPB, "$(P)$(R)1:MOLY_TEMPERATURE.SEVR CP")
+    field(INPC, "$(P)$(R)2:MOLY_TEMPERATURE.SEVR CP")
+    field(INPD, "$(P)$(R)3:MOLY_TEMPERATURE.SEVR CP")
+    field(INPE, "$(P)$(R)4:MOLY_TEMPERATURE.SEVR CP")
+    field(INPF, "$(P)$(R)5:MOLY_TEMPERATURE.SEVR CP")
     field(INPG, "$(P)$(R)HvLvSoftTrip2") 
     field(CALC, "(A=2)|(B=2)|(C=2)|(D=2)|(E=2)|(F=2)|G")
     field(FLNK, "$(P)$(R)HvLvSoftTrip3")
 }
 record(calc, "$(P)$(R)HvLvSoftTrip2")
 {
-    field(INPA, "$(P):1:HK:MOLY_HUMIDITY.SEVR CP")
-    field(INPB, "$(P):2:HK:MOLY_HUMIDITY.SEVR CP")
-    field(INPC, "$(P):3:HK:MOLY_HUMIDITY.SEVR CP")
-    field(INPD, "$(P):4:HK:MOLY_HUMIDITY.SEVR CP")
-    field(INPE, "$(P):5:HK:MOLY_HUMIDITY.SEVR CP")
-    field(INPF, "$(P):6:HK:MOLY_HUMIDITY.SEVR CP")
+    field(INPA, "$(P)$(R)0:MOLY_HUMIDITY.SEVR CP")
+    field(INPB, "$(P)$(R)1:MOLY_HUMIDITY.SEVR CP")
+    field(INPC, "$(P)$(R)2:MOLY_HUMIDITY.SEVR CP")
+    field(INPD, "$(P)$(R)3:MOLY_HUMIDITY.SEVR CP")
+    field(INPE, "$(P)$(R)4:MOLY_HUMIDITY.SEVR CP")
+    field(INPF, "$(P)$(R)5:MOLY_HUMIDITY.SEVR CP")
     field(CALC, "(A=2)|(B=2)|(C=2)|(D=2)|(E=2)|(F=2)")
     field(FLNK, "$(P)$(R)HvLvSoftTrip1")
 }
 record(calc, "$(P)$(R)HvLvSoftTrip3")
 {
     field(INPA, "$(P)$(R)HvLvSoftTrip1")
-    field(B,    "1")   # The forced initial state
+    field(B,    "0")   # The forced initial state
     field(CALC, "A|B")
     field(FLNK, "$(P)$(R)HvLvSoftTrip")
 }
@@ -722,13 +722,13 @@ record(seq, "$(P)$(R)HvLvSoftTrip_SEQ")
     field(LNK1, "$(P)$(R)BIAS_ON_OFF PP")
     field(DLY2, "1.0")
     field(DOL2, "0")
-    field(LNK2, "$(P):CONFIG:ACQUIRE:LvControl PP")
+    field(LNK2, "$(P)$(R)CONFIG:ACQUIRE:LvControl PP")
 }
 # If the LV control goes high while the soft trip is activated,
 # set the overidden flag to 1.
 record(calcout, "$(P)$(R)HvLvSoftTripOverridden1")
 {
-    field(INPA, "$(P):CONFIG:ACQUIRE:LvControl CP")
+    field(INPA, "$(P)$(R)CONFIG:ACQUIRE:LvControl CP")
     field(INPB, "$(P)$(R)HvLvSoftTrip")
     field(CALC, "A")
     field(OOPT, "Transition To Non-zero")
@@ -740,7 +740,7 @@ record(calcout, "$(P)$(R)HvLvSoftTripOverridden1")
 # set the overridden flag to 0.
 record(calcout, "$(P)$(R)HvLvSoftTripOverridden2")
 {
-    field(INPA, "$(P):CONFIG:ACQUIRE:LvControl CP")
+    field(INPA, "$(P)$(R)CONFIG:ACQUIRE:LvControl CP")
     field(INPB, "$(P)$(R)HvLvSoftTrip CP")
     field(CALC, "(A=0)||(B=0)")
     field(OOPT, "When Non-zero")
