@@ -13,8 +13,12 @@
 // OdinData
 #define OdinNumProcesses               "ODIN_NUM_PROCESSES"
 #define OdinProcessRank                "ODIN_PROCESS_RANK"
+#define OdinFRProcessConnected         "ODIN_FR_PROCESS_CONNECTED"
 #define OdinProcessConnected           "ODIN_PROCESS_CONNECTED"
+#define OdinFRProcessInitialised       "ODIN_FR_PROCESS_INITIALISED"
 #define OdinProcessInitialised         "ODIN_PROCESS_INITIALISED"
+// Buffers
+#define OdinFRFreeBuffers              "ODIN_FR_FREE_BUFFERS"
 // -- HDF5
 #define OdinHDF5BlockSize              "ODIN_HDF5_BLOCK_SIZE"
 #define OdinHDF5BlocksPerFile          "ODIN_HDF5_BLOCKS_PER_FILE"
@@ -92,13 +96,13 @@ class OdinDataDriver : public OdinClient
 
   int initialise(int index);
   int initialiseAll();
+  std::vector<int> mFRInitialised;
   std::vector<int> mInitialised;
   int createParams();
 
   RestParam * createODRESTParam(const std::string &asynName, rest_param_type_t restType,
                                 sys_t subSystem, const std::string &name);
 
-  int mFirstParam;
   RestParam * mAPIVersion;
   RestParam * mFPConfiguration;
   RestParam * mFRConfiguration;
@@ -122,8 +126,10 @@ class OdinDataDriver : public OdinClient
   RestParam * mChunkBoundaryThreshold;
   RestParam * mCompression;
   RestParam * mDataType;
+  RestParam * mFreeBuffers;
 
   RestParam * mProcessConnected;
+  RestParam * mFRProcessConnected;
   RestParam * mProcessRank;
   RestParam * mWriting;
   RestParam * mTimeoutActive;
@@ -133,6 +139,7 @@ class OdinDataDriver : public OdinClient
 
   // Internal PVs
   int mProcessInitialised;
+  int mFRProcessInitialised;
   int mNumCapturedSum;
   int mWritingAny;
   int mTimeoutActiveAny;

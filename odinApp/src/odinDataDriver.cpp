@@ -50,6 +50,7 @@ OdinDataDriver::OdinDataDriver(const char * portName, const char * serverHostnam
   this->registerAPI(&mAPI);
 
   mFPConfiguration = createODRESTParam(OdinFPConfig, REST_P_STRING, SSFPConfig, "config_file");
+  mFRConfiguration = createODRESTParam(OdinFRConfig, REST_P_STRING, SSFRConfig, "config_file");
 
   if (initialiseAll()) {
     asynPrint(pasynUserSelf, ASYN_TRACE_ERROR, "Failed to initialise all OdinData processes\n");
@@ -63,6 +64,7 @@ int OdinDataDriver::initialiseAll()
 {
   int status = 0;
   mInitialised.resize(mODCount);
+  mFRInitialised.resize(mODCount);
   for (int index = 0; index != (int) mODConfig.size(); ++index) {
     status |= initialise(index);
   }
@@ -73,10 +75,19 @@ int OdinDataDriver::initialise(int index)
 {
   int status = 0;
   mInitialised[index] = 0;
+  mFRInitialised[index] = 0;
 
   std::string currentConfigFile;
+  // Force a reload of the FR configuration
+  status |= mFRConfiguration->get(currentConfigFile, index);
+  status |= mFRConfiguration->put(currentConfigFile, index);
+  // Force a reload of the FP configuration
   status |= mFPConfiguration->get(currentConfigFile, index);
   status |= mFPConfiguration->put(currentConfigFile, index);
+
+  // Force re-configure of the dims
+  this->configureImageDims();
+  this->configureChunkDims();
 
   if (status) {
     asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
@@ -84,6 +95,7 @@ int OdinDataDriver::initialise(int index)
   }
   else {
     mInitialised[index] = 1;
+    mFRInitialised[index] = 1;
   }
   return status;
 }
@@ -97,8 +109,6 @@ void OdinDataDriver::configureOdinDataProcess(const char * ipAddress,
 int OdinDataDriver::createParams()
 {
   // Configuration parameters shared by each OD process
-  mFRConfiguration        = createODRESTParam(OdinFRConfig, REST_P_STRING,
-                                              SSFRConfig, "config_file");
   mProcesses              = createODRESTParam(OdinNumProcesses, REST_P_INT,
                                               SSFPConfigHDFProcess, "number");
   mFilePath               = createODRESTParam(NDFilePathString, REST_P_STRING,
@@ -136,6 +146,8 @@ int OdinDataDriver::createParams()
   mCompression            = createODRESTParam(OdinHDF5Compression, REST_P_INT,
                                               SSFPConfigHDFDataset, mDatasetName + "/compression");
   // Per OD Process Status Parameters
+  mFRProcessConnected     = createODRESTParam(OdinFRProcessConnected, REST_P_BOOL,
+                                              SSFRStatus, "connected");
   mProcessConnected       = createODRESTParam(OdinProcessConnected, REST_P_BOOL,
                                               SSFPStatus, "connected");
   mProcessRank            = createODRESTParam(OdinProcessRank, REST_P_INT,
@@ -150,12 +162,15 @@ int OdinDataDriver::createParams()
                                               SSFPStatusHDF, "frames_written");
   mNumExpected            = createODRESTParam(OdinHDF5NumExpected, REST_P_INT,
                                               SSFPStatusHDF, "frames_max");
+  mFreeBuffers            = createODRESTParam(OdinFRFreeBuffers, REST_P_INT,
+                                              SSFRStatus, "buffers/empty");
 
   mCapture->setCommand();
   mStartCloseTimeout->setCommand();
 
   // Internal parameters
   createParam(OdinProcessInitialised,   asynParamInt32, &mProcessInitialised);
+  createParam(OdinFRProcessInitialised, asynParamInt32, &mFRProcessInitialised);
   createParam(OdinHDF5NumCapturedSum,   asynParamInt32, &mNumCapturedSum);
   createParam(OdinHDF5WritingAny,       asynParamInt32, &mWritingAny);
   createParam(OdinHDF5TimeoutActiveAny, asynParamInt32, &mTimeoutActiveAny);
@@ -165,10 +180,10 @@ int OdinDataDriver::createParams()
   createParam(OdinHDF5ChunkHeight,      asynParamInt32, &mChunkHeight);
   createParam(OdinHDF5ChunkWidth,       asynParamInt32, &mChunkWidth);
 
-  setIntegerParam(mImageHeight, 512);
+  setIntegerParam(mImageHeight, 1536);
   setIntegerParam(mImageWidth,  2048);
   setIntegerParam(mChunkDepth,  1);
-  setIntegerParam(mChunkHeight, 512);
+  setIntegerParam(mChunkHeight, 1536);
   setIntegerParam(mChunkWidth,  2048);
 
   return 0;
@@ -186,7 +201,7 @@ asynStatus OdinDataDriver::getStatus()
   int status = 0;
 
   // Fetch status items
-  status = this->fetchParams();
+  this->fetchParams();
 
   if (!mAPI.connected()){
     setIntegerParam(ADStatus, ADStatusDisconnected);
@@ -233,6 +248,17 @@ asynStatus OdinDataDriver::getStatus()
       initialise(index);
     }
     setIntegerParam(index, mProcessInitialised, mInitialised[index]);
+
+    mFRProcessConnected->get(connected, index);
+    if (!connected && mFRInitialised[index] == 1) {
+      // Lost connection - Set not initialised
+      mFRInitialised[index] = 0;
+    }
+    else if (mFRInitialised[index] == 0 && connected) {
+      // Restored connection - Re-initialise
+      initialise(index);
+    }
+    setIntegerParam(index, mFRProcessInitialised, mFRInitialised[index]);
   }
 
   if(status) {
@@ -293,6 +319,7 @@ int OdinDataDriver::configureChunkDims()
  */
 asynStatus OdinDataDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) {
   int function = pasynUser->reason;
+  int oldValue = 0;
   asynStatus status = asynSuccess;
   const char *functionName = "writeInt32";
 
@@ -314,6 +341,9 @@ asynStatus OdinDataDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) {
   }
   callParamCallbacks();
 
+  // Read the old value
+  getIntegerParam(function, &oldValue);
+  // Now set the new value
   status = setIntegerParam(function, value);
 
   if (function == ADReadStatus) {
@@ -326,8 +356,10 @@ asynStatus OdinDataDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) {
     configureChunkDims();
   }
   else if (RestParam * p = this->getParamByIndex(function)) {
-    if (function == mCapture->getIndex() || function == mStartCloseTimeout->getIndex()) {
-      p->put((bool) value);
+    if (function == mCapture->getIndex()){
+        p->put((bool)value);
+    } else if (function == mStartCloseTimeout->getIndex()) {
+      p->put((bool)value);
     }
     else {
       p->put(value);
@@ -418,6 +450,9 @@ asynStatus OdinDataDriver::writeOctet(asynUser *pasynUser, const char *value,
   if (RestParam * p = this->getParamByIndex(function)) {
     int address = -1;
     if (function == mFPConfiguration->getIndex()) {
+      getAddress(pasynUser, &address);
+    }
+    if (function == mFRConfiguration->getIndex()) {
       getAddress(pasynUser, &address);
     }
     status |= p->put(value, address);
