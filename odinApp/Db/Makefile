@@ -19,6 +19,7 @@ DB += excaliburFemHousekeeping.template
 DB += excalibur2FemStatus.template
 DB += excalibur6FemStatus.template
 DB += excaliburFemStatus.template
+DB += excaliburFP.template
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add
