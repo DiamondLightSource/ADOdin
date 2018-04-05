@@ -1,0 +1,100 @@
+{
+    "fems": [
+        {
+            "name": "fem1",
+            "mac": "62:00:00:00:00:01",
+            "ipaddr": "10.0.2.101",
+            "port": 60001,
+            "dest_port_offset": 0
+        },
+        {
+            "name": "fem2",
+            "mac": "62:00:00:00:00:02",
+            "ipaddr": "10.0.2.102",
+            "port": 60002,
+            "dest_port_offset": 1
+        },
+        {
+            "name": "fem3",
+            "mac": "62:00:00:00:00:03",
+            "ipaddr": "10.0.2.103",
+            "port": 60003,
+            "dest_port_offset": 2
+        },
+        {
+            "name": "fem4",
+            "mac": "62:00:00:00:00:04",
+            "ipaddr": "10.0.2.104",
+            "port": 60004,
+            "dest_port_offset": 3
+        },
+        {
+            "name": "fem5",
+            "mac": "62:00:00:00:00:05",
+            "ipaddr": "10.0.2.105",
+            "port": 60005,
+            "dest_port_offset": 4
+        },
+        {
+            "name": "fem6",
+            "mac": "62:00:00:00:00:06",
+            "ipaddr": "10.0.2.106",
+            "port": 60006,
+            "dest_port_offset": 5
+        }       
+    ],
+    "nodes": [
+        {
+            "name": "p99-excalibur02/p3p1",
+            "mac" : "A0:36:9F:8C:52:3C",
+            "ipaddr" : "10.0.2.2",
+            "port": 61649
+        },
+        {
+            "name" : "p99-excalibur03/p3p1",
+            "mac" : "A0:36:9F:8C:6C:50",
+            "ipaddr" : "10.0.2.3",
+            "port": 61649
+        },
+        {
+            "name": "p99-excalibur01/p1p1",
+            "mac" : "00:07:43:11:F7:60",
+            "ipaddr" : "10.0.2.1",
+            "port": 61649
+        },
+        {
+            "name" : "te7aegnode04/em1",
+            "mac" : "EC:F4:BB:CC:CB:B8",
+            "ipaddr" : "10.0.2.4",
+            "port": 61649
+        },
+        {
+            "name" : "te7aegnode05/em1",
+            "mac" : "EC:F4:BB:CC:CC:60",
+            "ipaddr" : "10.0.2.5",
+            "port": 61649
+        },
+        {
+            "name" : "te7aegnode06/em1",
+            "mac" : "EC:F4:BB:CC:D3:B8",
+            "ipaddr" : "10.0.2.6",
+            "port": 61649
+        },
+        {
+            "name" : "te7aegnode07/em1",
+            "mac" : "EC:F4:BB:CC:CC:18",
+            "ipaddr" : "10.0.2.7",
+            "port": 61649
+        },
+        {
+            "name" : "te7aegnode08/em1",
+            "mac" : "EC:F4:BB:CC:D9:78",
+            "ipaddr" : "10.0.2.8",
+            "port": 61649
+        }
+    ],
+    "farm_mode" : {
+        "enable": 1,
+        "num_dests": 2
+    }
+}
