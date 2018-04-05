@@ -236,8 +236,15 @@ asynStatus OdinDetector::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
   if (RestParam * p = this->getParamByIndex(function)) {
     status |= p->put(value);
   }
+  if (status) {
+    asynPrint(pasynUser, ASYN_TRACE_ERROR,
+              "%s:%s error returned from put, status=%d function=%d, value=%f\n",
+              driverName, functionName, status, function, value);
+  }
 
-  status |= ADDriver::writeFloat64(pasynUser, value);
+  if(function < mFirstParam) {
+    status |= ADDriver::writeFloat64(pasynUser, value);
+  }
 
   if (status) {
     asynPrint(pasynUser, ASYN_TRACE_ERROR,
