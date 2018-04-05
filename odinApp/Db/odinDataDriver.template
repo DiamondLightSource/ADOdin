@@ -32,7 +32,7 @@
 # % gui, $(PORT), readback, Compression scheme,   $(P)$(R)Compression_RBV
 
 # This associates the template with an edm screen
-# % gui, $(PORT), edmtab, OdinDataHDF5.edl, P=$(P),R=$(R)
+# % gui, $(PORT), edmtab, odinData2Nodes.edl, P=$(P),R=$(R)
 
 include "ADBase.template"
 include "NDFile.template"
