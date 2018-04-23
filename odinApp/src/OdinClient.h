@@ -42,6 +42,7 @@ protected:
                           sys_t subsystem);
 
   int fetchParams();
+  int pushParams();
   RestParam *getParamByIndex(int index);
 
   int mFirstParam;
