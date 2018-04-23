@@ -144,6 +144,128 @@ class ExcaliburDetector(OdinDetector):
             "TOTAL": self.SENSOR_OPTIONS[SENSOR][1]
         }
         status_template(**status_args)
+        
+        self.create_udp_file()
+
+    def daq_templates(self):
+        print str(self.CONFIG_TEMPLATES[self.SENSOR])
+        return self.CONFIG_TEMPLATES[self.SENSOR]
+
+    def create_udp_file(self):
+        output_file = IocDataStream("udp_excalibur.json")
+        number_of_nodes = 0
+        output_text = '{\n\
+    "fems": [\n\
+        {\n\
+            "name": "fem1",\n\
+            "mac": "62:00:00:00:00:01",\n\
+            "ipaddr": "10.0.2.101",\n\
+            "port": 60001,\n\
+            "dest_port_offset": 0\n\
+        },\n\
+        {\n\
+            "name": "fem2",\n\
+            "mac": "62:00:00:00:00:02",\n\
+            "ipaddr": "10.0.2.102",\n\
+            "port": 60002,\n\
+            "dest_port_offset": 1\n\
+        },\n\
+        {\n\
+            "name": "fem3",\n\
+            "mac": "62:00:00:00:00:03",\n\
+            "ipaddr": "10.0.2.103",\n\
+            "port": 60003,\n\
+            "dest_port_offset": 2\n\
+        },\n\
+        {\n\
+            "name": "fem4",\n\
+            "mac": "62:00:00:00:00:04",\n\
+            "ipaddr": "10.0.2.104",\n\
+            "port": 60004,\n\
+            "dest_port_offset": 3\n\
+        },\n\
+        {\n\
+            "name": "fem5",\n\
+            "mac": "62:00:00:00:00:05",\n\
+            "ipaddr": "10.0.2.105",\n\
+            "port": 60005,\n\
+            "dest_port_offset": 4\n\
+        },\n\
+        {\n\
+            "name": "fem6",\n\
+            "mac": "62:00:00:00:00:06",\n\
+            "ipaddr": "10.0.2.106",\n\
+            "port": 60006,\n\
+            "dest_port_offset": 5\n\
+        }\n\
+    ],\n\
+    "nodes": [\n'
+    
+        if self.NODE_1_NAME is not None:
+            output_text = output_text + '        {{\n\
+            "name": "{}",\n\
+            "mac" : "{}",\n\
+            "ipaddr" : "{}",\n\
+            "port": {}\n\
+        }}'.format(self.NODE_1_NAME,
+                   self.NODE_1_MAC,
+                   self.NODE_1_IPADDR,
+                   self.NODE_1_PORT)
+            number_of_nodes += 1
+            
+        if self.NODE_2_NAME is not None:
+            if number_of_nodes > 0:
+                output_text = output_text + ',\n'
+            
+            output_text = output_text + '        {{\n\
+            "name": "{}",\n\
+            "mac" : "{}",\n\
+            "ipaddr" : "{}",\n\
+            "port": {}\n\
+        }}'.format(self.NODE_2_NAME,
+                   self.NODE_2_MAC,
+                   self.NODE_2_IPADDR,
+                   self.NODE_2_PORT)
+            number_of_nodes += 1
+            
+        if self.NODE_3_NAME is not None:
+            if number_of_nodes > 0:
+                output_text = output_text + ',\n'
+            
+            output_text = output_text + '        {{\n\
+            "name": "{}",\n\
+            "mac" : "{}",\n\
+            "ipaddr" : "{}",\n\
+            "port": {}\n\
+        }}'.format(self.NODE_3_NAME,
+                   self.NODE_3_MAC,
+                   self.NODE_3_IPADDR,
+                   self.NODE_3_PORT)
+            number_of_nodes += 1
+            
+        if self.NODE_4_NAME is not None:
+            if number_of_nodes > 0:
+                output_text = output_text + ',\n'
+            
+            output_text = output_text + '        {{\n\
+            "name": "{}",\n\
+            "mac" : "{}",\n\
+            "ipaddr" : "{}",\n\
+            "port": {}\n\
+        }}'.format(self.NODE_4_NAME,
+                   self.NODE_4_MAC,
+                   self.NODE_4_IPADDR,
+                   self.NODE_4_PORT)
+            number_of_nodes += 1
+            
+            
+        output_text = output_text + '\n    ],\n\
+    "farm_mode" : {{\n\
+        "enable": 1,\n\
+        "num_dests": {}\n\
+    }}\n\
+}}\n'.format(number_of_nodes)
+        output_file.write(output_text)
 
     # __init__ arguments
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
@@ -153,7 +275,23 @@ class ExcaliburDetector(OdinDetector):
         SENSOR=Choice("Sensor type", ["1M", "3M"]),
         BUFFERS=Simple("Maximum number of NDArray buffers to be created for plugin callbacks", int),
         MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "
-                      "attached plugins", int))
+                      "attached plugins", int),
+        NODE_1_NAME=Simple("Name of detector output node 1", str),
+        NODE_1_MAC=Simple("Mac address of detector output node 1", str),
+        NODE_1_IPADDR=Simple("IP address of detector output node 1", str),
+        NODE_1_PORT=Simple("Port of detector output node 1", int),
+        NODE_2_NAME=Simple("Name of detector output node 2", str),
+        NODE_2_MAC=Simple("Mac address of detector output node 2", str),
+        NODE_2_IPADDR=Simple("IP address of detector output node 2", str),
+        NODE_2_PORT=Simple("Port of detector output node 2", int),
+        NODE_3_NAME=Simple("Name of detector output node 3", str),
+        NODE_3_MAC=Simple("Mac address of detector output node 3", str),
+        NODE_3_IPADDR=Simple("IP address of detector output node 3", str),
+        NODE_3_PORT=Simple("Port of detector output node 3", int),
+        NODE_4_NAME=Simple("Name of detector output node 4", str),
+        NODE_4_MAC=Simple("Mac address of detector output node 4", str),
+        NODE_4_IPADDR=Simple("IP address of detector output node 4", str),
+        NODE_4_PORT=Simple("Port of detector output node 4", int))
 
 
 class OdinDataTemplate(AutoSubstitution):
