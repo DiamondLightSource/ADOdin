@@ -2,8 +2,9 @@
 <components arch="linux-x86_64">
 	<OdinData.FileWriterPlugin MACRO="ODINDATA" name="FileWriter"/>
 	<ExcaliburDetector.ExcaliburProcessPlugin MACRO="EXCALIBURDETECTOR" name="Excalibur"/>
+	<ExcaliburDetector.ExcaliburReceiverPlugin MACRO="EXCALIBURDETECTOR" name="EXCAL.FR"/>
 	<ADOdin.OdinDataServer IP="p29-excalibur01" PROCESSES="2" name="ODServer1"/>
 	<ADOdin.OdinDataServer IP="p29-excalibur02" PROCESSES="3" name="ODServer2"/>
-	<ADOdin.OdinDataDriver ADDR="0" FILE_WRITER="FileWriter" ODIN_DATA_SERVER_1="ODServer1" ODIN_DATA_SERVER_2="ODServer2" ODIN_SERVER_PORT="8888" P="BL29P-EXCAL" PORT="ODN.OD" PROCESS_PLUGIN="Excalibur" R=":OD:" SERVER="p29-excalibur01" TIMEOUT="1"/>
+	<ADOdin.OdinDataDriver ADDR="0" FILE_WRITER="FileWriter" ODIN_DATA_SERVER_1="ODServer1" ODIN_DATA_SERVER_2="ODServer2" ODIN_SERVER_PORT="8888" P="BL29P-EXCAL" PORT="ODN.OD" PROCESS_PLUGIN="Excalibur" R=":OD:" RECEIVER_PLUGIN="EXCAL.FR" SERVER="p29-excalibur01" TIMEOUT="1"/>
 	<ADOdin.ExcaliburDetector ADDR="0" ODIN_SERVER_PORT="8888" P="BL29P-EXCAL" PORT="ODN.CAM" R=":CAM:" SENSOR="3M" SERVER="p29-excalibur01" TIMEOUT="1" gda_desc="0" gda_name="0"/>
 </components>
