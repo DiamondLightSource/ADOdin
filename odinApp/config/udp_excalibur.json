@@ -51,10 +51,22 @@
             "port": 61649
         },
         {
+            "name": "p99-excalibur02/p3p1",
+            "mac" : "A0:36:9F:8C:52:3C",
+            "ipaddr" : "10.0.2.2",
+            "port": 61651
+        },
+        {
             "name" : "p99-excalibur03/p3p1",
             "mac" : "A0:36:9F:8C:6C:50",
             "ipaddr" : "10.0.2.3",
             "port": 61649
+        },
+        {
+            "name" : "p99-excalibur03/p3p1",
+            "mac" : "A0:36:9F:8C:6C:50",
+            "ipaddr" : "10.0.2.3",
+            "port": 61651
         },
         {
             "name": "p99-excalibur01/p1p1",
@@ -95,6 +107,6 @@
     ],
     "farm_mode" : {
         "enable": 1,
-        "num_dests": 2
+        "num_dests": 4
     }
 }

@@ -58,6 +58,9 @@ class OdinDetector(AsynPort):
         print "odinDetectorConfig(\"%(PORT)s\", \"%(SERVER)s\", " \
               "%(ODIN_SERVER_PORT)d, \"%(DETECTOR)s\", " \
               "%(BUFFERS)d, %(MEMORY)d)" % self.__dict__
+              
+    def daq_templates(self):
+        return None
 
 
 class ExcaliburDetectorTemplate(AutoSubstitution):
@@ -66,6 +69,27 @@ class ExcaliburDetectorTemplate(AutoSubstitution):
 
 class ExcaliburFPTemplate(AutoSubstitution):
     TemplateFile = "excaliburFP.template"
+
+
+def add_excalibur_fp_template(cls):
+    """Convenience function to add excaliburFPTemplate attributes to a class that
+    includes it via an msi include statement rather than verbatim"""
+    cls.Arguments = ExcaliburFPTemplate.Arguments + \
+        [x for x in cls.Arguments if x not in ExcaliburFPTemplate.Arguments]
+    cls.ArgInfo = ExcaliburFPTemplate.ArgInfo + cls.ArgInfo.filtered(
+        without=ExcaliburFPTemplate.ArgInfo.Names())
+    cls.Defaults.update(ExcaliburFPTemplate.Defaults)
+    return cls
+
+
+@add_excalibur_fp_template
+class Excalibur2NodeFPTemplate(AutoSubstitution):
+    TemplateFile = "excalibur2NodeFP.template"
+
+
+@add_excalibur_fp_template
+class Excalibur4NodeFPTemplate(AutoSubstitution):
+    TemplateFile = "excalibur4NodeFP.template"
 
 
 class ExcaliburFemHousekeepingTemplate(AutoSubstitution):
@@ -108,12 +132,23 @@ class ExcaliburDetector(OdinDetector):
         "3M": (Excalibur6FemStatusTemplate, 6)
     }
 
+    CONFIG_TEMPLATES = {
+        "1M": {
+                "ProcessPlugin": "fp_excalibur_1m.json",
+                "ReceiverPlugin": "fr_excalibur_1m.json"
+              },
+        "3M": {
+                "ProcessPlugin": "fp_excalibur_3m.json",
+                "ReceiverPlugin": "fr_excalibur_3m.json"
+              }
+    }
+
     # This tells xmlbuilder to use PORT instead of name as the row ID
     UniqueName = "PORT"
 
     _SpecificTemplate = ExcaliburDetectorTemplate
 
-    def __init__(self, PORT, SERVER, ODIN_SERVER_PORT, SENSOR, BUFFERS = 0, MEMORY = 0, **args):
+    def __init__(self, PORT, SERVER, ODIN_SERVER_PORT, SENSOR, BUFFERS = 0, MEMORY = 0, NODE_1_NAME = None, NODE_1_MAC = None, NODE_1_IPADDR = None, NODE_1_PORT = None, NODE_2_NAME = None, NODE_2_MAC = None, NODE_2_IPADDR = None, NODE_2_PORT = None, NODE_3_NAME = None, NODE_3_MAC = None, NODE_3_IPADDR = None, NODE_3_PORT = None, NODE_4_NAME = None, NODE_4_MAC = None, NODE_4_IPADDR = None, NODE_4_PORT = None, **args):
         # Init the superclass (OdinDetector)
         self.__super.__init__(PORT, SERVER, ODIN_SERVER_PORT, self.DETECTOR,
                               BUFFERS, MEMORY, **args)
@@ -316,9 +351,11 @@ class OdinData(Device):
         self.index = OdinData.INDEX
         OdinData.INDEX += 1
 
-    def create_config_file(self, prefix, template):
+    def create_config_file(self, prefix, template, extra_macros=None):
         macros = dict(IP=self.IP, RD_PORT=self.READY, RL_PORT=self.RELEASE,
                       FW_ROOT=FILE_WRITER_ROOT, PP_ROOT=EXCALIBUR_ROOT)
+        if extra_macros is not None:
+            macros.update(extra_macros)
         with open(os.path.join(DATA, template)) as template_file:
             template_config = Template(template_file.read())
 
@@ -362,12 +399,6 @@ class OdinDataDriverTemplate(AutoSubstitution):
 class OdinDataDriver(AsynPort):
 
     """Create an OdinData driver"""
-
-    CONFIG_TEMPLATES = {
-        ExcaliburProcessPlugin: "fp_excalibur.json",
-        ExcaliburReceiverPlugin: "fr_excalibur.json"
-    }
-
     Dependencies = (ADCore, restClient, FileWriterPlugin)
 
     # This tells xmlbuilder to use PORT instead of name as the row ID
@@ -376,6 +407,7 @@ class OdinDataDriver(AsynPort):
     _SpecificTemplate = OdinDataDriverTemplate
 
     def __init__(self, PORT, SERVER, ODIN_SERVER_PORT, PROCESS_PLUGIN, RECEIVER_PLUGIN, FILE_WRITER, DATASET="data",
+                 DETECTOR=None,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None, ODIN_DATA_SERVER_3=None,
                  ODIN_DATA_SERVER_4=None, ODIN_DATA_SERVER_5=None, ODIN_DATA_SERVER_6=None,
                  ODIN_DATA_SERVER_7=None, ODIN_DATA_SERVER_8=None,
@@ -400,6 +432,7 @@ class OdinDataDriver(AsynPort):
                 else:
                     server.instantiated = True
 
+                port_number=61649
                 for odin_data in server.processes:
                     self.ODIN_DATA_PROCESSES.append(odin_data)
                     # Use some OdinDataDriver macros to instantiate an odinData.template
@@ -408,14 +441,31 @@ class OdinDataDriver(AsynPort):
                     args["R"] = odin_data.R
                     OdinDataTemplate(**args)
 
-                    odin_data.create_config_file('fp', self.CONFIG_TEMPLATES[PROCESS_PLUGIN.__class__])
-                    odin_data.create_config_file('fr', self.CONFIG_TEMPLATES[RECEIVER_PLUGIN.__class__])
+                    detector = eval("DETECTOR")
+                    daq_templates = detector.daq_templates()
+                    if daq_templates is not None:
+                        port_number_1 = port_number
+                        port_number_2 = port_number+1
+                        port_number_3 = port_number+2
+                        port_number_4 = port_number+3
+                        port_number_5 = port_number+4
+                        port_number_6 = port_number+5
+                        port_number += 6
+                        macros = dict(RX_PORT_1=port_number_1,
+                                      RX_PORT_2=port_number_2,
+                                      RX_PORT_3=port_number_3,
+                                      RX_PORT_4=port_number_4,
+                                      RX_PORT_5=port_number_5,
+                                      RX_PORT_6=port_number_6)
+                        odin_data.create_config_file('fp', daq_templates["ProcessPlugin"])
+                        odin_data.create_config_file('fr', daq_templates["ReceiverPlugin"], extra_macros=macros)
 
     # __init__ arguments
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
         PORT=Simple("Port name for the detector", str),
         SERVER=Simple("Server host name", str),
         ODIN_SERVER_PORT=Simple("Odin server port", int),
+        DETECTOR=Ident("Detector configuration", OdinDetector),
         PROCESS_PLUGIN=Ident("Odin detector configuration", ExcaliburProcessPlugin),
         RECEIVER_PLUGIN=Ident("Odin detector configuration", ExcaliburReceiverPlugin),
         FILE_WRITER=Ident("FileWriterPlugin configuration", FileWriterPlugin),
