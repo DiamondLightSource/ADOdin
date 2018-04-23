@@ -480,8 +480,9 @@ asynStatus OdinDataDriver::writeOctet(asynUser *pasynUser, const char *value,
 asynStatus OdinDataDriver::callParamCallbacks()
 {
   int status = 0;
-  status |= (int) ADDriver::callParamCallbacks(0);
-  status |= (int) ADDriver::callParamCallbacks(1);
+  for (int index = 0; index < mODCount; index++){
+    status |= (int) ADDriver::callParamCallbacks(index);
+  }
   return (asynStatus) status;
 }
 
