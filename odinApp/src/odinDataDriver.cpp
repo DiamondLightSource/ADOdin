@@ -79,15 +79,17 @@ int OdinDataDriver::initialise(int index)
 
   std::string currentConfigFile;
   // Force a reload of the FR configuration
-  status |= mFRConfiguration->get(currentConfigFile, index);
-  status |= mFRConfiguration->put(currentConfigFile, index);
+  mFRConfiguration->get(currentConfigFile, index);
+  mFRConfiguration->put(currentConfigFile, index);
   // Force a reload of the FP configuration
-  status |= mFPConfiguration->get(currentConfigFile, index);
-  status |= mFPConfiguration->put(currentConfigFile, index);
+  mFPConfiguration->get(currentConfigFile, index);
+  mFPConfiguration->put(currentConfigFile, index);
 
   // Force re-configure of the dims
   this->configureImageDims();
   this->configureChunkDims();
+
+  this->pushParams();
 
   if (status) {
     asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
@@ -357,7 +359,9 @@ asynStatus OdinDataDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) {
   }
   else if (RestParam * p = this->getParamByIndex(function)) {
     if (function == mCapture->getIndex()){
-        p->put((bool)value);
+      // Push all parameters
+      pushParams();
+      p->put((bool)value);
     } else if (function == mStartCloseTimeout->getIndex()) {
       p->put((bool)value);
     }
