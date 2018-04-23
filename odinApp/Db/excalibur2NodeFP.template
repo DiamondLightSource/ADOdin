@@ -1,0 +1,22 @@
+# excalibur2Node.template
+# Defines the housekeeping parameters available from all FEMs.
+#
+# Parameters:
+#   P       - EPICS name prefix
+#   R       - EPICS plugin name
+#   PORT    - Asyn port
+#   ADDRESS - Asyn address
+#   TOTAL   - Total number of FEMs
+#   TIMEOUT - Timeout
+
+################################################################################
+#
+# Include 2 FP templates
+#
+################################################################################
+
+substitute "ADDRESS=0"
+include "excaliburFP.template"
+substitute "ADDRESS=1"
+include "excaliburFP.template"
+

@@ -5,67 +5,68 @@
 #   R       - EPICS plugin name
 #   DET     - Detector R value
 #   PORT    - Asyn port
+#   TOTAL   - Total number of FrameProcessors
 #   TIMEOUT - Timeout
 
-record(calcout, "$(P)$(R)FPBitDepthCalc")
+record(calcout, "$(P)$(R)$(ADDRESS)FPBitDepthCalc")
 {
     field(INPA, "$(P)$(DET)CounterDepth CP")
     field(CALC, "A+1")
-    field(OUT, "$(P)$(R)FPBitDepthFan.SELN")
-    field(FLNK, "$(P)$(R)FPBitDepthFan")
+    field(OUT, "$(P)$(R)$(ADDRESS)FPBitDepthFan.SELN")
+    field(FLNK, "$(P)$(R)$(ADDRESS)FPBitDepthFan")
 }
 
-record(dfanout, "$(P)$(R)FPBitDepthFan")
+record(dfanout, "$(P)$(R)$(ADDRESS)FPBitDepthFan")
 {
     field(VAL, "1")
-    field(OUTA,  "$(P)$(R)FPBitDepth1.PROC PP")
-    field(OUTB,  "$(P)$(R)FPBitDepth6.PROC PP")
-    field(OUTC,  "$(P)$(R)FPBitDepth12.PROC PP")
-    field(OUTD,  "$(P)$(R)FPBitDepth24.PROC PP")
+    field(OUTA,  "$(P)$(R)$(ADDRESS)FPBitDepth1.PROC PP")
+    field(OUTB,  "$(P)$(R)$(ADDRESS)FPBitDepth6.PROC PP")
+    field(OUTC,  "$(P)$(R)$(ADDRESS)FPBitDepth12.PROC PP")
+    field(OUTD,  "$(P)$(R)$(ADDRESS)FPBitDepth24.PROC PP")
     field(SELM, "Specified")
 
 }
 
-record(stringout, "$(P)$(R)FPBitDepth1")
+record(stringout, "$(P)$(R)$(ADDRESS)FPBitDepth1")
 {
     field(DTYP, "asynOctetWrite")
     field(VAL,  "1-bit")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_fp/config/excalibur/bitdepth")
+    field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS$(TOTAL)_fp/config/excalibur/bitdepth")
 }
 
-record(stringout, "$(P)$(R)FPBitDepth6")
+record(stringout, "$(P)$(R)$(ADDRESS)FPBitDepth6")
 {
     field(DTYP, "asynOctetWrite")
     field(VAL,  "6-bit")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_fp/config/excalibur/bitdepth")
+    field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS$(TOTAL)_fp/config/excalibur/bitdepth")
 }
 
-record(stringout, "$(P)$(R)FPBitDepth12")
+record(stringout, "$(P)$(R)$(ADDRESS)FPBitDepth12")
 {
     field(DTYP, "asynOctetWrite")
     field(VAL,  "12-bit")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_fp/config/excalibur/bitdepth")
+    field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS$(TOTAL)_fp/config/excalibur/bitdepth")
 }
 
-record(stringout, "$(P)$(R)FPBitDepth24")
+record(stringout, "$(P)$(R)$(ADDRESS)FPBitDepth24")
 {
     field(DTYP, "asynOctetWrite")
     field(VAL,  "24-bit")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_fp/config/excalibur/bitdepth")
+    field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS$(TOTAL)_fp/config/excalibur/bitdepth")
 }
 
-record(longout, "$(P)$(R)FPProcWidth")
+record(longout, "$(P)$(R)$(ADDRESS)FPProcWidth")
 {
     field(DOL, "$(P)$(R)ImageWidth CP")
     field(OMSL, "closed_loop")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_fp/config/excalibur/width")
+    field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_fp/config/excalibur/width")
 }
 
-record(longout, "$(P)$(R)FPProcHeight")
+record(longout, "$(P)$(R)$(ADDRESS)FPProcHeight")
 {
     field(DOL, "$(P)$(R)ImageHeight CP")
     field(OMSL, "closed_loop")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_fp/config/excalibur/height")
+    field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_fp/config/excalibur/height")
 }

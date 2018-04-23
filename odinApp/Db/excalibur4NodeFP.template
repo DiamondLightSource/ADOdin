@@ -1,0 +1,26 @@
+# excalibur4Node.template
+# Defines the parameters required for the Excalibur processing plugin
+#
+# Parameters:
+#   P       - EPICS name prefix
+#   R       - EPICS plugin name
+#   PORT    - Asyn port
+#   ADDRESS - Asyn address
+#   TOTAL   - Total number of FEMs
+#   TIMEOUT - Timeout
+
+################################################################################
+#
+# Include 4 FP templates
+#
+################################################################################
+
+substitute "ADDRESS=0"
+include "excaliburFP.template"
+substitute "ADDRESS=1"
+include "excaliburFP.template"
+substitute "ADDRESS=2"
+include "excaliburFP.template"
+substitute "ADDRESS=3"
+include "excaliburFP.template"
+
