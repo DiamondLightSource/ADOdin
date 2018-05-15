@@ -502,3 +502,31 @@ class OdinDataDriver(AsynPort):
               "%(ODIN_SERVER_PORT)d, " \
               "\"%(DATASET)s\", \"%(DETECTOR)s\", " \
               "%(BUFFERS)d, %(MEMORY)d)" % self.__dict__
+
+              
+class FrameProcessor(Device):
+
+    def __init__(self, IOC, LOG_CFG):
+        self.__super.__init__()
+        # Update attributes with parameters
+        self.__dict__.update(locals())
+        self.create_startup_file()
+
+    def create_startup_file(self):
+        macros = dict(LOG_CFG=self.LOG_CFG, FW_ROOT=FILE_WRITER_ROOT)
+        template_config = Template('#!/bin/bash\n\
+cd $FW_ROOT\n\
+./bin/frameProcessor --logconfig $LOG_CFG\n')
+
+        output = template_config.substitute(macros)
+
+        output_file = IocDataStream("st{}.sh".format(self.IOC))
+        output_file.write(output)
+
+    # __init__ arguments
+    ArgInfo = makeArgInfo(__init__,
+        IOC=Simple("Name of the IOC", str),
+        LOG_CFG=Simple("Full path to the Log configuration file", str))
+
+
+
