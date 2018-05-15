@@ -70,3 +70,17 @@ record(longout, "$(P)$(R)$(ADDRESS)FPProcHeight")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_fp/config/excalibur/height")
 }
+
+record(longout, "$(P)$(R)$(ADDRESS):PacketsLost")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_fp/config/excalibur/packets_lost/$(ADDRESS)")
+}
+
+record(longin, "$(P)$(R)$(ADDRESS):PacketsLost_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_fp/status/excalibur/packets_lost")
+}
+
