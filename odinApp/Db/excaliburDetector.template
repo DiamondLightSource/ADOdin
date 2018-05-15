@@ -909,6 +909,58 @@ record(waveform, "$(P)$(R)CalFileRoot_RBV")
     field(SCAN, "I/O Intr")
 }
 
+
+###################################################################
+#  Calculate if we need to re-load settings, these will be        #
+#  processed if the connection to Odin transitions from           #
+#  disconnected to reconnected                                    # 
+###################################################################
+record(calcout, "$(P)$(R)CalcReconnected")
+{
+    field(INPA, "$(P)$(R)DetectorState_RBV CP")
+    field(CALC, "A=9?0:1")
+    field(OUT, "$(P)$(R)ReconnectFan1.PROC PP")
+    field(OOPT, "Transition To Non-zero")
+}
+
+record(fanout, "$(P)$(R)ReconnectFan1")
+{
+    field(LNK1, "$(P)$(R)UdpConfigFile.PROC PP")
+    field(LNK2, "$(P)$(R)ImageMode.PROC PP")
+    field(LNK3, "$(P)$(R)TriggerMode.PROC PP")
+    field(LNK4, "$(P)$(R)AcquireTime.PROC PP")
+    field(LNK5, "$(P)$(R)AcquirePeriod.PROC PP")
+    field(LNK6, "$(P)$(R)NumImages.PROC PP")
+    field(FLNK, "$(P)$(R)ReconnectFan2.PROC PP")
+}
+
+record(fanout, "$(P)$(R)ReconnectFan2")
+{
+    field(LNK1, "$(P)$(R)OperationMode.PROC PP")
+    field(LNK2, "$(P)$(R)CounterDepth.PROC PP")
+    field(LNK3, "$(P)$(R)CounterSelect.PROC PP")
+    field(LNK4, "$(P)$(R)NumTestPulses.PROC PP")
+    field(LNK5, "$(P)$(R)EnergyThreshold.PROC PP")
+    field(LNK6, "$(P)$(R)ReadWriteMode.PROC PP")
+    field(FLNK, "$(P)$(R)ReconnectFan3.PROC PP")
+}
+
+record(fanout, "$(P)$(R)ReconnectFan3")
+{
+    field(LNK1, "$(P)$(R)DiscCsmSpm.PROC PP")
+    field(LNK2, "$(P)$(R)EqualizationMode.PROC PP")
+    field(LNK3, "$(P)$(R)CsmSpmMode.PROC PP")
+    field(LNK4, "$(P)$(R)GainMode.PROC PP")
+    field(LNK5, "$(P)$(R)TriggerPolarity.PROC PP")
+    field(LNK6, "$(P)$(R)LfsrBypass.PROC PP")
+    field(FLNK, "$(P)$(R)ReconnectFan4.PROC PP")
+}
+
+record(fanout, "$(P)$(R)ReconnectFan4")
+{
+    field(LNK1, "$(P)$(R)CalFileRoot.PROC PP")
+}
+
 ###################################################################
 #  UDP farm mode setup configuration file                         # 
 ###################################################################
