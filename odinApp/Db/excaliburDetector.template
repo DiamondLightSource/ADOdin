@@ -992,3 +992,29 @@ record(mbbi, "$(P)$(R)ImageMode_RBV")
    field(TWST, "")
 }
 
+###################################################################
+#  Send a manual test DAC configuration                           # 
+###################################################################
+# %autosave 2
+record(waveform, "$(P)$(R)ManualDacConfigFile")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_command/configure_dac")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+}
+
+###################################################################
+#  Send a test mask configuration                                 # 
+###################################################################
+# %autosave 2
+record(waveform, "$(P)$(R)TestMaskConfigFile")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_command/configure_mask")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+}
+
