@@ -420,38 +420,52 @@ record(seq, "$(P)$(R)$(ADDRESS):RecordEFuseId_TFR")
     field(LNK9, "$(P)$(R)$(ADDRESS):RecordEFuseId")
 }
 
+record(bi, "$(P)$(R)$(ADDRESS):EFuseIdMatches")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/efuse_match")
+    field(ZSV,  "MAJOR")
+}
+
+#record(bi, "$(P)$(R)$(ADDRESS):EFuseIdMatches")
+#{
+#    field(LLSV,  "MAJOR")
+#}
+
 # Non-zero if the current efuseid matches the saved efuseid
 # %gdatag,template,simpleBinary,$(gda_name=).EFuseIdMatches,$(gda_desc=)
 # %gdatag,binary,ro,$(gda_name=).EFuseIdMatches,RECORD,$(gda_desc=)
-record(calc, "$(P)$(R)$(ADDRESS):EFuseIdMatches")
-{
-    field(INPA, "$(P)$(R)$(ADDRESS):EFuseIdC0")
-    field(INPB, "$(P)$(R)$(ADDRESS):SavedEFuseIdC0")
-    field(INPC, "$(P)$(R)$(ADDRESS):EFuseIdC1")
-    field(INPD, "$(P)$(R)$(ADDRESS):SavedEFuseIdC1")
-    field(INPE, "$(P)$(R)$(ADDRESS):EFuseIdC2")
-    field(INPF, "$(P)$(R)$(ADDRESS):SavedEFuseIdC2")
-    field(INPG, "$(P)$(R)$(ADDRESS):EFuseIdC3")
-    field(INPH, "$(P)$(R)$(ADDRESS):SavedEFuseIdC3")
-    field(INPI, "$(P)$(R)$(ADDRESS):EFuseIdMatches2.VAL") 
-    field(CALC, "(A=B)&&(C=D)&&(E=F)&&(G=H)&&I")
-    field(LLSV,  "MAJOR")
-    field(LOLO,  "0")
-}
-record(calc, "$(P)$(R)$(ADDRESS):EFuseIdMatches2")
-{
-    field(SCAN, "1 second")
-    field(INPA, "$(P)$(R)$(ADDRESS):EFuseIdC4")
-    field(INPB, "$(P)$(R)$(ADDRESS):SavedEFuseIdC4")
-    field(INPC, "$(P)$(R)$(ADDRESS):EFuseIdC5")
-    field(INPD, "$(P)$(R)$(ADDRESS):SavedEFuseIdC5")
-    field(INPE, "$(P)$(R)$(ADDRESS):EFuseIdC6")
-    field(INPF, "$(P)$(R)$(ADDRESS):SavedEFuseIdC6")
-    field(INPG, "$(P)$(R)$(ADDRESS):EFuseIdC7")
-    field(INPH, "$(P)$(R)$(ADDRESS):SavedEFuseIdC7")
-    field(CALC, "(A=B)&&(C=D)&&(E=F)&&(G=H)")
-    field(FLNK, "$(P)$(R)$(ADDRESS):EFuseIdMatches")
-}
+#record(calc, "$(P)$(R)$(ADDRESS):EFuseIdMatches")
+#{
+#    field(INPA, "$(P)$(R)$(ADDRESS):EFuseIdC0")
+#    field(INPB, "$(P)$(R)$(ADDRESS):SavedEFuseIdC0")
+#    field(INPC, "$(P)$(R)$(ADDRESS):EFuseIdC1")
+#    field(INPD, "$(P)$(R)$(ADDRESS):SavedEFuseIdC1")
+#    field(INPE, "$(P)$(R)$(ADDRESS):EFuseIdC2")
+#    field(INPF, "$(P)$(R)$(ADDRESS):SavedEFuseIdC2")
+#    field(INPG, "$(P)$(R)$(ADDRESS):EFuseIdC3")
+#    field(INPH, "$(P)$(R)$(ADDRESS):SavedEFuseIdC3")
+#    field(INPI, "$(P)$(R)$(ADDRESS):EFuseIdMatches2.VAL") 
+#    field(CALC, "(A=B)&&(C=D)&&(E=F)&&(G=H)&&I")
+#    field(LLSV,  "MAJOR")
+#    field(LOLO,  "0")
+#}
+#record(calc, "$(P)$(R)$(ADDRESS):EFuseIdMatches2")
+#{
+#    field(SCAN, "1 second")
+#    field(INPA, "$(P)$(R)$(ADDRESS):EFuseIdC4")
+#    field(INPB, "$(P)$(R)$(ADDRESS):SavedEFuseIdC4")
+#    field(INPC, "$(P)$(R)$(ADDRESS):EFuseIdC5")
+#    field(INPD, "$(P)$(R)$(ADDRESS):SavedEFuseIdC5")
+#    field(INPE, "$(P)$(R)$(ADDRESS):EFuseIdC6")
+#    field(INPF, "$(P)$(R)$(ADDRESS):SavedEFuseIdC6")
+#    field(INPG, "$(P)$(R)$(ADDRESS):EFuseIdC7")
+#    field(INPH, "$(P)$(R)$(ADDRESS):SavedEFuseIdC7")
+#    field(CALC, "(A=B)&&(C=D)&&(E=F)&&(G=H)")
+#    field(FLNK, "$(P)$(R)$(ADDRESS):EFuseIdMatches")
+#}
 
 # Non-zero if the FEM initialised OK
 # %gdatag,template,simpleBinary,$(gda_name=).FemInitOk,$(gda_desc=)
@@ -478,17 +492,17 @@ record(longin, "$(P)$(R)$(ADDRESS):FemFrames")
 #% archiver 10 Monitor
 record(longin, "$(P)$(R)$(ADDRESS):FemCommsFaults")
 {
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynInt32")
+#    field(SCAN, "I/O Intr")
+#    field(DTYP, "asynInt32")
     field(VAL,  "0")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))FEM_COMMS_FAULTS")
+#    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))FEM_COMMS_FAULTS")
 }
 
 record(longout, "$(P)$(R)$(ADDRESS):ResetFemCommsFaults")
 {
-    field(DTYP, "asynInt32")
+#    field(DTYP, "asynInt32")
     field(VAL,  "0")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))RESET_FEM_COMMS_FAULTS")
+#    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))RESET_FEM_COMMS_FAULTS")
 }
 
 record(longin, "$(P)$(R)$(ADDRESS):CalibrationStatus_RBV")
