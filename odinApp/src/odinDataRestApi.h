@@ -27,6 +27,7 @@ class OdinDataRestAPI : public OdinRestAPI
   int createFile(const std::string& name, const std::string& path);
   int setImageDims(const std::string& datasetName, std::vector<int>& imageDims);
   int setChunkDims(const std::string& datasetName, std::vector<int>& chunkDims);
+  std::string readError(int address, int error_index);
   int startWrite();
   int stopWrite();
 

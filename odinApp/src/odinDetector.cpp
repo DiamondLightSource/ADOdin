@@ -10,14 +10,6 @@
 static const std::string DRIVER_VERSION("0-1");
 static const char *driverName = "OdinDetector";
 
-// These parameters are optionally configured by ioc init commands
-//std::string                  OdinDetector::mOdinDataLibraryPath = "";
-//std::vector<ODConfiguration> OdinDetector::mODConfig                ;
-//size_t                       OdinDetector::mODCount             =  0;
-//std::string                  OdinDetector::mDatasetName         = "";
-//std::string                  OdinDetector::mProcessPluginName   = "";
-//std::string                  OdinDetector::mDetectorLibraryPath = "";
-
 /* Constructor for Odin driver; most parameters are simply passed to ADDriver::ADDriver.
  * After calling the base class constructor this method creates a thread to collect the detector
  * data, and sets reasonable default values for the parameters defined in this class,
@@ -67,6 +59,9 @@ int OdinDetector::createDetectorParams()
   // Bind the sensor size parameters
   createRESTParam(ADMaxSizeXString, REST_P_INT, SSDetector, "status/sensor/width");
   createRESTParam(ADMaxSizeYString, REST_P_INT, SSDetector, "status/sensor/height");
+  createRESTParam(NDArraySizeXString, REST_P_INT, SSDetector, "status/sensor/width");
+  createRESTParam(NDArraySizeYString, REST_P_INT, SSDetector, "status/sensor/height");
+  createRESTParam(NDArraySizeString, REST_P_INT, SSDetector, "status/sensor/bytes");
 
   // Create a parameter to store the acquisition complete status
   mAcqComplete = createRESTParam("ACQ_COMPLETE", REST_P_BOOL, SSDetector, "status/acquisition_complete");
@@ -118,23 +113,9 @@ asynStatus OdinDetector::getStatus()
     setStringParam(ADStatusMessage, error_msg.c_str());
     if (error_msg != ""){
       setIntegerParam(ADStatus, ADStatusError);
+    } else if (status == ADStatusError){
+      setIntegerParam(ADStatus, ADStatusIdle);
     }
-  }
-
-  getIntegerParam(ADAcquire, &acquiring);
-  if (acquiring){
-    // Now fetch the current acquisition status
-    bool acq_state = false;
-    mAcqComplete->get(acq_state);
-    // We are in an acquisition, check the status
-    if (acq_state){
-      // The acquisition has completed, reset the status
-      setIntegerParam(ADAcquire, 0);
-      setStringParam(ADStatusMessage, "Acquisition has completed");
-    } else {
-      setStringParam(ADStatusMessage, "Acquiring...");
-    }
-    callParamCallbacks();
   }
 
   if(status) {
@@ -145,8 +126,7 @@ asynStatus OdinDetector::getStatus()
   return asynSuccess;
 }
 
-asynStatus OdinDetector::acquireStart(const std::string &fileName, const std::string &filePath,
-                                      const std::string &datasetName, int dataType)
+asynStatus OdinDetector::acquireStart()
 {
   mAPI.startAcquisition();
   return asynSuccess;
@@ -175,7 +155,7 @@ asynStatus OdinDetector::writeInt32(asynUser *pasynUser, epicsInt32 value) {
 
   if(function == ADAcquire) {
     if(value && adStatus != ADStatusAcquire) {
-      acquireStart("test_file", "/tmp", "data", 2);
+      acquireStart();
       setIntegerParam(ADStatus, ADStatusAcquire);
       setStringParam(ADStatusMessage, "Acquisition started");
     }

@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 #include <algorithm>
+#include <frozen.h>
 
 #include "jsonDict.h"
 
@@ -22,6 +23,37 @@
 
 const std::string OdinDataRestAPI::FILE_WRITER_PLUGIN = PLUGIN_INDEX_FILE_WRITER;
 
+
+std::vector<std::vector<std::string> > parse2DArray (struct json_token *tokens, std::string const& name)
+{
+  std::vector<std::vector<std::string> > arrayValues;
+  struct json_token *t;
+  if(name.empty()){
+    t = tokens;
+  } else {
+    t = find_json_token(tokens, name.c_str());
+  }
+  // We expect to find an array of arrays
+  if(t){
+    if(t->type == JSON_TYPE_ARRAY){
+      int i = 1;
+      while (i <= t->num_desc){
+        std::vector<std::string> x_vals;
+        struct json_token *array = t+i;
+        if(array->type == JSON_TYPE_ARRAY){
+          for(int x = 1; x <= array->num_desc; ++x){
+            std::string entry((array+x)->ptr, (array+x)->len);
+            x_vals.push_back(entry);
+            i++;
+          }
+        }
+        i++;
+        arrayValues.push_back(x_vals);
+      }
+    }
+  }
+  return arrayValues;
+}
 
 OdinDataRestAPI::OdinDataRestAPI(const std::string& hostname,
                                  const std::string& pluginName,
@@ -75,6 +107,26 @@ int OdinDataRestAPI::setChunkDims(const std::string& datasetName, std::vector<in
   JsonDict dimsDict = JsonDict(DATASET_CHUNKS, chunkDims);
 
   return put(sysStr(SSFPConfigHDF), DATASET "/" + datasetName, dimsDict.str());
+}
+
+std::string OdinDataRestAPI::readError(int address, int error_index) {
+  // Parse JSON
+  struct json_token tokens[256];
+  std::string error = "";
+  std::string buffer;
+  get(sysStr(SSFPStatus), "client_error", buffer, 1.0);
+  //printf("Buffer: %s\n", buffer.c_str());
+  int err = parse_json(buffer.c_str(), buffer.size(), tokens, 256);
+  std::vector<std::vector<std::string> > valueArray = parse2DArray(tokens, PARAM_VALUE);
+  if (valueArray.size() > address){
+    std::vector<std::string> singleArray = valueArray[address];
+    if (singleArray.size() > 0){
+      if (singleArray.size() > error_index){
+        error = singleArray[error_index];
+      }
+    }
+  }
+  return error;
 }
 
 int OdinDataRestAPI::lookupAccessMode(std::string subSystem, rest_access_mode_t& accessMode)
