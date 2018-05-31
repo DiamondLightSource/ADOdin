@@ -50,13 +50,13 @@ record(stringin, "$(P)$(R)RestAPIVersion_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "$(P)$(R)NumProcesses_RBV")
-{
-    field(DTYP, "asynInt32")
-    field(INP, "@asyn($(PORT),0,$(TIMEOUT))ODIN_NUM_PROCESSES")
-    field(PINI, "NO")
-    field(SCAN, "I/O Intr")
-}
+#record(longin, "$(P)$(R)NumProcesses_RBV")
+#{
+#    field(DTYP, "asynInt32")
+#    field(INP, "@asyn($(PORT),0,$(TIMEOUT))ODIN_NUM_PROCESSES")
+#    field(PINI, "NO")
+#    field(SCAN, "I/O Intr")
+#}
 
 record(longout, "$(P)$(R)BlockSize")
 {
@@ -445,21 +445,21 @@ record(longin, "$(P)$(R)BoundaryThreshold_RBV")
     field(EGU, "bytes")
 }
 
-record(longout, "$(P)$(R)NumFramesFlush")
-{
-    field(DTYP, "asynInt32")
-    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_NUM_FRAMES_FLUSH")
-    field(PINI, "NO")
-    info(autosaveFields, "VAL")
-}
+#record(longout, "$(P)$(R)NumFramesFlush")
+#{
+#    field(DTYP, "asynInt32")
+#    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_NUM_FRAMES_FLUSH")
+#    field(PINI, "NO")
+#    info(autosaveFields, "VAL")
+#}
 
-record(longin, "$(P)$(R)NumFramesFlush_RBV")
-{
-    field(DTYP, "asynInt32")
-    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_NUM_FRAMES_FLUSH")
-    field(PINI, "NO")
-    field(SCAN, "I/O Intr")
-}
+#record(longin, "$(P)$(R)NumFramesFlush_RBV")
+#{
+#    field(DTYP, "asynInt32")
+#    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_NUM_FRAMES_FLUSH")
+#    field(PINI, "NO")
+#    field(SCAN, "I/O Intr")
+#}
 
 record(mbbo, "$(P)$(R)Compression")
 {
@@ -545,3 +545,61 @@ record(mbbi, "$(P)$(R)DataType_RBV")
 #    field(SCAN, "I/O Intr")
 #    field(PREC, "1")
 #}
+
+record(bo, "$(P)$(R)AutoIncrement")
+{
+    field(PINI, "YES")
+    field(VAL,  "1")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+}
+
+record(calcout, "$(P)$(R)CalcFileNumber")
+{
+    field(INPA, "$(P)$(R)Capture_RBV CP")
+    field(INPB, "$(P)$(R)AutoIncrement CP")
+    field(INPC, "$(P)$(R)FileNumber")
+    field(CALC, "A=0?(B=1?C+1:C):C")
+    field(OUT, "$(P)$(R)FileNumber PP")
+#    field(OOPT, "Transition To Zero")
+}
+
+record(longout, "$(P)$(R)FileNumber")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(VAL,  "1")
+}
+
+record(scalcout, "$(P)$(R)CalcFileName1")
+{
+    field(INPA, "$(P)$(R)FileNumber CP")
+    field(CALC, "PRINTF('_%05d', A)")
+#    field(OUT, "$(P)$(R)FileNumber PP")
+#    field(OOPT, "Transition To Zero")
+    field(FLNK, "$(P)$(R)CalcFileName2")
+}
+
+record(scalcout, "$(P)$(R)CalcFileName2")
+{
+    field(INAA, "$(P)$(R)FileNamePrefix")
+    field(INBB, "$(P)$(R)CalcFileName1.SVAL")
+    field(CALC, "AA+BB")
+    field(FLNK, "$(P)$(R)AutoGenFileName")
+#    field(OOPT, "On Change")
+}
+
+record(stringout, "$(P)$(R)AutoGenFileName")
+{
+    field(OMSL, "closed_loop")
+    field(DOL,  "$(P)$(R)CalcFileName2.SVAL")
+    field(DTYP, "asynOctetWrite")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_NAME")
+}
+
+record(stringout, "$(P)$(R)FileNamePrefix")
+{
+    field(FLNK, "$(P)$(R)CalcFileName2")
+    info(autosaveFields, "VAL")
+}
+

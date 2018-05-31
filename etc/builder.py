@@ -3,6 +3,7 @@ from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.iocinit import IocDataStream
 from iocbuilder.modules.asyn import AsynPort
 from iocbuilder.modules.ADCore import ADCore, ADBaseTemplate, makeTemplateInstance
+from iocbuilder.modules.calc import Calc
 from iocbuilder.modules.restClient import restClient
 from iocbuilder.modules.OdinData import FileWriterPlugin
 from iocbuilder.modules.ExcaliburDetector import ExcaliburProcessPlugin, ExcaliburReceiverPlugin
@@ -399,7 +400,7 @@ class OdinDataDriverTemplate(AutoSubstitution):
 class OdinDataDriver(AsynPort):
 
     """Create an OdinData driver"""
-    Dependencies = (ADCore, restClient, FileWriterPlugin)
+    Dependencies = (ADCore, Calc, restClient, FileWriterPlugin)
 
     # This tells xmlbuilder to use PORT instead of name as the row ID
     UniqueName = "PORT"
