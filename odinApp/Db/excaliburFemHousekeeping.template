@@ -540,6 +540,15 @@ record(bo, "$(P)$(R)BIAS_ON_OFF")
     field(FLNK, "$(P)$(R)BIAS_LEVEL:HIGH")
 }
 
+record(bi, "$(P)$(R)BIAS_ON_OFF_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_status/hv_enabled")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
+}
+
 #
 # %gdatag,template,simplePv,$(gda_name=).BIAS_LEVEL,$(gda_desc=)
 # %gdatag,pv,rw,$(gda_name=).BIAS_LEVEL,RECORD,$(gda_desc=)
@@ -771,15 +780,15 @@ record(calcout, "$(P)$(R)HvLvSoftTripOverridden3")
 # %gdatag,template,simpleBinary,$(gda_name=).FEMRESET,$(gda_desc=)
 # %gdatag,binary,rw,$(gda_name=).FEMRESET,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
-record(bo, "$(P)$(R)DOFEMRESET")
-{
-    field(DTYP, "asynInt32")
-    field(VAL,  "0")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))ADFEM_REBOOT")
-    field(ZNAM, "Idle")
-    field(ONAM, "Resetting")
-}
-
+#record(bo, "$(P)$(R)DOFEMRESET")
+#{
+#    field(DTYP, "asynInt32")
+#    field(VAL,  "0")
+#    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))ADFEM_REBOOT")
+#    field(ZNAM, "Idle")
+#    field(ONAM, "Resetting")
+#}
+#
 # Process this record to reset the FEMs
 record(seq, "$(P)$(R)FEMRESET")
 {
@@ -850,7 +859,7 @@ record(bi, "$(P)$(R)CONFIG:ACQUIRE:LvControl_RBV")
 {
     field(DTYP, "asynInt32")
     field(SCAN,  "I/O Intr")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/lv_enable")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_status/lv_enabled")
     field(ZNAM, "Off")
     field(ONAM, "On")
 }
