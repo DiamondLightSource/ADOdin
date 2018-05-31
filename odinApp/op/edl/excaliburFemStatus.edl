@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 794
-y 339
+x 796
+y 365
 w 81
 h 406
 font "arial-medium-r-18.0"
@@ -245,30 +245,6 @@ onColor index 15
 offColor index 20
 lineWidth 2
 numBits 1
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 5
-y 330
-w 70
-h 20
-fgColor index 25
-onColor index 3
-offColor index 3
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)$(FEM):RecordEFuseId"
-pressValue "Record"
-releaseValue "Idle"
-onLabel "Record"
-offLabel "Record"
-3d
-font "arial-bold-r-10.0"
 endObjectProperties
 
 # (Byte)

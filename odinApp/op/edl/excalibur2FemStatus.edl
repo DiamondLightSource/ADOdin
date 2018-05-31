@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1962
-y 82
+x 52
+y 76
 w 740
 h 860
 font "arial-medium-r-18.0"
@@ -537,25 +537,6 @@ major 4
 minor 1
 release 1
 x 5
-y 770
-w 110
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Record EFuseId"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 5
 y 795
 w 110
 h 20
@@ -585,29 +566,6 @@ useDisplayBg
 value {
   "FEM Comms Errs"
 }
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 570
-y 820
-w 70
-h 20
-fgColor index 25
-onColor index 3
-offColor index 3
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):1:HK:RESET_FEM_COMMS_FAULTS.PROC"
-pressValue "1"
-onLabel "Clear"
-offLabel "Clear"
-3d
-font "arial-bold-r-10.0"
 endObjectProperties
 
 # (Message Button)

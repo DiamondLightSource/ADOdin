@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 593
-y 91
+x 763
+y 112
 w 740
 h 401
 font "arial-medium-r-18.0"
@@ -1581,7 +1581,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 255
+x 280
 y 350
 w 75
 h 20
@@ -2001,27 +2001,6 @@ lineWidth 2
 numBits 1
 endObjectProperties
 
-# (Choice Button)
-object activeChoiceButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 60
-y 350
-w 70
-h 20
-fgColor index 25
-bgColor index 3
-selectColor index 3
-inconsistentColor index 0
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)BIAS_ON_OFF"
-font "arial-bold-r-10.0"
-orientation "horizontal"
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -2047,7 +2026,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 135
+x 160
 y 350
 w 75
 h 20
@@ -2077,34 +2056,13 @@ value {
 }
 endObjectProperties
 
-# (Choice Button)
-object activeChoiceButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 60
-y 375
-w 70
-h 20
-fgColor index 25
-bgColor index 3
-selectColor index 3
-inconsistentColor index 0
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)CONFIG:ACQUIRE:LvControl"
-font "arial-bold-r-10.0"
-orientation "horizontal"
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
 release 1
-x 150
+x 175
 y 375
 w 60
 h 20
@@ -2123,7 +2081,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 215
+x 240
 y 375
 w 20
 h 20
@@ -2141,7 +2099,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 245
+x 270
 y 375
 w 70
 h 20
@@ -2160,7 +2118,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 320
+x 345
 y 375
 w 20
 h 20
@@ -2214,7 +2172,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 220
+x 245
 y 350
 w 35
 h 20
@@ -2225,5 +2183,173 @@ useDisplayBg
 value {
   "Delta"
 }
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 55
+y 375
+w 95
+h 20
+
+beginGroup
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 55
+y 375
+w 30
+h 20
+fgColor index 19
+onColor index 4
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)CONFIG:ACQUIRE:LvControl"
+pressValue "1"
+onLabel "On"
+offLabel "On"
+3d
+useEnumNumeric
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 90
+y 375
+w 30
+h 20
+fgColor index 21
+onColor index 4
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)CONFIG:ACQUIRE:LvControl"
+pressValue "0"
+onLabel "Off"
+offLabel "Off"
+3d
+useEnumNumeric
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 130
+y 375
+w 20
+h 20
+controlPv "$(P)CONFIG:ACQUIRE:LvControl_RBV"
+lineColor index 14
+onColor index 15
+offColor index 20
+lineWidth 2
+endian "little"
+numBits 1
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 55
+y 350
+w 95
+h 20
+
+beginGroup
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 55
+y 350
+w 30
+h 20
+fgColor index 19
+onColor index 4
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)BIAS_ON_OFF"
+pressValue "1"
+onLabel "On"
+offLabel "On"
+3d
+useEnumNumeric
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 90
+y 350
+w 30
+h 20
+fgColor index 21
+onColor index 4
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)BIAS_ON_OFF"
+pressValue "0"
+onLabel "Off"
+offLabel "Off"
+3d
+useEnumNumeric
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 130
+y 350
+w 20
+h 20
+controlPv "$(P)BIAS_ON_OFF_RBV"
+lineColor index 14
+onColor index 15
+offColor index 20
+lineWidth 2
+endian "little"
+numBits 1
+endObjectProperties
+
+endGroup
+
 endObjectProperties
 

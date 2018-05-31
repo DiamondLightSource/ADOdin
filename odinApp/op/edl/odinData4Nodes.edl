@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1130
-y 251
+x 1134
+y 200
 w 385
 h 821
 font "arial-medium-r-12.0"
@@ -245,7 +245,7 @@ x 110
 y 70
 w 15
 h 15
-controlPv "$(P):OD1:ProcessConnected_RBV"
+controlPv "$(P):OD1:FPProcessConnected_RBV"
 lineColor index 14
 onColor index 15
 offColor index 19
@@ -263,7 +263,7 @@ x 130
 y 70
 w 15
 h 15
-controlPv "$(P):OD1:ProcessInitialised_RBV"
+controlPv "$(P):OD1:FRProcessConnected_RBV"
 lineColor index 14
 onColor index 15
 offColor index 19
@@ -375,7 +375,7 @@ x 175
 y 70
 w 15
 h 15
-controlPv "$(P):OD2:ProcessConnected_RBV"
+controlPv "$(P):OD2:FPProcessConnected_RBV"
 lineColor index 14
 onColor index 15
 offColor index 19
@@ -393,7 +393,7 @@ x 195
 y 70
 w 15
 h 15
-controlPv "$(P):OD2:ProcessInitialised_RBV"
+controlPv "$(P):OD2:FRProcessConnected_RBV"
 lineColor index 14
 onColor index 15
 offColor index 19
@@ -564,7 +564,7 @@ x 240
 y 70
 w 15
 h 15
-controlPv "$(P):OD3:ProcessConnected_RBV"
+controlPv "$(P):OD3:FPProcessConnected_RBV"
 lineColor index 14
 onColor index 15
 offColor index 19
@@ -582,7 +582,7 @@ x 260
 y 70
 w 15
 h 15
-controlPv "$(P):OD3:ProcessInitialised_RBV"
+controlPv "$(P):OD3:FRProcessConnected_RBV"
 lineColor index 14
 onColor index 15
 offColor index 19
@@ -694,7 +694,7 @@ x 305
 y 70
 w 15
 h 15
-controlPv "$(P):OD4:ProcessConnected_RBV"
+controlPv "$(P):OD4:FPProcessConnected_RBV"
 lineColor index 14
 onColor index 15
 offColor index 19
@@ -712,7 +712,7 @@ x 325
 y 70
 w 15
 h 15
-controlPv "$(P):OD4:ProcessInitialised_RBV"
+controlPv "$(P):OD4:FRProcessConnected_RBV"
 lineColor index 14
 onColor index 15
 offColor index 19
@@ -776,5 +776,24 @@ useDisplayBg
 value {
   "FR/FP 4"
 }
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 110
+y 215
+w 55
+h 20
+controlPv "$(P):OD:0:PacketsLost_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
 endObjectProperties
 

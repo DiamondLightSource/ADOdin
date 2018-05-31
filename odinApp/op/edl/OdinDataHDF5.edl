@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 52
-y 76
-w 386
-h 202
+x 394
+y 398
+w 389
+h 259
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -34,7 +34,7 @@ release 0
 x 5
 y 10
 w 375
-h 185
+h 235
 lineColor index 14
 fill
 fillColor index 3
@@ -67,7 +67,7 @@ major 4
 minor 1
 release 1
 x 10
-y 75
+y 125
 w 70
 h 15
 font "arial-bold-r-12.0"
@@ -134,7 +134,7 @@ major 4
 minor 6
 release 0
 x 95
-y 70
+y 120
 w 120
 h 20
 controlPv "$(P)$(R)FileName"
@@ -160,7 +160,7 @@ major 4
 minor 1
 release 1
 x 10
-y 95
+y 145
 w 85
 h 20
 font "arial-bold-r-12.0"
@@ -179,7 +179,7 @@ major 4
 minor 6
 release 0
 x 95
-y 95
+y 145
 w 120
 h 20
 controlPv "$(P)$(R)FileExtension"
@@ -205,7 +205,7 @@ major 4
 minor 6
 release 0
 x 225
-y 95
+y 145
 w 150
 h 20
 controlPv "$(P)$(R)FileExtension_RBV"
@@ -227,7 +227,7 @@ major 10
 minor 0
 release 0
 x 95
-y 120
+y 170
 w 120
 h 20
 controlPv "$(P)$(R)NumCapture"
@@ -245,7 +245,7 @@ major 4
 minor 1
 release 1
 x 10
-y 120
+y 170
 w 80
 h 20
 font "arial-bold-r-12.0"
@@ -264,7 +264,7 @@ major 10
 minor 0
 release 0
 x 225
-y 120
+y 170
 w 70
 h 20
 controlPv "$(P)$(R)NumCapture_RBV"
@@ -283,7 +283,7 @@ major 10
 minor 0
 release 0
 x 305
-y 120
+y 170
 w 70
 h 20
 controlPv "$(P)$(R)NumCaptured_RBV"
@@ -302,7 +302,7 @@ major 4
 minor 1
 release 0
 x 15
-y 155
+y 205
 w 65
 h 30
 fgColor index 19
@@ -326,7 +326,7 @@ major 4
 minor 0
 release 0
 x 90
-y 160
+y 210
 w 20
 h 20
 controlPv "$(P)$(R)Capture_RBV"
@@ -344,7 +344,7 @@ major 4
 minor 1
 release 0
 x 230
-y 155
+y 205
 w 65
 h 30
 fgColor index 21
@@ -386,7 +386,7 @@ major 4
 minor 4
 release 0
 x 305
-y 160
+y 210
 w 70
 h 25
 fgColor index 43
@@ -433,7 +433,7 @@ major 4
 minor 1
 release 0
 x 120
-y 155
+y 205
 w 65
 h 30
 fgColor index 22
@@ -457,7 +457,7 @@ major 4
 minor 6
 release 0
 x 225
-y 70
+y 120
 w 150
 h 20
 controlPv "$(P)$(R)FileName_RBV"
@@ -479,7 +479,7 @@ major 4
 minor 0
 release 0
 x 195
-y 160
+y 210
 w 20
 h 20
 controlPv "$(P)$(R)TimeoutActive_RBV"
@@ -488,5 +488,125 @@ onColor index 15
 offColor index 19
 lineWidth 2
 numBits 1
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 75
+w 70
+h 15
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "File Prefix"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 6
+release 0
+x 95
+y 70
+w 120
+h 20
+controlPv "$(P)$(R)FileNamePrefix"
+font "helvetica-medium-r-10.0"
+fgColor index 25
+bgColor index 3
+editable
+motifWidget
+limitsFromDb
+nullColor index 0
+useKp
+file
+useHexPrefix
+newPos
+inputFocusUpdates
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 100
+w 75
+h 15
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "File Number"
+}
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 95
+y 95
+w 120
+h 20
+controlPv "$(P)$(R)FileNumber"
+fgColor index 25
+fgAlarm
+bgColor index 3
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 225
+y 95
+w 55
+h 20
+fgColor index 14
+bgColor index 3
+inconsistentColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)AutoIncrement"
+font "arial-medium-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 225
+y 70
+w 100
+h 15
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Auto Increment"
+}
 endObjectProperties
 
