@@ -171,11 +171,13 @@ class ExcaliburDetector(OdinDetector):
         assert SENSOR in self.SENSOR_OPTIONS.keys()
         # Instantiate template corresponding to SENSOR, passing through some of own args
         status_template = self.SENSOR_OPTIONS[SENSOR][0]
+        gui_name = PORT[:PORT.find(".")] + ".Status"
         status_args = {
             "P": args["P"],
             "R": args["R"],
             "ADDRESS": "0",
             "PORT": PORT,
+            "NAME": gui_name,
             "TIMEOUT": args["TIMEOUT"],
             "TOTAL": self.SENSOR_OPTIONS[SENSOR][1]
         }
