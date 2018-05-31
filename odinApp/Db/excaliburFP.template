@@ -57,16 +57,16 @@ record(stringout, "$(P)$(R)$(ADDRESS)FPBitDepth24")
 
 record(longout, "$(P)$(R)$(ADDRESS)FPProcWidth")
 {
-    field(DOL, "$(P)$(R)ImageWidth CP")
-    field(OMSL, "closed_loop")
+    field(VAL,  "$(WIDTH)")
+    field(PINI, "1")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_fp/config/excalibur/width")
 }
 
 record(longout, "$(P)$(R)$(ADDRESS)FPProcHeight")
 {
-    field(DOL, "$(P)$(R)ImageHeight CP")
-    field(OMSL, "closed_loop")
+    field(VAL,  "$(HEIGHT)")
+    field(PINI, "1")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_fp/config/excalibur/height")
 }
