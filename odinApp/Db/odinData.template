@@ -8,12 +8,9 @@
 # % gui, $(PORT), readback, Write filename,   $(P)$(R)FullFileName_RBV
 # % gui, $(PORT), readback, N captured,   $(P)$(R)NumCaptured_RBV
 
-# This associates the template with an edm screen
-# % gui, $(PORT), edmtab, OdinData.edl, P=$(P),R=$(R)
-
 record(waveform, "$(P)$(R)FPConfigFile")
 {
-     field(PINI, "YES")
+     field(PINI, "NO")
      field(DTYP, "asynOctetWrite")
      field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FP_CONFIG")
      field(FTVL, "CHAR")
@@ -23,7 +20,7 @@ record(waveform, "$(P)$(R)FPConfigFile")
 
 record(waveform, "$(P)$(R)FRConfigFile")
 {
-     field(PINI, "YES")
+     field(PINI, "NO")
      field(DTYP, "asynOctetWrite")
      field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FR_CONFIG")
      field(FTVL, "CHAR")
@@ -31,19 +28,54 @@ record(waveform, "$(P)$(R)FRConfigFile")
      info(autosaveFields, "VAL")
 }
 
-record(longin, "$(P)$(R)ProcessConnected_RBV")
+record(longout, "$(P)$(R)FPClearErrors")
+{
+     field(PINI, "NO")
+     field(DTYP, "asynInt32")
+     field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FP_CLEAR_ERRORS")
+}
+
+record(longin, "$(P)$(R)FRProcessConnected_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_PROCESS_CONNECTED")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FR_PROCESS_CONNECTED")
     field(PINI, "NO")
     field(SCAN, "I/O Intr")
 }
 
-record(longin, "$(P)$(R)ProcessInitialised_RBV")
+record(longin, "$(P)$(R)FPProcessConnected_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_PROCESS_INITIALISED")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FP_PROCESS_CONNECTED")
     field(PINI, "NO")
+    field(SCAN, "I/O Intr")
+}
+
+#record(longin, "$(P)$(R)ProcessInitialised_RBV")
+#{
+#    field(DTYP, "asynInt32")
+#    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_PROCESS_INITIALISED")
+#    field(PINI, "NO")
+#    field(SCAN, "I/O Intr")
+#}
+
+record(waveform, "$(P)$(R)FPErrorMessage_RBV")
+{
+    field(PINI, "NO")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FP_ERROR_MESSAGE")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+}
+
+record(bi, "$(P)$(R)FPErrorState_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FP_ERROR_STATE")
+    field(ZNAM, "No Errors")
+    field(ONAM, "Error")
+    field(OSV, "MAJOR")
     field(SCAN, "I/O Intr")
 }
 
@@ -108,5 +140,26 @@ record(longin, "$(P)$(R)FreeBuffers_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FR_FREE_BUFFERS")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin, "$(P)$(R)FramesReceived_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FR_FRAMES_RECEIVED")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin, "$(P)$(R)FramesTimedOut_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FR_FRAMES_TIMEDOUT")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin, "$(P)$(R)FramesReleased_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FR_FRAMES_RELEASED")
     field(SCAN, "I/O Intr")
 }
