@@ -135,7 +135,7 @@ record(mbbo, "$(P)$(R)CounterSelect")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_COUNTERSELECT")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/counter_select")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(TWVL, "2")
@@ -152,7 +152,7 @@ record(mbbi, "$(P)$(R)CounterSelect_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_COUNTERSELECT")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/counter_select")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(TWVL, "2")
@@ -215,23 +215,23 @@ record(longin, "$(P)$(R)NumTestPulses_RBV")
 # %gdatag,pv,rw,$(gda_name=).numtestpulses1,RECORD,$(gda_desc=)
 # % autosave 2 
 #% archiver 10 Monitor
-record(longout, "$(P)$(R)NumTestPulses1")
-{
-    field(SCAN, "Passive")
-    field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),1,$(TIMEOUT))MPXIII_NUMTESTPULSES")
-    field(PINI, "1")
-}
+#record(longout, "$(P)$(R)NumTestPulses1")
+#{
+#    field(SCAN, "Passive")
+#    field(DTYP, "asynInt32")
+#    field(OUT,  "@asyn($(PORT),1,$(TIMEOUT))MPXIII_NUMTESTPULSES")
+#    field(PINI, "1")
+#}
 
 # Number of test pulses.
 # %gdatag,template,simplePv,$(gda_name=).numtestpulses1_RBV,$(gda_desc=)
 # %gdatag,pv,rw,$(gda_name=).numtestpulses1_RBV,RECORD,$(gda_desc=)
-record(longin, "$(P)$(R)NumTestPulses1_RBV")
-{
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),1,$(TIMEOUT))MPXIII_NUMTESTPULSES")
-}
+#record(longin, "$(P)$(R)NumTestPulses1_RBV")
+#{
+#    field(SCAN, "I/O Intr")
+#    field(DTYP, "asynInt32")
+#    field(INP,  "@asyn($(PORT),1,$(TIMEOUT))MPXIII_NUMTESTPULSES")
+#}
 #######################
 
 # Read write mode.  Actually part of the operation mode register but the FEM
@@ -417,7 +417,7 @@ record(mbbo, "$(P)$(R)TriggerPolarity")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_TRIGGERPOLARITY")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger_polarity")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(ZRST, "Electron")
@@ -433,7 +433,7 @@ record(mbbi, "$(P)$(R)TriggerPolarity_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))MPXIII_TRIGGERPOLARITY")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger_polarity")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(ZRST, "Electron")
@@ -595,28 +595,28 @@ record(stringout, "$(P)$(R)DacName")
 # %gdatag,template,simplePv,$(gda_name=).corruptimages,$(gda_desc=)
 # %gdatag,pv,ro,$(gda_name=).corruptimages,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
-record(longin, "$(P)$(R)CorruptImages_RBV")
-{
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynInt32")
-    field(VAL,  "0")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))ADFEM_CORRUPTIMAGES")
-}
+#record(longin, "$(P)$(R)CorruptImages_RBV")
+#{
+#    field(SCAN, "I/O Intr")
+#    field(DTYP, "asynInt32")
+#    field(VAL,  "0")
+#    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))ADFEM_CORRUPTIMAGES")
+#}
 
 # Manual/auto mode for the loading of DAC and pixel arrays into the Medipix chips.
 # %gdatag,template,simpleBinary,$(gda_name=).autoload,$(gda_desc=)
 # %gdatag,binary,rw,$(gda_name=).autoload,RECORD,$(gda_desc=)
 # % autosave 2 
 #% archiver 10 Monitor
-record(bo, "$(P)$(R)AutoLoad")
-{
-    field(SCAN, "Passive")
-    field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))ADFEM_AUTOLOAD")
-    field(ZNAM, "Manual")
-    field(ONAM, "Auto")
-    field(PINI, "1")
-}
+#record(bo, "$(P)$(R)AutoLoad")
+#{
+#    field(SCAN, "Passive")
+#    field(DTYP, "asynInt32")
+#    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))ADFEM_AUTOLOAD")
+#    field(ZNAM, "Manual")
+#    field(ONAM, "Auto")
+#    field(PINI, "1")
+#}
 
 # DAC scan DAC selection.
 # %gdatag,template,simplePv,$(gda_name=).scandac,$(gda_desc=)
@@ -627,7 +627,7 @@ record(longout, "$(P)$(R)ScanDac")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))SCAN_DAC")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/scan_dac_num")
     field(PINI, "1")
 }
 
@@ -638,7 +638,7 @@ record(longin, "$(P)$(R)ScanDac_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))SCAN_DAC")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/scan_dac_num")
 }
 
 # DAC scan start value.
@@ -650,7 +650,7 @@ record(longout, "$(P)$(R)ScanStart")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))SCAN_START")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/scan_dac_start")
     field(PINI, "1")
 }
 
@@ -661,7 +661,7 @@ record(longin, "$(P)$(R)ScanStart_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))SCAN_START")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/scan_dac_start")
 }
 
 # DAC scan stop value.
@@ -673,7 +673,7 @@ record(longout, "$(P)$(R)ScanStop")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))SCAN_STOP")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/scan_dac_stop")
     field(PINI, "1")
 }
 
@@ -684,7 +684,7 @@ record(longin, "$(P)$(R)ScanStop_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))SCAN_STOP")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/scan_dac_stop")
 }
 
 # DAC scan step value.
@@ -696,7 +696,7 @@ record(longout, "$(P)$(R)ScanStep")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))SCAN_STEP")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/scan_dac_step")
     field(PINI, "1")
 }
 
@@ -707,7 +707,7 @@ record(longin, "$(P)$(R)ScanStep_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))SCAN_STEP")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/scan_dac_step")
 }
 
 # Burst mode frame unload period in seconds.
@@ -715,27 +715,27 @@ record(longin, "$(P)$(R)ScanStep_RBV")
 # %gdatag,pv,rw,$(gda_name=).burstsubmitperiod,RECORD,$(gda_desc=)
 # % autosave 2 
 #% archiver 10 Monitor
-record(ao, "$(P)$(R)BurstSubmitPeriod")
-{
-    field(SCAN, "Passive")
-    field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))BURST_SUBMIT_PERIOD")
-    field(PINI, "1")
-    field(EGU,  "s")
-    field(PREC, "3")
-}
+#record(ao, "$(P)$(R)BurstSubmitPeriod")
+#{
+#    field(SCAN, "Passive")
+#    field(DTYP, "asynFloat64")
+#    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))BURST_SUBMIT_PERIOD")
+#    field(PINI, "1")
+#    field(EGU,  "s")
+#    field(PREC, "3")
+#}
 
 # Burst mode frame unload period in seconds.
 # %gdatag,template,simplePv,$(gda_name=).burstsubmitperiod_RBV,$(gda_desc=)
 # %gdatag,pv,rw,$(gda_name=).burstsubmitperiod_RBV,RECORD,$(gda_desc=)
-record(ai, "$(P)$(R)BurstSubmitPeriod_RBV")
-{
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))BURST_SUBMIT_PERIOD")
-    field(EGU,  "s")
-    field(PREC, "3")
-}
+#record(ai, "$(P)$(R)BurstSubmitPeriod_RBV")
+#{
+#    field(SCAN, "I/O Intr")
+#    field(DTYP, "asynFloat64")
+#    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))BURST_SUBMIT_PERIOD")
+#    field(EGU,  "s")
+#    field(PREC, "3")
+#}
 
 # Extra trigger mode added to AD standard PV
 record(mbbo, "$(P)$(R)TriggerMode")
@@ -751,51 +751,51 @@ record(mbbi, "$(P)$(R)TriggerMode_RBV")
    field(TWST, "Sync")
    field(TWVL, "2")
    field(DTYP, "asynInt32")
-   field(SCAN, "IO Intr")
+   field(SCAN, "I/O Intr")
    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger_mode")
 }
 
 # Development mode FEM initialise command
 # Process to execute
-record(longout, "$(P)$(R)InitialiseFem")
-{
-	field(DTYP, "asynInt32")
-	field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))INIT_FEM")
-}
+#record(longout, "$(P)$(R)InitialiseFem")
+#{
+#	field(DTYP, "asynInt32")
+#	field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))INIT_FEM")
+#}
 
 # DAC initialise file name
 # %gdatag,template,simplePv,$(gda_name=).DacIniFilename,$(gda_desc=)
 # %gdatag,array,rw,$(gda_name=).DacIniFilename,RECORD,$(gda_desc=)
 # %autosave 2
-record(waveform, "$(P)$(R)DacIniFilename")
-{
-    field(PINI, "YES")
-    field(DTYP, "asynOctetWrite")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))DAC_INI_FILE_NAME")
-    field(FTVL, "CHAR")
-    field(NELM, "256")
-}
+#record(waveform, "$(P)$(R)DacIniFilename")
+#{
+#    field(PINI, "YES")
+#    field(DTYP, "asynOctetWrite")
+#    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))DAC_INI_FILE_NAME")
+#    field(FTVL, "CHAR")
+#    field(NELM, "256")
+#}
 # %gdatag,template,simplePv,$(gda_name=).DacIniFilename_RBV,$(gda_desc=)
 # %gdatag,array,rw,$(gda_name=).DacIniFilename_RBV,RECORD,$(gda_desc=)
-record(waveform, "$(P)$(R)DacIniFilename_RBV")
-{
-    field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))DAC_INI_FILE_NAME")
-    field(FTVL, "CHAR")
-    field(NELM, "256")
-    field(SCAN, "I/O Intr")
-}
+#record(waveform, "$(P)$(R)DacIniFilename_RBV")
+#{
+#    field(DTYP, "asynOctetRead")
+#    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))DAC_INI_FILE_NAME")
+#    field(FTVL, "CHAR")
+#    field(NELM, "256")
+#    field(SCAN, "I/O Intr")
+#}
 
 # Load DAC initialisation file
 # %gdatag,template,simplePv,$(gda_name=).LoadDacFile,$(gda_desc=)
 # %gdatag,pv,rw,$(gda_name=).LoadDacFile,RECORD,$(gda_desc=)
-record(longout, "$(P)$(R)LoadDacFile")
-{
-    field(SCAN, "Passive")
-    field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))LOAD_DAC_FILE")
-    field(PINI, "1")
-}
+#record(longout, "$(P)$(R)LoadDacFile")
+#{
+#    field(SCAN, "Passive")
+#    field(DTYP, "asynInt32")
+#    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))LOAD_DAC_FILE")
+#    field(PINI, "1")
+#}
 
 # Control of test pulses.
 # %gdatag,template,simplePv,$(gda_name=).TestPulseEnable,$(gda_desc=)
@@ -828,63 +828,63 @@ record(bi, "$(P)$(R)TestPulseEnable_RBV")
 # %gdatag,pv,rw,$(gda_name=).AutoLoadCalFiles,RECORD,$(gda_desc=)
 # % autosave 2 
 #% archiver 10 Monitor
-record(bo, "$(P)$(R)AutoLoadCalFiles")
-{
-    field(SCAN, "Passive")
-    field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))AUTO_LOAD_CAL_FILES")
-    field(PINI, "1")
-    field(ZNAM, "Off")
-    field(ONAM, "On")
-}
-record(bi, "$(P)$(R)AutoLoadCalFiles_RBV")
-{
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))AUTO_LOAD_CAL_FILES")
-    field(ZNAM, "Off")
-    field(ONAM, "On")
-}
+#record(bo, "$(P)$(R)AutoLoadCalFiles")
+#{
+#    field(SCAN, "Passive")
+#    field(DTYP, "asynInt32")
+#    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))AUTO_LOAD_CAL_FILES")
+#    field(PINI, "1")
+#    field(ZNAM, "Off")
+#    field(ONAM, "On")
+#}
+#record(bi, "$(P)$(R)AutoLoadCalFiles_RBV")
+#{
+#    field(SCAN, "I/O Intr")
+#    field(DTYP, "asynInt32")
+#    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))AUTO_LOAD_CAL_FILES")
+#    field(ZNAM, "Off")
+#    field(ONAM, "On")
+#}
 
 # Some calibration is loaded.  This is set if any calibration file was loaded.
 # %gdatag,template,simplePv,$(gda_name=).SomeCalLoaded_RBV,$(gda_desc=)
 # %gdatag,pv,rw,$(gda_name=).SomeCalLoaded_RBV,RECORD,$(gda_desc=)
-record(longin, "$(P)$(R)SomeCalLoaded_RBV")
-{
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))SOME_CAL_LOADED")
-}
+#record(longin, "$(P)$(R)SomeCalLoaded_RBV")
+#{
+#    field(SCAN, "I/O Intr")
+#    field(DTYP, "asynInt32")
+#    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))SOME_CAL_LOADED")
+#}
 
 # DAC calibration file loaded.
 # %gdatag,template,simplePv,$(gda_name=).AutoLoadedDacs_RBV,$(gda_desc=)
 # %gdatag,pv,rw,$(gda_name=).AutoLoadedDacs_RBV,RECORD,$(gda_desc=)
-record(longin, "$(P)$(R)AutoLoadedDacs_RBV")
-{
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))AUTO_LOADED_DACS")
-}
+#record(longin, "$(P)$(R)AutoLoadedDacs_RBV")
+#{
+#    field(SCAN, "I/O Intr")
+#    field(DTYP, "asynInt32")
+#    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))AUTO_LOADED_DACS")
+#}
 
 # Threshold 0 file loaded.
 # %gdatag,template,simplePv,$(gda_name=).AutoLoadedThreshold0_RBV,$(gda_desc=)
 # %gdatag,pv,rw,$(gda_name=).AutoLoadedThreshold0_RBV,RECORD,$(gda_desc=)
-record(longin, "$(P)$(R)AutoLoadedThreshold0_RBV")
-{
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))AUTO_LOADED_THRESHOLD0")
-}
+#record(longin, "$(P)$(R)AutoLoadedThreshold0_RBV")
+#{
+#    field(SCAN, "I/O Intr")
+#    field(DTYP, "asynInt32")
+#    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))AUTO_LOADED_THRESHOLD0")
+#}
 
 # Threshold 1 file loaded.
 # %gdatag,template,simplePv,$(gda_name=).AutoLoadedThreshold1_RBV,$(gda_desc=)
 # %gdatag,pv,rw,$(gda_name=).AutoLoadedThreshold1_RBV,RECORD,$(gda_desc=)
-record(longin, "$(P)$(R)AutoLoadedThreshold1_RBV")
-{
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))AUTO_LOADED_THRESHOLD1")
-}
+#record(longin, "$(P)$(R)AutoLoadedThreshold1_RBV")
+#{
+#    field(SCAN, "I/O Intr")
+#    field(DTYP, "asynInt32")
+#    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))AUTO_LOADED_THRESHOLD1")
+#}
 
 # Calibration file root
 # %gdatag,template,simplePv,$(gda_name=).CalFileRoot,$(gda_desc=)
@@ -959,6 +959,11 @@ record(fanout, "$(P)$(R)ReconnectFan3")
 record(fanout, "$(P)$(R)ReconnectFan4")
 {
     field(LNK1, "$(P)$(R)CalFileRoot.PROC PP")
+    field(LNK2, "$(P)$(R)NumTestPulses.PROC PP")
+    field(LNK3, "$(P)$(R)ManualDacConfigFile.PROC PP")
+    field(LNK4, "$(P)$(R)TestMaskConfigFile.PROC PP")
+    field(LNK5, "$(P)$(R)TestPulseEnable.PROC PP")
+    field(LNK6, "$(P)$(R)BIAS_LEVEL.PROC PP")
 }
 
 ###################################################################
@@ -1000,9 +1005,25 @@ record(waveform, "$(P)$(R)ManualDacConfigFile")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_command/configure_dac")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_config/test_dac_file")
     field(FTVL, "CHAR")
     field(NELM, "256")
+}
+
+record(waveform, "$(P)$(R)ManualDacConfigFile_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_config/test_dac_file")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+}
+
+record(longout, "$(P)$(R)LoadDacFile")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_command/configure_dac")
 }
 
 ###################################################################
@@ -1013,8 +1034,34 @@ record(waveform, "$(P)$(R)TestMaskConfigFile")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_command/configure_mask")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_config/test_mask_file")
     field(FTVL, "CHAR")
     field(NELM, "256")
+}
+
+record(waveform, "$(P)$(R)TestMaskConfigFile_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODS_config/test_mask_file")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+}
+
+record(longout, "$(P)$(R)LoadTestMaskFile")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_command/configure_mask")
+}
+
+###################################################################
+#  Manual force calibration                                       # 
+###################################################################
+record(longout, "$(P)$(R)ManualLoadCalibration")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_command/force_calibrate")
 }
 
