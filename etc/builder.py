@@ -354,7 +354,7 @@ class OdinData(Device):
         self.index = OdinData.INDEX
         OdinData.INDEX += 1
 
-    def create_config_file(self, prefix, template, extra_macros=None):
+    def create_config_file(self, prefix, template, index, extra_macros=None):
         macros = dict(IP=self.IP, RD_PORT=self.READY, RL_PORT=self.RELEASE,
                       FW_ROOT=FILE_WRITER_ROOT, PP_ROOT=EXCALIBUR_ROOT)
         if extra_macros is not None:
@@ -364,7 +364,7 @@ class OdinData(Device):
 
         output = template_config.substitute(macros)
 
-        output_file = IocDataStream("{}{}.json".format(prefix, self.index))
+        output_file = IocDataStream("{}{}.json".format(prefix, index))
         output_file.write(output)
 
 
@@ -427,6 +427,15 @@ class OdinDataDriver(AsynPort):
         self.PROCESS_PLUGIN_MACRO = PROCESS_PLUGIN.MACRO
 
         self.ODIN_DATA_PROCESSES = []
+
+        # Count the number of servers
+        self.server_count = 0
+        for idx in range(1, 9):
+            server = eval("ODIN_DATA_SERVER_{}".format(idx))
+            if server is not None:
+                self.server_count += 1
+        print("Server count: {}".format(self.server_count))
+
         for idx in range(1, 9):
             server = eval("ODIN_DATA_SERVER_{}".format(idx))
             if server is not None:
@@ -436,11 +445,14 @@ class OdinDataDriver(AsynPort):
                     server.instantiated = True
 
                 port_number=61649
+                index_number = 0
                 for odin_data in server.processes:
+                    address = idx + index_number - 1
+                    print("Odin data idx: {}  index_number: {}  address: {}".format(idx, index_number, address))
                     self.ODIN_DATA_PROCESSES.append(odin_data)
                     # Use some OdinDataDriver macros to instantiate an odinData.template
                     args["PORT"] = PORT
-                    args["ADDR"] = odin_data.index - 1
+                    args["ADDR"] = address
                     args["R"] = odin_data.R
                     OdinDataTemplate(**args)
 
@@ -460,8 +472,9 @@ class OdinDataDriver(AsynPort):
                                       RX_PORT_4=port_number_4,
                                       RX_PORT_5=port_number_5,
                                       RX_PORT_6=port_number_6)
-                        odin_data.create_config_file('fp', daq_templates["ProcessPlugin"])
-                        odin_data.create_config_file('fr', daq_templates["ReceiverPlugin"], extra_macros=macros)
+                        odin_data.create_config_file('fp', daq_templates["ProcessPlugin"], address+1)
+                        odin_data.create_config_file('fr', daq_templates["ReceiverPlugin"], address+1, extra_macros=macros)
+                    index_number += self.server_count
 
     # __init__ arguments
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
