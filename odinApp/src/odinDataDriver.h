@@ -11,12 +11,17 @@
 #define OdinFPConfig                   "ODIN_FP_CONFIG"
 #define OdinFRConfig                   "ODIN_FR_CONFIG"
 // OdinData
-#define OdinNumProcesses               "ODIN_NUM_PROCESSES"
 #define OdinProcessRank                "ODIN_PROCESS_RANK"
 #define OdinFRProcessConnected         "ODIN_FR_PROCESS_CONNECTED"
-#define OdinProcessConnected           "ODIN_PROCESS_CONNECTED"
+#define OdinFPProcessConnected         "ODIN_FP_PROCESS_CONNECTED"
 #define OdinFRProcessInitialised       "ODIN_FR_PROCESS_INITIALISED"
-#define OdinProcessInitialised         "ODIN_PROCESS_INITIALISED"
+#define OdinFPProcessInitialised       "ODIN_FP_PROCESS_INITIALISED"
+#define OdinFPErrorMessage             "ODIN_FP_ERROR_MESSAGE"
+#define OdinFPErrorState               "ODIN_FP_ERROR_STATE"
+#define OdinFPClearErrors              "ODIN_FP_CLEAR_ERRORS"
+#define OdinFRFramesReceived           "ODIN_FR_FRAMES_RECEIVED"
+#define OdinFRFramesTimedOut           "ODIN_FR_FRAMES_TIMEDOUT"
+#define OdinFRFramesReleased           "ODIN_FR_FRAMES_RELEASED"
 // Buffers
 #define OdinFRFreeBuffers              "ODIN_FR_FREE_BUFFERS"
 // -- HDF5
@@ -94,7 +99,8 @@ class OdinDataDriver : public OdinClient
   char mHostname[512];
   OdinDataRestAPI mAPI;
 
-  int initialise(int index);
+  int initialiseFP(int index);
+  int initialiseFR(int index);
   int initialiseAll();
   std::vector<int> mFRInitialised;
   std::vector<int> mInitialised;
@@ -108,7 +114,6 @@ class OdinDataDriver : public OdinClient
   RestParam * mFRConfiguration;
   RestParam * mConnected;
   RestParam * mNumImages;
-  RestParam * mProcesses;
   RestParam * mFilePath;
   RestParam * mFileName;
   RestParam * mFileExtension;
@@ -127,9 +132,14 @@ class OdinDataDriver : public OdinClient
   RestParam * mCompression;
   RestParam * mDataType;
   RestParam * mFreeBuffers;
+  RestParam * mFramesReceived;
+  RestParam * mFramesTimedOut;
+  RestParam * mFramesReleased;
 
-  RestParam * mProcessConnected;
+  RestParam * mFPProcessConnected;
   RestParam * mFRProcessConnected;
+  int mFPErrorMessage;
+  RestParam * mFPClearErrors;
   RestParam * mProcessRank;
   RestParam * mWriting;
   RestParam * mTimeoutActive;
@@ -138,8 +148,9 @@ class OdinDataDriver : public OdinClient
   RestParam * mNumExpected;
 
   // Internal PVs
-  int mProcessInitialised;
+  int mFPProcessInitialised;
   int mFRProcessInitialised;
+  int mFPErrorState;
   int mNumCapturedSum;
   int mWritingAny;
   int mTimeoutActiveAny;

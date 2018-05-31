@@ -52,9 +52,12 @@ OdinDataDriver::OdinDataDriver(const char * portName, const char * serverHostnam
   mFPConfiguration = createODRESTParam(OdinFPConfig, REST_P_STRING, SSFPConfig, "config_file");
   mFRConfiguration = createODRESTParam(OdinFRConfig, REST_P_STRING, SSFRConfig, "config_file");
 
-  if (initialiseAll()) {
-    asynPrint(pasynUserSelf, ASYN_TRACE_ERROR, "Failed to initialise all OdinData processes\n");
-  }
+//  if (initialiseAll()) {
+//    asynPrint(pasynUserSelf, ASYN_TRACE_ERROR, "Failed to initialise all OdinData processes\n");
+//  }
+//  printf("Initialised all params\n");
+  mInitialised.resize(mODCount);
+  mFRInitialised.resize(mODCount);
 
   createParams();
   fetchParams();
@@ -66,30 +69,50 @@ int OdinDataDriver::initialiseAll()
   mInitialised.resize(mODCount);
   mFRInitialised.resize(mODCount);
   for (int index = 0; index != (int) mODConfig.size(); ++index) {
-    status |= initialise(index);
+    status |= initialiseFR(index);
+    status |= initialiseFP(index);
   }
+  this->pushParams();
   return status;
 }
 
-int OdinDataDriver::initialise(int index)
+int OdinDataDriver::initialiseFR(int index)
 {
   int status = 0;
-  mInitialised[index] = 0;
   mFRInitialised[index] = 0;
 
   std::string currentConfigFile;
   // Force a reload of the FR configuration
-  mFRConfiguration->get(currentConfigFile, index);
-  mFRConfiguration->put(currentConfigFile, index);
+  //mFRConfiguration->get(currentConfigFile, index);
+  //mFRConfiguration->put(currentConfigFile, index);
+
+  mFRConfiguration->push();
+
+  if (status) {
+    asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
+              "Failed to initialise OdinData process rank %d\n", index);
+  }
+  else {
+    mFRInitialised[index] = 1;
+  }
+  return status;
+}
+
+int OdinDataDriver::initialiseFP(int index)
+{
+  int status = 0;
+  mInitialised[index] = 0;
+
+  std::string currentConfigFile;
   // Force a reload of the FP configuration
-  mFPConfiguration->get(currentConfigFile, index);
-  mFPConfiguration->put(currentConfigFile, index);
+  //mFPConfiguration->get(currentConfigFile, index);
+  //mFPConfiguration->put(currentConfigFile, index);
+
+  mFPConfiguration->push();
 
   // Force re-configure of the dims
   this->configureImageDims();
   this->configureChunkDims();
-
-  this->pushParams();
 
   if (status) {
     asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
@@ -97,7 +120,6 @@ int OdinDataDriver::initialise(int index)
   }
   else {
     mInitialised[index] = 1;
-    mFRInitialised[index] = 1;
   }
   return status;
 }
@@ -111,8 +133,6 @@ void OdinDataDriver::configureOdinDataProcess(const char * ipAddress,
 int OdinDataDriver::createParams()
 {
   // Configuration parameters shared by each OD process
-  mProcesses              = createODRESTParam(OdinNumProcesses, REST_P_INT,
-                                              SSFPConfigHDFProcess, "number");
   mFilePath               = createODRESTParam(NDFilePathString, REST_P_STRING,
                                               SSFPConfigHDF, "file/path");
   mFileName               = createODRESTParam(NDFileNameString, REST_P_STRING,
@@ -135,10 +155,10 @@ int OdinDataDriver::createParams()
                                               SSFPConfigHDF, "timeout_timer_period");
   mStartCloseTimeout      = createODRESTParam(OdinHDF5StartCloseTimeout, REST_P_BOOL,
                                               SSFPConfigHDF, "start_timeout_timer");
-  mNumCapture             = createODRESTParam(OdinHDF5NumCapture, REST_P_INT,
-                                              SSFPConfigHDF, "frames");
-  mCapture                = createODRESTParam(OdinHDF5Write, REST_P_BOOL,
-                                              SSFPConfigHDF, "write");
+  mNumCapture             = createRESTParam(OdinHDF5NumCapture, REST_P_INT,
+                                            SSFPConfigHDF, "frames");
+  mCapture                = createRESTParam(OdinHDF5Write, REST_P_BOOL,
+                                            SSFPConfigHDF, "write");
   mChunkBoundaryAlignment = createODRESTParam(OdinHDF5ChunkBoundaryAlignment, REST_P_INT,
                                               SSFPConfigHDFProcess, "alignment_value");
   mChunkBoundaryThreshold = createODRESTParam(OdinHDF5ChunkBoundaryThreshold, REST_P_INT,
@@ -150,10 +170,10 @@ int OdinDataDriver::createParams()
   // Per OD Process Status Parameters
   mFRProcessConnected     = createODRESTParam(OdinFRProcessConnected, REST_P_BOOL,
                                               SSFRStatus, "connected");
-  mProcessConnected       = createODRESTParam(OdinProcessConnected, REST_P_BOOL,
+  mFPProcessConnected     = createODRESTParam(OdinFPProcessConnected, REST_P_BOOL,
                                               SSFPStatus, "connected");
   mProcessRank            = createODRESTParam(OdinProcessRank, REST_P_INT,
-                                              SSFPConfigHDFProcess, "rank");
+                                              SSFPStatusHDF, "rank");
   mWriting                = createODRESTParam(OdinHDF5Writing, REST_P_BOOL,
                                               SSFPStatusHDF, "writing");
   mTimeoutActive          = createODRESTParam(OdinHDF5TimeoutActive, REST_P_BOOL,
@@ -166,13 +186,30 @@ int OdinDataDriver::createParams()
                                               SSFPStatusHDF, "frames_max");
   mFreeBuffers            = createODRESTParam(OdinFRFreeBuffers, REST_P_INT,
                                               SSFRStatus, "buffers/empty");
+  mFramesReceived         = createODRESTParam(OdinFRFramesReceived, REST_P_INT,
+                                              SSFRStatus, "frames/received");
+  mFramesTimedOut         = createODRESTParam(OdinFRFramesTimedOut, REST_P_INT,
+                                              SSFRStatus, "frames/timedout");
+  mFramesReleased         = createODRESTParam(OdinFRFramesReleased, REST_P_INT,
+                                              SSFRStatus, "frames/released");
+
+//  mFPErrorMessage         = createODRESTParam(OdinFPErrorMessage, REST_P_STRING,
+//                                              SSFPStatus, "client_error");
+  mFPClearErrors          = createODRESTParam(OdinFPClearErrors, REST_P_INT,
+                                              SSFPConfig, "clear_errors");
+
+  // Stop clear error being sent during a push all
+  mFPClearErrors->disablePushAll();
+  //mFPClearErrors->setCommand();
 
   mCapture->setCommand();
   mStartCloseTimeout->setCommand();
+  //mFPClearErrors->setCommand();
 
   // Internal parameters
-  createParam(OdinProcessInitialised,   asynParamInt32, &mProcessInitialised);
+  createParam(OdinFPProcessInitialised, asynParamInt32, &mFPProcessInitialised);
   createParam(OdinFRProcessInitialised, asynParamInt32, &mFRProcessInitialised);
+  createParam(OdinFPErrorState,         asynParamInt32, &mFPErrorState);
   createParam(OdinHDF5NumCapturedSum,   asynParamInt32, &mNumCapturedSum);
   createParam(OdinHDF5WritingAny,       asynParamInt32, &mWritingAny);
   createParam(OdinHDF5TimeoutActiveAny, asynParamInt32, &mTimeoutActiveAny);
@@ -181,6 +218,7 @@ int OdinDataDriver::createParams()
   createParam(OdinHDF5ChunkDepth,       asynParamInt32, &mChunkDepth);
   createParam(OdinHDF5ChunkHeight,      asynParamInt32, &mChunkHeight);
   createParam(OdinHDF5ChunkWidth,       asynParamInt32, &mChunkWidth);
+  createParam(OdinFPErrorMessage,       asynParamOctet, &mFPErrorMessage);
 
   setIntegerParam(mImageHeight, 1536);
   setIntegerParam(mImageWidth,  2048);
@@ -203,7 +241,24 @@ asynStatus OdinDataDriver::getStatus()
   int status = 0;
 
   // Fetch status items
+  std::vector<std::string> fp_configs(mODConfig.size());
+  std::vector<std::string> fr_configs(mODConfig.size());
+  for (int index = 0; index != (int) mODConfig.size(); ++index) {
+    getStringParam(index, mFPConfiguration->getIndex(), fp_configs[index]);
+    getStringParam(index, mFRConfiguration->getIndex(), fr_configs[index]);
+  }
   this->fetchParams();
+  for (int index = 0; index != (int) mODConfig.size(); ++index) {
+    std::string new_config;
+    getStringParam(index, mFPConfiguration->getIndex(), new_config);
+    if (new_config == "" && fp_configs[index] != ""){
+      mFPConfiguration->put(fp_configs[index], index);
+    }
+    getStringParam(index, mFRConfiguration->getIndex(), new_config);
+    if (new_config == "" && fr_configs[index] != ""){
+      mFRConfiguration->put(fr_configs[index], index);
+    }
+  }
 
   if (!mAPI.connected()){
     setIntegerParam(ADStatus, ADStatusDisconnected);
@@ -215,6 +270,21 @@ asynStatus OdinDataDriver::getStatus()
       setIntegerParam(ADStatus, ADStatusIdle);
     }
     // Check for any errors
+    std::string response = "";
+    // If we are connected to the server then all errors are generated by
+    // the server itself.
+    for (int index = 0; index != (int) mODConfig.size(); ++index) {
+      std::string error_msg = mAPI.readError(index, 0);
+      setStringParam(index, mFPErrorMessage, error_msg.c_str());
+      //mFPErrorMessage->get(error_msg, index);
+      if (error_msg != ""){
+        setIntegerParam(index, mFPErrorState, 1);
+      } else {
+        setIntegerParam(index, mFPErrorState, 0);
+      }
+    }
+
+    // Check for any adapter errors
     // If we are connected to the server then all errors are generated by
     // the server itself.
     std::string error_msg = "";
@@ -222,7 +292,10 @@ asynStatus OdinDataDriver::getStatus()
     setStringParam(ADStatusMessage, error_msg.c_str());
     if (error_msg != ""){
       setIntegerParam(ADStatus, ADStatusError);
+    } else {
+      setIntegerParam(ADStatus, ADStatusIdle);
     }
+
   }
 
   std::vector<int> numCaptured(mODCount);
@@ -240,16 +313,17 @@ asynStatus OdinDataDriver::getStatus()
 
   bool connected;
   for (int index = 0; index != (int) mODConfig.size(); ++index) {
-    mProcessConnected->get(connected, index);
+    mFPProcessConnected->get(connected, index);
     if (!connected && mInitialised[index] == 1) {
       // Lost connection - Set not initialised
       mInitialised[index] = 0;
     }
     else if (mInitialised[index] == 0 && connected) {
       // Restored connection - Re-initialise
-      initialise(index);
+//      initialiseFP(index);
+//      this->pushParams();
     }
-    setIntegerParam(index, mProcessInitialised, mInitialised[index]);
+    setIntegerParam(index, mFPProcessInitialised, mInitialised[index]);
 
     mFRProcessConnected->get(connected, index);
     if (!connected && mFRInitialised[index] == 1) {
@@ -258,7 +332,8 @@ asynStatus OdinDataDriver::getStatus()
     }
     else if (mFRInitialised[index] == 0 && connected) {
       // Restored connection - Re-initialise
-      initialise(index);
+//      initialiseFR(index);
+//      this->pushParams();
     }
     setIntegerParam(index, mFRProcessInitialised, mFRInitialised[index]);
   }
@@ -360,13 +435,19 @@ asynStatus OdinDataDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) {
   else if (RestParam * p = this->getParamByIndex(function)) {
     if (function == mCapture->getIndex()){
       // Push all parameters
-      pushParams();
+      if (value > 0){
+        pushParams();
+      }
       p->put((bool)value);
     } else if (function == mStartCloseTimeout->getIndex()) {
       p->put((bool)value);
     }
     else {
-      p->put(value);
+      int address = -1;
+      if (function == mFPClearErrors->getIndex()) {
+        getAddress(pasynUser, &address);
+      }
+      p->put(value, address);
     }
   }
 
@@ -454,9 +535,11 @@ asynStatus OdinDataDriver::writeOctet(asynUser *pasynUser, const char *value,
   if (RestParam * p = this->getParamByIndex(function)) {
     int address = -1;
     if (function == mFPConfiguration->getIndex()) {
+      printf("FP configuration file applied : %s\n", value);
       getAddress(pasynUser, &address);
     }
     if (function == mFRConfiguration->getIndex()) {
+      printf("FR configuration file applied : %s\n", value);
       getAddress(pasynUser, &address);
     }
     status |= p->put(value, address);

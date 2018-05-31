@@ -178,7 +178,7 @@ int OdinClient::fetchParams()
 
 int OdinClient::pushParams()
 {
-  return mParams->pushAll();
+  return 0; //mParams->pushAll();
 }
 
 RestParam *OdinClient::getParamByIndex(int index)
