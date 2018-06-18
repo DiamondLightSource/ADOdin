@@ -574,7 +574,7 @@ record(longout, "$(P)$(R)FileNumber")
 record(scalcout, "$(P)$(R)CalcFileName1")
 {
     field(INPA, "$(P)$(R)FileNumber CP")
-    field(CALC, "PRINTF('_%05d', A)")
+    field(CALC, "PRINTF('_%d', A)")
 #    field(OUT, "$(P)$(R)FileNumber PP")
 #    field(OOPT, "Transition To Zero")
     field(FLNK, "$(P)$(R)CalcFileName2")
