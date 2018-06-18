@@ -557,7 +557,7 @@ record(bo, "$(P)$(R)AutoIncrement")
 record(calcout, "$(P)$(R)CalcFileNumber")
 {
     field(INPA, "$(P)$(R)Capture_RBV CP")
-    field(INPB, "$(P)$(R)AutoIncrement CP")
+    field(INPB, "$(P)$(R)AutoIncrement")
     field(INPC, "$(P)$(R)FileNumber")
     field(CALC, "A=0?(B=1?C+1:C):C")
     field(OUT, "$(P)$(R)FileNumber PP")
