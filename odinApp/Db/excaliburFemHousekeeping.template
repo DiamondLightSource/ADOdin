@@ -537,7 +537,6 @@ record(bo, "$(P)$(R)BIAS_ON_OFF")
     field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/hv_enable")
     field(ZNAM, "Off")
     field(ONAM, "On")
-    field(FLNK, "$(P)$(R)BIAS_LEVEL:HIGH")
 }
 
 record(bi, "$(P)$(R)BIAS_ON_OFF_RBV")
@@ -547,6 +546,7 @@ record(bi, "$(P)$(R)BIAS_ON_OFF_RBV")
     field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_status/hv_enabled")
     field(ZNAM, "Off")
     field(ONAM, "On")
+    field(FLNK, "$(P)$(R)BIAS_LEVEL:HIGH")
 }
 
 #
@@ -577,7 +577,7 @@ record(calcout, "$(P)$(R)BIAS_LEVEL:HIGH")
 {
     field(INPA, "$(P)$(R)BIAS_LEVEL")
     field(INPB, "$(P)$(R)BIAS_LEVEL:DELTA")
-    field(INPC, "$(P)$(R)BIAS_ON_OFF")
+    field(INPC, "$(P)$(R)BIAS_ON_OFF_RBV")
     field(CALC, "C?(A+B):20")
     field(DOPT, "Use CALC")
     field(OOPT, "Every Time")
