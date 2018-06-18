@@ -93,6 +93,11 @@ class Excalibur4NodeFPTemplate(AutoSubstitution):
     TemplateFile = "excalibur4NodeFP.template"
 
 
+@add_excalibur_fp_template
+class Excalibur8NodeFPTemplate(AutoSubstitution):
+    TemplateFile = "excalibur8NodeFP.template"
+
+
 class ExcaliburFemHousekeepingTemplate(AutoSubstitution):
     TemplateFile = "excaliburFemHousekeeping.template"
 
@@ -149,7 +154,7 @@ class ExcaliburDetector(OdinDetector):
 
     _SpecificTemplate = ExcaliburDetectorTemplate
 
-    def __init__(self, PORT, SERVER, ODIN_SERVER_PORT, SENSOR, BUFFERS = 0, MEMORY = 0, NODE_1_NAME = None, NODE_1_MAC = None, NODE_1_IPADDR = None, NODE_1_PORT = None, NODE_2_NAME = None, NODE_2_MAC = None, NODE_2_IPADDR = None, NODE_2_PORT = None, NODE_3_NAME = None, NODE_3_MAC = None, NODE_3_IPADDR = None, NODE_3_PORT = None, NODE_4_NAME = None, NODE_4_MAC = None, NODE_4_IPADDR = None, NODE_4_PORT = None, **args):
+    def __init__(self, PORT, SERVER, ODIN_SERVER_PORT, SENSOR, BUFFERS = 0, MEMORY = 0, NODE_1_NAME = None, NODE_1_MAC = None, NODE_1_IPADDR = None, NODE_1_PORT = None, NODE_2_NAME = None, NODE_2_MAC = None, NODE_2_IPADDR = None, NODE_2_PORT = None, NODE_3_NAME = None, NODE_3_MAC = None, NODE_3_IPADDR = None, NODE_3_PORT = None, NODE_4_NAME = None, NODE_4_MAC = None, NODE_4_IPADDR = None, NODE_4_PORT = None, NODE_5_NAME = None, NODE_5_MAC = None, NODE_5_IPADDR = None, NODE_5_PORT = None, NODE_6_NAME = None, NODE_6_MAC = None, NODE_6_IPADDR = None, NODE_6_PORT = None, NODE_7_NAME = None, NODE_7_MAC = None, NODE_7_IPADDR = None, NODE_7_PORT = None, NODE_8_NAME = None, NODE_8_MAC = None, NODE_8_IPADDR = None, NODE_8_PORT = None, **args):
         # Init the superclass (OdinDetector)
         self.__super.__init__(PORT, SERVER, ODIN_SERVER_PORT, self.DETECTOR,
                               BUFFERS, MEMORY, **args)
@@ -191,112 +196,38 @@ class ExcaliburDetector(OdinDetector):
 
     def create_udp_file(self):
         output_file = IocDataStream("udp_excalibur.json")
+        names = [self.NODE_1_NAME, self.NODE_2_NAME, self.NODE_3_NAME, self.NODE_4_NAME, self.NODE_5_NAME, self.NODE_6_NAME, self.NODE_7_NAME, self.NODE_8_NAME]
+        macs = [self.NODE_1_MAC, self.NODE_2_MAC, self.NODE_3_MAC, self.NODE_4_MAC, self.NODE_5_MAC, self.NODE_6_MAC, self.NODE_7_MAC, self.NODE_8_MAC]
+        ips = [self.NODE_1_IPADDR, self.NODE_2_IPADDR, self.NODE_3_IPADDR, self.NODE_4_IPADDR, self.NODE_5_IPADDR, self.NODE_6_IPADDR, self.NODE_7_IPADDR, self.NODE_8_IPADDR]
+        ports = [self.NODE_1_PORT, self.NODE_2_PORT, self.NODE_3_PORT, self.NODE_4_PORT, self.NODE_5_PORT, self.NODE_6_PORT, self.NODE_7_PORT, self.NODE_8_PORT]
         number_of_nodes = 0
         output_text = '{\n\
-    "fems": [\n\
-        {\n\
-            "name": "fem1",\n\
-            "mac": "62:00:00:00:00:01",\n\
-            "ipaddr": "10.0.2.101",\n\
-            "port": 60001,\n\
-            "dest_port_offset": 0\n\
-        },\n\
-        {\n\
-            "name": "fem2",\n\
-            "mac": "62:00:00:00:00:02",\n\
-            "ipaddr": "10.0.2.102",\n\
-            "port": 60002,\n\
-            "dest_port_offset": 1\n\
-        },\n\
-        {\n\
-            "name": "fem3",\n\
-            "mac": "62:00:00:00:00:03",\n\
-            "ipaddr": "10.0.2.103",\n\
-            "port": 60003,\n\
-            "dest_port_offset": 2\n\
-        },\n\
-        {\n\
-            "name": "fem4",\n\
-            "mac": "62:00:00:00:00:04",\n\
-            "ipaddr": "10.0.2.104",\n\
-            "port": 60004,\n\
-            "dest_port_offset": 3\n\
-        },\n\
-        {\n\
-            "name": "fem5",\n\
-            "mac": "62:00:00:00:00:05",\n\
-            "ipaddr": "10.0.2.105",\n\
-            "port": 60005,\n\
-            "dest_port_offset": 4\n\
-        },\n\
-        {\n\
-            "name": "fem6",\n\
-            "mac": "62:00:00:00:00:06",\n\
-            "ipaddr": "10.0.2.106",\n\
-            "port": 60006,\n\
-            "dest_port_offset": 5\n\
-        }\n\
-    ],\n\
+    "fems": [\n'
+        for index in [1,2,3,4,5,6]:
+            offset = index - 1
+            output_text = output_text + '        {{\n\
+            "name": "fem{}",\n\
+            "mac": "62:00:00:00:00:0{}",\n\
+            "ipaddr": "10.0.2.10{}",\n\
+            "port": 6000{},\n\
+            "dest_port_offset": {}\n\
+        }}'.format(index, index, index, index, offset)
+            if index < 6:
+                output_text = output_text + ',\n'
+            else:
+                output_text = output_text + '\n'
+        output_text = output_text + '    ],\n\
     "nodes": [\n'
-    
-        if self.NODE_1_NAME is not None:
-            output_text = output_text + '        {{\n\
+        for NAME, MAC, IPADDR, PORT in zip(names, macs, ips, ports):
+            if NAME is not None:
+                output_text = output_text + '        {{\n\
             "name": "{}",\n\
             "mac" : "{}",\n\
             "ipaddr" : "{}",\n\
             "port": {}\n\
-        }}'.format(self.NODE_1_NAME,
-                   self.NODE_1_MAC,
-                   self.NODE_1_IPADDR,
-                   self.NODE_1_PORT)
-            number_of_nodes += 1
-            
-        if self.NODE_2_NAME is not None:
-            if number_of_nodes > 0:
-                output_text = output_text + ',\n'
-            
-            output_text = output_text + '        {{\n\
-            "name": "{}",\n\
-            "mac" : "{}",\n\
-            "ipaddr" : "{}",\n\
-            "port": {}\n\
-        }}'.format(self.NODE_2_NAME,
-                   self.NODE_2_MAC,
-                   self.NODE_2_IPADDR,
-                   self.NODE_2_PORT)
-            number_of_nodes += 1
-            
-        if self.NODE_3_NAME is not None:
-            if number_of_nodes > 0:
-                output_text = output_text + ',\n'
-            
-            output_text = output_text + '        {{\n\
-            "name": "{}",\n\
-            "mac" : "{}",\n\
-            "ipaddr" : "{}",\n\
-            "port": {}\n\
-        }}'.format(self.NODE_3_NAME,
-                   self.NODE_3_MAC,
-                   self.NODE_3_IPADDR,
-                   self.NODE_3_PORT)
-            number_of_nodes += 1
-            
-        if self.NODE_4_NAME is not None:
-            if number_of_nodes > 0:
-                output_text = output_text + ',\n'
-            
-            output_text = output_text + '        {{\n\
-            "name": "{}",\n\
-            "mac" : "{}",\n\
-            "ipaddr" : "{}",\n\
-            "port": {}\n\
-        }}'.format(self.NODE_4_NAME,
-                   self.NODE_4_MAC,
-                   self.NODE_4_IPADDR,
-                   self.NODE_4_PORT)
-            number_of_nodes += 1
-            
-            
+        }},\n'.format(NAME, MAC, IPADDR, PORT)
+                number_of_nodes += 1
+        output_text = output_text[:-2]
         output_text = output_text + '\n    ],\n\
     "farm_mode" : {{\n\
         "enable": 1,\n\
@@ -304,6 +235,122 @@ class ExcaliburDetector(OdinDetector):
     }}\n\
 }}\n'.format(number_of_nodes)
         output_file.write(output_text)
+
+#    def create_udp_file(self):
+#        output_file = IocDataStream("udp_excalibur.json")
+#        number_of_nodes = 0
+#        output_text = '{\n\
+#    "fems": [\n\
+#        {\n\
+#            "name": "fem1",\n\
+#            "mac": "62:00:00:00:00:01",\n\
+#            "ipaddr": "10.0.2.101",\n\
+#            "port": 60001,\n\
+#            "dest_port_offset": 0\n\
+#        },\n\
+#        {\n\
+#            "name": "fem2",\n\
+#            "mac": "62:00:00:00:00:02",\n\
+#            "ipaddr": "10.0.2.102",\n\
+#            "port": 60002,\n\
+#            "dest_port_offset": 1\n\
+#        },\n\
+#        {\n\
+#            "name": "fem3",\n\
+#            "mac": "62:00:00:00:00:03",\n\
+#            "ipaddr": "10.0.2.103",\n\
+#            "port": 60003,\n\
+#            "dest_port_offset": 2\n\
+#        },\n\
+#        {\n\
+#            "name": "fem4",\n\
+#            "mac": "62:00:00:00:00:04",\n\
+#            "ipaddr": "10.0.2.104",\n\
+#            "port": 60004,\n\
+#            "dest_port_offset": 3\n\
+#        },\n\
+#        {\n\
+#            "name": "fem5",\n\
+#            "mac": "62:00:00:00:00:05",\n\
+#            "ipaddr": "10.0.2.105",\n\
+#            "port": 60005,\n\
+#            "dest_port_offset": 4\n\
+#        },\n\
+#        {\n\
+#            "name": "fem6",\n\
+#            "mac": "62:00:00:00:00:06",\n\
+#            "ipaddr": "10.0.2.106",\n\
+#            "port": 60006,\n\
+#            "dest_port_offset": 5\n\
+#        }\n\
+#    ],\n\
+#    "nodes": [\n'
+#    
+#        if self.NODE_1_NAME is not None:
+#            output_text = output_text + '        {{\n\
+#            "name": "{}",\n\
+#            "mac" : "{}",\n\
+#            "ipaddr" : "{}",\n\
+#            "port": {}\n\
+#        }}'.format(self.NODE_1_NAME,
+#                   self.NODE_1_MAC,
+#                   self.NODE_1_IPADDR,
+#                   self.NODE_1_PORT)
+#            number_of_nodes += 1
+#            
+#        if self.NODE_2_NAME is not None:
+#            if number_of_nodes > 0:
+#                output_text = output_text + ',\n'
+#            
+#            output_text = output_text + '        {{\n\
+#            "name": "{}",\n\
+#            "mac" : "{}",\n\
+#            "ipaddr" : "{}",\n\
+#            "port": {}\n\
+#        }}'.format(self.NODE_2_NAME,
+#                   self.NODE_2_MAC,
+#                   self.NODE_2_IPADDR,
+#                   self.NODE_2_PORT)
+#            number_of_nodes += 1
+#            
+#        if self.NODE_3_NAME is not None:
+#            if number_of_nodes > 0:
+#                output_text = output_text + ',\n'
+#            
+#            output_text = output_text + '        {{\n\
+#            "name": "{}",\n\
+#            "mac" : "{}",\n\
+#            "ipaddr" : "{}",\n\
+#            "port": {}\n\
+#        }}'.format(self.NODE_3_NAME,
+#                   self.NODE_3_MAC,
+#                   self.NODE_3_IPADDR,
+#                   self.NODE_3_PORT)
+#            number_of_nodes += 1
+#            
+#        if self.NODE_4_NAME is not None:
+#            if number_of_nodes > 0:
+#                output_text = output_text + ',\n'
+#            
+#            output_text = output_text + '        {{\n\
+#            "name": "{}",\n\
+#            "mac" : "{}",\n\
+#            "ipaddr" : "{}",\n\
+#            "port": {}\n\
+#        }}'.format(self.NODE_4_NAME,
+#                   self.NODE_4_MAC,
+#                   self.NODE_4_IPADDR,
+#                   self.NODE_4_PORT)
+#            number_of_nodes += 1
+#            
+#            
+#        output_text = output_text + '\n    ],\n\
+#    "farm_mode" : {{\n\
+#        "enable": 1,\n\
+#        "num_dests": {}\n\
+#    }}\n\
+#}}\n'.format(number_of_nodes)
+#        output_file.write(output_text)
 
     # __init__ arguments
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
@@ -329,7 +376,23 @@ class ExcaliburDetector(OdinDetector):
         NODE_4_NAME=Simple("Name of detector output node 4", str),
         NODE_4_MAC=Simple("Mac address of detector output node 4", str),
         NODE_4_IPADDR=Simple("IP address of detector output node 4", str),
-        NODE_4_PORT=Simple("Port of detector output node 4", int))
+        NODE_4_PORT=Simple("Port of detector output node 4", int),
+        NODE_5_NAME=Simple("Name of detector output node 5", str),
+        NODE_5_MAC=Simple("Mac address of detector output node 5", str),
+        NODE_5_IPADDR=Simple("IP address of detector output node 5", str),
+        NODE_5_PORT=Simple("Port of detector output node 5", int),
+        NODE_6_NAME=Simple("Name of detector output node 6", str),
+        NODE_6_MAC=Simple("Mac address of detector output node 6", str),
+        NODE_6_IPADDR=Simple("IP address of detector output node 6", str),
+        NODE_6_PORT=Simple("Port of detector output node 6", int),
+        NODE_7_NAME=Simple("Name of detector output node 7", str),
+        NODE_7_MAC=Simple("Mac address of detector output node 7", str),
+        NODE_7_IPADDR=Simple("IP address of detector output node 7", str),
+        NODE_7_PORT=Simple("Port of detector output node 7", int),
+        NODE_8_NAME=Simple("Name of detector output node 8", str),
+        NODE_8_MAC=Simple("Mac address of detector output node 8", str),
+        NODE_8_IPADDR=Simple("IP address of detector output node 8", str),
+        NODE_8_PORT=Simple("Port of detector output node 8", int))
 
 
 class OdinDataTemplate(AutoSubstitution):
@@ -452,7 +515,7 @@ class OdinDataDriver(AsynPort):
                     self.ODIN_DATA_PROCESSES.append(odin_data)
                     # Use some OdinDataDriver macros to instantiate an odinData.template
                     args["PORT"] = PORT
-                    args["ADDR"] = address
+                    args["ADDR"] = odin_data.index-1
                     args["R"] = odin_data.R
                     OdinDataTemplate(**args)
 
