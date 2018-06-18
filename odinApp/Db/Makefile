@@ -21,6 +21,7 @@ DB += excalibur6FemStatus.template
 DB += excaliburFemStatus.template
 DB += excalibur2NodeFP.template
 DB += excalibur4NodeFP.template
+DB += excalibur8NodeFP.template
 DB += excaliburFP.template
 
 #----------------------------------------------------
