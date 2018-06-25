@@ -1,14 +1,14 @@
 EPICS_BASE = /dls_sw/epics/R3.14.12.3/base
 
-SUPPORT       = /dls_sw/prod/R3.14.12.3/support
-WORK          = /dls_sw/work/R3.14.12.3/support
-SCRATCH       = /scratch/work/R3.14.12.3/support
-SCRATCH_TOOLS = /scratch/work/tools/RHEL6-x86_64
+SUPPORT = /dls_sw/prod/R3.14.12.3/support
+TOOLS = /dls_sw/prod/tools/RHEL6-x86_64
 
 ASYN = $(SUPPORT)/asyn/4-31
 ADCORE = $(SUPPORT)/ADCore/2-6dls1
-ADSIMDETECTOR = $(SUPPORT)/ADSimDetector/1-2
-RESTCLIENT = $(SCRATCH)/restClient
+CALC = $(SUPPORT)/calc/3-1
+RESTCLIENT = $(SUPPORT)/restClient/0-1
 
-ODINDATA = $(SCRATCH_TOOLS)/odin-data
-EXCALIBURDETECTOR = $(SCRATCH_TOOLS)/excalibur-detector
+ODINDATA = $(TOOLS)/odin-data/0-4-0dls1
+EXCALIBURDETECTOR = $(TOOLS)/excalibur-detector/0-1-0
+
+
