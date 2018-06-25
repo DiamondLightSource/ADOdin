@@ -1,3 +1,5 @@
+import os
+import sys
 from iocbuilder import AutoSubstitution, Device
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.iocinit import IocDataStream
@@ -5,20 +7,54 @@ from iocbuilder.modules.asyn import AsynPort
 from iocbuilder.modules.ADCore import ADCore, ADBaseTemplate, makeTemplateInstance
 from iocbuilder.modules.calc import Calc
 from iocbuilder.modules.restClient import restClient
-from iocbuilder.modules.OdinData import FileWriterPlugin
-from iocbuilder.modules.ExcaliburDetector import ExcaliburProcessPlugin, ExcaliburReceiverPlugin
+from dls_dependency_tree import dependency_tree
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+#import excalibur
+#imp.load_source('excalibur', os.path.join(os.path.dirname(os.path.abspath(__file__)), "excalibur.py"))
+from excalibur import ExcaliburProcessPlugin, ExcaliburReceiverPlugin
+
+ADODIN_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+tree = dependency_tree() 
+tree.process_module(ADODIN_ROOT)
+names, paths = tree.paths(globs=['/'], include_name=True)
+for name, path in zip(names, paths):
+  if name == 'odin-data':
+    FILE_WRITER_ROOT = path
+  if name == 'excalibur-detector':
+    EXCALIBUR_ROOT = path
+
+print("ADOdin root: {}".format(ADODIN_ROOT))
+print("Odind Data root: {}".format(FILE_WRITER_ROOT))
+print("Excalibur root: {}".format(EXCALIBUR_ROOT))
+
+#from iocbuilder.modules.odin_data import FileWriterPlugin
+#from iocbuilder.modules.excalibur_detector import ExcaliburProcessPlugin, ExcaliburReceiverPlugin
 
 import os
 from string import Template
 
-FILE_WRITER_ROOT = FileWriterPlugin.ModuleVersion.LibPath()
-EXCALIBUR_ROOT = ExcaliburProcessPlugin.ModuleVersion.LibPath()
 
 DATA = os.path.join(os.path.dirname(__file__), "../data")
 
 __all__ = ["ExcaliburDetector", "OdinDataServer"]
 
 
+class FileWriterPlugin(Device):
+
+    """Store configuration for FileWriterPlugin."""
+
+    # Device attributes
+    AutoInstantiate = True
+
+    def __init__(self, MACRO):
+        self.__super.__init__()
+        # Update attributes with parameters
+        self.__dict__.update(locals())
+
+    ArgInfo = makeArgInfo(__init__, MACRO=Simple("Dependency MACRO as in configure/RELEASE", str))
+
+
+    
 class OdinDetectorTemplate(AutoSubstitution):
     TemplateFile = "odinDetector.template"
 
@@ -154,7 +190,7 @@ class ExcaliburDetector(OdinDetector):
 
     _SpecificTemplate = ExcaliburDetectorTemplate
 
-    def __init__(self, PORT, SERVER, ODIN_SERVER_PORT, SENSOR, BUFFERS = 0, MEMORY = 0, NODE_1_NAME = None, NODE_1_MAC = None, NODE_1_IPADDR = None, NODE_1_PORT = None, NODE_2_NAME = None, NODE_2_MAC = None, NODE_2_IPADDR = None, NODE_2_PORT = None, NODE_3_NAME = None, NODE_3_MAC = None, NODE_3_IPADDR = None, NODE_3_PORT = None, NODE_4_NAME = None, NODE_4_MAC = None, NODE_4_IPADDR = None, NODE_4_PORT = None, NODE_5_NAME = None, NODE_5_MAC = None, NODE_5_IPADDR = None, NODE_5_PORT = None, NODE_6_NAME = None, NODE_6_MAC = None, NODE_6_IPADDR = None, NODE_6_PORT = None, NODE_7_NAME = None, NODE_7_MAC = None, NODE_7_IPADDR = None, NODE_7_PORT = None, NODE_8_NAME = None, NODE_8_MAC = None, NODE_8_IPADDR = None, NODE_8_PORT = None, **args):
+    def __init__(self, PORT, SERVER, ODIN_SERVER_PORT, SENSOR, BUFFERS = 0, MEMORY = 0, FEMS_REVERSED = 0, PWR_CARD_IDX = 1, SHARED_MEM_SIZE = 1048576000, NODE_1_NAME = None, NODE_1_CTRL_IP = None, NODE_1_MAC = None, NODE_1_IPADDR = None, NODE_1_PORT = None, NODE_2_NAME = None, NODE_2_CTRL_IP = None, NODE_2_MAC = None, NODE_2_IPADDR = None, NODE_2_PORT = None, NODE_3_NAME = None, NODE_3_CTRL_IP = None, NODE_3_MAC = None, NODE_3_IPADDR = None, NODE_3_PORT = None, NODE_4_NAME = None, NODE_4_CTRL_IP = None, NODE_4_MAC = None, NODE_4_IPADDR = None, NODE_4_PORT = None, NODE_5_NAME = None, NODE_5_CTRL_IP = None, NODE_5_MAC = None, NODE_5_IPADDR = None, NODE_5_PORT = None, NODE_6_NAME = None, NODE_6_CTRL_IP = None, NODE_6_MAC = None, NODE_6_IPADDR = None, NODE_6_PORT = None, NODE_7_NAME = None, NODE_7_CTRL_IP = None, NODE_7_MAC = None, NODE_7_IPADDR = None, NODE_7_PORT = None, NODE_8_NAME = None, NODE_8_CTRL_IP = None, NODE_8_MAC = None, NODE_8_IPADDR = None, NODE_8_PORT = None, **args):
         # Init the superclass (OdinDetector)
         self.__super.__init__(PORT, SERVER, ODIN_SERVER_PORT, self.DETECTOR,
                               BUFFERS, MEMORY, **args)
@@ -189,6 +225,9 @@ class ExcaliburDetector(OdinDetector):
         status_template(**status_args)
         
         self.create_udp_file()
+        self.create_odin_server_config_file()
+        self.create_fr_startup_scripts()
+        self.create_fp_startup_scripts()
 
     def daq_templates(self):
         print str(self.CONFIG_TEMPLATES[self.SENSOR])
@@ -236,121 +275,108 @@ class ExcaliburDetector(OdinDetector):
 }}\n'.format(number_of_nodes)
         output_file.write(output_text)
 
-#    def create_udp_file(self):
-#        output_file = IocDataStream("udp_excalibur.json")
-#        number_of_nodes = 0
-#        output_text = '{\n\
-#    "fems": [\n\
-#        {\n\
-#            "name": "fem1",\n\
-#            "mac": "62:00:00:00:00:01",\n\
-#            "ipaddr": "10.0.2.101",\n\
-#            "port": 60001,\n\
-#            "dest_port_offset": 0\n\
-#        },\n\
-#        {\n\
-#            "name": "fem2",\n\
-#            "mac": "62:00:00:00:00:02",\n\
-#            "ipaddr": "10.0.2.102",\n\
-#            "port": 60002,\n\
-#            "dest_port_offset": 1\n\
-#        },\n\
-#        {\n\
-#            "name": "fem3",\n\
-#            "mac": "62:00:00:00:00:03",\n\
-#            "ipaddr": "10.0.2.103",\n\
-#            "port": 60003,\n\
-#            "dest_port_offset": 2\n\
-#        },\n\
-#        {\n\
-#            "name": "fem4",\n\
-#            "mac": "62:00:00:00:00:04",\n\
-#            "ipaddr": "10.0.2.104",\n\
-#            "port": 60004,\n\
-#            "dest_port_offset": 3\n\
-#        },\n\
-#        {\n\
-#            "name": "fem5",\n\
-#            "mac": "62:00:00:00:00:05",\n\
-#            "ipaddr": "10.0.2.105",\n\
-#            "port": 60005,\n\
-#            "dest_port_offset": 4\n\
-#        },\n\
-#        {\n\
-#            "name": "fem6",\n\
-#            "mac": "62:00:00:00:00:06",\n\
-#            "ipaddr": "10.0.2.106",\n\
-#            "port": 60006,\n\
-#            "dest_port_offset": 5\n\
-#        }\n\
-#    ],\n\
-#    "nodes": [\n'
-#    
-#        if self.NODE_1_NAME is not None:
-#            output_text = output_text + '        {{\n\
-#            "name": "{}",\n\
-#            "mac" : "{}",\n\
-#            "ipaddr" : "{}",\n\
-#            "port": {}\n\
-#        }}'.format(self.NODE_1_NAME,
-#                   self.NODE_1_MAC,
-#                   self.NODE_1_IPADDR,
-#                   self.NODE_1_PORT)
-#            number_of_nodes += 1
-#            
-#        if self.NODE_2_NAME is not None:
-#            if number_of_nodes > 0:
-#                output_text = output_text + ',\n'
-#            
-#            output_text = output_text + '        {{\n\
-#            "name": "{}",\n\
-#            "mac" : "{}",\n\
-#            "ipaddr" : "{}",\n\
-#            "port": {}\n\
-#        }}'.format(self.NODE_2_NAME,
-#                   self.NODE_2_MAC,
-#                   self.NODE_2_IPADDR,
-#                   self.NODE_2_PORT)
-#            number_of_nodes += 1
-#            
-#        if self.NODE_3_NAME is not None:
-#            if number_of_nodes > 0:
-#                output_text = output_text + ',\n'
-#            
-#            output_text = output_text + '        {{\n\
-#            "name": "{}",\n\
-#            "mac" : "{}",\n\
-#            "ipaddr" : "{}",\n\
-#            "port": {}\n\
-#        }}'.format(self.NODE_3_NAME,
-#                   self.NODE_3_MAC,
-#                   self.NODE_3_IPADDR,
-#                   self.NODE_3_PORT)
-#            number_of_nodes += 1
-#            
-#        if self.NODE_4_NAME is not None:
-#            if number_of_nodes > 0:
-#                output_text = output_text + ',\n'
-#            
-#            output_text = output_text + '        {{\n\
-#            "name": "{}",\n\
-#            "mac" : "{}",\n\
-#            "ipaddr" : "{}",\n\
-#            "port": {}\n\
-#        }}'.format(self.NODE_4_NAME,
-#                   self.NODE_4_MAC,
-#                   self.NODE_4_IPADDR,
-#                   self.NODE_4_PORT)
-#            number_of_nodes += 1
-#            
-#            
-#        output_text = output_text + '\n    ],\n\
-#    "farm_mode" : {{\n\
-#        "enable": 1,\n\
-#        "num_dests": {}\n\
-#    }}\n\
-#}}\n'.format(number_of_nodes)
-#        output_file.write(output_text)
+    def create_odin_server_config_file(self):
+        ips = [self.NODE_1_CTRL_IP, self.NODE_2_CTRL_IP, self.NODE_3_CTRL_IP, self.NODE_4_CTRL_IP, self.NODE_5_CTRL_IP, self.NODE_6_CTRL_IP, self.NODE_7_CTRL_IP, self.NODE_8_CTRL_IP]
+        output_file = IocDataStream("excalibur_odin_{}.cfg".format(self.SENSOR))
+        if self.SENSOR == '1M':
+            if self.FEMS_REVERSED == 0:
+                fem_list = '192.168.0.101:6969, 192.168.0.102:6969'
+            else:
+                fem_list = '192.168.0.102:6969, 192.168.0.101:6969'
+        if self.SENSOR == '3M':
+            if self.FEMS_REVERSED == 0:
+                fem_list = '192.168.0.101:6969, 192.168.0.102:6969, 192.168.0.103:6969, 192.168.0.104:6969, 192.168.0.105:6969, 192.168.0.106:6969'
+            else:
+                fem_list = '192.168.0.106:6969, 192.168.0.105:6969, 192.168.0.104:6969, 192.168.0.103:6969, 192.168.0.102:6969, 192.168.0.101:6969'
+        
+        # Loop over the UDP destinations, for each one setup a FP and FR control address
+        # FP ports will always start 5004 and increment by 10
+        # FR ports will always start 5000 and increment by 10
+        fp_server_count = {}
+        fp_ctrl_addresses = {}
+        fr_endpoints = ""
+        fp_endpoints = ""
+        for ip in ips:
+            if ip is not None:
+                if ip not in fp_server_count:
+                    fp_server_count[ip] = 0
+                fp_port_number = 5004 + (10 * fp_server_count[ip])
+                fr_port_number = 5000 + (10 * fp_server_count[ip])
+                fp_server_count[ip] += 1
+                fr_endpoints = fr_endpoints + ", {}:{}".format(ip, fr_port_number)
+                fp_endpoints = fp_endpoints + ", {}:{}".format(ip, fp_port_number)
+        fr_endpoints = fr_endpoints[2:]
+        fp_endpoints = fp_endpoints[2:]
+        print(fr_endpoints)
+        print(fp_endpoints)
+
+
+        output_text = '[server]\n\
+debug_mode  = 1\n\
+http_port   = 8888\n\
+http_addr   = 0.0.0.0\n\
+adapters    = excalibur, fp, fr\n\
+\n\
+[tornado]\n\
+logging = error\n\
+\n\
+[adapter.excalibur]\n\
+module = excalibur.adapter.ExcaliburAdapter\n\
+detector_fems = {}\n\
+powercard_fem_idx = {}\n\
+chip_enable_mask = 0xFF, 0xFF\n\
+\n\
+[adapter.fp]\n\
+module = odin_data.frame_processor_adapter.FrameProcessorAdapter\n\
+endpoints = {}\n\
+update_interval = 0.5\n\
+\n\
+[adapter.fr]\n\
+module = odin_data.odin_data_adapter.OdinDataAdapter\n\
+endpoints = {}\n\
+update_interval = 0.5\n\
+\n'.format(fem_list, self.PWR_CARD_IDX, fp_endpoints, fr_endpoints)
+        output_file.write(output_text)
+
+    def create_fr_startup_scripts(self):
+        ips = [self.NODE_1_CTRL_IP, self.NODE_2_CTRL_IP, self.NODE_3_CTRL_IP, self.NODE_4_CTRL_IP, self.NODE_5_CTRL_IP, self.NODE_6_CTRL_IP, self.NODE_7_CTRL_IP, self.NODE_8_CTRL_IP]
+        fr_server_count = {}
+        counter = 0
+        for ip in ips:
+            if ip is not None:
+                counter += 1
+                if ip not in fr_server_count:
+                    fr_server_count[ip] = 0
+                fr_port_number = 5000 + (10 * fr_server_count[ip])
+                fr_server_count[ip] += 1
+                output_file = IocDataStream("st_fr_{}.sh".format(counter))
+                bin_path = os.path.join(FILE_WRITER_ROOT, "prefix")
+                data_path = os.path.join(ADODIN_ROOT, "data")
+                output_text = '#!/bin/bash\n\
+cd {}\n\
+./bin/frameReceiver --sharedbuf=exc_buf_{} -m {} --ctrl=tcp://0.0.0.0:{} --logconfig {}/fr_log4cxx.xml\n'.format(bin_path, counter, self.SHARED_MEM_SIZE, fr_port_number, data_path)
+                output_file.write(output_text)
+                print(output_text)
+
+    def create_fp_startup_scripts(self):
+        ips = [self.NODE_1_CTRL_IP, self.NODE_2_CTRL_IP, self.NODE_3_CTRL_IP, self.NODE_4_CTRL_IP, self.NODE_5_CTRL_IP, self.NODE_6_CTRL_IP, self.NODE_7_CTRL_IP, self.NODE_8_CTRL_IP]
+        fp_server_count = {}
+        counter = 0
+        for ip in ips:
+            if ip is not None:
+                counter += 1
+                if ip not in fp_server_count:
+                    fp_server_count[ip] = 0
+                fp_port_number = 5004 + (10 * fp_server_count[ip])
+                fp_server_count[ip] += 1
+                output_file = IocDataStream("st_fp_{}.sh".format(counter))
+                bin_path = os.path.join(FILE_WRITER_ROOT, "prefix")
+                data_path = os.path.join(ADODIN_ROOT, "data")
+                output_text = '#!/bin/bash\n\
+cd {}\n\
+./bin/frameProcessor --ctrl=tcp://0.0.0.0:{} --logconfig {}/fp_log4cxx.xml\n'.format(bin_path, fp_port_number, data_path)
+                output_file.write(output_text)
+                print(output_text)
 
     # __init__ arguments
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
@@ -361,35 +387,46 @@ class ExcaliburDetector(OdinDetector):
         BUFFERS=Simple("Maximum number of NDArray buffers to be created for plugin callbacks", int),
         MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "
                       "attached plugins", int),
+        FEMS_REVERSED=Simple("Are the FEM IP addresses reversed 106..101", int),
+        PWR_CARD_IDX=Simple("Index of the power card", int),
+        SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
         NODE_1_NAME=Simple("Name of detector output node 1", str),
+        NODE_1_CTRL_IP=Simple("IP address for control of FR and FP", str),
         NODE_1_MAC=Simple("Mac address of detector output node 1", str),
         NODE_1_IPADDR=Simple("IP address of detector output node 1", str),
         NODE_1_PORT=Simple("Port of detector output node 1", int),
         NODE_2_NAME=Simple("Name of detector output node 2", str),
+        NODE_2_CTRL_IP=Simple("IP address for control of FR and FP", str),
         NODE_2_MAC=Simple("Mac address of detector output node 2", str),
         NODE_2_IPADDR=Simple("IP address of detector output node 2", str),
         NODE_2_PORT=Simple("Port of detector output node 2", int),
         NODE_3_NAME=Simple("Name of detector output node 3", str),
+        NODE_3_CTRL_IP=Simple("IP address for control of FR and FP", str),
         NODE_3_MAC=Simple("Mac address of detector output node 3", str),
         NODE_3_IPADDR=Simple("IP address of detector output node 3", str),
         NODE_3_PORT=Simple("Port of detector output node 3", int),
         NODE_4_NAME=Simple("Name of detector output node 4", str),
+        NODE_4_CTRL_IP=Simple("IP address for control of FR and FP", str),
         NODE_4_MAC=Simple("Mac address of detector output node 4", str),
         NODE_4_IPADDR=Simple("IP address of detector output node 4", str),
         NODE_4_PORT=Simple("Port of detector output node 4", int),
         NODE_5_NAME=Simple("Name of detector output node 5", str),
+        NODE_5_CTRL_IP=Simple("IP address for control of FR and FP", str),
         NODE_5_MAC=Simple("Mac address of detector output node 5", str),
         NODE_5_IPADDR=Simple("IP address of detector output node 5", str),
         NODE_5_PORT=Simple("Port of detector output node 5", int),
         NODE_6_NAME=Simple("Name of detector output node 6", str),
+        NODE_6_CTRL_IP=Simple("IP address for control of FR and FP", str),
         NODE_6_MAC=Simple("Mac address of detector output node 6", str),
         NODE_6_IPADDR=Simple("IP address of detector output node 6", str),
         NODE_6_PORT=Simple("Port of detector output node 6", int),
         NODE_7_NAME=Simple("Name of detector output node 7", str),
+        NODE_7_CTRL_IP=Simple("IP address for control of FR and FP", str),
         NODE_7_MAC=Simple("Mac address of detector output node 7", str),
         NODE_7_IPADDR=Simple("IP address of detector output node 7", str),
         NODE_7_PORT=Simple("Port of detector output node 7", int),
         NODE_8_NAME=Simple("Name of detector output node 8", str),
+        NODE_8_CTRL_IP=Simple("IP address for control of FR and FP", str),
         NODE_8_MAC=Simple("Mac address of detector output node 8", str),
         NODE_8_IPADDR=Simple("IP address of detector output node 8", str),
         NODE_8_PORT=Simple("Port of detector output node 8", int))
