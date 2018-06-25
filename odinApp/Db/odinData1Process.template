@@ -1,0 +1,33 @@
+# odinData1Process.template
+# Defines the parameters available for all OdinData processes.
+#
+# Parameters:
+#   P       - EPICS name prefix
+#   R       - EPICS plugin name
+#   PORT    - Asyn port
+#   ADDRESS - Asyn address
+#   TOTAL   - Total number of FEMs
+#   TIMEOUT - Timeout
+
+# This associates an edm screen with the template
+# % gui, $(name=), edmtab, odinData1Process.edl, P=$(P),R=$(R)
+
+################################################################################
+#
+# Number of DAQ Processes is 1
+#
+################################################################################
+record(longin, "$(P)$(R):NumberDAQ_RBV")
+{
+    field(VAL,  "1")
+}
+
+################################################################################
+#
+# Include 1 odinData status templates
+#
+################################################################################
+#
+#substitute "ADDR=0,R=$(R)0:"
+#include "odinData.template"
+
