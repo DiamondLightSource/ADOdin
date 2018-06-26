@@ -228,6 +228,7 @@ class ExcaliburDetector(OdinDetector):
         self.create_odin_server_config_file()
         self.create_fr_startup_scripts()
         self.create_fp_startup_scripts()
+        self.create_odin_server_startup_scripts()
 
     def daq_templates(self):
         print str(self.CONFIG_TEMPLATES[self.SENSOR])
@@ -348,13 +349,15 @@ update_interval = 0.5\n\
                 if ip not in fr_server_count:
                     fr_server_count[ip] = 0
                 fr_port_number = 5000 + (10 * fr_server_count[ip])
+                fr_rdy_port_number = 5001 + (10 * fr_server_count[ip])
+                fr_rel_port_number = 5002 + (10 * fr_server_count[ip])
                 fr_server_count[ip] += 1
-                output_file = IocDataStream("st_fr_{}.sh".format(counter))
+                output_file = IocDataStream("stFrameReceiver{}.sh".format(counter), 0755)
                 bin_path = os.path.join(FILE_WRITER_ROOT, "prefix")
                 data_path = os.path.join(ADODIN_ROOT, "data")
                 output_text = '#!/bin/bash\n\
 cd {}\n\
-./bin/frameReceiver --sharedbuf=exc_buf_{} -m {} --ctrl=tcp://0.0.0.0:{} --logconfig {}/fr_log4cxx.xml\n'.format(bin_path, counter, self.SHARED_MEM_SIZE, fr_port_number, data_path)
+./bin/frameReceiver --sharedbuf=exc_buf_{} -m {} --ctrl=tcp://0.0.0.0:{} --ready=tcp://*:{} --release=tcp://*:{} --logconfig {}/fr_log4cxx.xml\n'.format(bin_path, counter, self.SHARED_MEM_SIZE, fr_port_number, fr_rdy_port_number, fr_rel_port_number, data_path)
                 output_file.write(output_text)
                 print(output_text)
 
@@ -369,7 +372,7 @@ cd {}\n\
                     fp_server_count[ip] = 0
                 fp_port_number = 5004 + (10 * fp_server_count[ip])
                 fp_server_count[ip] += 1
-                output_file = IocDataStream("st_fp_{}.sh".format(counter))
+                output_file = IocDataStream("stFrameProcessor{}.sh".format(counter), 0755)
                 bin_path = os.path.join(FILE_WRITER_ROOT, "prefix")
                 data_path = os.path.join(ADODIN_ROOT, "data")
                 output_text = '#!/bin/bash\n\
@@ -377,6 +380,14 @@ cd {}\n\
 ./bin/frameProcessor --ctrl=tcp://0.0.0.0:{} --logconfig {}/fp_log4cxx.xml\n'.format(bin_path, fp_port_number, data_path)
                 output_file.write(output_text)
                 print(output_text)
+
+    def create_odin_server_startup_scripts(self):
+        output_file = IocDataStream("stExcaliburOdinServer.sh", 0755)
+        bin_path = os.path.join(EXCALIBUR_ROOT, "prefix/bin/excalibur_odin")
+        output_text = '#!/bin/bash\nSCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"\n{} --config=$SCRIPT_DIR/excalibur_odin_1M.cfg --logging=error\n'.format(bin_path)
+        output_file.write(output_text)
+        print(output_text)
+    
 
     # __init__ arguments
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
