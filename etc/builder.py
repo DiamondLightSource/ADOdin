@@ -384,7 +384,7 @@ cd {}\n\
     def create_odin_server_startup_scripts(self):
         output_file = IocDataStream("stExcaliburOdinServer.sh", 0755)
         bin_path = os.path.join(EXCALIBUR_ROOT, "prefix/bin/excalibur_odin")
-        output_text = '#!/bin/bash\nSCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"\n{} --config=$SCRIPT_DIR/excalibur_odin_1M.cfg --logging=error\n'.format(bin_path)
+        output_text = '#!/bin/bash\nSCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"\n{} --config=$SCRIPT_DIR/excalibur_odin_{}.cfg --logging=error\n'.format(bin_path, self.SENSOR)
         output_file.write(output_text)
         print(output_text)
     
