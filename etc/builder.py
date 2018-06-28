@@ -280,11 +280,13 @@ class ExcaliburDetector(OdinDetector):
         ips = [self.NODE_1_CTRL_IP, self.NODE_2_CTRL_IP, self.NODE_3_CTRL_IP, self.NODE_4_CTRL_IP, self.NODE_5_CTRL_IP, self.NODE_6_CTRL_IP, self.NODE_7_CTRL_IP, self.NODE_8_CTRL_IP]
         output_file = IocDataStream("excalibur_odin_{}.cfg".format(self.SENSOR))
         if self.SENSOR == '1M':
+            chip_mask = '0xFF, 0xFF'
             if self.FEMS_REVERSED == 0:
                 fem_list = '192.168.0.101:6969, 192.168.0.102:6969'
             else:
                 fem_list = '192.168.0.102:6969, 192.168.0.101:6969'
         if self.SENSOR == '3M':
+            chip_mask = '0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF'
             if self.FEMS_REVERSED == 0:
                 fem_list = '192.168.0.101:6969, 192.168.0.102:6969, 192.168.0.103:6969, 192.168.0.104:6969, 192.168.0.105:6969, 192.168.0.106:6969'
             else:
@@ -325,7 +327,7 @@ logging = error\n\
 module = excalibur.adapter.ExcaliburAdapter\n\
 detector_fems = {}\n\
 powercard_fem_idx = {}\n\
-chip_enable_mask = 0xFF, 0xFF\n\
+chip_enable_mask = {}\n\
 \n\
 [adapter.fp]\n\
 module = odin_data.frame_processor_adapter.FrameProcessorAdapter\n\
@@ -336,7 +338,7 @@ update_interval = 0.5\n\
 module = odin_data.odin_data_adapter.OdinDataAdapter\n\
 endpoints = {}\n\
 update_interval = 0.5\n\
-\n'.format(fem_list, self.PWR_CARD_IDX, fp_endpoints, fr_endpoints)
+\n'.format(fem_list, self.PWR_CARD_IDX, chip_mask, fp_endpoints, fr_endpoints)
         output_file.write(output_text)
 
     def create_fr_startup_scripts(self):
