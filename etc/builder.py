@@ -332,12 +332,12 @@ chip_enable_mask = {}\n\
 [adapter.fp]\n\
 module = odin_data.frame_processor_adapter.FrameProcessorAdapter\n\
 endpoints = {}\n\
-update_interval = 0.5\n\
+update_interval = 0.2\n\
 \n\
 [adapter.fr]\n\
 module = odin_data.odin_data_adapter.OdinDataAdapter\n\
 endpoints = {}\n\
-update_interval = 0.5\n\
+update_interval = 0.2\n\
 \n'.format(fem_list, self.PWR_CARD_IDX, chip_mask, fp_endpoints, fr_endpoints)
         output_file.write(output_text)
 
