@@ -1,11 +1,9 @@
 <?xml version="1.0" ?>
 <components arch="linux-x86_64">
 	<ADOdin.ExcaliburDetector ADDR="0" NODE_1_CTRL_IP="127.0.0.1" NODE_1_IPADDR="10.0.2.2" NODE_1_MAC="A0:36:9F:8C:52:3C" NODE_1_NAME="em1" NODE_1_PORT="61649" NODE_2_CTRL_IP="127.0.0.1" NODE_2_IPADDR="10.0.2.3" NODE_2_MAC="A0:36:9F:8C:6C:50" NODE_2_NAME="em2" NODE_2_PORT="61649" NODE_3_CTRL_IP="127.0.0.1" NODE_3_IPADDR="10.0.2.2" NODE_3_MAC="A0:36:9F:8C:52:3C" NODE_3_NAME="em1" NODE_3_PORT="61655" NODE_4_CTRL_IP="127.0.0.1" NODE_4_IPADDR="10.0.2.3" NODE_4_MAC="A0:36:9F:8C:6C:50" NODE_4_NAME="em2" NODE_4_PORT="61655" ODIN_SERVER_PORT="8888" P="EXCALIBUR" PORT="ODN.CAM" R=":CAM:" SENSOR="1M" SERVER="127.0.0.1" TIMEOUT="1" gda_desc="0" gda_name="0"/>
-	<ADOdin.FileWriterPlugin MACRO="ODINDATA" name="FileWriter"/>
-	<ADOdin.ExcaliburProcessPlugin MACRO="EXCALIBURDETECTOR" name="Excalibur"/>
-	<ADOdin.ExcaliburReceiverPlugin MACRO="EXCALIBURDETECTOR" name="EXCBR.FR"/>
-	<ADOdin.OdinDataServer IP="127.0.0.1" PROCESSES="2" name="ODServer1"/>
-	<ADOdin.OdinDataDriver ADDR="0" DETECTOR="ODN.CAM" FILE_WRITER="FileWriter" ODIN_DATA_SERVER_1="ODServer1" ODIN_SERVER_PORT="8888" P="EXCALIBUR" PORT="ODN.OD" PROCESS_PLUGIN="Excalibur" R=":OD:" RECEIVER_PLUGIN="EXCBR.FR" SERVER="127.0.0.1" TIMEOUT="1"/>
+	<ADOdin.ExcaliburOdinControlServer IP="127.0.0.1" NODE_1_CTRL_IP="127.0.0.1" NODE_2_CTRL_IP="127.0.0.1" SENSOR="1M" name="OdinServer"/>
+	<ADOdin.ExcaliburOdinDataServer IP="127.0.0.1" PROCESSES="2" SENSOR="1M" name="ODServer1"/>
+	<ADOdin.OdinDataDriver ADDR="0" DETECTOR="Excalibur" ODIN_DATA_SERVER_1="ODServer1" ODIN_SERVER_PORT="8888" P="EXCALIBUR" PORT="ODN.OD" R=":OD:" SERVER="127.0.0.1" TIMEOUT="1"/>
 	<ADOdin.Excalibur4NodeFPTemplate ADDRESS="0" DET=":CAM:" HEIGHT="512" P="EXCALIBUR" PORT="ODN.OD" R=":OD:" TIMEOUT="1" TOTAL="4" WIDTH="2048" name="ODN.DAQ"/>
 	<EPICS_BASE.dbpf pv="EXCALIBUR:OD1:FRConfigFile" value="$(INSTALL)/excaliburApp/data/fr1.json"/>
 	<EPICS_BASE.dbpf pv="EXCALIBUR:OD2:FRConfigFile" value="$(INSTALL)/excaliburApp/data/fr2.json"/>
