@@ -21,3 +21,5 @@ O.*/
 
 .idea/
 cmake-build*/
+
+*.pyc
