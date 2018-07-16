@@ -201,6 +201,8 @@ class OdinControlServer(Device):
             self.NODE_1_CTRL_IP, self.NODE_2_CTRL_IP, self.NODE_3_CTRL_IP, self.NODE_4_CTRL_IP,
             self.NODE_5_CTRL_IP, self.NODE_6_CTRL_IP, self.NODE_7_CTRL_IP, self.NODE_8_CTRL_IP
         ]
+        if all(_ is None for _ in self.ips):
+            raise ValueError("Received no control endpoints for Odin Server")
 
         self.create_odin_server_startup_scripts()
         self.create_odin_server_config_file()
