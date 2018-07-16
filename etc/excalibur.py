@@ -127,7 +127,7 @@ class ExcaliburOdinControlServer(OdinControlServer):
                "detector_fems = {}\n" \
                "powercard_fem_idx = {}\n" \
                "chip_enable_mask = {}\n" \
-               "update_interval = 0.2".format(fems, powercard_idx, chip_enable_mask)
+               "update_interval = 0.5".format(fems, powercard_idx, chip_enable_mask)
 
     @property
     def fem_address_list(self):
