@@ -1,67 +1,36 @@
 import os
 import sys
-from string import Template
 
 from iocbuilder import AutoSubstitution, Device
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
-from iocbuilder.iocinit import IocDataStream
 from iocbuilder.modules.asyn import AsynPort
 from iocbuilder.modules.ADCore import ADCore, ADBaseTemplate, makeTemplateInstance
 from iocbuilder.modules.restClient import restClient
 
+__all__ = ["OdinDataDriver"]
+
 ###################################################################################################
-# Import detector specific objects from other modules and expose them to builder ##################
+# Import detector specific objects from other modules and expose them to builder
 ###################################################################################################
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from excalibur import ExcaliburDetector, \
+from excalibur import ExcaliburDetector, ExcaliburOdinDataServer, ExcaliburOdinControlServer, \
                       Excalibur2FemStatusTemplate, Excalibur6FemStatusTemplate, \
                       Excalibur2NodeFPTemplate, Excalibur4NodeFPTemplate, Excalibur8NodeFPTemplate
-__all__ = ["ExcaliburDetector",
-           "Excalibur2FemStatusTemplate", "Excalibur6FemStatusTemplate",
-           "Excalibur2NodeFPTemplate", "Excalibur4NodeFPTemplate", "Excalibur8NodeFPTemplate"]
+__all__ += ["ExcaliburDetector", "ExcaliburOdinDataServer", "ExcaliburOdinControlServer",
+            "Excalibur2FemStatusTemplate", "Excalibur6FemStatusTemplate",
+            "Excalibur2NodeFPTemplate", "Excalibur4NodeFPTemplate", "Excalibur8NodeFPTemplate"]
+
+from eiger import EigerOdinDataServer, EigerOdinControlServer
+__all__ += ["EigerOdinDataServer", "EigerOdinControlServer"]
 
 ###################################################################################################
 
-from odin import ProcessPlugin, OdinDataServer, ODIN_DATA_ROOT, ADODIN_DATA
+from odin import OdinDataServer
 
 
 class OdinDataTemplate(AutoSubstitution):
     TemplateFile = "odinData.template"
-
-
-class FileWriterPlugin(ProcessPlugin):
-
-    """Object to define generated config and boot script entries for FileWriterPlugin."""
-
-    def create_config_file(self, **kwargs):
-        pass
-
-
-class FrameProcessor(Device):
-
-    def __init__(self, IOC, LOG_CFG):
-        self.__super.__init__()
-        # Update attributes with parameters
-        self.__dict__.update(locals())
-        self.create_startup_file()
-
-    def create_startup_file(self):
-        macros = dict(LOG_CFG=self.LOG_CFG, FW_ROOT=ODIN_DATA_ROOT)
-        template_config = Template('#!/bin/bash\n\
-cd $FW_ROOT\n\
-./bin/frameProcessor --logconfig $LOG_CFG\n')
-
-        output = template_config.substitute(macros)
-
-        output_file = IocDataStream("st{}.sh".format(self.IOC))
-        output_file.write(output)
-
-    # __init__ arguments
-    ArgInfo = makeArgInfo(__init__,
-                          IOC=Simple("Name of the IOC", str),
-                          LOG_CFG=Simple("Full path to the Log configuration file", str)
-                          )
 
 
 class OdinDataDriverTemplate(AutoSubstitution):

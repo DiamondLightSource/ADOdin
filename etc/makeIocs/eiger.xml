@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<components arch="linux-x86_64">
+	<ADOdin.EigerOdinControlServer IP="127.0.0.1" NODE_1_CTRL_IP="127.0.0.1" name="OdinServer"/>
+	<ADOdin.EigerOdinDataServer IP="127.0.0.1" PROCESSES="2" SOURCE_IP="127.0.0.1" name="ODServer1"/>
+	<ADOdin.OdinDataDriver ADDR="0" DETECTOR="Eiger" ODIN_DATA_SERVER_1="ODServer1" ODIN_SERVER_PORT="8888" P="EIGER" PORT="ODN.OD" R=":OD:" SERVER="127.0.0.1" TIMEOUT="1"/>
+</components>

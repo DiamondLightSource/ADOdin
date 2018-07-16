@@ -8,7 +8,6 @@ from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.iocinit import IocDataStream
 from iocbuilder.modules.asyn import AsynPort
 from iocbuilder.modules.ADCore import ADCore, ADBaseTemplate, makeTemplateInstance
-from iocbuilder.modules.calc import Calc
 from iocbuilder.modules.restClient import restClient
 
 
@@ -16,11 +15,15 @@ ADODIN_ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__fil
 print("ADOdin: {} = {}".format("<self>", ADODIN_ROOT))
 ADODIN_DATA = os.path.join(ADODIN_ROOT, "data")
 
+TREE = None
+
 
 def find_module_path(module):
-    tree = dependency_tree()
-    tree.process_module(ADODIN_ROOT)
-    for macro, path in tree.macros.items():
+    global TREE
+    if TREE is None:
+        TREE = dependency_tree()
+        TREE.process_module(ADODIN_ROOT)
+    for macro, path in TREE.macros.items():
         if "/{}/".format(module) in path:
             return macro, path
 
@@ -175,17 +178,6 @@ class OdinDetector(AsynPort):
         print "odinDetectorConfig(\"%(PORT)s\", \"%(SERVER)s\", " \
               "%(ODIN_SERVER_PORT)d, \"%(DETECTOR)s\", " \
               "%(BUFFERS)d, %(MEMORY)d)" % self.__dict__
-
-
-class ProcessPlugin(Device):
-
-    """Virtual class for ProcessPlugins to inherit."""
-
-    # Device attributes
-    AutoInstantiate = True
-
-    def create_config_file(self, **kwargs):
-        raise NotImplementedError("Method must be implemented by child class")
 
 
 class OdinControlServer(Device):

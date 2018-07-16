@@ -1,0 +1,47 @@
+[
+  {
+    "fr_setup": {
+      "fr_ready_cnxn": "tcp://$IP:$RD_PORT",
+      "fr_release_cnxn": "tcp://$IP:$RL_PORT"
+    }
+  },
+  {
+    "plugin": {
+      "load": {
+        "index": "hdf",
+        "name": "FileWriterPlugin",
+        "library": "$FW_ROOT/prefix/lib/libHdf5Plugin.so"
+      }
+    }
+  },
+  {
+    "plugin": {
+      "load": {
+        "index": "eiger",
+        "name": "EigerProcessPlugin",
+        "library": "$PP_ROOT/prefix/lib/libEigerProcessPlugin.so"
+      }
+    }
+  },
+  {
+    "plugin": {
+      "connect": {
+        "index": "eiger",
+        "connection": "frame_receiver"
+      }
+    }
+  },
+  {
+    "plugin": {
+      "connect": {
+        "index": "hdf",
+        "connection": "eiger"
+      }
+    }
+  },
+  {
+    "hdf": {
+      "dataset": "data"
+    }
+  }
+]
