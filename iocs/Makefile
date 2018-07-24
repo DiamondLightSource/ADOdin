@@ -1,7 +1,7 @@
 TOP = ..
 include $(TOP)/configure/CONFIG
 
-DIRS := $(wildcard *IOC)
+DIRS := $(wildcard excalibur eiger)
 
 include $(TOP)/configure/RULES_TOP
 
