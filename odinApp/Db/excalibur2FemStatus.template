@@ -41,8 +41,6 @@ record(longin, "$(P)$(R)NumberFEMs_RBV")
 ################################################################################
 
 # Write a 1 to this record to reset the them
-# %gdatag,template,simpleBinary,$(gda_name=).FEMRESET,$(gda_desc=)
-# %gdatag,binary,rw,$(gda_name=).FEMRESET,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
 record(bo, "$(P)$(R):HK:DOFEMRESET")
 {

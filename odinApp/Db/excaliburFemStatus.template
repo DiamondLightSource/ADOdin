@@ -9,9 +9,6 @@
 #   TOTAL   - Total number of FEMs
 #   TIMEOUT - Timeout
 
-#
-# %gdatag,template,simplePv,$(gda_name=).MOLY_TEMPERATURE,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).MOLY_TEMPERATURE,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)$(ADDRESS):MOLY_TEMPERATURE")
@@ -28,9 +25,6 @@ record(ai, "$(P)$(R)$(ADDRESS):MOLY_TEMPERATURE")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).LOCAL_TEMP,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).LOCAL_TEMP,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)$(ADDRESS):LOCAL_TEMP")
@@ -47,9 +41,6 @@ record(ai, "$(P)$(R)$(ADDRESS):LOCAL_TEMP")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).REMOTE_DIODE_TEMP,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).REMOTE_DIODE_TEMP,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)$(ADDRESS):REMOTE_DIODE_TEMP")
@@ -66,9 +57,6 @@ record(ai, "$(P)$(R)$(ADDRESS):REMOTE_DIODE_TEMP")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).MOLY_HUMIDITY,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).MOLY_HUMIDITY,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)$(ADDRESS):MOLY_HUMIDITY")
@@ -85,9 +73,6 @@ record(ai, "$(P)$(R)$(ADDRESS):MOLY_HUMIDITY")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simpleBinary,$(gda_name=).P1V5_AVDD_1_POK,$(gda_desc=)
-# %gdatag,binary,ro,$(gda_name=).P1V5_AVDD_1_POK,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
 record(bi, "$(P)$(R)$(ADDRESS):P1V5_AVDD_1_POK")
 {
@@ -98,9 +83,6 @@ record(bi, "$(P)$(R)$(ADDRESS):P1V5_AVDD_1_POK")
     field(ZSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simpleBinary,$(gda_name=).P1V5_AVDD_2_POK,$(gda_desc=)
-# %gdatag,binary,ro,$(gda_name=).P1V5_AVDD_2_POK,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
 record(bi, "$(P)$(R)$(ADDRESS):P1V5_AVDD_2_POK")
 {
@@ -111,9 +93,6 @@ record(bi, "$(P)$(R)$(ADDRESS):P1V5_AVDD_2_POK")
     field(ZSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simpleBinary,$(gda_name=).P1V5_AVDD_3_POK,$(gda_desc=)
-# %gdatag,binary,ro,$(gda_name=).P1V5_AVDD_3_POK,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
 record(bi, "$(P)$(R)$(ADDRESS):P1V5_AVDD_3_POK")
 {
@@ -124,9 +103,6 @@ record(bi, "$(P)$(R)$(ADDRESS):P1V5_AVDD_3_POK")
     field(ZSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simpleBinary,$(gda_name=).P1V5_AVDD_4_POK,$(gda_desc=)
-# %gdatag,binary,ro,$(gda_name=).P1V5_AVDD_4_POK,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
 record(bi, "$(P)$(R)$(ADDRESS):P1V5_AVDD_4_POK")
 {
@@ -137,9 +113,6 @@ record(bi, "$(P)$(R)$(ADDRESS):P1V5_AVDD_4_POK")
     field(ZSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simpleBinary,$(gda_name=).P1V5_VDD_1_POK,$(gda_desc=)
-# %gdatag,binary,ro,$(gda_name=).P1V5_VDD_1_POK,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
 record(bi, "$(P)$(R)$(ADDRESS):P1V5_VDD_1_POK")
 {
@@ -150,9 +123,6 @@ record(bi, "$(P)$(R)$(ADDRESS):P1V5_VDD_1_POK")
     field(ZSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simpleBinary,$(gda_name=).P2V5_DVDD_1_POK,$(gda_desc=)
-# %gdatag,binary,ro,$(gda_name=).P2V5_DVDD_1_POK,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
 record(bi, "$(P)$(R)$(ADDRESS):P2V5_DVDD_1_POK")
 {
@@ -164,8 +134,6 @@ record(bi, "$(P)$(R)$(ADDRESS):P2V5_DVDD_1_POK")
 }
 
 # The chip identity as programmed in the fuses.
-# %gdatag,template,simplePv,det1.1.chipid,
-# %gdatag,pv,ro,det1.1.chipid,RECORD,
 # % autosave 2 
 #% archiver 10 Monitor
 record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC0")
@@ -178,8 +146,6 @@ record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC0")
 }
 
 # The chip identity as programmed in the fuses.
-# %gdatag,template,simplePv,det1.1.chipid,
-# %gdatag,pv,ro,det1.1.chipid,RECORD,
 # % autosave 2 
 #% archiver 10 Monitor
 record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC1")
@@ -192,8 +158,6 @@ record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC1")
 }
 
 # The chip identity as programmed in the fuses.
-# %gdatag,template,simplePv,det1.1.chipid,
-# %gdatag,pv,ro,det1.1.chipid,RECORD,
 # % autosave 2 
 #% archiver 10 Monitor
 record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC2")
@@ -206,8 +170,6 @@ record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC2")
 }
 
 # The chip identity as programmed in the fuses.
-# %gdatag,template,simplePv,det1.1.chipid,
-# %gdatag,pv,ro,det1.1.chipid,RECORD,
 # % autosave 2 
 #% archiver 10 Monitor
 record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC3")
@@ -220,8 +182,6 @@ record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC3")
 }
 
 # The chip identity as programmed in the fuses.
-# %gdatag,template,simplePv,det1.1.chipid,
-# %gdatag,pv,ro,det1.1.chipid,RECORD,
 # % autosave 2 
 #% archiver 10 Monitor
 record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC4")
@@ -234,8 +194,6 @@ record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC4")
 }
 
 # The chip identity as programmed in the fuses.
-# %gdatag,template,simplePv,det1.1.chipid,
-# %gdatag,pv,ro,det1.1.chipid,RECORD,
 # % autosave 2 
 #% archiver 10 Monitor
 record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC5")
@@ -248,8 +206,6 @@ record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC5")
 }
 
 # The chip identity as programmed in the fuses.
-# %gdatag,template,simplePv,det1.1.chipid,
-# %gdatag,pv,ro,det1.1.chipid,RECORD,
 # % autosave 2 
 #% archiver 10 Monitor
 record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC6")
@@ -262,8 +218,6 @@ record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC6")
 }
 
 # The chip identity as programmed in the fuses.
-# %gdatag,template,simplePv,det1.1.chipid,
-# %gdatag,pv,ro,det1.1.chipid,RECORD,
 # % autosave 2 
 #% archiver 10 Monitor
 record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC7")
@@ -276,8 +230,6 @@ record(longin, "$(P)$(R)$(ADDRESS):EFuseIdC7")
 }
 
 # The saved chip identity.
-# %gdatag,template,simplePv,det1.1.savedchipid,
-# %gdatag,pv,ro,det1.1.savedchipid,RECORD,
 # % autosave 2 
 #% archiver 10 Monitor
 record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC0")
@@ -287,8 +239,6 @@ record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC0")
 }
 
 # The saved chip identity.
-# %gdatag,template,simplePv,det1.1.savedchipid,
-# %gdatag,pv,ro,det1.1.savedchipid,RECORD,
 # % autosave 2 
 #% archiver 10 Monitor
 record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC1")
@@ -298,8 +248,6 @@ record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC1")
 }
 
 # The saved chip identity.
-# %gdatag,template,simplePv,det1.1.savedchipid,
-# %gdatag,pv,ro,det1.1.savedchipid,RECORD,
 # % autosave 2 
 #% archiver 10 Monitor
 record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC2")
@@ -309,8 +257,6 @@ record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC2")
 }
 
 # The saved chip identity.
-# %gdatag,template,simplePv,det1.1.savedchipid,
-# %gdatag,pv,ro,det1.1.savedchipid,RECORD,
 # % autosave 2 
 #% archiver 10 Monitor
 record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC3")
@@ -320,8 +266,6 @@ record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC3")
 }
 
 # The saved chip identity.
-# %gdatag,template,simplePv,det1.1.savedchipid,
-# %gdatag,pv,ro,det1.1.savedchipid,RECORD,
 # % autosave 2 
 #% archiver 10 Monitor
 record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC4")
@@ -331,8 +275,6 @@ record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC4")
 }
 
 # The saved chip identity.
-# %gdatag,template,simplePv,det1.1.savedchipid,
-# %gdatag,pv,ro,det1.1.savedchipid,RECORD,
 # % autosave 2 
 #% archiver 10 Monitor
 record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC5")
@@ -342,8 +284,6 @@ record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC5")
 }
 
 # The saved chip identity.
-# %gdatag,template,simplePv,det1.1.savedchipid,
-# %gdatag,pv,ro,det1.1.savedchipid,RECORD,
 # % autosave 2 
 #% archiver 10 Monitor
 record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC6")
@@ -353,8 +293,6 @@ record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC6")
 }
 
 # The saved chip identity.
-# %gdatag,template,simplePv,det1.1.savedchipid,
-# %gdatag,pv,ro,det1.1.savedchipid,RECORD,
 # % autosave 2 
 #% archiver 10 Monitor
 record(longout, "$(P)$(R)$(ADDRESS):SavedEFuseIdC7")
@@ -388,8 +326,6 @@ record(calc, "$(P)$(R)$(ADDRESS):DEVSTA11")
 }
 
 # Copy the current efuseid to the saved efuseid
-# %gdatag,template,simpleBinary,$(gda_name=).RecordEFuseId,$(gda_desc=)
-# %gdatag,binary,rw,$(gda_name=).RecordEFuseId,RECORD,$(gda_desc=)
 record(bo, "$(P)$(R)$(ADDRESS):RecordEFuseId")
 {
     field(VAL,  "0")
@@ -435,8 +371,6 @@ record(bi, "$(P)$(R)$(ADDRESS):EFuseIdMatches")
 #}
 
 # Non-zero if the current efuseid matches the saved efuseid
-# %gdatag,template,simpleBinary,$(gda_name=).EFuseIdMatches,$(gda_desc=)
-# %gdatag,binary,ro,$(gda_name=).EFuseIdMatches,RECORD,$(gda_desc=)
 #record(calc, "$(P)$(R)$(ADDRESS):EFuseIdMatches")
 #{
 #    field(INPA, "$(P)$(R)$(ADDRESS):EFuseIdC0")
@@ -468,8 +402,6 @@ record(bi, "$(P)$(R)$(ADDRESS):EFuseIdMatches")
 #}
 
 # Non-zero if the FEM initialised OK
-# %gdatag,template,simpleBinary,$(gda_name=).FemInitOk,$(gda_desc=)
-# %gdatag,binary,ro,$(gda_name=).FemInitOk,RECORD,$(gda_desc=)
 record(bi, "$(P)$(R)$(ADDRESS):FemInitOk")
 {
     field(SCAN, "I/O Intr")
@@ -487,8 +419,6 @@ record(longin, "$(P)$(R)$(ADDRESS):FemFrames")
     field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/fem_frames")
 }
 
-# %gdatag,template,simplePv,$(gda_name=).FemCommsFaults,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).FemCommsFaults,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
 record(longin, "$(P)$(R)$(ADDRESS):FemCommsFaults")
 {
