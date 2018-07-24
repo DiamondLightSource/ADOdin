@@ -4,7 +4,7 @@
 	<ADOdin.ExcaliburOdinControlServer IP="127.0.0.1" NODE_1_CTRL_IP="127.0.0.1" NODE_2_CTRL_IP="127.0.0.1" SENSOR="1M" name="OdinServer"/>
 	<ADOdin.ExcaliburOdinDataServer IP="127.0.0.1" PROCESSES="2" SENSOR="1M" name="ODServer1"/>
 	<ADOdin.OdinDataDriver ADDR="0" DETECTOR="Excalibur" ODIN_DATA_SERVER_1="ODServer1" ODIN_SERVER_PORT="8888" P="EXCALIBUR" PORT="ODN.OD" R=":OD:" SERVER="127.0.0.1" TIMEOUT="1"/>
-	<ADOdin.Excalibur4NodeFPTemplate ADDRESS="0" DET=":CAM:" HEIGHT="512" P="EXCALIBUR" PORT="ODN.OD" R=":OD:" TIMEOUT="1" TOTAL="4" WIDTH="2048" name="ODN.DAQ"/>
+	<ADOdin.Excalibur4NodeFPTemplate DET=":CAM:" HEIGHT="512" P="EXCALIBUR" PORT="ODN.OD" R=":OD:" TIMEOUT="1" WIDTH="2048" name="ODN.DAQ"/>
 	<EPICS_BASE.dbpf pv="EXCALIBUR:OD1:FRConfigFile" value="$(INSTALL)/excaliburApp/data/fr1.json"/>
 	<EPICS_BASE.dbpf pv="EXCALIBUR:OD2:FRConfigFile" value="$(INSTALL)/excaliburApp/data/fr2.json"/>
 	<EPICS_BASE.dbpf pv="EXCALIBUR:OD1:FPConfigFile" value="$(INSTALL)/excaliburApp/data/fp1.json"/>

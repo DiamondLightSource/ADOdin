@@ -155,11 +155,18 @@ class ExcaliburFPTemplate(AutoSubstitution):
 def add_excalibur_fp_template(cls):
     """Convenience function to add excaliburFPTemplate attributes to a class that
     includes it via an msi include statement rather than verbatim"""
+    template_substitutions = ["TOTAL", "ADDRESS"]
+
     cls.Arguments = ExcaliburFPTemplate.Arguments + \
         [x for x in cls.Arguments if x not in ExcaliburFPTemplate.Arguments]
+    cls.Arguments = [entry for entry in cls.Arguments if entry not in template_substitutions]
+
     cls.ArgInfo = ExcaliburFPTemplate.ArgInfo + cls.ArgInfo.filtered(
         without=ExcaliburFPTemplate.ArgInfo.Names())
+    cls.ArgInfo = cls.ArgInfo.filtered(without=template_substitutions)
+
     cls.Defaults.update(ExcaliburFPTemplate.Defaults)
+
     return cls
 
 
