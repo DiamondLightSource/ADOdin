@@ -26,7 +26,7 @@ __all__ += ["EigerOdinDataServer", "EigerOdinControlServer"]
 
 ###################################################################################################
 
-from odin import OdinDataServer
+from odin import OdinDataServer, OdinControlServer
 
 
 class OdinDataTemplate(AutoSubstitution):
@@ -48,7 +48,7 @@ class OdinDataDriver(AsynPort):
 
     _SpecificTemplate = OdinDataDriverTemplate
 
-    def __init__(self, PORT, SERVER, ODIN_SERVER_PORT, DETECTOR=None, DATASET="data",
+    def __init__(self, PORT, ODIN_CONTROL_SERVER, DETECTOR=None, DATASET="data",
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None, ODIN_DATA_SERVER_3=None,
                  ODIN_DATA_SERVER_4=None, ODIN_DATA_SERVER_5=None, ODIN_DATA_SERVER_6=None,
                  ODIN_DATA_SERVER_7=None, ODIN_DATA_SERVER_8=None,
@@ -60,8 +60,9 @@ class OdinDataDriver(AsynPort):
         # Make an instance of our template
         makeTemplateInstance(self._SpecificTemplate, locals(), args)
 
+        self.CONTROL_SERVER_IP = ODIN_CONTROL_SERVER.IP
+        self.CONTROL_SERVER_PORT = ODIN_CONTROL_SERVER.PORT
         self.DETECTOR_PLUGIN = DETECTOR.lower()
-
         self.ODIN_DATA_PROCESSES = []
 
         # Count the number of servers
@@ -98,8 +99,7 @@ class OdinDataDriver(AsynPort):
     # __init__ arguments
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
         PORT=Simple("Port name for the detector", str),
-        SERVER=Simple("Server host name", str),
-        ODIN_SERVER_PORT=Simple("Odin server port", int),
+        ODIN_CONTROL_SERVER=Ident("Odin control server", OdinControlServer),
         DATASET=Simple("Name of Dataset", str),
         DETECTOR=Choice("Detector type", ["Excalibur", "Eiger"]),
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", OdinDataServer),
@@ -130,7 +130,7 @@ class OdinDataDriver(AsynPort):
               "int odinServerPort, " \
               "const char * datasetName, const char * detectorName, " \
               "int maxBuffers, size_t maxMemory)"
-        print "odinDataDriverConfig(\"%(PORT)s\", \"%(SERVER)s\", " \
-              "%(ODIN_SERVER_PORT)d, " \
+        print "odinDataDriverConfig(\"%(PORT)s\", \"%(CONTROL_SERVER_IP)s\", " \
+              "%(CONTROL_SERVER_PORT)d, " \
               "\"%(DATASET)s\", \"%(DETECTOR_PLUGIN)s\", " \
               "%(BUFFERS)d, %(MEMORY)d)" % self.__dict__

@@ -57,7 +57,7 @@ class ExcaliburOdinDataServer(OdinDataServer):
         self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE)
 
     ArgInfo = makeArgInfo(__init__,
-        IP=Simple("IP address of server hosting processes", str),
+        IP=Simple("IP address of server hosting OdinData processes", str),
         PROCESSES=Simple("Number of OdinData processes on this server", int),
         SENSOR=Choice("Sensor type", ["1M", "3M"]),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int)
@@ -99,7 +99,7 @@ class ExcaliburOdinControlServer(OdinControlServer):
 
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
-        IP=Simple("IP address of server hosting processes", str),
+        IP=Simple("IP address of control server", str),
         SENSOR=Choice("Sensor type", ["1M", "3M"]),
         FEMS_REVERSED=Choice("Are the FEM IP addresses reversed 106..101", [True, False]),
         POWER_CARD_IDX=Simple("Index of the power card", int),
@@ -230,7 +230,7 @@ class ExcaliburDetector(OdinDetector):
 
     _SpecificTemplate = ExcaliburDetectorTemplate
 
-    def __init__(self, PORT, SERVER, ODIN_SERVER_PORT, SENSOR, BUFFERS=0, MEMORY=0,
+    def __init__(self, PORT, ODIN_CONTROL_SERVER, SENSOR, BUFFERS=0, MEMORY=0,
                  NODE_1_NAME=None, NODE_1_CTRL_IP=None, NODE_1_MAC=None, NODE_1_IPADDR=None, NODE_1_PORT=None,
                  NODE_2_NAME=None, NODE_2_CTRL_IP=None, NODE_2_MAC=None, NODE_2_IPADDR=None, NODE_2_PORT=None,
                  NODE_3_NAME=None, NODE_3_CTRL_IP=None, NODE_3_MAC=None, NODE_3_IPADDR=None, NODE_3_PORT=None,
@@ -241,7 +241,7 @@ class ExcaliburDetector(OdinDetector):
                  NODE_8_NAME=None, NODE_8_CTRL_IP=None, NODE_8_MAC=None, NODE_8_IPADDR=None, NODE_8_PORT=None,
                  **args):
         # Init the superclass (OdinDetector)
-        self.__super.__init__(PORT, SERVER, ODIN_SERVER_PORT, self.DETECTOR,
+        self.__super.__init__(PORT, ODIN_CONTROL_SERVER, self.DETECTOR,
                               BUFFERS, MEMORY, **args)
         # Update the attributes of self from the commandline args
         self.__dict__.update(locals())
@@ -328,8 +328,7 @@ class ExcaliburDetector(OdinDetector):
     # __init__ arguments
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
         PORT=Simple("Port name for the detector", str),
-        SERVER=Simple("Server host name", str),
-        ODIN_SERVER_PORT=Simple("Odin server port", int),
+        ODIN_CONTROL_SERVER=Ident("Odin control server instance", OdinControlServer),
         SENSOR=Choice("Sensor type", ["1M", "3M"]),
         BUFFERS=Simple("Maximum number of NDArray buffers to be created for plugin callbacks", int),
         MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "

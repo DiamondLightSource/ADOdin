@@ -12,7 +12,6 @@ from iocbuilder.modules.restClient import restClient
 
 
 ADODIN_ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
-print("ADOdin: {} = {}".format("<self>", ADODIN_ROOT))
 ADODIN_DATA = os.path.join(ADODIN_ROOT, "data")
 
 TREE = None
@@ -104,7 +103,7 @@ class OdinDataServer(Device):
         self.instantiated = False  # Make sure instances are only used once
 
     ArgInfo = makeArgInfo(__init__,
-        IP=Simple("IP address of server hosting processes", str),
+        IP=Simple("IP address of server hosting OdinData processes", str),
         PROCESSES=Simple("Number of OdinData processes on this server", int),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
     )
@@ -142,50 +141,13 @@ class OdinDetectorTemplate(AutoSubstitution):
     TemplateFile = "odinDetector.template"
 
 
-class OdinDetector(AsynPort):
-
-    """Create an odin detector"""
-
-    Dependencies = (ADCore, restClient)
-
-    # This tells xmlbuilder to use PORT instead of name as the row ID
-    UniqueName = "PORT"
-
-    def __init__(self, PORT, SERVER, ODIN_SERVER_PORT, DETECTOR, BUFFERS = 0, MEMORY = 0, **args):
-        # Init the superclass (AsynPort)
-        self.__super.__init__(PORT)
-        # Update the attributes of self from the commandline args
-        self.__dict__.update(locals())
-
-    # __init__ arguments
-    ArgInfo = ADBaseTemplate.ArgInfo + makeArgInfo(__init__,
-        PORT=Simple("Port name for the detector", str),
-        SERVER=Simple("Server host name", str),
-        ODIN_SERVER_PORT=Simple("Odin server port", int),
-        DETECTOR=Simple("Name of detector", str),
-        BUFFERS=Simple("Maximum number of NDArray buffers to be created for plugin callbacks", int),
-        MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "
-                      "attached plugins", int))
-
-    # Device attributes
-    LibFileList = ['odinDetector']
-    DbdFileList = ['odinDetectorSupport']
-
-    def Initialise(self):
-        print "# odinDetectorConfig(const char * portName, const char * serverPort, " \
-              "int odinServerPort, const char * detectorName, " \
-              "int maxBuffers, size_t maxMemory, int priority, int stackSize)"
-        print "odinDetectorConfig(\"%(PORT)s\", \"%(SERVER)s\", " \
-              "%(ODIN_SERVER_PORT)d, \"%(DETECTOR)s\", " \
-              "%(BUFFERS)d, %(MEMORY)d)" % self.__dict__
-
-
 class OdinControlServer(Device):
 
     """Store configuration for an OdinControlServer"""
 
     ODIN_SERVER = None
     ADAPTERS = ["fp", "fr"]
+    PORT = 8888
 
     # Device attributes
     AutoInstantiate = True
@@ -208,7 +170,7 @@ class OdinControlServer(Device):
         self.create_odin_server_config_file()
 
     ArgInfo = makeArgInfo(__init__,
-        IP=Simple("IP address of server", str),
+        IP=Simple("IP address of control server", str),
         NODE_1_CTRL_IP=Simple("IP address for control of FR and FP", str),
         NODE_2_CTRL_IP=Simple("IP address for control of FR and FP", str),
         NODE_3_CTRL_IP=Simple("IP address for control of FR and FP", str),
@@ -224,7 +186,8 @@ class OdinControlServer(Device):
         expand_template_file("odin_server_startup", macros, "stOdinServer.sh", executable=True)
 
     def create_odin_server_config_file(self):
-        macros = dict(ADAPTERS=", ".join(self.ADAPTERS),
+        macros = dict(PORT=self.PORT,
+                      ADAPTERS=", ".join(self.ADAPTERS),
                       ADAPTER_CONFIG="\n\n".join(self.create_odin_server_config_entries()))
         expand_template_file("odin_server.ini", macros, "odin_server.cfg")
 
@@ -253,3 +216,43 @@ class OdinControlServer(Device):
                "module = odin_data.odin_data_adapter.OdinDataAdapter\n" \
                "endpoints = {}\n" \
                "update_interval = 0.2".format(", ".join(fp_endpoints), ", ".join(fr_endpoints))
+
+
+class OdinDetector(AsynPort):
+
+    """Create an odin detector"""
+
+    Dependencies = (ADCore, restClient)
+
+    # This tells xmlbuilder to use PORT instead of name as the row ID
+    UniqueName = "PORT"
+
+    def __init__(self, PORT, ODIN_CONTROL_SERVER, DETECTOR, BUFFERS = 0, MEMORY = 0, **args):
+        # Init the superclass (AsynPort)
+        self.__super.__init__(PORT)
+        # Update the attributes of self from the commandline args
+        self.__dict__.update(locals())
+
+        self.CONTROL_SERVER_IP = ODIN_CONTROL_SERVER.IP
+        self.CONTROL_SERVER_PORT = ODIN_CONTROL_SERVER.PORT
+
+    # __init__ arguments
+    ArgInfo = ADBaseTemplate.ArgInfo + makeArgInfo(__init__,
+        PORT=Simple("Port name for the detector", str),
+        ODIN_CONTROL_SERVER=Ident("Odin control server", OdinControlServer),
+        DETECTOR=Simple("Name of detector", str),
+        BUFFERS=Simple("Maximum number of NDArray buffers to be created for plugin callbacks", int),
+        MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "
+                      "attached plugins", int))
+
+    # Device attributes
+    LibFileList = ['odinDetector']
+    DbdFileList = ['odinDetectorSupport']
+
+    def Initialise(self):
+        print "# odinDetectorConfig(const char * portName, const char * serverPort, " \
+              "int odinServerPort, const char * detectorName, " \
+              "int maxBuffers, size_t maxMemory, int priority, int stackSize)"
+        print "odinDetectorConfig(\"%(PORT)s\", \"%(CONTROL_SERVER_IP)s\", " \
+              "%(CONTROL_SERVER_PORT)d, \"%(DETECTOR)s\", " \
+              "%(BUFFERS)d, %(MEMORY)d)" % self.__dict__

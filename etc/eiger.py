@@ -42,7 +42,7 @@ class EigerOdinDataServer(OdinDataServer):
         self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE)
 
     ArgInfo = makeArgInfo(__init__,
-        IP=Simple("IP address of server hosting processes", str),
+        IP=Simple("IP address of server hosting OdinData processes", str),
         PROCESSES=Simple("Number of OdinData processes on this server", int),
         SOURCE_IP=Simple("IP address of data stream from Eiger detector", str),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int)
@@ -73,7 +73,7 @@ class EigerOdinControlServer(OdinControlServer):
 
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
-        IP=Simple("IP address of server hosting processes", str),
+        IP=Simple("IP address of control server", str),
         NODE_1_CTRL_IP=Simple("IP address for control of FR and FP", str),
         NODE_2_CTRL_IP=Simple("IP address for control of FR and FP", str),
         NODE_3_CTRL_IP=Simple("IP address for control of FR and FP", str),
