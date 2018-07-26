@@ -21,8 +21,8 @@ __all__ += ["ExcaliburDetector", "ExcaliburOdinDataServer", "ExcaliburOdinContro
             "Excalibur2FemStatusTemplate", "Excalibur6FemStatusTemplate",
             "Excalibur2NodeFPTemplate", "Excalibur4NodeFPTemplate", "Excalibur8NodeFPTemplate"]
 
-from eiger import EigerOdinDataServer, EigerOdinControlServer
-__all__ += ["EigerOdinDataServer", "EigerOdinControlServer"]
+from eiger import EigerOdinDataServer, EigerOdinControlServer, EigerFan, EigerMetaListener
+__all__ += ["EigerOdinDataServer", "EigerOdinControlServer", "EigerFan", "EigerMetaListener"]
 
 ###################################################################################################
 

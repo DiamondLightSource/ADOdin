@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd $EIGER_DETECTOR_PATH
+prefix/bin/eigerfan -s $IP -n $PROCESSES -z $SOCKETS -b $BLOCK_SIZE --logconfig $LOG_CONFIG

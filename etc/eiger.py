@@ -1,9 +1,10 @@
 import os
 
+from iocbuilder import Device
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 
 from odin import OdinData, OdinDataServer, OdinControlServer, \
-    find_module_path
+    find_module_path, expand_template_file
 from excalibur import EXCALIBUR_PATH
 
 
@@ -88,3 +89,81 @@ class EigerOdinControlServer(OdinControlServer):
         return [
             self._create_odin_data_config_entry()
         ]
+
+
+class EigerFan(Device):
+
+    """Create startup file for an EigerFan process"""
+
+    # Device attributes
+    AutoInstantiate = True
+
+    def __init__(self, IP, PROCESSES, SOCKETS, BLOCK_SIZE=1):
+        self.__super.__init__()
+        # Update attributes with parameters
+        self.__dict__.update(locals())
+
+        self.create_startup_file()
+
+    def create_startup_file(self):
+        macros = dict(EIGER_DETECTOR_PATH=EIGER_PATH, IP=self.IP,
+                      PROCESSES=self.PROCESSES, SOCKETS=self.SOCKETS, BLOCK_SIZE=self.BLOCK_SIZE,
+                      LOG_CONFIG=os.path.join(EIGER_PATH, "log4cxx.xml"))
+
+        expand_template_file("eiger_fan_startup", macros, "stEigerFan.sh")
+
+    # __init__ arguments
+    ArgInfo = makeArgInfo(__init__,
+        IP=Simple("IP address of Eiger detector", str),
+        PROCESSES=Simple("Number of processes to fan out to", int),
+        SOCKETS=Simple("Number of sockets to open to Eiger detector stream", int),
+        BLOCK_SIZE=Simple("Number of blocks per file", int)
+    )
+
+
+class EigerMetaListener(Device):
+
+    """Create startup file for an EigerMetaListener process"""
+
+    # Device attributes
+    AutoInstantiate = True
+
+    def __init__(self, BLOCK_SIZE=1,
+                 ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None, ODIN_DATA_SERVER_3=None,
+                 ODIN_DATA_SERVER_4=None, ODIN_DATA_SERVER_5=None, ODIN_DATA_SERVER_6=None,
+                 ODIN_DATA_SERVER_7=None, ODIN_DATA_SERVER_8=None):
+        self.__super.__init__()
+        # Update attributes with parameters
+        self.__dict__.update(locals())
+
+        self.ip_list = []
+        for idx in range(1, 9):
+            server = eval("ODIN_DATA_SERVER_{}".format(idx))
+            if server is not None:
+                base_port = 5000
+                for odin_data in server.processes:
+                    port = base_port + 558
+                    self.ip_list.append("tcp://{}:{}".format(odin_data.IP, port))
+                    base_port += 1000
+
+        self.create_startup_file()
+
+    def create_startup_file(self):
+        macros = dict(EIGER_DETECTOR_PATH=EIGER_PATH,
+                      IP_LIST=",".join(self.ip_list),
+                      BLOCK_SIZE=self.BLOCK_SIZE)
+
+        expand_template_file("eiger_meta_startup", macros, "stEigerMetaListener.sh")
+
+    # __init__ arguments
+    ArgInfo = makeArgInfo(__init__,
+        BLOCK_SIZE=Simple("Number of blocks per file", int),
+        ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", OdinDataServer),
+        ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", OdinDataServer),
+        ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", OdinDataServer),
+        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", OdinDataServer),
+        ODIN_DATA_SERVER_5=Ident("OdinDataServer 5 configuration", OdinDataServer),
+        ODIN_DATA_SERVER_6=Ident("OdinDataServer 6 configuration", OdinDataServer),
+        ODIN_DATA_SERVER_7=Ident("OdinDataServer 7 configuration", OdinDataServer),
+        ODIN_DATA_SERVER_8=Ident("OdinDataServer 8 configuration", OdinDataServer)
+    )
