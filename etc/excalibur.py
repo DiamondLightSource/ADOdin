@@ -39,7 +39,7 @@ class _ExcaliburOdinData(_OdinData):
                       RX_PORT_4=self.BASE_UDP_PORT + 3,
                       RX_PORT_5=self.BASE_UDP_PORT + 4,
                       RX_PORT_6=self.BASE_UDP_PORT + 5)
-        self.BASE_UDP_PORT += 6
+        self.__class__.BASE_UDP_PORT += 6
 
         super(_ExcaliburOdinData, self).create_config_file(
             "fp", self.CONFIG_TEMPLATES[self.sensor]["FrameProcessor"], index, extra_macros=macros)
