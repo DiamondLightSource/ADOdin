@@ -102,8 +102,6 @@ class _OdinDataServer(Device):
             )
             self.PORT_BASE += 10
 
-        self.create_od_startup_scripts()
-
         self.instantiated = False  # Make sure instances are only used once
 
     ArgInfo = makeArgInfo(__init__,
@@ -115,30 +113,32 @@ class _OdinDataServer(Device):
     def create_odin_data_process(self, ip, ready, release, meta, *args):
         return self.ODIN_DATA_CLASS(ip, ready, release, meta, *args)
 
-    def create_od_startup_scripts(self):
+    def create_od_startup_scripts(self, server_rank, total_servers):
+        suffix = server_rank
         for idx, _ in enumerate(self.processes):
             fp_port_number = 5004 + (10 * idx)
             fr_port_number = 5000 + (10 * idx)
             ready_port_number = 5001 + (10 * idx)
             release_port_number = 5002 + (10 * idx)
-            process_number = idx + 1
 
-            output_file = "stFrameReceiver{}.sh".format(process_number)
+            output_file = "stFrameReceiver{}.sh".format(suffix)
             macros = dict(
                 OD_ROOT=ODIN_DATA_ROOT,
-                BUFFER_IDX=process_number, SHARED_MEMORY=self.SHARED_MEM_SIZE,
+                BUFFER_IDX=idx + 1, SHARED_MEMORY=self.SHARED_MEM_SIZE,
                 CTRL_PORT=fr_port_number,
                 READY_PORT=ready_port_number, RELEASE_PORT=release_port_number,
                 LOG_CONFIG=os.path.join(ADODIN_DATA, "fr_log4cxx.xml"))
             expand_template_file("fr_startup", macros, output_file, executable=True)
 
-            output_file = "stFrameProcessor{}.sh".format(process_number)
+            output_file = "stFrameProcessor{}.sh".format(suffix)
             macros = dict(
                 OD_ROOT=ODIN_DATA_ROOT,
                 CTRL_PORT=fp_port_number,
                 READY_PORT=ready_port_number, RELEASE_PORT=release_port_number,
                 LOG_CONFIG=os.path.join(ADODIN_DATA, "fp_log4cxx.xml"))
             expand_template_file("fp_startup", macros, output_file, executable=True)
+
+            suffix += total_servers
 
 
 class _OdinDetectorTemplate(AutoSubstitution):

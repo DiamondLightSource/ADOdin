@@ -56,19 +56,21 @@ class OdinDataDriver(AsynPort):
         self.ODIN_DATA_PROCESSES = []
 
         # Count the number of servers
-        self.server_count = 0
+        server_count = 0
         for idx in range(1, 9):
             server = eval("ODIN_DATA_SERVER_{}".format(idx))
             if server is not None:
-                self.server_count += 1
-        print("Server count: {}".format(self.server_count))
+                server_count += 1
+        print("Server count: {}".format(server_count))
 
+        server_number = 0
         for idx in range(1, 9):
             server = eval("ODIN_DATA_SERVER_{}".format(idx))
             if server is not None:
                 if server.instantiated:
                     raise ValueError("Same OdinDataServer object given twice")
                 else:
+                    server_number += 1
                     server.instantiated = True
 
                 index_number = 0
@@ -84,7 +86,9 @@ class OdinDataDriver(AsynPort):
 
                     odin_data.create_config_files(address + 1)
 
-                    index_number += self.server_count
+                    index_number += server_count
+
+                server.create_od_startup_scripts(server_number, server_count)
 
     # __init__ arguments
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
