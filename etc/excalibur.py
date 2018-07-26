@@ -4,7 +4,7 @@ from iocbuilder import AutoSubstitution, Device
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.ADCore import ADCore, ADBaseTemplate, makeTemplateInstance
 
-from odin import OdinDetector, OdinData, OdinDataServer, OdinControlServer, \
+from odin import _OdinDetector, _OdinData, _OdinDataServer, _OdinControlServer, \
                  find_module_path, expand_template_file
 
 
@@ -12,7 +12,7 @@ EXCALIBUR, EXCALIBUR_PATH = find_module_path("excalibur-detector")
 print("Excalibur: {} = {}".format(EXCALIBUR, EXCALIBUR_PATH))
 
 
-class ExcaliburOdinData(OdinData):
+class _ExcaliburOdinData(_OdinData):
 
     CONFIG_TEMPLATES = {
         "1M": {
@@ -28,7 +28,7 @@ class ExcaliburOdinData(OdinData):
     BASE_UDP_PORT = 61649
 
     def __init__(self, IP, READY, RELEASE, META, SENSOR):
-        super(ExcaliburOdinData, self).__init__(IP, READY, RELEASE, META)
+        super(_ExcaliburOdinData, self).__init__(IP, READY, RELEASE, META)
         self.sensor = SENSOR
 
     def create_config_files(self, index):
@@ -41,16 +41,16 @@ class ExcaliburOdinData(OdinData):
                       RX_PORT_6=self.BASE_UDP_PORT + 5)
         self.BASE_UDP_PORT += 6
 
-        super(ExcaliburOdinData, self).create_config_file(
+        super(_ExcaliburOdinData, self).create_config_file(
             "fp", self.CONFIG_TEMPLATES[self.sensor]["FrameProcessor"], index, extra_macros=macros)
-        super(ExcaliburOdinData, self).create_config_file(
+        super(_ExcaliburOdinData, self).create_config_file(
             "fr", self.CONFIG_TEMPLATES[self.sensor]["FrameReceiver"], index, extra_macros=macros)
 
 
-class ExcaliburOdinDataServer(OdinDataServer):
+class ExcaliburOdinDataServer(_OdinDataServer):
 
     """Store configuration for an ExcaliburOdinDataServer"""
-    ODIN_DATA_CLASS = ExcaliburOdinData
+    ODIN_DATA_CLASS = _ExcaliburOdinData
 
     def __init__(self, IP, PROCESSES, SENSOR, SHARED_MEM_SIZE=1048576000):
         self.sensor = SENSOR
@@ -68,7 +68,7 @@ class ExcaliburOdinDataServer(OdinDataServer):
             ip, ready, release, meta, self.sensor, *args)
 
 
-class ExcaliburOdinControlServer(OdinControlServer):
+class ExcaliburOdinControlServer(_OdinControlServer):
 
     """Store configuration for an ExcaliburOdinControlServer"""
 
@@ -144,11 +144,11 @@ class ExcaliburOdinControlServer(OdinControlServer):
             return "0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF"
 
 
-class ExcaliburDetectorTemplate(AutoSubstitution):
+class _ExcaliburDetectorTemplate(AutoSubstitution):
     TemplateFile = "excaliburDetector.template"
 
 
-class ExcaliburFPTemplate(AutoSubstitution):
+class _ExcaliburFPTemplate(AutoSubstitution):
     TemplateFile = "excaliburFP.template"
 
 
@@ -157,15 +157,15 @@ def add_excalibur_fp_template(cls):
     includes it via an msi include statement rather than verbatim"""
     template_substitutions = ["TOTAL", "ADDRESS"]
 
-    cls.Arguments = ExcaliburFPTemplate.Arguments + \
-        [x for x in cls.Arguments if x not in ExcaliburFPTemplate.Arguments]
+    cls.Arguments = _ExcaliburFPTemplate.Arguments + \
+                    [x for x in cls.Arguments if x not in _ExcaliburFPTemplate.Arguments]
     cls.Arguments = [entry for entry in cls.Arguments if entry not in template_substitutions]
 
-    cls.ArgInfo = ExcaliburFPTemplate.ArgInfo + cls.ArgInfo.filtered(
-        without=ExcaliburFPTemplate.ArgInfo.Names())
+    cls.ArgInfo = _ExcaliburFPTemplate.ArgInfo + cls.ArgInfo.filtered(
+        without=_ExcaliburFPTemplate.ArgInfo.Names())
     cls.ArgInfo = cls.ArgInfo.filtered(without=template_substitutions)
 
-    cls.Defaults.update(ExcaliburFPTemplate.Defaults)
+    cls.Defaults.update(_ExcaliburFPTemplate.Defaults)
 
     return cls
 
@@ -185,11 +185,11 @@ class Excalibur8NodeFPTemplate(AutoSubstitution):
     TemplateFile = "excalibur8NodeFP.template"
 
 
-class ExcaliburFemHousekeepingTemplate(AutoSubstitution):
+class _ExcaliburFemHousekeepingTemplate(AutoSubstitution):
     TemplateFile = "excaliburFemHousekeeping.template"
 
 
-class ExcaliburFemStatusTemplate(AutoSubstitution):
+class _ExcaliburFemStatusTemplate(AutoSubstitution):
     WarnMacros = False
     TemplateFile = "excaliburFemStatus.template"
 
@@ -197,38 +197,38 @@ class ExcaliburFemStatusTemplate(AutoSubstitution):
 def add_excalibur_fem_status(cls):
     """Convenience function to add excaliburFemStatusTemplate attributes to a class that
     includes it via an msi include statement rather than verbatim"""
-    cls.Arguments = ExcaliburFemStatusTemplate.Arguments + \
-        [x for x in cls.Arguments if x not in ExcaliburFemStatusTemplate.Arguments]
-    cls.ArgInfo = ExcaliburFemStatusTemplate.ArgInfo + cls.ArgInfo.filtered(
-        without=ExcaliburFemStatusTemplate.ArgInfo.Names())
-    cls.Defaults.update(ExcaliburFemStatusTemplate.Defaults)
+    cls.Arguments = _ExcaliburFemStatusTemplate.Arguments + \
+                    [x for x in cls.Arguments if x not in _ExcaliburFemStatusTemplate.Arguments]
+    cls.ArgInfo = _ExcaliburFemStatusTemplate.ArgInfo + cls.ArgInfo.filtered(
+        without=_ExcaliburFemStatusTemplate.ArgInfo.Names())
+    cls.Defaults.update(_ExcaliburFemStatusTemplate.Defaults)
     return cls
 
 
 @add_excalibur_fem_status
-class Excalibur2FemStatusTemplate(AutoSubstitution):
+class _Excalibur2FemStatusTemplate(AutoSubstitution):
     TemplateFile = "excalibur2FemStatus.template"
 
 
 @add_excalibur_fem_status
-class Excalibur6FemStatusTemplate(AutoSubstitution):
+class _Excalibur6FemStatusTemplate(AutoSubstitution):
     TemplateFile = "excalibur6FemStatus.template"
 
 
-class ExcaliburDetector(OdinDetector):
+class ExcaliburDetector(_OdinDetector):
 
     """Create an Excalibur detector"""
 
     DETECTOR = "excalibur"
     SENSOR_OPTIONS = {  # (AutoSubstitution Template, Number of FEMs)
-        "1M": (Excalibur2FemStatusTemplate, 2),
-        "3M": (Excalibur6FemStatusTemplate, 6)
+        "1M": (_Excalibur2FemStatusTemplate, 2),
+        "3M": (_Excalibur6FemStatusTemplate, 6)
     }
 
     # This tells xmlbuilder to use PORT instead of name as the row ID
     UniqueName = "PORT"
 
-    _SpecificTemplate = ExcaliburDetectorTemplate
+    _SpecificTemplate = _ExcaliburDetectorTemplate
 
     def __init__(self, PORT, ODIN_CONTROL_SERVER, SENSOR, BUFFERS=0, MEMORY=0,
                  NODE_1_NAME=None, NODE_1_CTRL_IP=None, NODE_1_MAC=None, NODE_1_IPADDR=None, NODE_1_PORT=None,
@@ -249,7 +249,7 @@ class ExcaliburDetector(OdinDetector):
         makeTemplateInstance(self._SpecificTemplate, locals(), args)
 
         # Add the FEM housekeeping template
-        fem_hk_template = ExcaliburFemHousekeepingTemplate
+        fem_hk_template = _ExcaliburFemHousekeepingTemplate
         fem_hk_args = {
             "P": args["P"],
             "R": args["R"],
@@ -328,7 +328,7 @@ class ExcaliburDetector(OdinDetector):
     # __init__ arguments
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
         PORT=Simple("Port name for the detector", str),
-        ODIN_CONTROL_SERVER=Ident("Odin control server instance", OdinControlServer),
+        ODIN_CONTROL_SERVER=Ident("Odin control server instance", _OdinControlServer),
         SENSOR=Choice("Sensor type", ["1M", "3M"]),
         BUFFERS=Simple("Maximum number of NDArray buffers to be created for plugin callbacks", int),
         MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "
@@ -372,4 +372,5 @@ class ExcaliburDetector(OdinDetector):
         NODE_8_CTRL_IP=Simple("IP address for control of FR and FP", str),
         NODE_8_MAC=Simple("Mac address of detector output node 8", str),
         NODE_8_IPADDR=Simple("IP address of detector output node 8", str),
-        NODE_8_PORT=Simple("Port of detector output node 8", int))
+        NODE_8_PORT=Simple("Port of detector output node 8", int)
+    )

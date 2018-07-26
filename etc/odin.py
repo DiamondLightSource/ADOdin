@@ -49,7 +49,11 @@ def expand_template_file(template, macros, output_file, executable=False):
     stream.write(output)
 
 
-class OdinData(Device):
+class _OdinDataTemplate(AutoSubstitution):
+    TemplateFile = "odinData.template"
+
+
+class _OdinData(Device):
 
     """Store configuration for an OdinData process"""
     INDEX = 1  # Unique index for each OdinData instance
@@ -64,8 +68,8 @@ class OdinData(Device):
 
         # Create unique R MACRO for template file - OD1, OD2 etc.
         self.R = ":OD{}:".format(self.INDEX)
-        self.index = OdinData.INDEX
-        OdinData.INDEX += 1
+        self.index = _OdinData.INDEX
+        _OdinData.INDEX += 1
 
     def create_config_file(self, prefix, template, index, extra_macros=None):
         macros = dict(IP=self.IP, RD_PORT=self.READY, RL_PORT=self.RELEASE,
@@ -76,10 +80,10 @@ class OdinData(Device):
         expand_template_file(template, macros, "{}{}.json".format(prefix, index))
 
 
-class OdinDataServer(Device):
+class _OdinDataServer(Device):
 
     """Store configuration for an OdinDataServer"""
-    ODIN_DATA_CLASS = OdinData
+    ODIN_DATA_CLASS = _OdinData
     PORT_BASE = 5000
 
     # Device attributes
@@ -137,11 +141,11 @@ class OdinDataServer(Device):
             expand_template_file("fp_startup", macros, output_file, executable=True)
 
 
-class OdinDetectorTemplate(AutoSubstitution):
+class _OdinDetectorTemplate(AutoSubstitution):
     TemplateFile = "odinDetector.template"
 
 
-class OdinControlServer(Device):
+class _OdinControlServer(Device):
 
     """Store configuration for an OdinControlServer"""
 
@@ -218,7 +222,7 @@ class OdinControlServer(Device):
                "update_interval = 0.2".format(", ".join(fp_endpoints), ", ".join(fr_endpoints))
 
 
-class OdinDetector(AsynPort):
+class _OdinDetector(AsynPort):
 
     """Create an odin detector"""
 
@@ -239,11 +243,12 @@ class OdinDetector(AsynPort):
     # __init__ arguments
     ArgInfo = ADBaseTemplate.ArgInfo + makeArgInfo(__init__,
         PORT=Simple("Port name for the detector", str),
-        ODIN_CONTROL_SERVER=Ident("Odin control server", OdinControlServer),
+        ODIN_CONTROL_SERVER=Ident("Odin control server", _OdinControlServer),
         DETECTOR=Simple("Name of detector", str),
         BUFFERS=Simple("Maximum number of NDArray buffers to be created for plugin callbacks", int),
         MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "
-                      "attached plugins", int))
+                      "attached plugins", int)
+    )
 
     # Device attributes
     LibFileList = ['odinDetector']

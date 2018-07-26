@@ -7,33 +7,23 @@ from iocbuilder.modules.asyn import AsynPort
 from iocbuilder.modules.ADCore import ADCore, ADBaseTemplate, makeTemplateInstance
 from iocbuilder.modules.restClient import restClient
 
-__all__ = ["OdinDataDriver"]
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from odin import _OdinDataServer, _OdinControlServer, _OdinDataTemplate
 
 ###################################################################################################
-# Import detector specific objects from other modules and expose them to builder
+# Import detector specific objects from other modules to expose them to builder
 ###################################################################################################
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from excalibur import ExcaliburDetector, ExcaliburOdinDataServer, ExcaliburOdinControlServer, \
-                      Excalibur2FemStatusTemplate, Excalibur6FemStatusTemplate, \
+                      _Excalibur2FemStatusTemplate, _Excalibur6FemStatusTemplate, \
                       Excalibur2NodeFPTemplate, Excalibur4NodeFPTemplate, Excalibur8NodeFPTemplate
-__all__ += ["ExcaliburDetector", "ExcaliburOdinDataServer", "ExcaliburOdinControlServer",
-            "Excalibur2FemStatusTemplate", "Excalibur6FemStatusTemplate",
-            "Excalibur2NodeFPTemplate", "Excalibur4NodeFPTemplate", "Excalibur8NodeFPTemplate"]
 
 from eiger import EigerOdinDataServer, EigerOdinControlServer, EigerFan, EigerMetaListener
-__all__ += ["EigerOdinDataServer", "EigerOdinControlServer", "EigerFan", "EigerMetaListener"]
 
 ###################################################################################################
 
-from odin import OdinDataServer, OdinControlServer
 
-
-class OdinDataTemplate(AutoSubstitution):
-    TemplateFile = "odinData.template"
-
-
-class OdinDataDriverTemplate(AutoSubstitution):
+class _OdinDataDriverTemplate(AutoSubstitution):
     TemplateFile = "odinDataDriver.template"
 
 
@@ -46,7 +36,7 @@ class OdinDataDriver(AsynPort):
     # This tells xmlbuilder to use PORT instead of name as the row ID
     UniqueName = "PORT"
 
-    _SpecificTemplate = OdinDataDriverTemplate
+    _SpecificTemplate = _OdinDataDriverTemplate
 
     def __init__(self, PORT, ODIN_CONTROL_SERVER, DETECTOR=None, DATASET="data",
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None, ODIN_DATA_SERVER_3=None,
@@ -90,7 +80,7 @@ class OdinDataDriver(AsynPort):
                     args["PORT"] = PORT
                     args["ADDR"] = odin_data.index-1
                     args["R"] = odin_data.R
-                    OdinDataTemplate(**args)
+                    _OdinDataTemplate(**args)
 
                     odin_data.create_config_files(address + 1)
 
@@ -99,17 +89,17 @@ class OdinDataDriver(AsynPort):
     # __init__ arguments
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
         PORT=Simple("Port name for the detector", str),
-        ODIN_CONTROL_SERVER=Ident("Odin control server", OdinControlServer),
+        ODIN_CONTROL_SERVER=Ident("Odin control server", _OdinControlServer),
         DATASET=Simple("Name of Dataset", str),
         DETECTOR=Choice("Detector type", ["Excalibur", "Eiger"]),
-        ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", OdinDataServer),
-        ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", OdinDataServer),
-        ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", OdinDataServer),
-        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", OdinDataServer),
-        ODIN_DATA_SERVER_5=Ident("OdinDataServer 5 configuration", OdinDataServer),
-        ODIN_DATA_SERVER_6=Ident("OdinDataServer 6 configuration", OdinDataServer),
-        ODIN_DATA_SERVER_7=Ident("OdinDataServer 7 configuration", OdinDataServer),
-        ODIN_DATA_SERVER_8=Ident("OdinDataServer 8 configuration", OdinDataServer),
+        ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_5=Ident("OdinDataServer 5 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_6=Ident("OdinDataServer 6 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_7=Ident("OdinDataServer 7 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_8=Ident("OdinDataServer 8 configuration", _OdinDataServer),
         BUFFERS=Simple("Maximum number of NDArray buffers to be created for plugin callbacks", int),
         MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "
                       "attached plugins", int))

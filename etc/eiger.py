@@ -3,7 +3,7 @@ import os
 from iocbuilder import Device
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 
-from odin import OdinData, OdinDataServer, OdinControlServer, \
+from odin import _OdinData, _OdinDataServer, _OdinControlServer, \
     find_module_path, expand_template_file
 from excalibur import EXCALIBUR_PATH
 
@@ -12,7 +12,7 @@ EIGER, EIGER_PATH = find_module_path("eiger-detector")
 print("Eiger: {} = {}".format(EIGER, EIGER_PATH))
 
 
-class EigerOdinData(OdinData):
+class _EigerOdinData(_OdinData):
 
     CONFIG_TEMPLATES = {
         "FrameProcessor": "fp_eiger.json",
@@ -20,23 +20,23 @@ class EigerOdinData(OdinData):
     }
 
     def __init__(self, IP, READY, RELEASE, META, SOURCE_IP):
-        super(EigerOdinData, self).__init__(IP, READY, RELEASE, META)
+        super(_EigerOdinData, self).__init__(IP, READY, RELEASE, META)
         self.source = SOURCE_IP
 
     def create_config_files(self, index):
         macros = dict(PP_ROOT=EIGER_PATH,
                       IP=self.source)
 
-        super(EigerOdinData, self).create_config_file(
+        super(_EigerOdinData, self).create_config_file(
             "fp", self.CONFIG_TEMPLATES["FrameProcessor"], index, extra_macros=macros)
-        super(EigerOdinData, self).create_config_file(
+        super(_EigerOdinData, self).create_config_file(
             "fr", self.CONFIG_TEMPLATES["FrameReceiver"], index, extra_macros=macros)
 
 
-class EigerOdinDataServer(OdinDataServer):
+class EigerOdinDataServer(_OdinDataServer):
 
     """Store configuration for an EigerOdinDataServer"""
-    ODIN_DATA_CLASS = EigerOdinData
+    ODIN_DATA_CLASS = _EigerOdinData
 
     def __init__(self, IP, PROCESSES, SOURCE_IP, SHARED_MEM_SIZE=16000000000):
         self.source = SOURCE_IP
@@ -54,7 +54,7 @@ class EigerOdinDataServer(OdinDataServer):
             ip, ready, release, meta, self.source, *args)
 
 
-class EigerOdinControlServer(OdinControlServer):
+class EigerOdinControlServer(_OdinControlServer):
 
     """Store configuration for an EigerOdinControlServer"""
 
@@ -158,12 +158,12 @@ class EigerMetaListener(Device):
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
         BLOCK_SIZE=Simple("Number of blocks per file", int),
-        ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", OdinDataServer),
-        ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", OdinDataServer),
-        ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", OdinDataServer),
-        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", OdinDataServer),
-        ODIN_DATA_SERVER_5=Ident("OdinDataServer 5 configuration", OdinDataServer),
-        ODIN_DATA_SERVER_6=Ident("OdinDataServer 6 configuration", OdinDataServer),
-        ODIN_DATA_SERVER_7=Ident("OdinDataServer 7 configuration", OdinDataServer),
-        ODIN_DATA_SERVER_8=Ident("OdinDataServer 8 configuration", OdinDataServer)
+        ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_5=Ident("OdinDataServer 5 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_6=Ident("OdinDataServer 6 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_7=Ident("OdinDataServer 7 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_8=Ident("OdinDataServer 8 configuration", _OdinDataServer)
     )
