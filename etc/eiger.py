@@ -49,9 +49,8 @@ class EigerOdinDataServer(_OdinDataServer):
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int)
     )
 
-    def create_odin_data_process(self, ip, ready, release, meta, *args):
-        return super(EigerOdinDataServer, self).create_odin_data_process(
-            ip, ready, release, meta, self.source, *args)
+    def create_odin_data_process(self, ip, ready, release, meta):
+        return _EigerOdinData(ip, ready, release, meta, self.source)
 
 
 class EigerOdinControlServer(_OdinControlServer):

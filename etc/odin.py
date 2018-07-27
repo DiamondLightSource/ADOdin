@@ -79,12 +79,16 @@ class _OdinData(Device):
 
         expand_template_file(template, macros, "{}{}.json".format(prefix, index))
 
+    def create_config_files(self, index):
+        raise NotImplementedError("Method must be implemented by child classes")
+
 
 class _OdinDataServer(Device):
 
     """Store configuration for an OdinDataServer"""
     ODIN_DATA_CLASS = _OdinData
     PORT_BASE = 5000
+    PROCESS_COUNT = 0
 
     # Device attributes
     AutoInstantiate = True
@@ -110,8 +114,8 @@ class _OdinDataServer(Device):
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
     )
 
-    def create_odin_data_process(self, ip, ready, release, meta, *args):
-        return self.ODIN_DATA_CLASS(ip, ready, release, meta, *args)
+    def create_odin_data_process(self, ip, ready, release, meta):
+        raise NotImplementedError("Method must be implemented by child classes")
 
     def create_od_startup_scripts(self, server_rank, total_servers):
         suffix = server_rank

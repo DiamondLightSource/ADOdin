@@ -25,21 +25,19 @@ class _ExcaliburOdinData(_OdinData):
         }
     }
 
-    BASE_UDP_PORT = 61649
-
-    def __init__(self, IP, READY, RELEASE, META, SENSOR):
+    def __init__(self, IP, READY, RELEASE, META, SENSOR, BASE_UDP_PORT):
         super(_ExcaliburOdinData, self).__init__(IP, READY, RELEASE, META)
         self.sensor = SENSOR
+        self.base_udp_port = BASE_UDP_PORT
 
     def create_config_files(self, index):
         macros = dict(PP_ROOT=EXCALIBUR_PATH,
-                      RX_PORT_1=self.BASE_UDP_PORT,
-                      RX_PORT_2=self.BASE_UDP_PORT + 1,
-                      RX_PORT_3=self.BASE_UDP_PORT + 2,
-                      RX_PORT_4=self.BASE_UDP_PORT + 3,
-                      RX_PORT_5=self.BASE_UDP_PORT + 4,
-                      RX_PORT_6=self.BASE_UDP_PORT + 5)
-        self.__class__.BASE_UDP_PORT += 6
+                      RX_PORT_1=self.base_udp_port,
+                      RX_PORT_2=self.base_udp_port + 1,
+                      RX_PORT_3=self.base_udp_port + 2,
+                      RX_PORT_4=self.base_udp_port + 3,
+                      RX_PORT_5=self.base_udp_port + 4,
+                      RX_PORT_6=self.base_udp_port + 5)
 
         super(_ExcaliburOdinData, self).create_config_file(
             "fp", self.CONFIG_TEMPLATES[self.sensor]["FrameProcessor"], index, extra_macros=macros)
@@ -52,6 +50,8 @@ class ExcaliburOdinDataServer(_OdinDataServer):
     """Store configuration for an ExcaliburOdinDataServer"""
     ODIN_DATA_CLASS = _ExcaliburOdinData
 
+    BASE_UDP_PORT = 61649
+
     def __init__(self, IP, PROCESSES, SENSOR, SHARED_MEM_SIZE=1048576000):
         self.sensor = SENSOR
         self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE)
@@ -63,9 +63,10 @@ class ExcaliburOdinDataServer(_OdinDataServer):
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int)
     )
 
-    def create_odin_data_process(self, ip, ready, release, meta, *args):
-        return super(ExcaliburOdinDataServer, self).create_odin_data_process(
-            ip, ready, release, meta, self.sensor, *args)
+    def create_odin_data_process(self, ip, ready, release, meta):
+        process = _ExcaliburOdinData(ip, ready, release, meta, self.sensor, self.BASE_UDP_PORT)
+        self.BASE_UDP_PORT += 6
+        return process
 
 
 class ExcaliburOdinControlServer(_OdinControlServer):
