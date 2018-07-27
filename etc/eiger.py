@@ -12,6 +12,37 @@ EIGER, EIGER_PATH = find_module_path("eiger-detector")
 print("Eiger: {} = {}".format(EIGER, EIGER_PATH))
 
 
+class EigerFan(Device):
+
+    """Create startup file for an EigerFan process"""
+
+    # Device attributes
+    AutoInstantiate = True
+
+    def __init__(self, IP, DETECTOR_IP, PROCESSES, SOCKETS, BLOCK_SIZE=1):
+        self.__super.__init__()
+        # Update attributes with parameters
+        self.__dict__.update(locals())
+
+        self.create_startup_file()
+
+    def create_startup_file(self):
+        macros = dict(EIGER_DETECTOR_PATH=EIGER_PATH, IP=self.DETECTOR_IP,
+                      PROCESSES=self.PROCESSES, SOCKETS=self.SOCKETS, BLOCK_SIZE=self.BLOCK_SIZE,
+                      LOG_CONFIG=os.path.join(EIGER_PATH, "log4cxx.xml"))
+
+        expand_template_file("eiger_fan_startup", macros, "stEigerFan.sh")
+
+    # __init__ arguments
+    ArgInfo = makeArgInfo(__init__,
+        IP=Simple("IP address server hosting process", str),
+        DETECTOR_IP=Simple("IP address of Eiger detector", str),
+        PROCESSES=Simple("Number of processes to fan out to", int),
+        SOCKETS=Simple("Number of sockets to open to Eiger detector stream", int),
+        BLOCK_SIZE=Simple("Number of blocks per file", int)
+    )
+
+
 class _EigerOdinData(_OdinData):
 
     CONFIG_TEMPLATES = {
@@ -38,14 +69,14 @@ class EigerOdinDataServer(_OdinDataServer):
     """Store configuration for an EigerOdinDataServer"""
     ODIN_DATA_CLASS = _EigerOdinData
 
-    def __init__(self, IP, PROCESSES, SOURCE_IP, SHARED_MEM_SIZE=16000000000):
-        self.source = SOURCE_IP
+    def __init__(self, IP, PROCESSES, SOURCE, SHARED_MEM_SIZE=16000000000):
+        self.source = SOURCE.IP
         self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE)
 
     ArgInfo = makeArgInfo(__init__,
         IP=Simple("IP address of server hosting OdinData processes", str),
         PROCESSES=Simple("Number of OdinData processes on this server", int),
-        SOURCE_IP=Simple("IP address of data stream from Eiger detector", str),
+        SOURCE=Ident("EigerFan instance", EigerFan),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int)
     )
 
@@ -101,36 +132,6 @@ class EigerOdinDataDriver(_OdinDataDriver):
 
     # __init__ arguments
     ArgInfo = _OdinDataDriver.ArgInfo + makeArgInfo(__init__)
-
-
-class EigerFan(Device):
-
-    """Create startup file for an EigerFan process"""
-
-    # Device attributes
-    AutoInstantiate = True
-
-    def __init__(self, IP, PROCESSES, SOCKETS, BLOCK_SIZE=1):
-        self.__super.__init__()
-        # Update attributes with parameters
-        self.__dict__.update(locals())
-
-        self.create_startup_file()
-
-    def create_startup_file(self):
-        macros = dict(EIGER_DETECTOR_PATH=EIGER_PATH, IP=self.IP,
-                      PROCESSES=self.PROCESSES, SOCKETS=self.SOCKETS, BLOCK_SIZE=self.BLOCK_SIZE,
-                      LOG_CONFIG=os.path.join(EIGER_PATH, "log4cxx.xml"))
-
-        expand_template_file("eiger_fan_startup", macros, "stEigerFan.sh")
-
-    # __init__ arguments
-    ArgInfo = makeArgInfo(__init__,
-        IP=Simple("IP address of Eiger detector", str),
-        PROCESSES=Simple("Number of processes to fan out to", int),
-        SOCKETS=Simple("Number of sockets to open to Eiger detector stream", int),
-        BLOCK_SIZE=Simple("Number of blocks per file", int)
-    )
 
 
 class EigerMetaListener(Device):
