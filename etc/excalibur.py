@@ -93,16 +93,17 @@ class ExcaliburOdinControlServer(_OdinControlServer):
     }
 
     def __init__(self, IP, SENSOR, FEMS_REVERSED=False, POWER_CARD_IDX=1,
-                 NODE_1_CTRL_IP = None, NODE_2_CTRL_IP = None, NODE_3_CTRL_IP = None,
-                 NODE_4_CTRL_IP = None, NODE_5_CTRL_IP = None, NODE_6_CTRL_IP = None,
-                 NODE_7_CTRL_IP = None, NODE_8_CTRL_IP = None):
+                 ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None, ODIN_DATA_SERVER_3=None,
+                 ODIN_DATA_SERVER_4=None, ODIN_DATA_SERVER_5=None, ODIN_DATA_SERVER_6=None,
+                 ODIN_DATA_SERVER_7=None, ODIN_DATA_SERVER_8=None):
         self.__dict__.update(locals())
         self.ADAPTERS.append("excalibur")
 
         super(ExcaliburOdinControlServer, self).__init__(
             IP,
-            NODE_1_CTRL_IP, NODE_2_CTRL_IP, NODE_3_CTRL_IP, NODE_4_CTRL_IP,
-            NODE_5_CTRL_IP, NODE_6_CTRL_IP, NODE_7_CTRL_IP, NODE_8_CTRL_IP)
+            ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4,
+            ODIN_DATA_SERVER_5, ODIN_DATA_SERVER_6, ODIN_DATA_SERVER_7, ODIN_DATA_SERVER_8
+        )
 
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
@@ -110,14 +111,14 @@ class ExcaliburOdinControlServer(_OdinControlServer):
         SENSOR=Choice("Sensor type", ["1M", "3M"]),
         FEMS_REVERSED=Choice("Are the FEM IP addresses reversed 106..101", [True, False]),
         POWER_CARD_IDX=Simple("Index of the power card", int),
-        NODE_1_CTRL_IP=Simple("IP address for control of FR and FP", str),
-        NODE_2_CTRL_IP=Simple("IP address for control of FR and FP", str),
-        NODE_3_CTRL_IP=Simple("IP address for control of FR and FP", str),
-        NODE_4_CTRL_IP=Simple("IP address for control of FR and FP", str),
-        NODE_5_CTRL_IP=Simple("IP address for control of FR and FP", str),
-        NODE_6_CTRL_IP=Simple("IP address for control of FR and FP", str),
-        NODE_7_CTRL_IP=Simple("IP address for control of FR and FP", str),
-        NODE_8_CTRL_IP=Simple("IP address for control of FR and FP", str)
+        ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_5=Ident("OdinDataServer 5 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_6=Ident("OdinDataServer 6 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_7=Ident("OdinDataServer 7 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_8=Ident("OdinDataServer 8 configuration", _OdinDataServer)
     )
 
     def create_odin_server_config_entries(self):

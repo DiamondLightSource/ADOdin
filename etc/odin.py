@@ -58,6 +58,9 @@ class _OdinData(Device):
 
     """Store configuration for an OdinData process"""
     INDEX = 1  # Unique index for each OdinData instance
+    RANK = 0
+    FP_ENDPOINT = ""
+    FR_ENDPOINT = ""
 
     # Device attributes
     AutoInstantiate = True
@@ -119,14 +122,19 @@ class _OdinDataServer(Device):
         raise NotImplementedError("Method must be implemented by child classes")
 
     def create_od_startup_scripts(self, server_rank, total_servers):
-        suffix = server_rank
-        for idx, _ in enumerate(self.processes):
+        rank = server_rank
+        for idx, process in enumerate(self.processes):
             fp_port_number = 5004 + (10 * idx)
             fr_port_number = 5000 + (10 * idx)
             ready_port_number = 5001 + (10 * idx)
             release_port_number = 5002 + (10 * idx)
 
-            output_file = "stFrameReceiver{}.sh".format(suffix)
+            # Store server designation on OdinData object
+            process.RANK = rank
+            process.FP_ENDPOINT = "{}:{}".format(self.IP, fp_port_number)
+            process.FR_ENDPOINT = "{}:{}".format(self.IP, fr_port_number)
+
+            output_file = "stFrameReceiver{}.sh".format(rank)
             macros = dict(
                 OD_ROOT=ODIN_DATA_ROOT,
                 BUFFER_IDX=idx + 1, SHARED_MEMORY=self.SHARED_MEM_SIZE,
@@ -135,7 +143,7 @@ class _OdinDataServer(Device):
                 LOG_CONFIG=os.path.join(ADODIN_DATA, "fr_log4cxx.xml"))
             expand_template_file("fr_startup", macros, output_file, executable=True)
 
-            output_file = "stFrameProcessor{}.sh".format(suffix)
+            output_file = "stFrameProcessor{}.sh".format(rank)
             macros = dict(
                 OD_ROOT=ODIN_DATA_ROOT,
                 CTRL_PORT=fp_port_number,
@@ -143,7 +151,7 @@ class _OdinDataServer(Device):
                 LOG_CONFIG=os.path.join(ADODIN_DATA, "fp_log4cxx.xml"))
             expand_template_file("fp_startup", macros, output_file, executable=True)
 
-            suffix += total_servers
+            rank += total_servers
 
 
 class _OdinDetectorTemplate(AutoSubstitution):
@@ -162,39 +170,43 @@ class _OdinControlServer(Device):
     AutoInstantiate = True
 
     def __init__(self, IP,
-                 NODE_1_CTRL_IP, NODE_2_CTRL_IP, NODE_3_CTRL_IP, NODE_4_CTRL_IP,
-                 NODE_5_CTRL_IP, NODE_6_CTRL_IP, NODE_7_CTRL_IP, NODE_8_CTRL_IP):
+                 ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4,
+                 ODIN_DATA_SERVER_5, ODIN_DATA_SERVER_6, ODIN_DATA_SERVER_7, ODIN_DATA_SERVER_8):
         self.__super.__init__()
         # Update attributes with parameters
         self.__dict__.update(locals())
 
-        self.ips = [
-            self.NODE_1_CTRL_IP, self.NODE_2_CTRL_IP, self.NODE_3_CTRL_IP, self.NODE_4_CTRL_IP,
-            self.NODE_5_CTRL_IP, self.NODE_6_CTRL_IP, self.NODE_7_CTRL_IP, self.NODE_8_CTRL_IP
+        self.odin_data_servers = [
+            ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4,
+            ODIN_DATA_SERVER_5, ODIN_DATA_SERVER_6, ODIN_DATA_SERVER_7, ODIN_DATA_SERVER_8
         ]
-        if all(_ is None for _ in self.ips):
+        if all(_ is None for _ in self.odin_data_servers):
             raise ValueError("Received no control endpoints for Odin Server")
 
-        self.create_odin_server_startup_scripts()
-        self.create_odin_server_config_file()
+        self.odin_data_processes = []
+        for server in self.odin_data_servers:
+            if server is not None:
+                self.odin_data_processes += server.processes
+
+        self.create_startup_script()
 
     ArgInfo = makeArgInfo(__init__,
         IP=Simple("IP address of control server", str),
-        NODE_1_CTRL_IP=Simple("IP address for control of FR and FP", str),
-        NODE_2_CTRL_IP=Simple("IP address for control of FR and FP", str),
-        NODE_3_CTRL_IP=Simple("IP address for control of FR and FP", str),
-        NODE_4_CTRL_IP=Simple("IP address for control of FR and FP", str),
-        NODE_5_CTRL_IP=Simple("IP address for control of FR and FP", str),
-        NODE_6_CTRL_IP=Simple("IP address for control of FR and FP", str),
-        NODE_7_CTRL_IP=Simple("IP address for control of FR and FP", str),
-        NODE_8_CTRL_IP=Simple("IP address for control of FR and FP", str)
+        ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_5=Ident("OdinDataServer 5 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_6=Ident("OdinDataServer 6 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_7=Ident("OdinDataServer 7 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_8=Ident("OdinDataServer 8 configuration", _OdinDataServer)
     )
 
-    def create_odin_server_startup_scripts(self):
+    def create_startup_script(self):
         macros = dict(ODIN_SERVER=self.ODIN_SERVER, CONFIG="odin_server.cfg")
         expand_template_file("odin_server_startup", macros, "stOdinServer.sh", executable=True)
 
-    def create_odin_server_config_file(self):
+    def create_config_file(self):
         macros = dict(PORT=self.PORT,
                       ADAPTERS=", ".join(self.ADAPTERS),
                       ADAPTER_CONFIG="\n\n".join(self.create_odin_server_config_entries()))
@@ -206,16 +218,9 @@ class _OdinControlServer(Device):
     def _create_odin_data_config_entry(self):
         fp_endpoints = []
         fr_endpoints = []
-        server_count = {}
-        for ip in self.ips:
-            if ip is not None:
-                if ip not in server_count:
-                    server_count[ip] = 0
-                fp_port_number = 5004 + (10 * server_count[ip])
-                fr_port_number = 5000 + (10 * server_count[ip])
-                server_count[ip] += 1
-                fr_endpoints.append("{}:{}".format(ip, fr_port_number))
-                fp_endpoints.append("{}:{}".format(ip, fp_port_number))
+        for process in sorted(self.odin_data_processes, key=lambda x: x.RANK):
+            fp_endpoints.append(process.FP_ENDPOINT)
+            fr_endpoints.append(process.FR_ENDPOINT)
 
         return "[adapter.fp]\n" \
                "module = odin_data.frame_processor_adapter.FrameProcessorAdapter\n" \
@@ -336,6 +341,9 @@ class _OdinDataDriver(AsynPort):
 
                 server.create_od_startup_scripts(server_number, self.server_count)
 
+        # Now OdinData instances are configured, OdinControlServer can generate its config from them
+        ODIN_CONTROL_SERVER.create_config_file()
+
     # __init__ arguments
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
         PORT=Simple("Port name for the detector", str),
@@ -352,7 +360,7 @@ class _OdinDataDriver(AsynPort):
         ODIN_DATA_SERVER_5=Ident("OdinDataServer 5 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_6=Ident("OdinDataServer 6 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_7=Ident("OdinDataServer 7 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_8=Ident("OdinDataServer 8 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_8=Ident("OdinDataServer 8 configuration", _OdinDataServer)
     )
 
     # Device attributes
