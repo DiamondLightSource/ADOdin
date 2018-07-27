@@ -1,15 +1,21 @@
 import os
 
-from iocbuilder import AutoSubstitution, Device
+from iocbuilder import AutoSubstitution
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
-from iocbuilder.modules.ADCore import ADCore, ADBaseTemplate, makeTemplateInstance
+from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
 
-from odin import _OdinDetector, _OdinData, _OdinDataServer, _OdinControlServer, \
+from odin import _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, \
                  find_module_path, expand_template_file
 
 
 EXCALIBUR, EXCALIBUR_PATH = find_module_path("excalibur-detector")
 print("Excalibur: {} = {}".format(EXCALIBUR, EXCALIBUR_PATH))
+
+EXCALIBUR_DIMENSIONS = {
+    # Sensor: (Width, Height)
+    "1M": (2048, 512),
+    "3M": (2048, 1536)
+}
 
 
 class _ExcaliburOdinData(_OdinData):
@@ -172,18 +178,55 @@ def add_excalibur_fp_template(cls):
 
 
 @add_excalibur_fp_template
-class Excalibur2NodeFPTemplate(AutoSubstitution):
+class _Excalibur2NodeFPTemplate(AutoSubstitution):
     TemplateFile = "excalibur2NodeFP.template"
 
 
 @add_excalibur_fp_template
-class Excalibur4NodeFPTemplate(AutoSubstitution):
+class _Excalibur4NodeFPTemplate(AutoSubstitution):
     TemplateFile = "excalibur4NodeFP.template"
 
 
 @add_excalibur_fp_template
-class Excalibur8NodeFPTemplate(AutoSubstitution):
+class _Excalibur8NodeFPTemplate(AutoSubstitution):
     TemplateFile = "excalibur8NodeFP.template"
+
+
+class ExcaliburOdinDataDriver(_OdinDataDriver):
+
+    """Create an Excalibur OdinData driver"""
+
+    FP_TEMPLATES = {
+        # Number of OdinData nodes: Template
+        2: _Excalibur2NodeFPTemplate,
+        4: _Excalibur4NodeFPTemplate,
+        8: _Excalibur8NodeFPTemplate
+    }
+
+    def __init__(self, **args):
+        self.__super.__init__(**args)
+        # Update the attributes of self from the commandline args
+        self.__dict__.update(locals())
+
+        if self.server_count not in self.FP_TEMPLATES.keys():
+            raise ValueError("Total number of OdinData processes must be {}".format(
+                self.FP_TEMPLATES.keys()))
+        else:
+            sensor = self.ODIN_DATA_PROCESSES[0].sensor
+            template_args = {
+                "P": args["P"],
+                "R": ":OD:",
+                "DET": args["R"],
+                "PORT": args["PORT"],
+                "TIMEOUT": args["TIMEOUT"],
+                "HEIGHT": EXCALIBUR_DIMENSIONS[sensor][0],
+                "WIDTH": EXCALIBUR_DIMENSIONS[sensor][1]
+            }
+            _ExcaliburXNodeFPTemplate = self.FP_TEMPLATES[self.server_count]
+            _ExcaliburXNodeFPTemplate(**template_args)
+
+    # __init__ arguments
+    ArgInfo = _OdinDataDriver.ArgInfo + makeArgInfo(__init__)
 
 
 class _ExcaliburFemHousekeepingTemplate(AutoSubstitution):
@@ -199,7 +242,7 @@ def add_excalibur_fem_status(cls):
     """Convenience function to add excaliburFemStatusTemplate attributes to a class that
     includes it via an msi include statement rather than verbatim"""
     cls.Arguments = _ExcaliburFemStatusTemplate.Arguments + \
-                    [x for x in cls.Arguments if x not in _ExcaliburFemStatusTemplate.Arguments]
+        [x for x in cls.Arguments if x not in _ExcaliburFemStatusTemplate.Arguments]
     cls.ArgInfo = _ExcaliburFemStatusTemplate.ArgInfo + cls.ArgInfo.filtered(
         without=_ExcaliburFemStatusTemplate.ArgInfo.Names())
     cls.Defaults.update(_ExcaliburFemStatusTemplate.Defaults)

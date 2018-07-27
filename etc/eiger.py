@@ -1,9 +1,9 @@
 import os
 
 from iocbuilder import Device
-from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
+from iocbuilder.arginfo import makeArgInfo, Simple, Ident
 
-from odin import _OdinData, _OdinDataServer, _OdinControlServer, \
+from odin import _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, \
     find_module_path, expand_template_file
 from excalibur import EXCALIBUR_PATH
 
@@ -88,6 +88,19 @@ class EigerOdinControlServer(_OdinControlServer):
         return [
             self._create_odin_data_config_entry()
         ]
+
+
+class EigerOdinDataDriver(_OdinDataDriver):
+
+    """Create an Eiger OdinData driver"""
+
+    def __init__(self, **args):
+        self.__super.__init__(**args)
+        # Update the attributes of self from the commandline args
+        self.__dict__.update(locals())
+
+    # __init__ arguments
+    ArgInfo = _OdinDataDriver.ArgInfo + makeArgInfo(__init__)
 
 
 class EigerFan(Device):
