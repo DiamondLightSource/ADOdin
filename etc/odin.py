@@ -9,6 +9,7 @@ from iocbuilder.iocinit import IocDataStream
 from iocbuilder.modules.asyn import AsynPort
 from iocbuilder.modules.ADCore import ADCore, ADBaseTemplate, makeTemplateInstance
 from iocbuilder.modules.restClient import restClient
+from iocbuilder.modules.calc import Calc
 
 
 ADODIN_ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
@@ -275,7 +276,7 @@ class _OdinDataDriver(AsynPort):
 
     """Create an OdinData driver"""
 
-    Dependencies = (ADCore, restClient)
+    Dependencies = (ADCore, Calc, restClient)
 
     # This tells xmlbuilder to use PORT instead of name as the row ID
     UniqueName = "PORT"
