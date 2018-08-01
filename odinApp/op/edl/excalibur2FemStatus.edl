@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 52
-y 76
+y 113
 w 740
 h 860
 font "arial-medium-r-18.0"
@@ -583,7 +583,7 @@ onColor index 3
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):HK:FEMRESET.PROC"
+controlPv "$(P)HK:FEMRESET.PROC"
 pressValue "1"
 onLabel "Reset Fems"
 offLabel "Reset Fems"
@@ -601,7 +601,7 @@ x 610
 y 790
 w 120
 h 20
-controlPv "$(P):HK:FEMRESETSTATE"
+controlPv "$(P)HK:FEMRESETSTATE"
 fgColor index 16
 bgColor index 10
 fill

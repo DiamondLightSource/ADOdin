@@ -50,7 +50,7 @@ record(longin, "$(P)$(R)NumberFEMs_RBV")
 
 # Write a 1 to this record to reset the fems
 #% archiver 10 Monitor
-record(bo, "$(P)$(R):HK:DOFEMRESET")
+record(bo, "$(P)$(R)HK:DOFEMRESET")
 {
     field(DTYP, "asynInt32")
     field(VAL,  "0")
@@ -60,13 +60,13 @@ record(bo, "$(P)$(R):HK:DOFEMRESET")
 }
 
 # Process this record to reset the FEMs
-record(seq, "$(P)$(R):HK:FEMRESET")
+record(seq, "$(P)$(R)HK:FEMRESET")
 {
   field(SELM, "All")
   # State to busy
   field(DLY1, "0")
   field(DOL1, "1")
-  field(LNK1, "$(P)$(R):HK:FEMRESETSTATE PP")
+  field(LNK1, "$(P)$(R)HK:FEMRESETSTATE PP")
   # Turn off the LV power
 #  field(DLY2, "0")
 #  field(DOL2, "0")
@@ -74,15 +74,15 @@ record(seq, "$(P)$(R):HK:FEMRESET")
   # Wait 5 seconds and then send the FEM reset
   field(DLY3, "5")
   field(DOL3, "1")
-  field(LNK3, "$(P)$(R):HK:DOFEMRESET PP")
+  field(LNK3, "$(P)$(R)HK:DOFEMRESET PP")
   # Wait 15 seconds for completion
   field(DLY4, "15")
   field(DOL4, "0")
-  field(LNK4, "$(P)$(R):HK:FEMRESETSTATE PP")
+  field(LNK4, "$(P)$(R)HK:FEMRESETSTATE PP")
 }
 
 # The reset state indication
-record(bo, "$(P)$(R):HK:FEMRESETSTATE")
+record(bo, "$(P)$(R)HK:FEMRESETSTATE")
 {
   field(VAL, "0")
   field(ZNAM, "Idle")
@@ -101,7 +101,7 @@ record(bo, "$(P)$(R):HK:FEMRESETSTATE")
 #
 ################################################################################
 
-record(dfanout, "$(P)$(R):HK:MOLY_TEMPERATURE:LOW")
+record(dfanout, "$(P)$(R)HK:MOLY_TEMPERATURE:LOW")
 {
     field(DOL,  "$(P)$(R)0:MOLY_TEMPERATURE.LOW CP")
     field(OMSL, "closed_loop")
@@ -112,7 +112,7 @@ record(dfanout, "$(P)$(R):HK:MOLY_TEMPERATURE:LOW")
     field(OUTE, "$(P)$(R)5:MOLY_TEMPERATURE.LOW PP")
 }
 
-record(dfanout, "$(P)$(R):HK:MOLY_TEMPERATURE:HIGH")
+record(dfanout, "$(P)$(R)HK:MOLY_TEMPERATURE:HIGH")
 {
     field(DOL,  "$(P)$(R)0:MOLY_TEMPERATURE.HIGH CP")
     field(OMSL, "closed_loop")
@@ -123,7 +123,7 @@ record(dfanout, "$(P)$(R):HK:MOLY_TEMPERATURE:HIGH")
     field(OUTE, "$(P)$(R)5:MOLY_TEMPERATURE.HIGH PP")
 }
 
-record(dfanout, "$(P)$(R):HK:LOCAL_TEMP:LOW")
+record(dfanout, "$(P)$(R)HK:LOCAL_TEMP:LOW")
 {
     field(DOL,  "$(P)$(R)0:LOCAL_TEMP.LOW CP")
     field(OMSL, "closed_loop")
@@ -134,7 +134,7 @@ record(dfanout, "$(P)$(R):HK:LOCAL_TEMP:LOW")
     field(OUTE, "$(P)$(R)5:LOCAL_TEMP.LOW PP")
 }
 
-record(dfanout, "$(P)$(R):HK:LOCAL_TEMP:HIGH")
+record(dfanout, "$(P)$(R)HK:LOCAL_TEMP:HIGH")
 {
     field(DOL,  "$(P)$(R)0:LOCAL_TEMP.HIGH CP")
     field(OMSL, "closed_loop")
@@ -145,7 +145,7 @@ record(dfanout, "$(P)$(R):HK:LOCAL_TEMP:HIGH")
     field(OUTE, "$(P)$(R)5:LOCAL_TEMP.HIGH PP")
 }
 
-record(dfanout, "$(P)$(R):HK:REMOTE_DIODE_TEMP:LOW")
+record(dfanout, "$(P)$(R)HK:REMOTE_DIODE_TEMP:LOW")
 {
     field(DOL,  "$(P)$(R)0:REMOTE_DIODE_TEMP.LOW CP")
     field(OMSL, "closed_loop")
@@ -156,7 +156,7 @@ record(dfanout, "$(P)$(R):HK:REMOTE_DIODE_TEMP:LOW")
     field(OUTE, "$(P)$(R)5:REMOTE_DIODE_TEMP.LOW PP")
 }
 
-record(dfanout, "$(P)$(R):HK:REMOTE_DIODE_TEMP:HIGH")
+record(dfanout, "$(P)$(R)HK:REMOTE_DIODE_TEMP:HIGH")
 {
     field(DOL,  "$(P)$(R)0:REMOTE_DIODE_TEMP.HIGH CP")
     field(OMSL, "closed_loop")
@@ -167,7 +167,7 @@ record(dfanout, "$(P)$(R):HK:REMOTE_DIODE_TEMP:HIGH")
     field(OUTE, "$(P)$(R)5:REMOTE_DIODE_TEMP.HIGH PP")
 }
 
-record(dfanout, "$(P)$(R):HK:MOLY_HUMIDITY:LOW")
+record(dfanout, "$(P)$(R)HK:MOLY_HUMIDITY:LOW")
 {
     field(DOL,  "$(P)$(R)0:MOLY_HUMIDITY.LOW CP")
     field(OMSL, "closed_loop")
@@ -178,7 +178,7 @@ record(dfanout, "$(P)$(R):HK:MOLY_HUMIDITY:LOW")
     field(OUTE, "$(P)$(R)5:MOLY_HUMIDITY.LOW PP")
 }
 
-record(dfanout, "$(P)$(R):HK:MOLY_HUMIDITY:HIGH")
+record(dfanout, "$(P)$(R)HK:MOLY_HUMIDITY:HIGH")
 {
     field(DOL,  "$(P)$(R)0:MOLY_HUMIDITY.HIGH CP")
     field(OMSL, "closed_loop")
