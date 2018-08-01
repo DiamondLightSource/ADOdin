@@ -1,7 +1,8 @@
 import os
 
-from iocbuilder import Device
+from iocbuilder import Device, AutoSubstitution
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident
+from iocbuilder.modules.ADCore import makeTemplateInstance
 
 from odin import _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, \
     find_module_path, expand_template_file
@@ -120,6 +121,11 @@ class EigerOdinControlServer(_OdinControlServer):
         ]
 
 
+class _EigerDetectorTemplate(AutoSubstitution):
+    """A template file that simply exposes an EDM screen with P and R macros"""
+    TemplateFile = "eigerDetector.template"
+
+
 class EigerOdinDataDriver(_OdinDataDriver):
 
     """Create an Eiger OdinData driver"""
@@ -128,6 +134,9 @@ class EigerOdinDataDriver(_OdinDataDriver):
         self.__super.__init__(DETECTOR="eiger", **args)
         # Update the attributes of self from the commandline args
         self.__dict__.update(locals())
+
+        template_args = dict((key, args[key]) for key in ["P", "R"])
+        makeTemplateInstance(_EigerDetectorTemplate, locals(), template_args)
 
     # __init__ arguments
     ArgInfo = _OdinDataDriver.ArgInfo.filtered(without=["DETECTOR"])
