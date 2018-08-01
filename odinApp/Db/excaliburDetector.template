@@ -8,7 +8,7 @@
 #   TIMEOUT - Timeout
 
 # This associates the template with an edm screen
-# % gui, $(PORT), edmtab, excaliburMain.edl, P=$(P),R=$(R)
+# % gui, $(PORT), edmtab, ExcaliburMain.edl, P=$(P),R=$(R)
 
 include "ADBase.template"
 

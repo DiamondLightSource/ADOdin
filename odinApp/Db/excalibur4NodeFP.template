@@ -12,7 +12,7 @@
 #   TIMEOUT - Timeout
 
 # This associates the template with an edm screen
-# % gui, $(name), edm, ExcaliburDAQStatus.edl, P=$(P),R=$(R)
+# % gui, $(name), edm, ExcaliburDAQ4Status.edl, P=$(P),R=$(R)
 
 ################################################################################
 #

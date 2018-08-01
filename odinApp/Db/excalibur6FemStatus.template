@@ -11,7 +11,7 @@
 #   TIMEOUT - Timeout
 
 # This associates an edm screen with the template
-# % gui, $(NAME), edm, excalibur6FemStatus.edl, P=$(P)$(R)
+# % gui, $(NAME), edm, Excalibur6FemStatus.edl, P=$(P)$(R)
 
 ################################################################################
 #

@@ -629,7 +629,7 @@ setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "excaliburFemStatus.edl"
+  0 "ExcaliburFemStatus_embed.edl"
 }
 symbols {
   0 "FEM=0"
@@ -657,7 +657,7 @@ setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "excaliburFemStatus.edl"
+  0 "ExcaliburFemStatus_embed.edl"
 }
 symbols {
   0 "FEM=1"
@@ -685,7 +685,7 @@ setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "excaliburPowerStatus.edl"
+  0 "ExcaliburPowerStatus_embed.edl"
 }
 noScroll
 endObjectProperties
