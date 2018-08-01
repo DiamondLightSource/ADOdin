@@ -54,7 +54,6 @@ class _ExcaliburOdinData(_OdinData):
 class ExcaliburOdinDataServer(_OdinDataServer):
 
     """Store configuration for an ExcaliburOdinDataServer"""
-    ODIN_DATA_CLASS = _ExcaliburOdinData
 
     BASE_UDP_PORT = 61649
 

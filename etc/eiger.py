@@ -67,7 +67,6 @@ class _EigerOdinData(_OdinData):
 class EigerOdinDataServer(_OdinDataServer):
 
     """Store configuration for an EigerOdinDataServer"""
-    ODIN_DATA_CLASS = _EigerOdinData
 
     def __init__(self, IP, PROCESSES, SOURCE, SHARED_MEM_SIZE=16000000000):
         self.source = SOURCE.IP

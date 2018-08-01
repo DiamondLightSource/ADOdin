@@ -90,7 +90,6 @@ class _OdinData(Device):
 class _OdinDataServer(Device):
 
     """Store configuration for an OdinDataServer"""
-    ODIN_DATA_CLASS = _OdinData
     PORT_BASE = 5000
     PROCESS_COUNT = 0
 
