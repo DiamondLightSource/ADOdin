@@ -212,17 +212,19 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
             raise ValueError("Total number of OdinData processes must be {}".format(
                 self.FP_TEMPLATES.keys()))
         else:
-            sensor = self.ODIN_DATA_PROCESSES[0].sensor
+            sensor = self.ODIN_DATA_PROCESSES[0].sensor 
+            gui_name = args["PORT"][:args["PORT"].find(".")] + ".System"
             template_args = {
                 "P": args["P"],
                 "R": ":OD:",
                 "DET": args["R"],
                 "PORT": args["PORT"],
+                "name": gui_name,
                 "TIMEOUT": args["TIMEOUT"],
-                "HEIGHT": EXCALIBUR_DIMENSIONS[sensor][0],
-                "WIDTH": EXCALIBUR_DIMENSIONS[sensor][1]
+                "HEIGHT": EXCALIBUR_DIMENSIONS[sensor][1],
+                "WIDTH": EXCALIBUR_DIMENSIONS[sensor][0]
             }
-            _ExcaliburXNodeFPTemplate = self.FP_TEMPLATES[self.server_count]
+            _ExcaliburXNodeFPTemplate = self.FP_TEMPLATES[len(self.ODIN_DATA_PROCESSES)]
             _ExcaliburXNodeFPTemplate(**template_args)
 
     # __init__ arguments
