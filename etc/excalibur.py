@@ -205,7 +205,7 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
     }
 
     def __init__(self, **args):
-        self.__super.__init__(**args)
+        self.__super.__init__(DETECTOR="excalibur", **args)
         # Update the attributes of self from the commandline args
         self.__dict__.update(locals())
 
@@ -229,7 +229,7 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
             _ExcaliburXNodeFPTemplate(**template_args)
 
     # __init__ arguments
-    ArgInfo = _OdinDataDriver.ArgInfo + makeArgInfo(__init__)
+    ArgInfo = _OdinDataDriver.ArgInfo.filtered(without=["DETECTOR"])
 
 
 class _ExcaliburFemHousekeepingTemplate(AutoSubstitution):

@@ -126,12 +126,12 @@ class EigerOdinDataDriver(_OdinDataDriver):
     """Create an Eiger OdinData driver"""
 
     def __init__(self, **args):
-        self.__super.__init__(**args)
+        self.__super.__init__(DETECTOR="eiger", **args)
         # Update the attributes of self from the commandline args
         self.__dict__.update(locals())
 
     # __init__ arguments
-    ArgInfo = _OdinDataDriver.ArgInfo + makeArgInfo(__init__)
+    ArgInfo = _OdinDataDriver.ArgInfo.filtered(without=["DETECTOR"])
 
 
 class EigerMetaListener(Device):
