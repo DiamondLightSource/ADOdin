@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd $EIGER_DETECTOR_PATH
-./eigerMetaListener -i $IP_LIST -b $BLOCK_SIZE --staticlogfields beamline="i02-2",detector="Eiger4M"
+prefix/bin/eigerMetaListener -i $IP_LIST -b $BLOCK_SIZE
