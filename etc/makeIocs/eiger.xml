@@ -2,7 +2,8 @@
 <components arch="linux-x86_64">
 	<ADOdin.EigerFan DETECTOR_IP="127.0.0.1" IP="127.0.0.1" PROCESSES="4" SOCKETS="4" name="EigerFan"/>
 	<ADOdin.EigerOdinDataServer IP="127.0.0.1" PROCESSES="2" SOURCE="EigerFan" name="ODServer1"/>
-	<ADOdin.EigerOdinControlServer IP="127.0.0.1" ODIN_DATA_SERVER_1="ODServer1" name="ControlServer"/>
-	<ADOdin.EigerOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" ODIN_DATA_SERVER_1="ODServer1" P="EIGER" PORT="ODN.OD" R=":OD:" TIMEOUT="1"/>
-	<ADOdin.EigerMetaListener ODIN_DATA_SERVER_1="ODServer1" name="EigerMeta"/>
+	<ADOdin.EigerOdinDataServer IP="127.0.0.2" PROCESSES="2" SOURCE="EigerFan" name="ODServer2"/>
+	<ADOdin.EigerOdinControlServer IP="127.0.0.1" ODIN_DATA_SERVER_1="ODServer1" ODIN_DATA_SERVER_2="ODServer2" name="ControlServer"/>
+	<ADOdin.EigerOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" ODIN_DATA_SERVER_1="ODServer1" ODIN_DATA_SERVER_2="ODServer2" P="EIGER" PORT="ODN.OD" R=":OD:" TIMEOUT="1"/>
+	<ADOdin.EigerMetaListener ODIN_DATA_SERVER_1="ODServer1" ODIN_DATA_SERVER_2="ODServer2" name="EigerMeta"/>
 </components>
