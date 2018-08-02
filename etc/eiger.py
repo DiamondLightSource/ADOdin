@@ -32,7 +32,8 @@ class EigerFan(Device):
                       PROCESSES=self.PROCESSES, SOCKETS=self.SOCKETS, BLOCK_SIZE=self.BLOCK_SIZE,
                       LOG_CONFIG=os.path.join(EIGER_PATH, "log4cxx.xml"))
 
-        expand_template_file("eiger_fan_startup", macros, "stEigerFan.sh")
+        expand_template_file("eiger_fan_startup", macros, "stEigerFan.sh",
+                             executable=True)
 
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
@@ -174,7 +175,8 @@ class EigerMetaListener(Device):
                       IP_LIST=",".join(self.ip_list),
                       BLOCK_SIZE=self.BLOCK_SIZE)
 
-        expand_template_file("eiger_meta_startup", macros, "stEigerMetaListener.sh")
+        expand_template_file("eiger_meta_startup", macros, "stEigerMetaListener.sh",
+                             executable=True)
 
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
