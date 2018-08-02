@@ -137,7 +137,7 @@ class EigerOdinDataDriver(_OdinDataDriver):
         # Update the attributes of self from the commandline args
         self.__dict__.update(locals())
 
-        template_args = dict((key, args[key]) for key in ["P", "R"])
+        template_args = dict((key, args[key]) for key in ["P", "R", "PORT"])
         makeTemplateInstance(_EigerDetectorTemplate, locals(), template_args)
 
     # __init__ arguments
