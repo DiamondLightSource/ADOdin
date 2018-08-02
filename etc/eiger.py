@@ -58,7 +58,8 @@ class _EigerOdinData(_OdinData):
 
     def create_config_files(self, index):
         macros = dict(PP_ROOT=EIGER_PATH,
-                      IP=self.source)
+                      IP=self.source,
+                      PORT_SUFFIX=index - 1)
 
         super(_EigerOdinData, self).create_config_file(
             "fp", self.CONFIG_TEMPLATES["FrameProcessor"], index, extra_macros=macros)
