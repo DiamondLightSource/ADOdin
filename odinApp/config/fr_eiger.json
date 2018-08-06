@@ -1,0 +1,9 @@
+[
+  {
+    "decoder_type": "Eiger",
+    "decoder_path": "$PP_ROOT/prefix/lib",
+    "rx_type": "zmq",
+    "rx_address": "$IP",
+    "rx_ports": "3160$PORT_SUFFIX,"
+  }
+]

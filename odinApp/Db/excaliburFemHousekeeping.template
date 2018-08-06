@@ -7,9 +7,6 @@
 #   PORT    - Asyn port
 #   TIMEOUT - Timeout
 
-#
-# %gdatag,template,simplePv,$(gda_name=).P5V_A_VMON,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).P5V_A_VMON,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)P5V_A_VMON")
@@ -26,9 +23,6 @@ record(ai, "$(P)$(R)P5V_A_VMON")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).P5V_B_VMON,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).P5V_B_VMON,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)P5V_B_VMON")
@@ -45,9 +39,6 @@ record(ai, "$(P)$(R)P5V_B_VMON")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).P5V_FEMO0_IMON,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).P5V_FEMO0_IMON,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)P5V_FEMO0_IMON")
@@ -64,9 +55,6 @@ record(ai, "$(P)$(R)P5V_FEMO0_IMON")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).P5V_FEMO1_IMON,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).P5V_FEMO1_IMON,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)P5V_FEMO1_IMON")
@@ -83,9 +71,6 @@ record(ai, "$(P)$(R)P5V_FEMO1_IMON")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).P5V_FEMO2_IMON,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).P5V_FEMO2_IMON,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)P5V_FEMO2_IMON")
@@ -102,9 +87,6 @@ record(ai, "$(P)$(R)P5V_FEMO2_IMON")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).P5V_FEMO3_IMON,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).P5V_FEMO3_IMON,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)P5V_FEMO3_IMON")
@@ -121,9 +103,6 @@ record(ai, "$(P)$(R)P5V_FEMO3_IMON")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).P5V_FEMO4_IMON,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).P5V_FEMO4_IMON,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)P5V_FEMO4_IMON")
@@ -140,9 +119,6 @@ record(ai, "$(P)$(R)P5V_FEMO4_IMON")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).P5V_FEMO5_IMON,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).P5V_FEMO5_IMON,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)P5V_FEMO5_IMON")
@@ -159,9 +135,6 @@ record(ai, "$(P)$(R)P5V_FEMO5_IMON")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).P48V_VMON,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).P48V_VMON,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)P48V_VMON")
@@ -178,9 +151,6 @@ record(ai, "$(P)$(R)P48V_VMON")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).P48V_IMON,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).P48V_IMON,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)P48V_IMON")
@@ -197,9 +167,6 @@ record(ai, "$(P)$(R)P48V_IMON")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).P5VSUP_VMON,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).P5VSUP_VMON,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)P5VSUP_VMON")
@@ -216,9 +183,6 @@ record(ai, "$(P)$(R)P5VSUP_VMON")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).P5VSUP_IMON,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).P5VSUP_IMON,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)P5VSUP_IMON")
@@ -235,9 +199,6 @@ record(ai, "$(P)$(R)P5VSUP_IMON")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).HUMIDITY_MON,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).HUMIDITY_MON,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)HUMIDITY_MON")
@@ -254,9 +215,6 @@ record(ai, "$(P)$(R)HUMIDITY_MON")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).AIR_TEMP_MON,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).AIR_TEMP_MON,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)AIR_TEMP_MON")
@@ -273,9 +231,6 @@ record(ai, "$(P)$(R)AIR_TEMP_MON")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).COOLANT_TEMP_MON,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).COOLANT_TEMP_MON,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)COOLANT_TEMP_MON")
@@ -292,9 +247,6 @@ record(ai, "$(P)$(R)COOLANT_TEMP_MON")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).COOLANT_FLOW_MON,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).COOLANT_FLOW_MON,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)COOLANT_FLOW_MON")
@@ -311,9 +263,6 @@ record(ai, "$(P)$(R)COOLANT_FLOW_MON")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).P3V3_IMON,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).P3V3_IMON,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)P3V3_IMON")
@@ -330,9 +279,6 @@ record(ai, "$(P)$(R)P3V3_IMON")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).P1V8_IMON_A,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).P1V8_IMON_A,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)P1V8_IMON_A")
@@ -349,9 +295,6 @@ record(ai, "$(P)$(R)P1V8_IMON_A")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).BIAS_IMON,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).BIAS_IMON,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)BIAS_IMON")
@@ -368,9 +311,6 @@ record(ai, "$(P)$(R)BIAS_IMON")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).P3V3_VMON,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).P3V3_VMON,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)P3V3_VMON")
@@ -387,9 +327,6 @@ record(ai, "$(P)$(R)P3V3_VMON")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).P1V8_VMON_A,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).P1V8_VMON_A,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)P1V8_VMON_A")
@@ -406,9 +343,6 @@ record(ai, "$(P)$(R)P1V8_VMON_A")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).BIAS_VMON,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).BIAS_VMON,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)BIAS_VMON")
@@ -423,9 +357,6 @@ record(ai, "$(P)$(R)BIAS_VMON")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).P1V8_IMON_B,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).P1V8_IMON_B,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)P1V8_IMON_B")
@@ -442,9 +373,6 @@ record(ai, "$(P)$(R)P1V8_IMON_B")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).P1V8_VMON_B,$(gda_desc=)
-# %gdatag,pv,ro,$(gda_name=).P1V8_VMON_B,RECORD,$(gda_desc=)
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)P1V8_VMON_B")
@@ -461,9 +389,6 @@ record(ai, "$(P)$(R)P1V8_VMON_B")
     field(LSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simpleBinary,$(gda_name=).COOLANT_TEMP_STATUS,$(gda_desc=)
-# %gdatag,binary,ro,$(gda_name=).COOLANT_TEMP_STATUS,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
 record(bi, "$(P)$(R)COOLANT_TEMP_STATUS")
 {
@@ -474,9 +399,6 @@ record(bi, "$(P)$(R)COOLANT_TEMP_STATUS")
     field(ZSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simpleBinary,$(gda_name=).HUMIDITY_STATUS,$(gda_desc=)
-# %gdatag,binary,ro,$(gda_name=).HUMIDITY_STATUS,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
 record(bi, "$(P)$(R)HUMIDITY_STATUS")
 {
@@ -487,9 +409,6 @@ record(bi, "$(P)$(R)HUMIDITY_STATUS")
     field(ZSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simpleBinary,$(gda_name=).COOLANT_FLOW_STATUS,$(gda_desc=)
-# %gdatag,binary,ro,$(gda_name=).COOLANT_FLOW_STATUS,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
 record(bi, "$(P)$(R)COOLANT_FLOW_STATUS")
 {
@@ -500,9 +419,6 @@ record(bi, "$(P)$(R)COOLANT_FLOW_STATUS")
     field(ZSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simpleBinary,$(gda_name=).AIR_TEMP_STATUS,$(gda_desc=)
-# %gdatag,binary,ro,$(gda_name=).AIR_TEMP_STATUS,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
 record(bi, "$(P)$(R)AIR_TEMP_STATUS")
 {
@@ -513,9 +429,6 @@ record(bi, "$(P)$(R)AIR_TEMP_STATUS")
     field(ZSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simpleBinary,$(gda_name=).FAN_FAULT,$(gda_desc=)
-# %gdatag,binary,ro,$(gda_name=).FAN_FAULT,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
 record(bi, "$(P)$(R)FAN_FAULT")
 {
@@ -526,9 +439,6 @@ record(bi, "$(P)$(R)FAN_FAULT")
     field(OSV,  "MAJOR")
 }
 
-#
-# %gdatag,template,simpleBinary,$(gda_name=).BIAS_ON_OFF,$(gda_desc=)
-# %gdatag,binary,rw,$(gda_name=).BIAS_ON_OFF,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
 record(bo, "$(P)$(R)BIAS_ON_OFF")
 {
@@ -549,10 +459,7 @@ record(bi, "$(P)$(R)BIAS_ON_OFF_RBV")
     field(FLNK, "$(P)$(R)BIAS_LEVEL:HIGH")
 }
 
-#
-# %gdatag,template,simplePv,$(gda_name=).BIAS_LEVEL,$(gda_desc=)
-# %gdatag,pv,rw,$(gda_name=).BIAS_LEVEL,RECORD,$(gda_desc=)
-# % autosave 2 
+# % autosave 2
 #% archiver 10 Monitor
 record(ao, "$(P)$(R)BIAS_LEVEL")
 {
@@ -777,8 +684,6 @@ record(calcout, "$(P)$(R)HvLvSoftTripOverridden3")
 }
 
 # Write a 1 to this record to reset the them
-# %gdatag,template,simpleBinary,$(gda_name=).FEMRESET,$(gda_desc=)
-# %gdatag,binary,rw,$(gda_name=).FEMRESET,RECORD,$(gda_desc=)
 #% archiver 10 Monitor
 #record(bo, "$(P)$(R)DOFEMRESET")
 #{

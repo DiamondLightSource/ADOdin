@@ -20,6 +20,7 @@
 #
 ################################################################################
 
+substitute "TOTAL=8"
 substitute "ADDRESS=0"
 include "excaliburFP.template"
 substitute "ADDRESS=1"

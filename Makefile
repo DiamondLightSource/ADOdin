@@ -5,6 +5,8 @@ include $(TOP)/configure/CONFIG
 
 DIRS := $(DIRS) configure
 DIRS := $(DIRS) odinApp
+DIRS := $(DIRS) $(filter-out $(DIRS), etc)
+DIRS := $(DIRS) $(filter-out $(DIRS), iocs)
 
 ifeq ($(BUILD_IOCS), YES)
 	DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard iocs))

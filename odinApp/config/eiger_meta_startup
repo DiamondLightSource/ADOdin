@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd $EIGER_DETECTOR_PATH
+prefix/bin/eigerMetaListener -i $IP_LIST -b $BLOCK_SIZE --staticlogfields beamline=$${BEAMLINE},detector="Eiger$SENSOR"

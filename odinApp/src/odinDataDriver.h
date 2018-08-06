@@ -154,7 +154,6 @@ class OdinDataDriver : public OdinClient
   int mNumCapturedSum;
   int mWritingAny;
   int mTimeoutActiveAny;
-  int mFileTemplate;
   int mImageHeight;
   int mImageWidth;
   int mChunkDepth;

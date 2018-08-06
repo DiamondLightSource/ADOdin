@@ -10,5 +10,4 @@ RESTCLIENT = $(SUPPORT)/restClient/0-1
 
 ODINDATA = $(TOOLS)/odin-data/0-4-0dls2
 EXCALIBURDETECTOR = $(TOOLS)/excalibur-detector/0-2-0
-
-
+EIGERDETECTOR = $(TOOLS)/eiger-detector/1-2-0

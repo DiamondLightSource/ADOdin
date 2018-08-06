@@ -40,7 +40,7 @@ bgColor index 3
 topShadowColor index 1
 botShadowColor index 11
 displaySource "file"
-file "OdinDataHDF5"
+file "OdinDataHDF5_embed"
 sizeOfs 5
 numDsps 0
 noScroll
@@ -286,11 +286,11 @@ topShadowColor index 1
 botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-file "OdinDataSingleStatus"
+file "OdinDataStatus_embed"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataSingleStatus"
+  0 "OdinDataStatus_embed"
 }
 symbols {
   0 "FP=1,FR=0"
@@ -314,11 +314,11 @@ topShadowColor index 1
 botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-file "OdinDataSingleStatus"
+file "OdinDataStatus_embed"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataSingleStatus"
+  0 "OdinDataStatus_embed"
 }
 symbols {
   0 "FP=2,FR=1"
@@ -342,11 +342,11 @@ topShadowColor index 1
 botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-file "OdinDataSingleStatus"
+file "OdinDataStatus_embed"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataSingleStatus"
+  0 "OdinDataStatus_embed"
 }
 symbols {
   0 "FP=3,FR=2"
@@ -370,11 +370,11 @@ topShadowColor index 1
 botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-file "OdinDataSingleStatus"
+file "OdinDataStatus_embed"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataSingleStatus"
+  0 "OdinDataStatus_embed"
 }
 symbols {
   0 "FP=4,FR=3"

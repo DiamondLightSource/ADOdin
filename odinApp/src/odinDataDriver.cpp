@@ -522,16 +522,6 @@ asynStatus OdinDataDriver::writeOctet(asynUser *pasynUser, const char *value,
   int status = 0;
   const char *functionName = "writeOctet";
 
-  if (function == mFileTemplate || function == mAcquisitionID->getIndex()) {
-    std::string acquisitionID, fileTemplate;
-    mAcquisitionID->get(acquisitionID);
-    getStringParam(mFileTemplate, fileTemplate);
-
-    char buffer[fileTemplate.size() + acquisitionID.size() + 5];
-    snprintf(buffer, sizeof(buffer), fileTemplate.c_str(), acquisitionID.c_str(), 1);
-    mFileName->put(buffer);
-  }
-
   if (RestParam * p = this->getParamByIndex(function)) {
     int address = -1;
     if (function == mFPConfiguration->getIndex()) {

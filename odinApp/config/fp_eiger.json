@@ -1,8 +1,8 @@
 [
   {
     "fr_setup": {
-      "fr_ready_cnxn": "tcp://$IP:$RD_PORT",
-      "fr_release_cnxn": "tcp://$IP:$RL_PORT"
+      "fr_ready_cnxn": "tcp://127.0.0.1:$RD_PORT",
+      "fr_release_cnxn": "tcp://127.0.0.1:$RL_PORT"
     }
   },
   {
@@ -17,16 +17,16 @@
   {
     "plugin": {
       "load": {
-        "index": "excalibur",
-        "name": "ExcaliburProcessPlugin",
-        "library": "$PP_ROOT/prefix/lib/libExcaliburProcessPlugin.so"
+        "index": "eiger",
+        "name": "EigerProcessPlugin",
+        "library": "$PP_ROOT/prefix/lib/libEigerProcessPlugin.so"
       }
     }
   },
   {
     "plugin": {
       "connect": {
-        "index": "excalibur",
+        "index": "eiger",
         "connection": "frame_receiver"
       }
     }
@@ -35,7 +35,7 @@
     "plugin": {
       "connect": {
         "index": "hdf",
-        "connection": "excalibur"
+        "connection": "eiger"
       }
     }
   },
