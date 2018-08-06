@@ -1,7 +1,7 @@
 import os
 
 from iocbuilder import Device, AutoSubstitution
-from iocbuilder.arginfo import makeArgInfo, Simple, Ident
+from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.ADCore import makeTemplateInstance
 
 from odin import _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, \
@@ -151,7 +151,7 @@ class EigerMetaListener(Device):
     # Device attributes
     AutoInstantiate = True
 
-    def __init__(self, BLOCK_SIZE=1,
+    def __init__(self, SENSOR, BLOCK_SIZE=1,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None, ODIN_DATA_SERVER_3=None,
                  ODIN_DATA_SERVER_4=None, ODIN_DATA_SERVER_5=None, ODIN_DATA_SERVER_6=None,
                  ODIN_DATA_SERVER_7=None, ODIN_DATA_SERVER_8=None):
@@ -174,6 +174,7 @@ class EigerMetaListener(Device):
     def create_startup_file(self):
         macros = dict(EIGER_DETECTOR_PATH=EIGER_PATH,
                       IP_LIST=",".join(self.ip_list),
+                      SENSOR=self.SENSOR,
                       BLOCK_SIZE=self.BLOCK_SIZE)
 
         expand_template_file("eiger_meta_startup", macros, "stEigerMetaListener.sh",
@@ -181,6 +182,7 @@ class EigerMetaListener(Device):
 
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
+        SENSOR=Choice("Sensor type", ["4M"]),
         BLOCK_SIZE=Simple("Number of blocks per file", int),
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),

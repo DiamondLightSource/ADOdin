@@ -5,6 +5,7 @@
 	<ADOdin.ExcaliburOdinControlServer IP="127.0.0.1" ODIN_DATA_SERVER_1="DataServer1" ODIN_DATA_SERVER_2="DataServer2" SENSOR="1M" name="ControlServer"/>
 	<ADOdin.ExcaliburOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" ODIN_DATA_SERVER_1="DataServer1" ODIN_DATA_SERVER_2="DataServer2" P="EXCALIBUR" PORT="ODN.OD" R=":OD:" TIMEOUT="1"/>
 	<ADOdin.ExcaliburDetector ADDR="0" NODE_1_IPADDR="10.0.2.2" NODE_1_MAC="A0:36:9F:8C:52:3C" NODE_1_NAME="em1" NODE_1_PORT="61649" NODE_2_IPADDR="10.0.2.3" NODE_2_MAC="A0:36:9F:8C:6C:50" NODE_2_NAME="em2" NODE_2_PORT="61649" NODE_3_IPADDR="10.0.2.2" NODE_3_MAC="A0:36:9F:8C:52:3C" NODE_3_NAME="em1" NODE_3_PORT="61655" NODE_4_IPADDR="10.0.2.3" NODE_4_MAC="A0:36:9F:8C:6C:50" NODE_4_NAME="em2" NODE_4_PORT="61655" ODIN_CONTROL_SERVER="ControlServer" P="EXCALIBUR" PORT="ODN.CAM" R=":CAM:" SENSOR="1M" TIMEOUT="1"/>
+	<ADOdin.OdinLogConfig BEAMLINE="iXX" DETECTOR="Excalibur1M" name="LogConfig"/>
 	<EPICS_BASE.dbpf pv="EXCALIBUR:OD1:FRConfigFile" value="$(INSTALL)/excaliburApp/data/fr1.json"/>
 	<EPICS_BASE.dbpf pv="EXCALIBUR:OD2:FRConfigFile" value="$(INSTALL)/excaliburApp/data/fr2.json"/>
 	<EPICS_BASE.dbpf pv="EXCALIBUR:OD1:FPConfigFile" value="$(INSTALL)/excaliburApp/data/fp1.json"/>

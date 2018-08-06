@@ -4,7 +4,7 @@ from string import Template
 from dls_dependency_tree import dependency_tree
 
 from iocbuilder import AutoSubstitution, Device
-from iocbuilder.arginfo import makeArgInfo, Simple, Ident
+from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.iocinit import IocDataStream
 from iocbuilder.modules.asyn import AsynPort
 from iocbuilder.modules.ADCore import ADCore, ADBaseTemplate, makeTemplateInstance
@@ -139,7 +139,7 @@ class _OdinDataServer(Device):
                 BUFFER_IDX=idx + 1, SHARED_MEMORY=self.SHARED_MEM_SIZE,
                 CTRL_PORT=fr_port_number,
                 READY_PORT=ready_port_number, RELEASE_PORT=release_port_number,
-                LOG_CONFIG=os.path.join(ADODIN_DATA, "fr_log4cxx.xml"))
+                LOG_CONFIG=os.path.join(ADODIN_DATA, "log4cxx.xml"))
             expand_template_file("fr_startup", macros, output_file, executable=True)
 
             output_file = "stFrameProcessor{}.sh".format(rank)
@@ -147,7 +147,7 @@ class _OdinDataServer(Device):
                 OD_ROOT=ODIN_DATA_ROOT,
                 CTRL_PORT=fp_port_number,
                 READY_PORT=ready_port_number, RELEASE_PORT=release_port_number,
-                LOG_CONFIG=os.path.join(ADODIN_DATA, "fp_log4cxx.xml"))
+                LOG_CONFIG=os.path.join(ADODIN_DATA, "log4cxx.xml"))
             expand_template_file("fp_startup", macros, output_file, executable=True)
 
             rank += total_servers
@@ -382,3 +382,29 @@ class _OdinDataDriver(AsynPort):
               "%(CONTROL_SERVER_PORT)d, " \
               "\"%(DATASET)s\", \"%(DETECTOR_PLUGIN)s\", " \
               "%(BUFFERS)d, %(MEMORY)d)" % self.__dict__
+
+
+class OdinLogConfig(Device):
+
+    """Create logging configuration file"""
+
+    # Device attributes
+    AutoInstantiate = True
+
+    def __init__(self, BEAMLINE, DETECTOR):
+        self.__super.__init__()
+        # Update attributes with parameters
+        self.__dict__.update(locals())
+
+        self.create_config_file(BEAMLINE, DETECTOR)
+
+    def create_config_file(self, BEAMLINE, DETECTOR):
+        macros = dict(BEAMLINE=BEAMLINE, DETECTOR=DETECTOR)
+
+        expand_template_file("log4cxx_template.xml", macros, "log4cxx.xml")
+
+    # __init__ arguments
+    ArgInfo = makeArgInfo(__init__,
+        BEAMLINE=Simple("Beamline name, e.g. b21, i02-2", str),
+        DETECTOR=Choice("Detector type", ["Excalibur1M", "Excalibur3M", "Eiger4M"])
+    )

@@ -5,5 +5,6 @@
 	<ADOdin.EigerOdinDataServer IP="127.0.0.2" PROCESSES="2" SOURCE="EigerFan" name="ODServer2"/>
 	<ADOdin.EigerOdinControlServer IP="127.0.0.1" ODIN_DATA_SERVER_1="ODServer1" ODIN_DATA_SERVER_2="ODServer2" name="ControlServer"/>
 	<ADOdin.EigerOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" ODIN_DATA_SERVER_1="ODServer1" ODIN_DATA_SERVER_2="ODServer2" P="EIGER" PORT="ODN.OD" R=":OD:" TIMEOUT="1"/>
-	<ADOdin.EigerMetaListener ODIN_DATA_SERVER_1="ODServer1" ODIN_DATA_SERVER_2="ODServer2" name="EigerMeta"/>
+	<ADOdin.EigerMetaListener ODIN_DATA_SERVER_1="ODServer1" ODIN_DATA_SERVER_2="ODServer2" SENSOR="4M" name="EigerMeta"/>
+	<ADOdin.OdinLogConfig BEAMLINE="iXX" DETECTOR="Eiger4M" name="LogConfig"/>
 </components>
