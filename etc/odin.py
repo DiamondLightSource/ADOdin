@@ -226,7 +226,7 @@ class _OdinControlServer(Device):
                "endpoints = {}\n" \
                "update_interval = 0.2\n\n" \
                "[adapter.fr]\n" \
-               "module = odin_data.odin_data_adapter.OdinDataAdapter\n" \
+               "module = odin_data.frame_receiver_adapter.FrameReceiverAdapter\n" \
                "endpoints = {}\n" \
                "update_interval = 0.2".format(", ".join(fp_endpoints), ", ".join(fr_endpoints))
 
