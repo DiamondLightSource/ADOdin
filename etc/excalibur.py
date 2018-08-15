@@ -204,6 +204,8 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
     }
 
     def __init__(self, **args):
+        detector_arg = args["R"]
+        args["R"] = ":OD:"
         self.__super.__init__(DETECTOR="excalibur", **args)
         # Update the attributes of self from the commandline args
         self.__dict__.update(locals())
@@ -217,7 +219,7 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
             template_args = {
                 "P": args["P"],
                 "R": ":OD:",
-                "DET": args["R"],
+                "DET": detector_arg,
                 "PORT": args["PORT"],
                 "name": gui_name,
                 "TIMEOUT": args["TIMEOUT"],
