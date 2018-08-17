@@ -24,7 +24,7 @@ def find_module_path(module):
         TREE = dependency_tree()
         TREE.process_module(ADODIN_ROOT)
     for macro, path in TREE.macros.items():
-        if "/{}/".format(module) in path:
+        if "/{}".format(module) in path:
             return macro, path
 
 

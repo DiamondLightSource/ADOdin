@@ -1,0 +1,123 @@
+
+record(stringout, "$(P)$(R)META:AcquisitionID")
+{
+    field(PINI, "NO")
+    field(DTYP, "asynOctetWrite")
+    field(OUT,  "@asyn($(PORT),0,1)_ODS_meta_listener/config/acquisition_id")
+}
+
+record(stringin, "$(P)$(R)META:AcquisitionID_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODS_meta_listener/config/acquisition_id")
+}
+
+record(waveform, "$(P)$(R)META:Acquisitions_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODS_meta_listener/config/acquisitions")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+}
+
+#### Status #######################################################################################
+
+## Acquisition Specific
+
+record(stringin, "$(P)$(R)META:FileName_RBV")
+{
+   field(DTYP, "asynOctetRead")
+   field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODS_meta_listener/status/filename")
+}
+
+record(longin, "$(P)$(R)META:ActiveProcessors_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODI_meta_listener/status/num_processors")
+}
+
+record(bi, "$(P)$(R)META:Writing_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,1)_ODB_meta_listener/status/writing")
+    field(ZNAM, "Done")
+    field(ONAM, "Writing")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin, "$(P)$(R)META:FramesWritten_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODI_meta_listener/status/written")
+}
+
+#### Config #######################################################################################
+
+## Acquisition Specific
+
+record(waveform, "$(P)$(R)META:FilePath")
+{
+    field(PINI, "NO")
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT),0,1)_ODS_meta_listener/config/output_dir")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+}
+
+record(waveform, "$(P)$(R)META:FilePath_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),0,1)_ODS_meta_listener/config/output_dir")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout, "$(P)$(R)META:FlushRate")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,1)_ODI_meta_listener/config/flush")
+}
+
+record(longin, "$(P)$(R)META:FlushRate_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODI_meta_listener/config/flush")
+}
+
+## Global
+
+record(stringin, "$(P)$(R)META:ControlPort_RBV")
+{
+   field(DTYP, "asynOctetRead")
+   field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODS1_meta_listener/config/ctrl_port")
+}
+
+record(stringin, "$(P)$(R)META:DefaultFilePath_RBV")
+{
+   field(DTYP, "asynOctetRead")
+   field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODS1_meta_listener/config/default_directory")
+}
+
+record(stringin, "$(P)$(R)META:ProcessorAddresses_RBV")
+{
+   field(DTYP, "asynOctetRead")
+   field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODS1_meta_listener/config/inputs")
+}
+
+## Acquisition Specific if there is an acquisition ID set, else Global
+
+record(bo, "$(P)$(R)META:Stop")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,1)_ODI1_meta_listener/config/stop")
+}

@@ -160,6 +160,15 @@ asynStatus OdinClient::dynamicParam(asynUser *pasynUser,
           generatedParam->fetch();
           // Store the parameter
           break;
+        case 'B':
+          // Create the parameter
+          asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+                    "%s:%s: String parameter: %s\n",
+                    driverName, functionName, drvInfo);
+          generatedParam = createRESTParam(drvInfo, REST_P_BOOL, subsystem, httpRequest, arraySize);
+          generatedParam->fetch();
+          // Store the parameter
+          break;
         default:
           asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
                     "%s:%s: Expected _ODx_... where x is one of I, D or S. Got '%c'\n",

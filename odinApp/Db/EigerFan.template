@@ -1,0 +1,117 @@
+
+#### Status #######################################################################################
+
+record(longin, "$(P)$(R)FAN:CurrentSeries_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODI1_eiger_fan/status/series")
+}
+
+record(longin, "$(P)$(R)FAN:CurrentFrame_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODI1_eiger_fan/status/frame")
+}
+
+record(longin, "$(P)$(R)FAN:CurrentOffset_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODI1_eiger_fan/status/fan_offset")
+}
+
+record(stringin, "$(P)$(R)FAN:State_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODS1_eiger_fan/status/state")
+}
+
+record(longin, "$(P)$(R)FAN:ConsumersConnected_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODI1_eiger_fan/status/num_conn")
+}
+
+#### Config #######################################################################################
+
+record(longout, "$(P)$(R)FAN:Offset")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,1)_ODI1_eiger_fan/config/offset")
+}
+
+record(longin, "$(P)$(R)FAN:Offset_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODI1_eiger_fan/config/offset")
+}
+
+record(longin, "$(P)$(R)FAN:Consumers_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODI1_eiger_fan/config/num_consumers")
+}
+
+record(longin, "$(P)$(R)FAN:BlockSize_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODI1_eiger_fan/config/block_size")
+}
+
+record(stringin, "$(P)$(R)FAN:ControlPort_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODS1_eiger_fan/config/ctrl_channel_port")
+}
+
+record(stringin, "$(P)$(R)FAN:EigerAddress_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODS1_eiger_fan/config/eiger_channel_address")
+}
+
+record(stringin, "$(P)$(R)FAN:EigerPort_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODS1_eiger_fan/config/eiger_channel_port")
+}
+
+record(longin, "$(P)$(R)FAN:FanPortBase_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODI1_eiger_fan/config/fan_channel_port_start")
+}
+
+record(longin, "$(P)$(R)FAN:ZMQSockets_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODI1_eiger_fan/config/num_zmq_sockets")
+}
+
+record(longin, "$(P)$(R)FAN:ZMQThreads_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODI1_eiger_fan/config/num_zmq_threads")
+}
+
+record(bi, "$(P)$(R)FAN:AllConnected_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,1))ODIN_FAN_ALL_CONNECTED")
+    field(ZNAM, "Done")
+    field(ONAM, "Writing")
+    field(SCAN, "I/O Intr")
+}

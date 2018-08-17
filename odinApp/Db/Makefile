@@ -23,7 +23,9 @@ DB += excalibur2NodeFP.template
 DB += excalibur4NodeFP.template
 DB += excalibur8NodeFP.template
 DB += excaliburFP.template
-DB += eigerDetector.template
+DB += EigerDetector.template
+DB += EigerFan.template
+DB += MetaListener.template
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add
