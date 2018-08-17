@@ -152,11 +152,11 @@ class ExcaliburOdinControlServer(_OdinControlServer):
 
 
 class _ExcaliburDetectorTemplate(AutoSubstitution):
-    TemplateFile = "excaliburDetector.template"
+    TemplateFile = "ExcaliburDetector.template"
 
 
 class _ExcaliburFPTemplate(AutoSubstitution):
-    TemplateFile = "excaliburFP.template"
+    TemplateFile = "ExcaliburFP.template"
 
 
 def add_excalibur_fp_template(cls):
@@ -179,17 +179,17 @@ def add_excalibur_fp_template(cls):
 
 @add_excalibur_fp_template
 class _Excalibur2NodeFPTemplate(AutoSubstitution):
-    TemplateFile = "excalibur2NodeFP.template"
+    TemplateFile = "Excalibur2NodeFP.template"
 
 
 @add_excalibur_fp_template
 class _Excalibur4NodeFPTemplate(AutoSubstitution):
-    TemplateFile = "excalibur4NodeFP.template"
+    TemplateFile = "Excalibur4NodeFP.template"
 
 
 @add_excalibur_fp_template
 class _Excalibur8NodeFPTemplate(AutoSubstitution):
-    TemplateFile = "excalibur8NodeFP.template"
+    TemplateFile = "Excalibur8NodeFP.template"
 
 
 class ExcaliburOdinDataDriver(_OdinDataDriver):
@@ -234,12 +234,12 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
 
 
 class _ExcaliburFemHousekeepingTemplate(AutoSubstitution):
-    TemplateFile = "excaliburFemHousekeeping.template"
+    TemplateFile = "ExcaliburFemHousekeeping.template"
 
 
 class _ExcaliburFemStatusTemplate(AutoSubstitution):
     WarnMacros = False
-    TemplateFile = "excaliburFemStatus.template"
+    TemplateFile = "ExcaliburFemStatus.template"
 
 
 def add_excalibur_fem_status(cls):
@@ -255,12 +255,12 @@ def add_excalibur_fem_status(cls):
 
 @add_excalibur_fem_status
 class _Excalibur2FemStatusTemplate(AutoSubstitution):
-    TemplateFile = "excalibur2FemStatus.template"
+    TemplateFile = "Excalibur2FemStatus.template"
 
 
 @add_excalibur_fem_status
 class _Excalibur6FemStatusTemplate(AutoSubstitution):
-    TemplateFile = "excalibur6FemStatus.template"
+    TemplateFile = "Excalibur6FemStatus.template"
 
 
 class ExcaliburDetector(_OdinDetector):

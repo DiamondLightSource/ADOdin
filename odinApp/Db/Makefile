@@ -11,18 +11,18 @@ include $(TOP)/configure/CONFIG
 # Create and install (or just install)
 # databases, templates, substitutions like this
 
-DB += odinDetector.template
-DB += odinDataDriver.template
-DB += odinData.template
-DB += excaliburDetector.template
-DB += excaliburFemHousekeeping.template
-DB += excalibur2FemStatus.template
-DB += excalibur6FemStatus.template
-DB += excaliburFemStatus.template
-DB += excalibur2NodeFP.template
-DB += excalibur4NodeFP.template
-DB += excalibur8NodeFP.template
-DB += excaliburFP.template
+DB += OdinDetector.template
+DB += OdinDataDriver.template
+DB += OdinData.template
+DB += ExcaliburDetector.template
+DB += ExcaliburFemHousekeeping.template
+DB += Excalibur2FemStatus.template
+DB += Excalibur6FemStatus.template
+DB += ExcaliburFemStatus.template
+DB += Excalibur2NodeFP.template
+DB += Excalibur4NodeFP.template
+DB += Excalibur8NodeFP.template
+DB += ExcaliburFP.template
 DB += EigerDetector.template
 DB += EigerFan.template
 DB += MetaListener.template

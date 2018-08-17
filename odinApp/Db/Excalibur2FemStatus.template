@@ -8,35 +8,27 @@
 # % macro, NAME, Name specifying builder GUI generation
 
 # This associates an edm screen with the template
-# % gui, $(NAME), edm, Excalibur6FemStatus.edl, P=$(P)$(R)
+# % gui, $(NAME), edm, Excalibur2FemStatus.edl, P=$(P)$(R)
 
 ################################################################################
 #
-# Include 6 FEM status templates
+# Include 2 FEM status templates
 #
 ################################################################################
 
 substitute "ADDRESS=0"
-include "excaliburFemStatus.template"
+include "ExcaliburFemStatus.template"
 substitute "ADDRESS=1"
-include "excaliburFemStatus.template"
-substitute "ADDRESS=2"
-include "excaliburFemStatus.template"
-substitute "ADDRESS=3"
-include "excaliburFemStatus.template"
-substitute "ADDRESS=4"
-include "excaliburFemStatus.template"
-substitute "ADDRESS=5"
-include "excaliburFemStatus.template"
+include "ExcaliburFemStatus.template"
 
 ################################################################################
 #
-# Number of FEMs is 6
+# Number of FEMs is 2
 #
 ################################################################################
 record(longin, "$(P)$(R)NumberFEMs_RBV")
 {
-    field(VAL,  "6")
+    field(VAL,  "2")
 }
 
 ################################################################################
@@ -45,7 +37,7 @@ record(longin, "$(P)$(R)NumberFEMs_RBV")
 #
 ################################################################################
 
-# Write a 1 to this record to reset the fems
+# Write a 1 to this record to reset the them
 #% archiver 10 Monitor
 record(bo, "$(P)$(R)HK:DOFEMRESET")
 {
@@ -103,10 +95,6 @@ record(dfanout, "$(P)$(R)HK:MOLY_TEMPERATURE:LOW")
     field(DOL,  "$(P)$(R)0:MOLY_TEMPERATURE.LOW CP")
     field(OMSL, "closed_loop")
     field(OUTA, "$(P)$(R)1:MOLY_TEMPERATURE.LOW PP")
-    field(OUTB, "$(P)$(R)2:MOLY_TEMPERATURE.LOW PP")
-    field(OUTC, "$(P)$(R)3:MOLY_TEMPERATURE.LOW PP")
-    field(OUTD, "$(P)$(R)4:MOLY_TEMPERATURE.LOW PP")
-    field(OUTE, "$(P)$(R)5:MOLY_TEMPERATURE.LOW PP")
 }
 
 record(dfanout, "$(P)$(R)HK:MOLY_TEMPERATURE:HIGH")
@@ -114,10 +102,6 @@ record(dfanout, "$(P)$(R)HK:MOLY_TEMPERATURE:HIGH")
     field(DOL,  "$(P)$(R)0:MOLY_TEMPERATURE.HIGH CP")
     field(OMSL, "closed_loop")
     field(OUTA, "$(P)$(R)1:MOLY_TEMPERATURE.HIGH PP")
-    field(OUTB, "$(P)$(R)2:MOLY_TEMPERATURE.HIGH PP")
-    field(OUTC, "$(P)$(R)3:MOLY_TEMPERATURE.HIGH PP")
-    field(OUTD, "$(P)$(R)4:MOLY_TEMPERATURE.HIGH PP")
-    field(OUTE, "$(P)$(R)5:MOLY_TEMPERATURE.HIGH PP")
 }
 
 record(dfanout, "$(P)$(R)HK:LOCAL_TEMP:LOW")
@@ -125,10 +109,6 @@ record(dfanout, "$(P)$(R)HK:LOCAL_TEMP:LOW")
     field(DOL,  "$(P)$(R)0:LOCAL_TEMP.LOW CP")
     field(OMSL, "closed_loop")
     field(OUTA, "$(P)$(R)1:LOCAL_TEMP.LOW PP")
-    field(OUTB, "$(P)$(R)2:LOCAL_TEMP.LOW PP")
-    field(OUTC, "$(P)$(R)3:LOCAL_TEMP.LOW PP")
-    field(OUTD, "$(P)$(R)4:LOCAL_TEMP.LOW PP")
-    field(OUTE, "$(P)$(R)5:LOCAL_TEMP.LOW PP")
 }
 
 record(dfanout, "$(P)$(R)HK:LOCAL_TEMP:HIGH")
@@ -136,10 +116,6 @@ record(dfanout, "$(P)$(R)HK:LOCAL_TEMP:HIGH")
     field(DOL,  "$(P)$(R)0:LOCAL_TEMP.HIGH CP")
     field(OMSL, "closed_loop")
     field(OUTA, "$(P)$(R)1:LOCAL_TEMP.HIGH PP")
-    field(OUTB, "$(P)$(R)2:LOCAL_TEMP.HIGH PP")
-    field(OUTC, "$(P)$(R)3:LOCAL_TEMP.HIGH PP")
-    field(OUTD, "$(P)$(R)4:LOCAL_TEMP.HIGH PP")
-    field(OUTE, "$(P)$(R)5:LOCAL_TEMP.HIGH PP")
 }
 
 record(dfanout, "$(P)$(R)HK:REMOTE_DIODE_TEMP:LOW")
@@ -147,10 +123,6 @@ record(dfanout, "$(P)$(R)HK:REMOTE_DIODE_TEMP:LOW")
     field(DOL,  "$(P)$(R)0:REMOTE_DIODE_TEMP.LOW CP")
     field(OMSL, "closed_loop")
     field(OUTA, "$(P)$(R)1:REMOTE_DIODE_TEMP.LOW PP")
-    field(OUTB, "$(P)$(R)2:REMOTE_DIODE_TEMP.LOW PP")
-    field(OUTC, "$(P)$(R)3:REMOTE_DIODE_TEMP.LOW PP")
-    field(OUTD, "$(P)$(R)4:REMOTE_DIODE_TEMP.LOW PP")
-    field(OUTE, "$(P)$(R)5:REMOTE_DIODE_TEMP.LOW PP")
 }
 
 record(dfanout, "$(P)$(R)HK:REMOTE_DIODE_TEMP:HIGH")
@@ -158,10 +130,6 @@ record(dfanout, "$(P)$(R)HK:REMOTE_DIODE_TEMP:HIGH")
     field(DOL,  "$(P)$(R)0:REMOTE_DIODE_TEMP.HIGH CP")
     field(OMSL, "closed_loop")
     field(OUTA, "$(P)$(R)1:REMOTE_DIODE_TEMP.HIGH PP")
-    field(OUTB, "$(P)$(R)2:REMOTE_DIODE_TEMP.HIGH PP")
-    field(OUTC, "$(P)$(R)3:REMOTE_DIODE_TEMP.HIGH PP")
-    field(OUTD, "$(P)$(R)4:REMOTE_DIODE_TEMP.HIGH PP")
-    field(OUTE, "$(P)$(R)5:REMOTE_DIODE_TEMP.HIGH PP")
 }
 
 record(dfanout, "$(P)$(R)HK:MOLY_HUMIDITY:LOW")
@@ -169,10 +137,6 @@ record(dfanout, "$(P)$(R)HK:MOLY_HUMIDITY:LOW")
     field(DOL,  "$(P)$(R)0:MOLY_HUMIDITY.LOW CP")
     field(OMSL, "closed_loop")
     field(OUTA, "$(P)$(R)1:MOLY_HUMIDITY.LOW PP")
-    field(OUTB, "$(P)$(R)2:MOLY_HUMIDITY.LOW PP")
-    field(OUTC, "$(P)$(R)3:MOLY_HUMIDITY.LOW PP")
-    field(OUTD, "$(P)$(R)4:MOLY_HUMIDITY.LOW PP")
-    field(OUTE, "$(P)$(R)5:MOLY_HUMIDITY.LOW PP")
 }
 
 record(dfanout, "$(P)$(R)HK:MOLY_HUMIDITY:HIGH")
@@ -180,9 +144,5 @@ record(dfanout, "$(P)$(R)HK:MOLY_HUMIDITY:HIGH")
     field(DOL,  "$(P)$(R)0:MOLY_HUMIDITY.HIGH CP")
     field(OMSL, "closed_loop")
     field(OUTA, "$(P)$(R)1:MOLY_HUMIDITY.HIGH PP")
-    field(OUTB, "$(P)$(R)2:MOLY_HUMIDITY.HIGH PP")
-    field(OUTC, "$(P)$(R)3:MOLY_HUMIDITY.HIGH PP")
-    field(OUTD, "$(P)$(R)4:MOLY_HUMIDITY.HIGH PP")
-    field(OUTE, "$(P)$(R)5:MOLY_HUMIDITY.HIGH PP")
 }
 

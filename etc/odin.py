@@ -51,7 +51,7 @@ def expand_template_file(template, macros, output_file, executable=False):
 
 
 class _OdinDataTemplate(AutoSubstitution):
-    TemplateFile = "odinData.template"
+    TemplateFile = "OdinData.template"
 
 
 class _OdinData(Device):
@@ -154,7 +154,7 @@ class _OdinDataServer(Device):
 
 
 class _OdinDetectorTemplate(AutoSubstitution):
-    TemplateFile = "odinDetector.template"
+    TemplateFile = "OdinDetector.template"
 
 
 class _OdinControlServer(Device):
@@ -273,7 +273,7 @@ class _OdinDetector(AsynPort):
 
 
 class _OdinDataDriverTemplate(AutoSubstitution):
-    TemplateFile = "odinDataDriver.template"
+    TemplateFile = "OdinDataDriver.template"
 
 
 class _OdinDataDriver(AsynPort):
@@ -328,7 +328,7 @@ class _OdinDataDriver(AsynPort):
                     address = idx + index_number - 1
                     print("Odin data idx: {}  index_number: {}  address: {}".format(idx, index_number, address))
                     self.ODIN_DATA_PROCESSES.append(odin_data)
-                    # Use some OdinDataDriver macros to instantiate an odinData.template
+                    # Use some OdinDataDriver macros to instantiate an OdinData.template
                     args["PORT"] = PORT
                     args["ADDR"] = odin_data.index-1
                     args["R"] = odin_data.R

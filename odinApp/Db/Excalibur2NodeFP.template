@@ -17,7 +17,7 @@
 
 substitute "TOTAL=2"
 substitute "ADDRESS=0"
-include "excaliburFP.template"
+include "ExcaliburFP.template"
 substitute "ADDRESS=1"
-include "excaliburFP.template"
+include "ExcaliburFP.template"
 
