@@ -1,15 +1,9 @@
 # excalibur4Node.template
 # Defines the parameters required for the Excalibur processing plugin
-#
-# Parameters:
-#   P       - EPICS name prefix
-#   R       - EPICS plugin name
-#   PORT    - Asyn port
-#   ADDRESS - Asyn address
-#   TOTAL   - Total number of FEMs
-#   WIDTH   - Width of the sensor
-#   HEIGHT  - Height of the sensor
-#   TIMEOUT - Timeout
+
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, name, Name specifying builder GUI generation
 
 # This associates the template with an edm screen
 # % gui, $(name), edm, ExcaliburDAQ4Status.edl, P=$(P),R=$(R)

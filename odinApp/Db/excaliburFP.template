@@ -1,4 +1,15 @@
 # excaliburDetector.template
+
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, DET, Detector Suffix
+# % macro, PORT, Asyn Port name
+# % macro, ADDRESS, Asyn Port address
+# % macro, TIMEOUT, Timeout
+# % macro, TOTAL, Total number of OdinData nodes
+# % macro, WIDTH, Sensor width
+# % macro, HEIGHT, Sensor height
+
 #
 # Parameters:
 #   P       - EPICS name prefix

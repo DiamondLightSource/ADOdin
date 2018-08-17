@@ -1,11 +1,10 @@
 # masterFemHousekeeping.template
 # Defines the housekeeping parameters only available from the master FEM.
-#
-# Parameters:
-#   P       - EPICS name prefix
-#   R       - EPICS plugin name
-#   PORT    - Asyn port
-#   TIMEOUT - Timeout
+
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, PORT, Asyn Port name
+# % macro, TIMEOUT, Timeout
 
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor

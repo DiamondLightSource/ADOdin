@@ -1,11 +1,10 @@
 # excaliburDetector.template
-#
-# Parameters:
-#   P       - EPICS name prefix
-#   R       - EPICS plugin name
-#   STRIPE  - Stripe name
-#   PORT    - Asyn port
-#   TIMEOUT - Timeout
+
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, PORT, Asyn Port name
+# % macro, ADDR, Asyn Port address
+# % macro, TIMEOUT, Timeout
 
 # This associates the template with an edm screen
 # % gui, $(PORT), edmtab, ExcaliburMain.edl, P=$(P),R=$(R)

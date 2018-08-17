@@ -4,7 +4,7 @@ SUPPORT = /dls_sw/prod/R3.14.12.3/support
 TOOLS = /dls_sw/prod/tools/RHEL6-x86_64
 
 ASYN = $(SUPPORT)/asyn/4-31
-ADCORE = $(SUPPORT)/ADCore/2-6dls1
+ADCORE = $(SUPPORT)/ADCore/2-6dls6
 CALC = $(SUPPORT)/calc/3-1
 RESTCLIENT = $(SUPPORT)/restClient/0-1
 

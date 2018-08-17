@@ -1,14 +1,11 @@
 # femHousekeeping.template
 # Defines the housekeeping parameters available from all FEMs.
-#
-# Parameters:
-#   P       - EPICS name prefix
-#   R       - EPICS plugin name
-#   PORT    - Asyn port
-#   NAME    - Name of GUI screen
-#   ADDRESS - Asyn address
-#   TOTAL   - Total number of FEMs
-#   TIMEOUT - Timeout
+
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, PORT, Asyn Port name
+# % macro, TIMEOUT, Timeout
+# % macro, NAME, Name specifying builder GUI generation
 
 # This associates an edm screen with the template
 # % gui, $(NAME), edm, Excalibur6FemStatus.edl, P=$(P)$(R)
