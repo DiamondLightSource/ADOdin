@@ -260,8 +260,8 @@ class _OdinDetector(AsynPort):
     )
 
     # Device attributes
-    LibFileList = ['odinDetector']
-    DbdFileList = ['odinDetectorSupport']
+    LibFileList = ["OdinDetector"]
+    DbdFileList = ["OdinDetectorSupport"]
 
     def Initialise(self):
         print "# odinDetectorConfig(const char * portName, const char * serverPort, " \
@@ -363,8 +363,8 @@ class _OdinDataDriver(AsynPort):
     )
 
     # Device attributes
-    LibFileList = ['odinDetector']
-    DbdFileList = ['odinDetectorSupport']
+    LibFileList = ["OdinDetector"]
+    DbdFileList = ["OdinDetectorSupport"]
 
     def Initialise(self):
         # Configure up to 8 OdinData processes

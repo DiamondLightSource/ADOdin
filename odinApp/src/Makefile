@@ -5,13 +5,13 @@ include $(TOP)/configure/CONFIG
 
 CXXFLAGS += -O0
 
-LIBRARY_IOC = odinDetector
+LIBRARY_IOC = OdinDetector
 
-LIB_SRCS += odinDetector.cpp odinDataDriver.cpp OdinClient.cpp odinRestApi.cpp odinDetectorRestApi.cpp odinDataRestApi.cpp
+LIB_SRCS += OdinDetector.cpp OdinDataDriver.cpp OdinClient.cpp OdinRestApi.cpp OdinDetectorRestApi.cpp OdinDataRestApi.cpp
 
 LIB_LIBS += restClient
 
-DBD += odinDetectorSupport.dbd
+DBD += OdinDetectorSupport.dbd
 
 include $(ADCORE)/ADApp/commonLibraryMakefile
 

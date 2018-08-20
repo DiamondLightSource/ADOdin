@@ -2,8 +2,8 @@
 #define ODIN_DATA_DRIVER_H
 
 #include "OdinClient.h"
-#include "odinDataConfig.h"
-#include "odinDataRestApi.h"
+#include "OdinDataConfig.h"
+#include "OdinDataRestApi.h"
 
 // Odin Server
 #define OdinRestAPIVersion             "ODIN_REST_API_VERSION"

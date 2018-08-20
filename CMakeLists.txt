@@ -22,19 +22,19 @@ include_directories(
     ${EPICS_BASE}/include/os/Linux)
 
 set(ADODIN_SOURCE_FILES
-    odinApp/src/odinRestApi.cpp
-    odinApp/src/odinRestApi.h
-    odinApp/src/odinDetectorRestApi.h
-    odinApp/src/odinDetectorRestApi.cpp
-    odinApp/src/odinDetector.h
-    odinApp/src/odinDataDriver.h
+    odinApp/src/OdinRestApi.cpp
+    odinApp/src/OdinRestApi.h
+    odinApp/src/OdinDetectorRestApi.h
+    odinApp/src/OdinDetectorRestApi.cpp
+    odinApp/src/OdinDetector.h
+    odinApp/src/OdinDataDriver.h
     odinApp/src/OdinClient.cpp
-    odinApp/src/odinDetector.cpp
+    odinApp/src/OdinDetector.cpp
     odinApp/src/OdinClient.h
-    odinApp/src/odinDataConfig.h
-    odinApp/src/odinDataDriver.cpp
-    odinApp/src/odinDataRestApi.h
-    odinApp/src/odinDataRestApi.cpp
+    odinApp/src/OdinDataConfig.h
+    odinApp/src/OdinDataDriver.cpp
+    odinApp/src/OdinDataRestApi.h
+    odinApp/src/OdinDataRestApi.cpp
 )
 
 add_library(ADOdin_source ${ADODIN_SOURCE_FILES})

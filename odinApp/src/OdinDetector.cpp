@@ -1,4 +1,4 @@
-#include "odinDetector.h"
+#include "OdinDetector.h"
 
 #include <sstream>
 #include <numeric>

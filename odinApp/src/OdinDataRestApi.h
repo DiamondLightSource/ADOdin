@@ -6,10 +6,10 @@
 #include <epicsMutex.h>
 #include <osiSock.h>
 
-#include "odinRestApi.h"
+#include "OdinRestApi.h"
 #include "restParam.h"
 
-#include "odinDataConfig.h"
+#include "OdinDataConfig.h"
 
 
 class OdinDataRestAPI : public OdinRestAPI

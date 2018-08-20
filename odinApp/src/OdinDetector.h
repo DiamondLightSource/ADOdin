@@ -2,8 +2,8 @@
 #define ODIN_DETECTOR_H
 
 #include "OdinClient.h"
-#include "odinDataConfig.h"
-#include "odinDetectorRestApi.h"
+#include "OdinDataConfig.h"
+#include "OdinDetectorRestApi.h"
 
 // Odin Server
 #define OdinRestAPIVersion             "ODIN_REST_API_VERSION"
