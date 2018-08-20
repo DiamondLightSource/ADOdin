@@ -114,14 +114,13 @@ std::string OdinDataRestAPI::readError(int address, int error_index) {
   struct json_token tokens[256];
   std::string error = "";
   std::string buffer;
-  get(sysStr(SSFPStatus), "client_error", buffer, 1.0);
-  //printf("Buffer: %s\n", buffer.c_str());
-  int err = parse_json(buffer.c_str(), buffer.size(), tokens, 256);
+  get(sysStr(SSFPStatus), "client_error", buffer, 1);
+
   std::vector<std::vector<std::string> > valueArray = parse2DArray(tokens, PARAM_VALUE);
-  if (valueArray.size() > address){
+  if ((int) valueArray.size() > address) {
     std::vector<std::string> singleArray = valueArray[address];
-    if (singleArray.size() > 0){
-      if (singleArray.size() > error_index){
+    if (singleArray.empty()) {
+      if ((int) singleArray.size() > error_index) {
         error = singleArray[error_index];
       }
     }
