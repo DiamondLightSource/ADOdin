@@ -12,7 +12,7 @@ from iocbuilder.modules.restClient import restClient
 from iocbuilder.modules.calc import Calc
 
 
-ADODIN_ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+ADODIN_ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../.."))
 ADODIN_DATA = os.path.join(ADODIN_ROOT, "data")
 
 TREE = None
