@@ -220,12 +220,6 @@ int OdinDataDriver::createParams()
   createParam(OdinHDF5ChunkWidth,       asynParamInt32, &mChunkWidth);
   createParam(OdinFPErrorMessage,       asynParamOctet, &mFPErrorMessage);
 
-  setIntegerParam(mImageHeight, 1536);
-  setIntegerParam(mImageWidth,  2048);
-  setIntegerParam(mChunkDepth,  1);
-  setIntegerParam(mChunkHeight, 1536);
-  setIntegerParam(mChunkWidth,  2048);
-
   return 0;
 }
 
