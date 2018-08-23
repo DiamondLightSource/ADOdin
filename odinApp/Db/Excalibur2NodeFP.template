@@ -9,6 +9,9 @@
 #   TOTAL   - Total number of FEMs
 #   TIMEOUT - Timeout
 
+# This associates the template with an edm screen
+# % gui, $(name), edm, ExcaliburDAQ2Status.edl, P=$(P),R=$(R)
+
 ################################################################################
 #
 # Include 2 FP templates
