@@ -313,6 +313,7 @@ class _OdinDataDriver(AsynPort):
                 self.server_count += 1
         print("Server count: {}".format(self.server_count))
 
+        self.total_processes = 0
         server_number = 0
         for idx in range(1, 9):
             server = eval("ODIN_DATA_SERVER_{}".format(idx))
@@ -337,6 +338,7 @@ class _OdinDataDriver(AsynPort):
                     odin_data.create_config_files(address + 1)
 
                     index_number += self.server_count
+                    self.total_processes += 1
 
                 server.create_od_startup_scripts(server_number, self.server_count)
 
