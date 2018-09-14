@@ -12,6 +12,7 @@
 include "ADBase.template"
 
 # Number of frames taken in current acquisition.
+#% archiver 1 monitor
 record(longin, "$(P)$(R)ArrayCounter_RBV")
 {
     field(SCAN, "I/O Intr")
@@ -20,6 +21,7 @@ record(longin, "$(P)$(R)ArrayCounter_RBV")
 }
 
 # Number of frames taken in current acquisition.
+#% archiver 1 monitor
 record(ai, "$(P)$(R)ArrayRateRaw_RBV")
 {
     field(SCAN, "I/O Intr")

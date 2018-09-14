@@ -91,6 +91,7 @@ record(longin, "$(P)$(R)ProcessRank_RBV")
     field(SCAN, "I/O Intr")
 }
 
+#% archiver 1 monitor
 record(bi, "$(P)$(R)Writing_RBV")
 {
     field(DTYP, "asynInt32")
@@ -100,6 +101,7 @@ record(bi, "$(P)$(R)Writing_RBV")
     field(SCAN, "I/O Intr")
 }
 
+#% archiver 1 monitor
 record(bi, "$(P)$(R)TimeoutActive_RBV")
 {
     field(DTYP, "asynInt32")

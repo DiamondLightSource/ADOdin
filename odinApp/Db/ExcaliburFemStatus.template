@@ -411,6 +411,7 @@ record(bi, "$(P)$(R)$(ADDRESS):FemInitOk")
     field(ZSV,  "MAJOR")
 }
 
+#% archiver 1 monitor
 record(longin, "$(P)$(R)$(ADDRESS):FemFrames")
 {
     field(SCAN, "I/O Intr")
@@ -435,6 +436,7 @@ record(longout, "$(P)$(R)$(ADDRESS):ResetFemCommsFaults")
 #    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))RESET_FEM_COMMS_FAULTS")
 }
 
+#% archiver 1 monitor
 record(longin, "$(P)$(R)$(ADDRESS):CalibrationStatus_RBV")
 {
     field(SCAN, "I/O Intr")
