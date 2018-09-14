@@ -35,6 +35,7 @@ record(longout, "$(P)$(R)FPClearErrors")
      field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FP_CLEAR_ERRORS")
 }
 
+#% archiver 1 monitor
 record(longin, "$(P)$(R)FRProcessConnected_RBV")
 {
     field(DTYP, "asynInt32")
@@ -43,6 +44,7 @@ record(longin, "$(P)$(R)FRProcessConnected_RBV")
     field(SCAN, "I/O Intr")
 }
 
+#% archiver 1 monitor
 record(longin, "$(P)$(R)FPProcessConnected_RBV")
 {
     field(DTYP, "asynInt32")
@@ -69,6 +71,7 @@ record(waveform, "$(P)$(R)FPErrorMessage_RBV")
     field(SCAN, "I/O Intr")
 }
 
+#% archiver 1 monitor
 record(bi, "$(P)$(R)FPErrorState_RBV")
 {
     field(DTYP, "asynInt32")
@@ -79,6 +82,7 @@ record(bi, "$(P)$(R)FPErrorState_RBV")
     field(SCAN, "I/O Intr")
 }
 
+#% archiver 1 monitor
 record(longin, "$(P)$(R)ProcessRank_RBV")
 {
     field(DTYP, "asynInt32")
@@ -87,6 +91,7 @@ record(longin, "$(P)$(R)ProcessRank_RBV")
     field(SCAN, "I/O Intr")
 }
 
+#% archiver 1 monitor
 record(bi, "$(P)$(R)Writing_RBV")
 {
     field(DTYP, "asynInt32")
@@ -96,6 +101,7 @@ record(bi, "$(P)$(R)Writing_RBV")
     field(SCAN, "I/O Intr")
 }
 
+#% archiver 1 monitor
 record(bi, "$(P)$(R)TimeoutActive_RBV")
 {
     field(DTYP, "asynInt32")
@@ -122,6 +128,7 @@ record(longin, "$(P)$(R)NumCapture_RBV")
     field(SCAN, "I/O Intr")
 }
 
+#% archiver 1 monitor
 record(longin, "$(P)$(R)NumCaptured_RBV")
 {
     field(DTYP, "asynInt32")
@@ -129,6 +136,7 @@ record(longin, "$(P)$(R)NumCaptured_RBV")
     field(SCAN, "I/O Intr")
 }
 
+#% archiver 1 monitor
 record(longin, "$(P)$(R)NumExpected_RBV")
 {
     field(DTYP, "asynInt32")
@@ -136,6 +144,7 @@ record(longin, "$(P)$(R)NumExpected_RBV")
     field(SCAN, "I/O Intr")
 }
 
+#% archiver 1 monitor
 record(longin, "$(P)$(R)FreeBuffers_RBV")
 {
     field(DTYP, "asynInt32")
@@ -143,6 +152,7 @@ record(longin, "$(P)$(R)FreeBuffers_RBV")
     field(SCAN, "I/O Intr")
 }
 
+#% archiver 1 monitor
 record(longin, "$(P)$(R)FramesReceived_RBV")
 {
     field(DTYP, "asynInt32")
@@ -150,6 +160,7 @@ record(longin, "$(P)$(R)FramesReceived_RBV")
     field(SCAN, "I/O Intr")
 }
 
+#% archiver 1 monitor
 record(longin, "$(P)$(R)FramesTimedOut_RBV")
 {
     field(DTYP, "asynInt32")
@@ -157,6 +168,7 @@ record(longin, "$(P)$(R)FramesTimedOut_RBV")
     field(SCAN, "I/O Intr")
 }
 
+#% archiver 1 monitor
 record(longin, "$(P)$(R)FramesReleased_RBV")
 {
     field(DTYP, "asynInt32")
