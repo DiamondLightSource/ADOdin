@@ -8,6 +8,6 @@ ADCORE = $(SUPPORT)/ADCore/2-6dls6
 CALC = $(SUPPORT)/calc/3-1
 RESTCLIENT = $(SUPPORT)/restClient/0-1
 
-ODINDATA = $(TOOLS)/odin-data/0-5-0dls1
-EXCALIBURDETECTOR = $(TOOLS)/excalibur-detector/0-3-0
-EIGERDETECTOR = $(TOOLS)/eiger-detector/1-2-0
+ODINDATA = /dls_sw/work/tools/RHEL6-x86_64/odin/mef65357/odin-data
+EXCALIBURDETECTOR = /dls_sw/work/tools/RHEL6-x86_64/odin/excalibur-detector
+EIGERDETECTOR = /dls_sw/work/tools/RHEL6-x86_64/eiger-detector

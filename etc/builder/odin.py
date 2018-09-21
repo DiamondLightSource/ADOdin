@@ -12,6 +12,11 @@ from iocbuilder.modules.restClient import restClient
 from iocbuilder.modules.calc import Calc
 
 
+def debug_print(message, level):
+    if int(os.getenv("ODIN_BUILDER_DEBUG", 0)) == level:
+        print(message)
+
+
 ADODIN_ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../.."))
 ADODIN_DATA = os.path.join(ADODIN_ROOT, "data")
 
@@ -29,7 +34,7 @@ def find_module_path(module):
 
 
 ODIN_DATA_MACRO, ODIN_DATA_ROOT = find_module_path("odin-data")
-print("OdinData: {} = {}".format(ODIN_DATA_MACRO, ODIN_DATA_ROOT))
+debug_print("OdinData: {} = {}".format(ODIN_DATA_MACRO, ODIN_DATA_ROOT), 1)
 
 
 def expand_template_file(template, macros, output_file, executable=False):
@@ -42,9 +47,9 @@ def expand_template_file(template, macros, output_file, executable=False):
         template_config = Template(template_file.read())
 
     output = template_config.substitute(macros)
-    print("--- {} ----------------------------------------------".format(output_file))
-    print(output)
-    print("---")
+    debug_print("--- {} ----------------------------------------------".format(output_file), 2)
+    debug_print(output, 2)
+    debug_print("---", 2)
 
     stream = IocDataStream(output_file, mode)
     stream.write(output)

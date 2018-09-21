@@ -5,11 +5,11 @@ from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.ADCore import makeTemplateInstance
 
 from odin import _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, \
-    find_module_path, expand_template_file
+    find_module_path, expand_template_file, debug_print
 
 
 EIGER, EIGER_PATH = find_module_path("eiger-detector")
-print("Eiger: {} = {}".format(EIGER, EIGER_PATH))
+debug_print("Eiger: {} = {}".format(EIGER, EIGER_PATH), 1)
 
 
 class EigerFan(Device):

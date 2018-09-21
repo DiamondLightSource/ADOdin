@@ -5,11 +5,11 @@ from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
 
 from odin import _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, \
-                 find_module_path, expand_template_file
+                 find_module_path, expand_template_file, debug_print
 
 
 EXCALIBUR, EXCALIBUR_PATH = find_module_path("excalibur-detector")
-print("Excalibur: {} = {}".format(EXCALIBUR, EXCALIBUR_PATH))
+debug_print("Excalibur: {} = {}".format(EXCALIBUR, EXCALIBUR_PATH), 1)
 
 EXCALIBUR_DIMENSIONS = {
     # Sensor: (Width, Height)
