@@ -759,6 +759,7 @@ record(bo, "$(P)$(R)CONFIG:ACQUIRE:LvControl")
     field(ONAM, "On")
 }
 
+#% archiver 1 monitor
 record(bi, "$(P)$(R)CONFIG:ACQUIRE:LvControl_RBV")
 {
     field(DTYP, "asynInt32")
