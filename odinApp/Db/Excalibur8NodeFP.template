@@ -3,6 +3,7 @@
 
 # % macro, P, Device Prefix
 # % macro, R, Device Suffix
+# % macro, DET, Detector Suffix
 # % macro, name, Name specifying builder GUI generation
 
 # This associates the template with an edm screen
@@ -173,4 +174,3 @@ record(fanout, "$(P)$(R)ReconnectFan12")
     field(LNK5, "$(P)$(R)6FPProcHeight.PROC PP")
     field(LNK6, "$(P)$(R)7FPProcHeight.PROC PP")
 }
-

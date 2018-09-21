@@ -1,13 +1,10 @@
 # excalibur2Node.template
 # Defines the housekeeping parameters available from all FEMs.
-#
-# Parameters:
-#   P       - EPICS name prefix
-#   R       - EPICS plugin name
-#   PORT    - Asyn port
-#   ADDRESS - Asyn address
-#   TOTAL   - Total number of FEMs
-#   TIMEOUT - Timeout
+
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, DET, Detector Suffix
+# % macro, name, Name specifying builder GUI generation
 
 # This associates the template with an edm screen
 # % gui, $(name), edm, ExcaliburDAQ2Status.edl, P=$(P),R=$(R)
@@ -24,3 +21,85 @@ include "ExcaliburFP.template"
 substitute "ADDRESS=1"
 include "ExcaliburFP.template"
 
+###################################################################
+#  This ensures that the correct HDF5 bit depth is selected       #
+#  when the detector bit depth is changed.                        #
+###################################################################
+record(calcout, "$(P)$(R)DetToFPBitDepth")
+{
+    field(INPA, "$(P)$(DET)CounterDepth CP")
+    field(CALC, "A=0||A=1?0:A=2?1:2")
+    field(OUT, "$(P):OD:DataType PP")
+}
+
+###################################################################
+#  Calculate if we need to re-load settings, these will be        #
+#  processed if the connection to Odin transitions from           #
+#  disconnected to reconnected                                    #
+###################################################################
+record(calcout, "$(P)$(R)CalcReconnected")
+{
+    field(INPA, "$(P)$(R)DetectorState_RBV CP")
+    field(CALC, "A=9?0:1")
+    field(OUT, "$(P)$(R)ReconnectFan1.PROC PP")
+    field(OOPT, "Transition To Non-zero")
+}
+
+record(fanout, "$(P)$(R)ReconnectFan1")
+{
+    field(LNK1, "$(P)$(R)FilePath.PROC PP")
+    field(LNK2, "$(P)$(R)FileNamePrefix.PROC PP")
+    field(LNK3, "$(P)$(R)FileExtension.PROC PP")
+    field(LNK4, "$(P)$(R)NumCapture.PROC PP")
+    field(LNK5, "$(P)$(R)ImageWidth.PROC PP")
+    field(LNK6, "$(P)$(R)ImageHeight.PROC PP")
+    field(FLNK, "$(P)$(R)ReconnectFan2.PROC PP")
+}
+
+record(fanout, "$(P)$(R)ReconnectFan2")
+{
+    field(LNK1, "$(P)$(R)FileNumber.PROC PP")
+    field(FLNK, "$(P)$(R)ReconnectFan3.PROC PP")
+}
+
+record(fanout, "$(P)$(R)ReconnectFan3")
+{
+    field(LNK1, "$(P)$(R)NumFramesChunks.PROC PP")
+    field(LNK2, "$(P)$(R)NumColChunks.PROC PP")
+    field(LNK3, "$(P)$(R)NumRowChunks.PROC PP")
+    field(LNK4, "$(P)$(R)DataType.PROC PP")
+    field(LNK5, "$(P)$(R)Compression.PROC PP")
+    field(LNK6, "$(P)$(R)FrameOffset.PROC PP")
+    field(FLNK, "$(P)$(R)ReconnectFan4.PROC PP")
+}
+
+record(fanout, "$(P)$(R)ReconnectFan4")
+{
+    field(LNK1, "$(P)$(R)CloseFileTimeout.PROC PP")
+    field(LNK2, "$(P)$(R)BlockSize.PROC PP")
+    field(LNK3, "$(P)$(R)BlocksPerFile.PROC PP")
+    field(LNK4, "$(P)$(R)BoundaryAlign.PROC PP")
+    field(LNK5, "$(P)$(R)BoundaryThreshold.PROC PP")
+    field(LNK6, "$(P)$(R)EarliestHDF5Version.PROC PP")
+    field(FLNK, "$(P)$(R)ReconnectFan5.PROC PP")
+}
+
+record(fanout, "$(P)$(R)ReconnectFan5")
+{
+    field(LNK1, "$(P)OD1:FRConfigFile.PROC PP")
+    field(LNK2, "$(P)OD1:FPConfigFile.PROC PP")
+    field(LNK1, "$(P)OD2:FRConfigFile.PROC PP")
+    field(LNK2, "$(P)OD2:FPConfigFile.PROC PP")
+    field(FLNK, "$(P)$(R)ReconnectFan6.PROC PP")
+}
+
+record(fanout, "$(P)$(R)ReconnectFan6")
+{
+    field(LNK1, "$(P)$(R)0FPBitDepthCalc.PROC PP")
+    field(LNK2, "$(P)$(R)1FPBitDepthCalc.PROC PP")
+    field(LNK3, "$(P)$(R)0FPProcWidth.PROC PP")
+    field(LNK4, "$(P)$(R)1FPProcWidth.PROC PP")
+    field(LNK5, "$(P)$(R)0FPProcHeight.PROC PP")
+    field(LNK6, "$(P)$(R)1FPProcHeight.PROC PP")
+    field(FLNK, "$(P)$(R)ReconnectFan7.PROC PP")
+}
