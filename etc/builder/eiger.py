@@ -52,16 +52,14 @@ class EigerMetaListener(Device):
     AutoInstantiate = True
 
     def __init__(self, IP, SENSOR,
-                 ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None, ODIN_DATA_SERVER_3=None,
-                 ODIN_DATA_SERVER_4=None, ODIN_DATA_SERVER_5=None, ODIN_DATA_SERVER_6=None,
-                 ODIN_DATA_SERVER_7=None, ODIN_DATA_SERVER_8=None):
+                 ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
+                 ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None):
         self.__super.__init__()
         # Update attributes with parameters
         self.__dict__.update(locals())
 
         self.ip_list = []
-        for idx in range(1, 9):
-            server = eval("ODIN_DATA_SERVER_{}".format(idx))
+        for server in [ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4]:
             if server is not None:
                 base_port = 5000
                 for odin_data in server.processes:
@@ -86,11 +84,7 @@ class EigerMetaListener(Device):
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_5=Ident("OdinDataServer 5 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_6=Ident("OdinDataServer 6 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_7=Ident("OdinDataServer 7 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_8=Ident("OdinDataServer 8 configuration", _OdinDataServer)
+        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer)
     )
 
 
@@ -101,8 +95,8 @@ class _EigerOdinData(_OdinData):
         "FrameReceiver": "fr_eiger.json"
     }
 
-    def __init__(self, IP, READY, RELEASE, META, SOURCE_IP):
-        super(_EigerOdinData, self).__init__(IP, READY, RELEASE, META)
+    def __init__(self, server, READY, RELEASE, META, SOURCE_IP):
+        super(_EigerOdinData, self).__init__(server, READY, RELEASE, META)
         self.source = SOURCE_IP
 
     def create_config_files(self, index):
@@ -131,8 +125,8 @@ class EigerOdinDataServer(_OdinDataServer):
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int)
     )
 
-    def create_odin_data_process(self, ip, ready, release, meta):
-        return _EigerOdinData(ip, ready, release, meta, self.source)
+    def create_odin_data_process(self, server, ready, release, meta):
+        return _EigerOdinData(server, ready, release, meta, self.source)
 
 
 class EigerOdinControlServer(_OdinControlServer):
@@ -142,9 +136,8 @@ class EigerOdinControlServer(_OdinControlServer):
     ODIN_SERVER = os.path.join(EIGER_PATH, "prefix/bin/eiger_odin")
 
     def __init__(self, IP, EIGER_FAN, META_LISTENER,
-                 ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None, ODIN_DATA_SERVER_3=None,
-                 ODIN_DATA_SERVER_4=None, ODIN_DATA_SERVER_5=None, ODIN_DATA_SERVER_6=None,
-                 ODIN_DATA_SERVER_7=None, ODIN_DATA_SERVER_8=None):
+                 ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
+                 ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None):
         self.__dict__.update(locals())
         self.ADAPTERS.extend(["eiger_fan", "meta_listener"])
 
@@ -152,9 +145,7 @@ class EigerOdinControlServer(_OdinControlServer):
         self.meta_endpoint = META_LISTENER.IP
 
         super(EigerOdinControlServer, self).__init__(
-            IP,
-            ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4,
-            ODIN_DATA_SERVER_5, ODIN_DATA_SERVER_6, ODIN_DATA_SERVER_7, ODIN_DATA_SERVER_8
+            IP, ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4
         )
 
     # __init__ arguments
@@ -165,31 +156,27 @@ class EigerOdinControlServer(_OdinControlServer):
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_5=Ident("OdinDataServer 5 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_6=Ident("OdinDataServer 6 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_7=Ident("OdinDataServer 7 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_8=Ident("OdinDataServer 8 configuration", _OdinDataServer)
+        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer)
     )
 
     def create_odin_server_config_entries(self):
         return [
             self._create_odin_data_config_entry(),
-            self._create_eiger_fan_config_entry(self.fan_endpoint),
-            self._create_meta_listener_config_entry(self.meta_endpoint)
+            self._create_eiger_fan_config_entry(),
+            self._create_meta_listener_config_entry()
         ]
 
-    def _create_eiger_fan_config_entry(self, endpoint):
+    def _create_eiger_fan_config_entry(self):
         return "[adapter.eiger_fan]\n" \
                "module = eiger.eiger_fan_adapter.EigerFanAdapter\n" \
                "endpoints = {}:5559\n" \
-               "update_interval = 0.5".format(endpoint)
+               "update_interval = 0.5".format(self.fan_endpoint)
 
-    def _create_meta_listener_config_entry(self, endpoint):
+    def _create_meta_listener_config_entry(self):
         return "[adapter.meta_listener]\n" \
                "module = eiger.meta_listener_adapter.MetaListenerAdapter\n" \
                "endpoints = {}:5659\n" \
-               "update_interval = 0.5".format(endpoint)
+               "update_interval = 0.5".format(self.meta_endpoint)
 
 
 class _EigerDetectorTemplate(AutoSubstitution):

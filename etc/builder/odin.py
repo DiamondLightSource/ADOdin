@@ -65,10 +65,12 @@ class _OdinData(Device):
     # Device attributes
     AutoInstantiate = True
 
-    def __init__(self, IP, READY, RELEASE, META):
+    def __init__(self, server, READY, RELEASE, META):
         self.__super.__init__()
         # Update attributes with parameters
         self.__dict__.update(locals())
+
+        self.IP = server.IP
 
         # Create unique R MACRO for template file - OD1, OD2 etc.
         self.R = ":OD{}:".format(self.INDEX)
@@ -76,7 +78,7 @@ class _OdinData(Device):
         _OdinData.INDEX += 1
 
     def create_config_file(self, prefix, template, index, extra_macros=None):
-        macros = dict(IP=self.IP, RD_PORT=self.READY, RL_PORT=self.RELEASE,
+        macros = dict(IP=self.server.IP, RD_PORT=self.READY, RL_PORT=self.RELEASE,
                       FW_ROOT=ODIN_DATA_ROOT)
         if extra_macros is not None:
             macros.update(extra_macros)
@@ -105,7 +107,7 @@ class _OdinDataServer(Device):
         for _ in range(PROCESSES):
             self.processes.append(
                 self.create_odin_data_process(
-                    IP, self.PORT_BASE + 1, self.PORT_BASE + 2, self.PORT_BASE + 3)
+                    self, self.PORT_BASE + 1, self.PORT_BASE + 2, self.PORT_BASE + 3)
             )
             self.PORT_BASE += 10
 
@@ -117,7 +119,7 @@ class _OdinDataServer(Device):
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
     )
 
-    def create_odin_data_process(self, ip, ready, release, meta):
+    def create_odin_data_process(self, server, ready, release, meta):
         raise NotImplementedError("Method must be implemented by child classes")
 
     def create_od_startup_scripts(self, server_rank, total_servers):
@@ -169,17 +171,18 @@ class _OdinControlServer(Device):
     AutoInstantiate = True
 
     def __init__(self, IP,
-                 ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4,
-                 ODIN_DATA_SERVER_5, ODIN_DATA_SERVER_6, ODIN_DATA_SERVER_7, ODIN_DATA_SERVER_8):
+                 ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4):
         self.__super.__init__()
         # Update attributes with parameters
         self.__dict__.update(locals())
 
         self.odin_data_servers = [
-            ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4,
-            ODIN_DATA_SERVER_5, ODIN_DATA_SERVER_6, ODIN_DATA_SERVER_7, ODIN_DATA_SERVER_8
+            server for server in [
+                ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4
+            ] if server is not None
         ]
-        if all(_ is None for _ in self.odin_data_servers):
+
+        if not self.odin_data_servers:
             raise ValueError("Received no control endpoints for Odin Server")
 
         self.odin_data_processes = []
@@ -194,11 +197,7 @@ class _OdinControlServer(Device):
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_5=Ident("OdinDataServer 5 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_6=Ident("OdinDataServer 6 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_7=Ident("OdinDataServer 7 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_8=Ident("OdinDataServer 8 configuration", _OdinDataServer)
+        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer)
     )
 
     def create_startup_script(self):
@@ -246,6 +245,7 @@ class _OdinDetector(AsynPort):
         # Update the attributes of self from the commandline args
         self.__dict__.update(locals())
 
+        # Define Macros for Initialise substitutions
         self.CONTROL_SERVER_IP = ODIN_CONTROL_SERVER.IP
         self.CONTROL_SERVER_PORT = ODIN_CONTROL_SERVER.PORT
 
@@ -288,11 +288,7 @@ class _OdinDataDriver(AsynPort):
     _SpecificTemplate = _OdinDataDriverTemplate
 
     def __init__(self, PORT, ODIN_CONTROL_SERVER, DETECTOR=None, DATASET="data",
-                 ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None, ODIN_DATA_SERVER_3=None,
-                 ODIN_DATA_SERVER_4=None, ODIN_DATA_SERVER_5=None, ODIN_DATA_SERVER_6=None,
-                 ODIN_DATA_SERVER_7=None, ODIN_DATA_SERVER_8=None,
-                 BUFFERS=0, MEMORY=0,
-                 **args):
+                 BUFFERS=0, MEMORY=0, **args):
         # Init the superclass (AsynPort)
         self.__super.__init__(PORT)
         # Update the attributes of self from the commandline args
@@ -300,50 +296,39 @@ class _OdinDataDriver(AsynPort):
         # Make an instance of our template
         makeTemplateInstance(self._SpecificTemplate, locals(), args)
 
+        self.control_server = ODIN_CONTROL_SERVER
+        self.server_count = len(self.control_server.odin_data_servers)
+
+        # Define Macros for Initialise substitutions
         self.CONTROL_SERVER_IP = ODIN_CONTROL_SERVER.IP
         self.CONTROL_SERVER_PORT = ODIN_CONTROL_SERVER.PORT
         self.DETECTOR_PLUGIN = DETECTOR.lower()
         self.ODIN_DATA_PROCESSES = []
 
-        # Count the number of servers
-        self.server_count = 0
-        for idx in range(1, 9):
-            server = eval("ODIN_DATA_SERVER_{}".format(idx))
-            if server is not None:
-                self.server_count += 1
-        print("Server count: {}".format(self.server_count))
-
         self.total_processes = 0
-        server_number = 0
-        for idx in range(1, 9):
-            server = eval("ODIN_DATA_SERVER_{}".format(idx))
-            if server is not None:
-                if server.instantiated:
-                    raise ValueError("Same OdinDataServer object given twice")
-                else:
-                    server_number += 1
-                    server.instantiated = True
+        for server_idx, server in enumerate(self.control_server.odin_data_servers):
+            if server.instantiated:
+                raise ValueError("Same OdinDataServer object given twice")
+            else:
+                server.instantiated = True
 
-                index_number = 0
-                for odin_data in server.processes:
-                    address = idx + index_number - 1
-                    print("Odin data idx: {}  index_number: {}  address: {}".format(idx, index_number, address))
-                    self.ODIN_DATA_PROCESSES.append(odin_data)
-                    # Use some OdinDataDriver macros to instantiate an OdinData.template
-                    args["PORT"] = PORT
-                    args["ADDR"] = odin_data.index-1
-                    args["R"] = odin_data.R
-                    _OdinDataTemplate(**args)
+            process_idx = server_idx
+            for odin_data in server.processes:
+                self.ODIN_DATA_PROCESSES.append(odin_data)
+                # Use some OdinDataDriver macros to instantiate an OdinData.template
+                args["PORT"] = PORT
+                args["ADDR"] = odin_data.index - 1
+                args["R"] = odin_data.R
+                _OdinDataTemplate(**args)
 
-                    odin_data.create_config_files(address + 1)
+                odin_data.create_config_files(process_idx + 1)
+                process_idx += self.server_count
+                self.total_processes += 1
 
-                    index_number += self.server_count
-                    self.total_processes += 1
-
-                server.create_od_startup_scripts(server_number, self.server_count)
+            server.create_od_startup_scripts(server_idx + 1, self.server_count)
 
         # Now OdinData instances are configured, OdinControlServer can generate its config from them
-        ODIN_CONTROL_SERVER.create_config_file()
+        self.control_server.create_config_file()
 
     # __init__ arguments
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
@@ -353,15 +338,7 @@ class _OdinDataDriver(AsynPort):
                       "attached plugins", int),
         ODIN_CONTROL_SERVER=Ident("Odin control server", _OdinControlServer),
         DATASET=Simple("Name of Dataset", str),
-        DETECTOR=Simple("Detector type", str),
-        ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_5=Ident("OdinDataServer 5 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_6=Ident("OdinDataServer 6 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_7=Ident("OdinDataServer 7 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_8=Ident("OdinDataServer 8 configuration", _OdinDataServer)
+        DETECTOR=Simple("Detector type", str)
     )
 
     # Device attributes

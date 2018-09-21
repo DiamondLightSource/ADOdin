@@ -31,8 +31,8 @@ class _ExcaliburOdinData(_OdinData):
         }
     }
 
-    def __init__(self, IP, READY, RELEASE, META, SENSOR, BASE_UDP_PORT):
-        super(_ExcaliburOdinData, self).__init__(IP, READY, RELEASE, META)
+    def __init__(self, server, READY, RELEASE, META, SENSOR, BASE_UDP_PORT):
+        super(_ExcaliburOdinData, self).__init__(server, READY, RELEASE, META)
         self.sensor = SENSOR
         self.base_udp_port = BASE_UDP_PORT
 
@@ -40,7 +40,7 @@ class _ExcaliburOdinData(_OdinData):
         macros = dict(PP_ROOT=EXCALIBUR_PATH,
                       RX_PORT_1=self.base_udp_port,
                       RX_PORT_2=self.base_udp_port + 1,
-                      RX_PORT_3=self.base_udp_port + 2,
+                      RX_PORT_3=self.base_udp_port + 2,  # 3 - 6 will be ignored in the 1M template
                       RX_PORT_4=self.base_udp_port + 3,
                       RX_PORT_5=self.base_udp_port + 4,
                       RX_PORT_6=self.base_udp_port + 5)
@@ -57,19 +57,24 @@ class ExcaliburOdinDataServer(_OdinDataServer):
 
     BASE_UDP_PORT = 61649
 
-    def __init__(self, IP, PROCESSES, SENSOR, SHARED_MEM_SIZE=1048576000):
+    def __init__(self, IP, PROCESSES, SENSOR, FEM_DEST_MAC, FEM_DEST_IP="10.0.2.2",
+                 SHARED_MEM_SIZE=1048576000):
         self.sensor = SENSOR
         self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE)
+        # Update attributes with parameters
+        self.__dict__.update(locals())
 
     ArgInfo = makeArgInfo(__init__,
         IP=Simple("IP address of server hosting OdinData processes", str),
         PROCESSES=Simple("Number of OdinData processes on this server", int),
         SENSOR=Choice("Sensor type", ["1M", "3M"]),
+        FEM_DEST_MAC=Simple("MAC address of node data link (destination for FEM to send to)", str),
+        FEM_DEST_IP=Simple("IP address of node data link (destination for FEM to send to)", str),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int)
     )
 
-    def create_odin_data_process(self, ip, ready, release, meta):
-        process = _ExcaliburOdinData(ip, ready, release, meta, self.sensor, self.BASE_UDP_PORT)
+    def create_odin_data_process(self, server, ready, release, meta):
+        process = _ExcaliburOdinData(server, ready, release, meta, self.sensor, self.BASE_UDP_PORT)
         self.BASE_UDP_PORT += 6
         return process
 
@@ -92,16 +97,13 @@ class ExcaliburOdinControlServer(_OdinControlServer):
     }
 
     def __init__(self, IP, SENSOR, FEMS_REVERSED=False, POWER_CARD_IDX=1,
-                 ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None, ODIN_DATA_SERVER_3=None,
-                 ODIN_DATA_SERVER_4=None, ODIN_DATA_SERVER_5=None, ODIN_DATA_SERVER_6=None,
-                 ODIN_DATA_SERVER_7=None, ODIN_DATA_SERVER_8=None):
+                 ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
+                 ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None):
         self.__dict__.update(locals())
         self.ADAPTERS.append("excalibur")
 
         super(ExcaliburOdinControlServer, self).__init__(
-            IP,
-            ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4,
-            ODIN_DATA_SERVER_5, ODIN_DATA_SERVER_6, ODIN_DATA_SERVER_7, ODIN_DATA_SERVER_8
+            IP, ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4
         )
 
     # __init__ arguments
@@ -113,28 +115,24 @@ class ExcaliburOdinControlServer(_OdinControlServer):
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_5=Ident("OdinDataServer 5 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_6=Ident("OdinDataServer 6 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_7=Ident("OdinDataServer 7 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_8=Ident("OdinDataServer 8 configuration", _OdinDataServer)
+        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer)
     )
 
     def create_odin_server_config_entries(self):
         return [
-            self._create_excalibur_config_entry(fems=self.fem_address_list,
-                                                powercard_idx=self.POWER_CARD_IDX,
-                                                chip_enable_mask=self.chip_mask),
+            self._create_excalibur_config_entry(),
             self._create_odin_data_config_entry()
         ]
 
-    def _create_excalibur_config_entry(self, fems, powercard_idx, chip_enable_mask):
+    def _create_excalibur_config_entry(self):
         return "[adapter.excalibur]\n" \
                "module = excalibur.adapter.ExcaliburAdapter\n" \
                "detector_fems = {}\n" \
                "powercard_fem_idx = {}\n" \
                "chip_enable_mask = {}\n" \
-               "update_interval = 0.5".format(fems, powercard_idx, chip_enable_mask)
+               "update_interval = 0.5".format(
+                    self.fem_address_list, self.POWER_CARD_IDX, self.chip_mask
+                )
 
     @property
     def fem_address_list(self):
@@ -278,16 +276,10 @@ class ExcaliburDetector(_OdinDetector):
 
     _SpecificTemplate = _ExcaliburDetectorTemplate
 
-    def __init__(self, PORT, ODIN_CONTROL_SERVER, SENSOR, BUFFERS=0, MEMORY=0,
-                 NODE_1_NAME=None, NODE_1_MAC=None, NODE_1_IPADDR=None, NODE_1_PORT=None,
-                 NODE_2_NAME=None, NODE_2_MAC=None, NODE_2_IPADDR=None, NODE_2_PORT=None,
-                 NODE_3_NAME=None, NODE_3_MAC=None, NODE_3_IPADDR=None, NODE_3_PORT=None,
-                 NODE_4_NAME=None, NODE_4_MAC=None, NODE_4_IPADDR=None, NODE_4_PORT=None,
-                 NODE_5_NAME=None, NODE_5_MAC=None, NODE_5_IPADDR=None, NODE_5_PORT=None,
-                 NODE_6_NAME=None, NODE_6_MAC=None, NODE_6_IPADDR=None, NODE_6_PORT=None,
-                 NODE_7_NAME=None, NODE_7_MAC=None, NODE_7_IPADDR=None, NODE_7_PORT=None,
-                 NODE_8_NAME=None, NODE_8_MAC=None, NODE_8_IPADDR=None, NODE_8_PORT=None,
-                 **args):
+    # We don't really need the OdinDataDriver, but we need to know it is instantiated as it
+    # defines the RANK on all the OdinData instances and we need to sort by RANK for the UDP config
+    def __init__(self, PORT, ODIN_CONTROL_SERVER, ODIN_DATA_DRIVER, SENSOR,
+                 BUFFERS=0, MEMORY=0, **args):
         # Init the superclass (OdinDetector)
         self.__super.__init__(PORT, ODIN_CONTROL_SERVER, self.DETECTOR,
                               BUFFERS, MEMORY, **args)
@@ -295,6 +287,8 @@ class ExcaliburDetector(_OdinDetector):
         self.__dict__.update(locals())
         # Make an instance of our template
         makeTemplateInstance(self._SpecificTemplate, locals(), args)
+
+        self.control_server = ODIN_CONTROL_SERVER
 
         # Add the FEM housekeeping template
         fem_hk_template = _ExcaliburFemHousekeepingTemplate
@@ -306,7 +300,6 @@ class ExcaliburDetector(_OdinDetector):
         }
         fem_hk_template(**fem_hk_args)
 
-        assert SENSOR in self.SENSOR_OPTIONS.keys()
         # Instantiate template corresponding to SENSOR, passing through some of own args
         status_template = self.SENSOR_OPTIONS[SENSOR][0]
         gui_name = PORT[:PORT.find(".")] + ".Status"
@@ -324,52 +317,44 @@ class ExcaliburDetector(_OdinDetector):
         self.create_udp_file()
 
     def create_udp_file(self):
-        names = [self.NODE_1_NAME, self.NODE_2_NAME, self.NODE_3_NAME, self.NODE_4_NAME,
-                 self.NODE_5_NAME, self.NODE_6_NAME, self.NODE_7_NAME, self.NODE_8_NAME]
-        macs = [self.NODE_1_MAC, self.NODE_2_MAC, self.NODE_3_MAC, self.NODE_4_MAC,
-                self.NODE_5_MAC, self.NODE_6_MAC, self.NODE_7_MAC, self.NODE_8_MAC]
-        ips = [self.NODE_1_IPADDR, self.NODE_2_IPADDR, self.NODE_3_IPADDR, self.NODE_4_IPADDR,
-               self.NODE_5_IPADDR, self.NODE_6_IPADDR, self.NODE_7_IPADDR, self.NODE_8_IPADDR]
-        ports = [self.NODE_1_PORT, self.NODE_2_PORT, self.NODE_3_PORT, self.NODE_4_PORT,
-                 self.NODE_5_PORT, self.NODE_6_PORT, self.NODE_7_PORT, self.NODE_8_PORT]
-
         fem_config = []
         for offset in range(self.SENSOR_OPTIONS[self.SENSOR][1]):  # 2 for 1M or 6 for 3M
-            index = offset + 1
             fem_config.append(
                 #    "fems": [
                 "        {{\n"
-                "            \"name\": \"fem{index}\",\n"
-                "            \"mac\": \"62:00:00:00:00:0{index}\",\n"
-                "            \"ipaddr\": \"10.0.2.10{index}\",\n"
-                "            \"port\": 6000{index},\n"
+                "            \"name\": \"fem{number}\",\n"
+                "            \"mac\": \"62:00:00:00:00:0{number}\",\n"
+                "            \"ipaddr\": \"10.0.2.10{number}\",\n"
+                "            \"port\": 6000{number},\n"
                 "            \"dest_port_offset\": {offset}\n"
-                "        }}".format(index=index, offset=offset)
+                "        }}".format(number=offset + 1, offset=offset)
                 #    ...
                 #    ]
             )
 
-        number_of_nodes = 0
         node_config = []
-        for name, mac, ip, port in zip(names, macs, ips, ports):
-            if name is not None:
-                node_config.append(
-                    #    "nodes": [
-                    "        {{\n"
-                    "            \"name\": \"{}\",\n"
-                    "            \"mac\": \"{}\",\n"
-                    "            \"ipaddr\": \"{}\",\n"
-                    "            \"port\": {}\n"
-                    "        }}".format(name, mac, ip, port)
-                    #    ...
-                    #    ]
-                )
-                number_of_nodes += 1
+        for idx, process in enumerate(sorted(self.control_server.odin_data_processes,
+                                             key=lambda x: x.RANK)):
+            config = dict(
+                name="dest{}".format(idx + 1), mac=process.server.FEM_DEST_MAC,
+                ip=process.server.FEM_DEST_IP, port=process.base_udp_port
+            )
+            node_config.append(
+                #    "nodes": [
+                "        {{\n"
+                "            \"name\": \"{name}\",\n"
+                "            \"mac\": \"{mac}\",\n"
+                "            \"ipaddr\": \"{ip}\",\n"
+                "            \"port\": {port}\n"
+                "        }}".format(**config)
+                #    ...
+                #    ]
+            )
 
         macros = dict(
             FEM_CONFIG=",\n".join(fem_config),
             NODE_CONFIG=",\n".join(node_config),
-            NUM_DESTS=number_of_nodes
+            NUM_DESTS=len(self.control_server.odin_data_processes)
         )
         expand_template_file("udp_excalibur.json", macros, "udp_excalibur.json")
 
@@ -377,40 +362,9 @@ class ExcaliburDetector(_OdinDetector):
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
         PORT=Simple("Port name for the detector", str),
         ODIN_CONTROL_SERVER=Ident("Odin control server instance", _OdinControlServer),
-        SENSOR=Choice("Sensor type", ["1M", "3M"]),
+        ODIN_DATA_DRIVER=Ident("OdinDataDriver instance", _OdinDataDriver),
+        SENSOR=Choice("Sensor type", SENSOR_OPTIONS.keys()),
         BUFFERS=Simple("Maximum number of NDArray buffers to be created for plugin callbacks", int),
         MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "
-                      "attached plugins", int),
-        NODE_1_NAME=Simple("Name of detector output node 1", str),
-        NODE_1_MAC=Simple("Mac address of detector output node 1", str),
-        NODE_1_IPADDR=Simple("IP address of detector output node 1", str),
-        NODE_1_PORT=Simple("Port of detector output node 1", int),
-        NODE_2_NAME=Simple("Name of detector output node 2", str),
-        NODE_2_MAC=Simple("Mac address of detector output node 2", str),
-        NODE_2_IPADDR=Simple("IP address of detector output node 2", str),
-        NODE_2_PORT=Simple("Port of detector output node 2", int),
-        NODE_3_NAME=Simple("Name of detector output node 3", str),
-        NODE_3_MAC=Simple("Mac address of detector output node 3", str),
-        NODE_3_IPADDR=Simple("IP address of detector output node 3", str),
-        NODE_3_PORT=Simple("Port of detector output node 3", int),
-        NODE_4_NAME=Simple("Name of detector output node 4", str),
-        NODE_4_MAC=Simple("Mac address of detector output node 4", str),
-        NODE_4_IPADDR=Simple("IP address of detector output node 4", str),
-        NODE_4_PORT=Simple("Port of detector output node 4", int),
-        NODE_5_NAME=Simple("Name of detector output node 5", str),
-        NODE_5_MAC=Simple("Mac address of detector output node 5", str),
-        NODE_5_IPADDR=Simple("IP address of detector output node 5", str),
-        NODE_5_PORT=Simple("Port of detector output node 5", int),
-        NODE_6_NAME=Simple("Name of detector output node 6", str),
-        NODE_6_MAC=Simple("Mac address of detector output node 6", str),
-        NODE_6_IPADDR=Simple("IP address of detector output node 6", str),
-        NODE_6_PORT=Simple("Port of detector output node 6", int),
-        NODE_7_NAME=Simple("Name of detector output node 7", str),
-        NODE_7_MAC=Simple("Mac address of detector output node 7", str),
-        NODE_7_IPADDR=Simple("IP address of detector output node 7", str),
-        NODE_7_PORT=Simple("Port of detector output node 7", int),
-        NODE_8_NAME=Simple("Name of detector output node 8", str),
-        NODE_8_MAC=Simple("Mac address of detector output node 8", str),
-        NODE_8_IPADDR=Simple("IP address of detector output node 8", str),
-        NODE_8_PORT=Simple("Port of detector output node 8", int)
+                      "attached plugins", int)
     )
