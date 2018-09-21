@@ -141,4 +141,3 @@ record(longin, "$(P)$(R)$(ADDRESS):PacketsLost_RBV")
     field(SCAN, "I/O Intr")
     field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_fp/status/excalibur/packets_lost")
 }
-

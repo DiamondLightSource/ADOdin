@@ -154,7 +154,7 @@ class _ExcaliburDetectorTemplate(AutoSubstitution):
 
 
 class _ExcaliburFPTemplate(AutoSubstitution):
-    TemplateFile = "ExcaliburFP.template"
+    TemplateFile = "ExcaliburOD.template"
 
 
 def add_excalibur_fp_template(cls):
@@ -177,17 +177,17 @@ def add_excalibur_fp_template(cls):
 
 @add_excalibur_fp_template
 class _Excalibur2NodeFPTemplate(AutoSubstitution):
-    TemplateFile = "Excalibur2NodeFP.template"
+    TemplateFile = "Excalibur2NodeOD.template"
 
 
 @add_excalibur_fp_template
 class _Excalibur4NodeFPTemplate(AutoSubstitution):
-    TemplateFile = "Excalibur4NodeFP.template"
+    TemplateFile = "Excalibur4NodeOD.template"
 
 
 @add_excalibur_fp_template
 class _Excalibur8NodeFPTemplate(AutoSubstitution):
-    TemplateFile = "Excalibur8NodeFP.template"
+    TemplateFile = "Excalibur8NodeOD.template"
 
 
 class ExcaliburOdinDataDriver(_OdinDataDriver):
