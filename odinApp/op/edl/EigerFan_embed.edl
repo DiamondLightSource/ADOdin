@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2221
-y 387
+x 1234
+y 315
 w 388
 h 215
 font "arial-medium-r-12.0"
@@ -88,7 +88,7 @@ minor 6
 release 0
 x 110
 y 180
-w 265
+w 165
 h 20
 controlPv "$(P)$(R)FAN:State_RBV"
 font "helvetica-medium-r-10.0"
@@ -444,5 +444,42 @@ useDisplayBg
 value {
   "Offset"
 }
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 285
+y 180
+w 40
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Ready"
+}
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 340
+y 185
+w 20
+h 10
+controlPv "$(P)$(R)FAN:StateReady_RBV"
+lineColor index 14
+onColor index 15
+offColor index 19
+lineWidth 2
+numBits 1
 endObjectProperties
 
