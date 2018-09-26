@@ -63,9 +63,9 @@ class EigerMetaListener(Device):
             if server is not None:
                 base_port = 5000
                 for odin_data in server.processes:
-                    port = base_port + 558
+                    port = base_port + 8
                     self.ip_list.append("tcp://{}:{}".format(odin_data.IP, port))
-                    base_port += 1000
+                    base_port += 10
 
         self.create_startup_file()
 
@@ -100,9 +100,9 @@ class _EigerOdinData(_OdinData):
         self.source = SOURCE_IP
 
     def create_config_files(self, index):
-        macros = dict(PP_ROOT=EIGER_PATH,
+        macros = dict(DETECTOR_ROOT=EIGER_PATH,
                       IP=self.source,
-                      PORT_SUFFIX=index - 1)
+                      RX_PORT_SUFFIX=index - 1)
 
         super(_EigerOdinData, self).create_config_file(
             "fp", self.CONFIG_TEMPLATES["FrameProcessor"], index, extra_macros=macros)

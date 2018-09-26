@@ -4,14 +4,14 @@
       "fr_ready_cnxn": "tcp://127.0.0.1:$RD_PORT",
       "fr_release_cnxn": "tcp://127.0.0.1:$RL_PORT"
     },
-    "meta_endpoint": "tcp://*:5558"
+    "meta_endpoint": "tcp://*:$META_PORT"
   },
   {
     "plugin": {
       "load": {
         "index": "hdf",
         "name": "FileWriterPlugin",
-        "library": "$FW_ROOT/prefix/lib/libHdf5Plugin.so"
+        "library": "$OD_ROOT/prefix/lib/libHdf5Plugin.so"
       }
     }
   },
@@ -20,7 +20,7 @@
       "load": {
         "index": "eiger",
         "name": "EigerProcessPlugin",
-        "library": "$PP_ROOT/prefix/lib/libEigerProcessPlugin.so"
+        "library": "$DETECTOR_ROOT/prefix/lib/libEigerProcessPlugin.so"
       }
     }
   },

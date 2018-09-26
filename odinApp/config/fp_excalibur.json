@@ -10,7 +10,7 @@
       "load": {
         "index": "hdf",
         "name": "FileWriterPlugin",
-        "library": "$FW_ROOT/prefix/lib/libHdf5Plugin.so"
+        "library": "$OD_ROOT/prefix/lib/libHdf5Plugin.so"
       }
     }
   },
@@ -19,7 +19,7 @@
       "load": {
         "index": "excalibur",
         "name": "ExcaliburProcessPlugin",
-        "library": "$PP_ROOT/prefix/lib/libExcaliburProcessPlugin.so"
+        "library": "$DETECTOR_ROOT/prefix/lib/libExcaliburProcessPlugin.so"
       }
     }
   },

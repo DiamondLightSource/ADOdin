@@ -1,7 +1,7 @@
 [
   {
     "decoder_type": "Excalibur",
-    "decoder_path": "$PP_ROOT/prefix/lib",
+    "decoder_path": "$DETECTOR_ROOT/prefix/lib",
     "rx_ports": "61649,61650,61651,61652,61653,61654",
     "decoder_config": {
       "enable_packet_logging": false,

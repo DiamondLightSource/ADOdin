@@ -83,8 +83,10 @@ class _OdinData(Device):
         _OdinData.INDEX += 1
 
     def create_config_file(self, prefix, template, index, extra_macros=None):
-        macros = dict(IP=self.server.IP, RD_PORT=self.READY, RL_PORT=self.RELEASE,
-                      FW_ROOT=ODIN_DATA_ROOT)
+        macros = dict(
+            IP=self.server.IP, OD_ROOT=ODIN_DATA_ROOT,
+            RD_PORT=self.READY, RL_PORT=self.RELEASE, META_PORT=self.META
+        )
         if extra_macros is not None:
             macros.update(extra_macros)
 
@@ -112,7 +114,7 @@ class _OdinDataServer(Device):
         for _ in range(PROCESSES):
             self.processes.append(
                 self.create_odin_data_process(
-                    self, self.PORT_BASE + 1, self.PORT_BASE + 2, self.PORT_BASE + 3)
+                    self, self.PORT_BASE + 1, self.PORT_BASE + 2, self.PORT_BASE + 8)
             )
             self.PORT_BASE += 10
 

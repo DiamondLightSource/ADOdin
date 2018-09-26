@@ -37,7 +37,7 @@ class _ExcaliburOdinData(_OdinData):
         self.base_udp_port = BASE_UDP_PORT
 
     def create_config_files(self, index):
-        macros = dict(PP_ROOT=EXCALIBUR_PATH,
+        macros = dict(DETECTOR_ROOT=EXCALIBUR_PATH,
                       RX_PORT_1=self.base_udp_port,
                       RX_PORT_2=self.base_udp_port + 1,
                       RX_PORT_3=self.base_udp_port + 2,  # 3 - 6 will be ignored in the 1M template
