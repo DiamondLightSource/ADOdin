@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 373
-y 100
-w 996
-h 56
+x 81
+y 412
+w 386
+h 89
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -25,18 +25,20 @@ snapToGrid
 gridSize 5
 endScreenProperties
 
-# (Group)
-object activeGroupClass
+# (Rectangle)
+object activeRectangleClass
 beginObjectProperties
 major 4
 minor 0
 release 0
-x 0
-y 0
-w 995
-h 55
-
-beginGroup
+x 5
+y 55
+w 375
+h 30
+lineColor index 14
+fill
+fillColor index 3
+endObjectProperties
 
 # (Rectangle)
 object activeRectangleClass
@@ -44,9 +46,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 0
+x 5
 y 0
-w 995
+w 80
 h 55
 lineColor index 14
 fill
@@ -59,9 +61,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 95
+x 85
 y 0
-w 65
+w 80
 h 55
 lineColor index 14
 fill
@@ -74,24 +76,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 160
+x 155
 y 0
-w 65
-h 55
-lineColor index 14
-fill
-fillColor index 3
-endObjectProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 225
-y 0
-w 65
+w 135
 h 55
 lineColor index 14
 fill
@@ -106,37 +93,7 @@ minor 0
 release 0
 x 290
 y 0
-w 65
-h 55
-lineColor index 14
-fill
-fillColor index 3
-endObjectProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 355
-y 0
-w 65
-h 55
-lineColor index 14
-fill
-fillColor index 3
-endObjectProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 420
-y 0
-w 65
+w 90
 h 55
 lineColor index 14
 fill
@@ -149,9 +106,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 360
+x 160
 y 5
-w 55
+w 65
 h 20
 controlPv "$(P):OD$(FP):FreeBuffers_RBV"
 fgColor index 16
@@ -168,9 +125,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 165
+x 10
 y 5
-w 55
+w 45
 h 20
 controlPv "$(P):OD$(FP):ProcessRank_RBV"
 fgColor index 16
@@ -187,9 +144,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 230
+x 90
 y 5
-w 55
+w 60
 h 20
 controlPv "$(P):OD$(FP):NumCaptured_RBV"
 fgColor index 16
@@ -206,9 +163,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 295
-y 5
-w 55
+x 90
+y 30
+w 60
 h 20
 controlPv "$(P):OD$(FP):NumExpected_RBV"
 fgColor index 16
@@ -225,10 +182,10 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 30
-y 25
-w 55
-h 15
+x 60
+y 15
+w 20
+h 10
 controlPv "$(P):OD$(FP):FPProcessConnected_RBV"
 lineColor index 14
 onColor index 15
@@ -243,10 +200,10 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 30
+x 60
 y 5
-w 55
-h 15
+w 20
+h 10
 controlPv "$(P):OD$(FP):FRProcessConnected_RBV"
 lineColor index 14
 onColor index 15
@@ -261,10 +218,10 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 100
-y 5
-w 55
-h 15
+x 10
+y 30
+w 70
+h 20
 controlPv "$(P):OD$(FP):Writing_RBV"
 lineColor index 14
 onColor index 15
@@ -279,57 +236,17 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 425
-y 5
-w 55
+x 160
+y 30
+w 65
 h 20
 controlPv "$(P):OD:$(FR):PacketsLost_RBV"
 fgColor index 16
 fgAlarm
 bgColor index 10
 fill
-font "arial-bold-r-12.0"
+font "arial-bold-r-10.0"
 fontAlign "center"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 5
-y 0
-w 25
-h 20
-font "arial-bold-r-12.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "FR"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 5
-y 20
-w 25
-h 20
-font "arial-bold-r-12.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "FP"
-}
 endObjectProperties
 
 # (Textupdate)
@@ -338,16 +255,16 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 490
-y 30
-w 495
+x 10
+y 60
+w 365
 h 20
 controlPv "$(P):OD$(FP):FPErrorMessage_RBV"
 fgColor index 16
 fgAlarm
 bgColor index 10
 fill
-font "arial-bold-r-12.0"
+font "arial-bold-r-10.0"
 lineWidth 0
 endObjectProperties
 
@@ -357,9 +274,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 490
+x 295
 y 5
-w 85
+w 80
 h 20
 controlPv "$(P):OD$(FP):FPErrorState_RBV"
 fgColor index 16
@@ -376,7 +293,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 425
+x 230
 y 30
 w 55
 h 20
@@ -399,9 +316,9 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 580
-y 5
-w 55
+x 295
+y 30
+w 80
 h 20
 fgColor index 25
 onColor index 3
@@ -414,9 +331,5 @@ onLabel "Clear"
 offLabel "Clear"
 3d
 font "arial-bold-r-10.0"
-endObjectProperties
-
-endGroup
-
 endObjectProperties
 

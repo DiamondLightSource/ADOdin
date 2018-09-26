@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2527
-y 295
+x 2011
+y 273
 w 385
 h 821
 font "arial-medium-r-12.0"
@@ -32,9 +32,9 @@ major 4
 minor 1
 release 0
 x 0
-y 570
+y 575
 w 385
-h 250
+h 245
 fgColor index 14
 bgColor index 3
 topShadowColor index 1
@@ -75,9 +75,9 @@ major 4
 minor 1
 release 0
 x 0
-y 475
+y 480
 w 385
-h 90
+h 95
 fgColor index 14
 bgColor index 3
 topShadowColor index 1
@@ -92,6 +92,7 @@ displayFileName {
 symbols {
   0 "FP=1,FR=0"
 }
+noScroll
 endObjectProperties
 
 # (Static Text)
@@ -101,7 +102,7 @@ major 4
 minor 1
 release 1
 x 90
-y 515
+y 520
 w 203
 h 13
 font "arial-medium-r-12.0"
@@ -123,9 +124,9 @@ major 4
 minor 1
 release 0
 x 0
-y 255
+y 250
 w 385
-h 210
+h 215
 fgColor index 14
 bgColor index 3
 topShadowColor index 1
@@ -144,7 +145,7 @@ major 4
 minor 1
 release 0
 x 0
-y 45
+y 40
 w 385
 h 210
 fgColor index 14
@@ -165,7 +166,7 @@ major 4
 minor 1
 release 1
 x 100
-y 355
+y 350
 w 183
 h 13
 font "arial-medium-r-12.0"
@@ -200,5 +201,32 @@ value {
   "EigerFan Embedded Screen"
 }
 autoSize
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 470
+w 385
+h 15
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "OdinDataStatus_topembed"
+}
+symbols {
+  0 "FP=1,FR=0"
+}
+noScroll
 endObjectProperties
 

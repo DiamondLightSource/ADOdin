@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1234
-y 315
+x 2123
+y 117
 w 388
 h 215
 font "arial-medium-r-12.0"
@@ -373,9 +373,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 285
+x 290
 y 150
-w 80
+w 75
 h 20
 controlPv "$(P)$(R)FAN:EigerPort_RBV"
 fgColor index 16
@@ -452,7 +452,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 285
+x 290
 y 180
 w 40
 h 20
