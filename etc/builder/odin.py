@@ -172,13 +172,13 @@ class _OdinControlServer(Device):
 
     ODIN_SERVER = None
     ADAPTERS = ["fp", "fr"]
-    PORT = 8888
 
     # Device attributes
     AutoInstantiate = True
 
-    def __init__(self, IP,
-                 ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4):
+    def __init__(self, IP, PORT=8888,
+                 ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
+                 ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None):
         self.__super.__init__()
         # Update attributes with parameters
         self.__dict__.update(locals())
@@ -201,6 +201,7 @@ class _OdinControlServer(Device):
 
     ArgInfo = makeArgInfo(__init__,
         IP=Simple("IP address of control server", str),
+        PORT=Simple("Port of control server", int),
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),

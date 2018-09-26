@@ -96,19 +96,20 @@ class ExcaliburOdinControlServer(_OdinControlServer):
         }
     }
 
-    def __init__(self, IP, SENSOR, FEMS_REVERSED=False, POWER_CARD_IDX=1,
+    def __init__(self, IP, SENSOR, PORT=8888, FEMS_REVERSED=False, POWER_CARD_IDX=1,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
                  ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None):
         self.__dict__.update(locals())
         self.ADAPTERS.append("excalibur")
 
         super(ExcaliburOdinControlServer, self).__init__(
-            IP, ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4
+            IP, PORT, ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4
         )
 
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
         IP=Simple("IP address of control server", str),
+        PORT=Simple("Port of control server", int),
         SENSOR=Choice("Sensor type", ["1M", "3M"]),
         FEMS_REVERSED=Choice("Are the FEM IP addresses reversed 106..101", [True, False]),
         POWER_CARD_IDX=Simple("Index of the power card", int),

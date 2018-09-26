@@ -135,7 +135,7 @@ class EigerOdinControlServer(_OdinControlServer):
 
     ODIN_SERVER = os.path.join(EIGER_PATH, "prefix/bin/eiger_odin")
 
-    def __init__(self, IP, EIGER_FAN, META_LISTENER,
+    def __init__(self, IP, EIGER_FAN, META_LISTENER, PORT=8888,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
                  ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None):
         self.__dict__.update(locals())
@@ -145,12 +145,13 @@ class EigerOdinControlServer(_OdinControlServer):
         self.meta_endpoint = META_LISTENER.IP
 
         super(EigerOdinControlServer, self).__init__(
-            IP, ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4
+            IP, PORT, ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4
         )
 
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
         IP=Simple("IP address of control server", str),
+        PORT=Simple("Port of control server", int),
         EIGER_FAN=Ident("EigerFan configuration", EigerFan),
         META_LISTENER=Ident("MetaListener configuration", EigerMetaListener),
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
