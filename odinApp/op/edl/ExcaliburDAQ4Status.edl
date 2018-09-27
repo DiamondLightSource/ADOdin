@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 734
-y 250
-w 783
-h 727
+x 320
+y 302
+w 782
+h 443
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -25,6 +25,21 @@ snapToGrid
 gridSize 5
 endScreenProperties
 
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 400
+y 15
+w 375
+h 140
+lineColor index 14
+fill
+fillColor index 3
+endObjectProperties
+
 # (Embedded Window)
 object activePipClass
 beginObjectProperties
@@ -32,9 +47,9 @@ major 4
 minor 1
 release 0
 x 5
-y 465
+y 170
 w 385
-h 255
+h 160
 fgColor index 14
 bgColor index 3
 topShadowColor index 1
@@ -52,8 +67,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 95
-y 590
+x 105
+y 245
 w 198
 h 13
 font "arial-medium-r-12.0"
@@ -74,9 +89,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 400
-y 695
-w 375
+x 15
+y 355
+w 370
 h 20
 controlPv "$(P):OD:StatusMessage_RBV"
 fgColor index 16
@@ -93,9 +108,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 400
-y 670
-w 185
+x 15
+y 330
+w 125
 h 20
 controlPv "$(P):OD:DetectorState_RBV"
 fgColor index 16
@@ -106,16 +121,223 @@ font "arial-bold-r-12.0"
 fontAlign "center"
 endObjectProperties
 
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 405
+y 50
+w 75
+h 20
+controlPv "$(P):OD:0:PacketsLost_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-10.0"
+fontAlign "center"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 490
+y 50
+w 65
+h 20
+fgColor index 25
+onColor index 3
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):OD:0:PacketsLost"
+pressValue "0"
+onLabel "Reset"
+offLabel "Reset"
+3d
+font "arial-bold-r-10.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 405
+y 25
+w 160
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Receiver Packets Dropped"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 400
+y 5
+w 105
+h 15
+font "arial-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 5
+value {
+  "UDP RX Status"
+}
+border
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 405
+y 75
+w 75
+h 20
+controlPv "$(P):OD:1:PacketsLost_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-10.0"
+fontAlign "center"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 490
+y 75
+w 65
+h 20
+fgColor index 25
+onColor index 3
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):OD:1:PacketsLost"
+pressValue "0"
+onLabel "Reset"
+offLabel "Reset"
+3d
+font "arial-bold-r-10.0"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 405
+y 100
+w 75
+h 20
+controlPv "$(P):OD:2:PacketsLost_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-10.0"
+fontAlign "center"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 490
+y 100
+w 65
+h 20
+fgColor index 25
+onColor index 3
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):OD:2:PacketsLost"
+pressValue "0"
+onLabel "Reset"
+offLabel "Reset"
+3d
+font "arial-bold-r-10.0"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 405
+y 125
+w 75
+h 20
+controlPv "$(P):OD:3:PacketsLost_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-10.0"
+fontAlign "center"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 490
+y 125
+w 65
+h 20
+fgColor index 25
+onColor index 3
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):OD:3:PacketsLost"
+pressValue "0"
+onLabel "Reset"
+offLabel "Reset"
+3d
+font "arial-bold-r-10.0"
+endObjectProperties
+
 # (Embedded Window)
 object activePipClass
 beginObjectProperties
 major 4
 minor 1
 release 0
-x 5
-y 265
+x 395
+y 165
 w 385
-h 95
+h 30
 fgColor index 14
 bgColor index 3
 topShadowColor index 1
@@ -125,7 +347,7 @@ filePv "LOC\\dummy=i:0"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataStatus_embed"
+  0 "OdinDataStatus_topembed"
 }
 symbols {
   0 "FP=1,FR=0"
@@ -133,29 +355,16 @@ symbols {
 noScroll
 endObjectProperties
 
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 5
-y 5
-w 310
-h 120
-
-beginGroup
-
 # (Rectangle)
 object activeRectangleClass
 beginObjectProperties
 major 4
 minor 0
 release 0
-x 5
+x 10
 y 10
-w 310
-h 115
+w 380
+h 105
 lineColor index 14
 fill
 fillColor index 3
@@ -167,9 +376,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 165
-y 75
-w 140
+x 230
+y 65
+w 132
 h 20
 controlPv "$(P):CAM:NumImages_RBV"
 fgColor index 16
@@ -186,9 +395,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 165
-y 95
-w 140
+x 230
+y 85
+w 132
 h 20
 controlPv "$(P):CAM:ArrayCounter_RBV"
 fgColor index 16
@@ -205,9 +414,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 165
-y 45
-w 65
+x 230
+y 35
+w 61
 h 20
 controlPv "$(P):CAM:AcquireTime"
 fgColor index 25
@@ -223,9 +432,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 240
-y 45
-w 65
+x 300
+y 35
+w 61
 h 20
 controlPv "$(P):CAM:AcquireTime_RBV"
 fgColor index 16
@@ -242,9 +451,9 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 80
-y 45
-w 45
+x 85
+y 35
+w 60
 h 20
 fgColor index 19
 onColor index 4
@@ -266,8 +475,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 130
-y 45
+x 165
+y 35
 w 20
 h 20
 controlPv "$(P):CAM:Acquire"
@@ -285,8 +494,8 @@ major 10
 minor 0
 release 0
 x 80
-y 95
-w 75
+y 85
+w 110
 h 20
 controlPv "$(P):CAM:ArrayRate_RBV"
 fgColor index 16
@@ -304,8 +513,8 @@ major 10
 minor 0
 release 0
 x 80
-y 75
-w 75
+y 65
+w 110
 h 20
 controlPv "$(P):CAM:NumImages"
 fgColor index 25
@@ -321,9 +530,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 20
-y 45
-w 55
+x 25
+y 35
+w 53
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
@@ -340,9 +549,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 20
-y 75
-w 55
+x 25
+y 65
+w 53
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
@@ -359,9 +568,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 20
-y 95
-w 55
+x 25
+y 85
+w 53
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
@@ -378,9 +587,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 5
+x 10
 y 5
-w 65
+w 61
 h 15
 font "arial-bold-r-12.0"
 fontAlign "center"
@@ -398,9 +607,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 165
-y 15
-w 140
+x 15
+y 120
+w 132
 h 20
 controlPv "$(P):CAM:DetectorState_RBV"
 fgColor index 16
@@ -411,583 +620,23 @@ font "arial-bold-r-12.0"
 fontAlign "center"
 endObjectProperties
 
-endGroup
-
-endObjectProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 465
-y 10
-w 310
-h 115
-lineColor index 14
-fill
-fillColor index 3
-endObjectProperties
-
 # (Textupdate)
 object TextupdateClass
 beginObjectProperties
 major 10
 minor 0
 release 0
-x 625
-y 75
-w 140
+x 15
+y 145
+w 370
 h 20
-controlPv "$(P):OD:NumCapture_RBV"
+controlPv "$(P):CAM:StatusMessage_RBV"
 fgColor index 16
 fgAlarm
 bgColor index 10
 fill
 font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 625
-y 95
-w 140
-h 20
-controlPv "$(P):OD:NumCaptured_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 700
-y 45
-w 65
-h 20
-controlPv "$(P):OD:FileName_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 540
-y 45
-w 45
-h 20
-fgColor index 19
-onColor index 4
-offColor index 3
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):OD:Capture"
-pressValue "1"
-onLabel "Start"
-offLabel "Start"
-3d
-useEnumNumeric
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Byte)
-object ByteClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 590
-y 45
-w 20
-h 20
-controlPv "$(P):OD:Capture_RBV"
-lineColor index 14
-onColor index 15
-offColor index 19
-lineWidth 2
-numBits 1
-endObjectProperties
-
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 540
-y 75
-w 75
-h 20
-controlPv "$(P):OD:NumCapture"
-fgColor index 25
-fgAlarm
-bgColor index 3
-fill
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 480
-y 45
-w 55
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Capture"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 480
-y 75
-w 55
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Images"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 465
-y 5
-w 65
-h 15
-font "arial-bold-r-12.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 5
-value {
-  "HDF5"
-}
-border
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 625
-y 15
-w 140
-h 20
-controlPv "$(P):OD:DetectorState_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 6
-release 0
-x 625
-y 45
-w 65
-h 20
-controlPv "$(P):OD:FileName"
-font "helvetica-medium-r-10.0"
-fgColor index 25
-bgColor index 3
-editable
-motifWidget
-limitsFromDb
-nullColor index 0
-useKp
-file
-useHexPrefix
-newPos
-inputFocusUpdates
-objType "controls"
-endObjectProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 5
-y 140
-w 770
-h 115
-lineColor index 14
-fill
-fillColor index 3
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 5
-y 135
-w 65
-h 15
-font "arial-bold-r-12.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 5
-value {
-  "Frames"
-}
-border
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 175
-y 175
-w 100
-h 20
-controlPv "$(P):OD1:FramesReceived_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 285
-y 175
-w 100
-h 20
-controlPv "$(P):OD2:FramesReceived_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 395
-y 175
-w 100
-h 20
-controlPv "$(P):OD3:FramesReceived_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 505
-y 175
-w 100
-h 20
-controlPv "$(P):OD4:FramesReceived_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 175
-y 200
-w 100
-h 20
-controlPv "$(P):OD1:FramesTimedOut_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 175
-y 225
-w 100
-h 20
-controlPv "$(P):OD1:FramesReleased_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 285
-y 200
-w 100
-h 20
-controlPv "$(P):OD2:FramesTimedOut_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 285
-y 225
-w 100
-h 20
-controlPv "$(P):OD2:FramesReleased_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 395
-y 200
-w 100
-h 20
-controlPv "$(P):OD3:FramesTimedOut_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 395
-y 225
-w 100
-h 20
-controlPv "$(P):OD3:FramesReleased_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 505
-y 200
-w 100
-h 20
-controlPv "$(P):OD4:FramesTimedOut_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 505
-y 225
-w 100
-h 20
-controlPv "$(P):OD4:FramesReleased_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 25
-y 175
-w 130
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Received Frames"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 25
-y 200
-w 130
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Timed Out Frames"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 25
-y 225
-w 130
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Released Frames"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 175
-y 150
-w 430
-h 20
-font "arial-bold-r-12.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Frame Receiver Applications"
-}
+lineWidth 0
 endObjectProperties
 
 # (Embedded Window)
@@ -996,10 +645,37 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 5
-y 360
+x 395
+y 195
 w 385
-h 95
+h 65
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "OdinDataStatus_embed"
+}
+symbols {
+  0 "FP=1,FR=0"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 395
+y 255
+w 385
+h 65
 fgColor index 14
 bgColor index 3
 topShadowColor index 1
@@ -1024,10 +700,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 390
-y 265
+x 395
+y 315
 w 385
-h 95
+h 65
 fgColor index 14
 bgColor index 3
 topShadowColor index 1
@@ -1052,10 +728,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 390
-y 360
+x 395
+y 375
 w 385
-h 95
+h 65
 fgColor index 14
 bgColor index 3
 topShadowColor index 1

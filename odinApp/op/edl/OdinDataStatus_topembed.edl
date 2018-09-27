@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2147
-y 454
-w 382
-h 18
+x 1104
+y 468
+w 386
+h 30
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -21,7 +21,6 @@ topShadowColor index 1
 botShadowColor index 11
 title "Odin HDF"
 showGrid
-snapToGrid
 gridSize 5
 endScreenProperties
 
@@ -31,10 +30,10 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 85
+x 125
 y 5
-w 70
-h 15
+w 190
+h 25
 lineColor index 14
 fillColor index 3
 endObjectProperties
@@ -47,37 +46,10 @@ minor 0
 release 0
 x 5
 y 5
-w 80
-h 15
+w 120
+h 25
 lineColor index 14
 fillColor index 3
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 4
-release 0
-x 110
-y -1
-w 15
-h 14
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 11
-font "arial-bold-r-10.0"
-useFocus
-buttonLabel "?"
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "OdinDataStatus_help.edl"
-}
-setPosition {
-  0 "button"
-}
 endObjectProperties
 
 # (Static Text)
@@ -88,30 +60,166 @@ minor 1
 release 1
 x 5
 y 0
-w 107
+w 70
 h 13
 font "arial-medium-r-12.0"
 fgColor index 14
 bgColor index 5
 value {
-  "  OdinData Status  "
+  "  OD Status  "
 }
 autoSize
 border
 endObjectProperties
 
-# (Rectangle)
-object activeRectangleClass
+# (Static Text)
+object activeXTextClass
 beginObjectProperties
 major 4
-minor 0
-release 0
-x 155
-y 5
-w 135
-h 15
-lineColor index 14
-fillColor index 3
+minor 1
+release 1
+x 10
+y 15
+w 26
+h 11
+font "arial-bold-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Rank"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 40
+y 15
+w 15
+h 11
+font "arial-bold-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Init"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 60
+y 15
+w 26
+h 11
+font "arial-bold-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "State"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 140
+y 7
+w 42
+h 22
+font "arial-medium-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Frames"
+  "Received"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 195
+y 7
+w 49
+h 22
+font "arial-medium-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Frames"
+  "Timed Out"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 265
+y 7
+w 34
+h 22
+font "arial-medium-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Free"
+  "Buffers"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 90
+y 15
+w 33
+h 11
+font "arial-bold-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Write"
+}
+autoSize
 endObjectProperties
 
 # (Rectangle)
@@ -120,11 +228,33 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 290
+x 315
 y 5
-w 90
-h 15
+w 65
+h 25
 lineColor index 14
 fillColor index 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 325
+y 7
+w 44
+h 22
+font "arial-medium-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Frames"
+  "Captured"
+}
+autoSize
 endObjectProperties
 
