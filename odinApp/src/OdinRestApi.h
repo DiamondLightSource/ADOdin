@@ -27,6 +27,7 @@ typedef enum
   SSDetectorStatus,
   SSDetectorCommand,
   // OdinData API
+  SSFP,
   SSFPConfig,
   SSFPConfigDetector,
   SSFPConfigHDF,
@@ -34,6 +35,7 @@ typedef enum
   SSFPConfigHDFDataset,
   SSFPStatus,
   SSFPStatusDetector,
+  SSFR,
   SSFPStatusHDF,
   SSFRConfig,
   SSFRStatus,

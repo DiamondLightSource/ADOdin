@@ -132,6 +132,11 @@ void OdinDataDriver::configureOdinDataProcess(const char * ipAddress,
 
 int OdinDataDriver::createParams()
 {
+  // OdinServer Parameters
+  mFPCount                = createRESTParam(OdinFPCount, REST_P_INT,
+                                            SSFP, "count");
+  mFRCount                = createRESTParam(OdinFRCount, REST_P_INT,
+                                            SSFR, "count");
   // Configuration parameters shared by each OD process
   mFilePath               = createODRESTParam(NDFilePathString, REST_P_STRING,
                                               SSFPConfigHDF, "file/path");

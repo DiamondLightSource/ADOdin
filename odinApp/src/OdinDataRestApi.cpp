@@ -64,17 +64,18 @@ OdinDataRestAPI::OdinDataRestAPI(const std::string& hostname,
     mProcessPluginIndex("")
 
 {
-  sysStr_[SSDetector]           = sysStr_[SSAdapterRoot] + FRAME_PROCESSOR_ADAPTER + "/";
-  sysStr_[SSFPStatus]           = sysStr_[SSAdapterRoot] + FRAME_PROCESSOR_ADAPTER "/status/";
+  sysStr_[SSFP]                 = sysStr_[SSAdapterRoot] + FRAME_PROCESSOR_ADAPTER + "/";
+  sysStr_[SSFPStatus]           = sysStr_[SSFP]          + "status/";
+  sysStr_[SSFPConfig]           = sysStr_[SSFP]          + "config/";
+  sysStr_[SSFPConfigDetector]   = sysStr_[SSFPConfig]    + pluginName + "/";
   sysStr_[SSFPStatusDetector]   = sysStr_[SSFPStatus]    + pluginName + "/";
   sysStr_[SSFPStatusHDF]        = sysStr_[SSFPStatus]    + PLUGIN_INDEX_FILE_WRITER "/";
-  sysStr_[SSFPConfig]           = sysStr_[SSAdapterRoot] + FRAME_PROCESSOR_ADAPTER "/config/";
-  sysStr_[SSFPConfigDetector]   = sysStr_[SSFPConfig]    + pluginName + "/";
   sysStr_[SSFPConfigHDF]        = sysStr_[SSFPConfig]    + PLUGIN_INDEX_FILE_WRITER "/";
   sysStr_[SSFPConfigHDFProcess] = sysStr_[SSFPConfigHDF] + "process/";
   sysStr_[SSFPConfigHDFDataset] = sysStr_[SSFPConfigHDF] + "dataset/";
-  sysStr_[SSFRConfig]           = sysStr_[SSAdapterRoot] + FRAME_RECEIVER_ADAPTER "/config/";
-  sysStr_[SSFRStatus]           = sysStr_[SSAdapterRoot] + FRAME_RECEIVER_ADAPTER "/status/";
+  sysStr_[SSFR]                 = sysStr_[SSAdapterRoot] + FRAME_RECEIVER_ADAPTER "/";
+  sysStr_[SSFRConfig]           = sysStr_[SSFR]          + "config/";
+  sysStr_[SSFRStatus]           = sysStr_[SSFR]          + "status/";
 }
 
 int OdinDataRestAPI::createFile(const std::string& name, const std::string& path) {

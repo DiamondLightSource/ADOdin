@@ -12,6 +12,8 @@
 #define OdinFRConfig                   "ODIN_FR_CONFIG"
 // OdinData
 #define OdinProcessRank                "ODIN_PROCESS_RANK"
+#define OdinFPCount                    "ODIN_FP_COUNT"
+#define OdinFRCount                    "ODIN_FR_COUNT"
 #define OdinFRProcessConnected         "ODIN_FR_PROCESS_CONNECTED"
 #define OdinFPProcessConnected         "ODIN_FP_PROCESS_CONNECTED"
 #define OdinFRProcessInitialised       "ODIN_FR_PROCESS_INITIALISED"
@@ -138,6 +140,8 @@ class OdinDataDriver : public OdinClient
 
   RestParam * mFPProcessConnected;
   RestParam * mFRProcessConnected;
+  RestParam * mFPCount;
+  RestParam * mFRCount;
   int mFPErrorMessage;
   RestParam * mFPClearErrors;
   RestParam * mProcessRank;

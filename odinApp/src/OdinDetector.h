@@ -10,7 +10,7 @@
 // Detector
 #define OdinDetectorConnected          "ODIN_DETECTOR_CONNECTED"
 // OdinData
-#define OdinNumProcesses               "ODIN_NUM_PROCESSES"
+#define OdinFPCount                    "ODIN_NUM_PROCESSES"
 #define OdinProcessRank                "ODIN_PROCESS_RANK"
 #define OdinProcessConnected           "ODIN_PROCESS_CONNECTED"
 #define OdinProcessInitialised         "ODIN_PROCESS_INITIALISED"
