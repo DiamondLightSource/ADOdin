@@ -2,16 +2,31 @@
 # % macro, R, Device Suffix
 # % macro, PORT, Asyn Port name
 
-record(stringout, "$(P)$(R)META:AcquisitionID")
+# Fetch AcquisitionID from OdinDataDriver
+record(acalcout, "$(P)$(R)META:AcquisitionID_Calc")
 {
-    field(PINI, "NO")
-    field(DTYP, "asynOctetWrite")
-    field(OUT,  "@asyn($(PORT),0,1)_ODS_meta_listener/config/acquisition_id")
+    field(INAA, "$(P)$(R)AcquisitionID CP")
+    field(CALC, "AA")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
+    field(OUT,  "$(P)$(R)META:AcquisitionID PP")
+    field(NELM, "256")
+    field(NUSE, "256")
 }
 
-record(stringin, "$(P)$(R)META:AcquisitionID_RBV")
+record(waveform, "$(P)$(R)META:AcquisitionID")
+{
+    field(DTYP, "asynOctetWrite")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(INP,  "@asyn($(PORT),0,1)_ODS_meta_listener/config/acquisition_id")
+}
+
+record(waveform, "$(P)$(R)META:AcquisitionID_RBV")
 {
     field(DTYP, "asynOctetRead")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
     field(SCAN, "I/O Intr")
     field(INP,  "@asyn($(PORT),0,1)_ODS_meta_listener/config/acquisition_id")
 }

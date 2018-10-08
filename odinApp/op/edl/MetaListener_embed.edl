@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2451
-y 374
+x 810
+y 463
 w 387
 h 219
 font "arial-medium-r-12.0"
@@ -66,8 +66,8 @@ minor 0
 release 0
 x 25
 y 65
-w 350
-h 140
+w 345
+h 135
 lineColor index 14
 fillColor index 3
 endObjectProperties
@@ -111,24 +111,6 @@ value {
 }
 endObjectProperties
 
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 110
-y 20
-w 265
-h 20
-controlPv "$(P)$(R)META:AcquisitionID"
-fgColor index 25
-fgAlarm
-bgColor index 3
-fill
-font "arial-bold-r-12.0"
-endObjectProperties
-
 # (Textupdate)
 object TextupdateClass
 beginObjectProperties
@@ -136,7 +118,7 @@ major 10
 minor 0
 release 0
 x 110
-y 145
+y 140
 w 80
 h 20
 controlPv "$(P)$(R)META:FileName_RBV"
@@ -155,7 +137,7 @@ major 4
 minor 1
 release 1
 x 35
-y 175
+y 170
 w 60
 h 20
 font "arial-bold-r-12.0"
@@ -174,7 +156,7 @@ major 4
 minor 1
 release 1
 x 35
-y 145
+y 140
 w 65
 h 20
 font "arial-bold-r-12.0"
@@ -192,8 +174,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 200
-y 175
+x 195
+y 170
 w 55
 h 20
 font "arial-bold-r-12.0"
@@ -211,8 +193,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 260
-y 175
+x 255
+y 170
 w 45
 h 20
 controlPv "$(P)$(R)META:Writing_RBV"
@@ -230,7 +212,7 @@ major 10
 minor 0
 release 0
 x 110
-y 175
+y 170
 w 80
 h 20
 controlPv "$(P)$(R)META:FramesWritten_RBV"
@@ -248,8 +230,8 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 315
-y 145
+x 310
+y 140
 w 50
 h 20
 controlPv "$(P)$(R)META:ActiveProcessors_RBV"
@@ -267,8 +249,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 200
-y 145
+x 195
+y 140
 w 110
 h 20
 font "arial-bold-r-12.0"
@@ -287,7 +269,7 @@ major 4
 minor 1
 release 1
 x 35
-y 75
+y 70
 w 65
 h 20
 font "arial-bold-r-12.0"
@@ -306,7 +288,7 @@ major 4
 minor 1
 release 1
 x 35
-y 120
+y 115
 w 65
 h 20
 font "arial-bold-r-12.0"
@@ -325,8 +307,8 @@ major 10
 minor 0
 release 0
 x 110
-y 120
-w 120
+y 115
+w 115
 h 20
 controlPv "$(P)$(R)META:FlushRate"
 fgColor index 25
@@ -342,8 +324,8 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 240
-y 120
+x 235
+y 115
 w 125
 h 20
 controlPv "$(P)$(R)META:FlushRate_RBV"
@@ -361,8 +343,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 315
-y 170
+x 310
+y 165
 w 50
 h 25
 fgColor index 21
@@ -386,8 +368,8 @@ major 4
 minor 6
 release 0
 x 110
-y 75
-w 255
+y 70
+w 250
 h 20
 controlPv "$(P)$(R)META:FilePath"
 font "helvetica-medium-r-10.0"
@@ -412,8 +394,8 @@ major 4
 minor 6
 release 0
 x 35
-y 95
-w 330
+y 90
+w 325
 h 20
 controlPv "$(P)$(R)META:FilePath_RBV"
 font "helvetica-medium-r-10.0"
@@ -444,24 +426,6 @@ visMin "1"
 visMax "2"
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 15
-y 40
-w 360
-h 20
-controlPv "$(P)$(R)META:AcquisitionID_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-endObjectProperties
-
 # (Rectangle)
 object activeRectangleClass
 beginObjectProperties
@@ -478,5 +442,74 @@ fillColor index 10
 visPv "$(P)$(R)META:Writing_RBV"
 visMin "1"
 visMax "2"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 6
+release 0
+x 15
+y 40
+w 355
+h 20
+controlPv "$(P)$(R)META:AcquisitionID_RBV"
+font "arial-bold-r-12.0"
+fgColor index 16
+bgColor index 10
+limitsFromDb
+nullColor index 0
+smartRefresh
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 6
+release 0
+x 100
+y 20
+w 275
+h 20
+controlPv "$(P)$(R)META:AcquisitionID"
+font "arial-bold-r-12.0"
+fgColor index 25
+bgColor index 3
+editable
+motifWidget
+limitsFromDb
+nullColor index 0
+useKp
+file
+useHexPrefix
+newPos
+inputFocusUpdates
+objType "controls"
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 25
+y 65
+w 0
+h 0
+lineColor index 14
+fillColor index 3
+numPoints 1
+xPoints {
+  0 25
+}
+yPoints {
+  0 65
+}
 endObjectProperties
 

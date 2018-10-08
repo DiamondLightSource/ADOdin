@@ -125,7 +125,6 @@ record(bi, "$(P)$(R)EarliestHDF5Version_RBV")
 
 record(waveform, "$(P)$(R)AcquisitionID")
 {
-    field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_ACQUISITION_ID")
     field(FTVL, "CHAR")
@@ -243,7 +242,19 @@ record(waveform, "$(P)$(R)FileName_RBV")
     field(NELM, "256")
     field(SCAN, "I/O Intr")
 }
- 
+
+# Forward FileName to AcquisitionID
+record(acalcout, "$(P)$(R)AcquisitionID_Calc")
+{
+    field(INAA, "$(P)$(R)FileName_RBV CP")
+    field(CALC, "AA")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
+    field(OUT,  "$(P)$(R)AcquisitionID PP")
+    field(NELM, "256")
+    field(NUSE, "256")
+}
+
 record(stringout, "$(P)$(R)FileExtension")
 {
     field(PINI, "YES")
