@@ -175,7 +175,7 @@ class EigerOdinControlServer(_OdinControlServer):
 
     def _create_meta_listener_config_entry(self):
         return "[adapter.meta_listener]\n" \
-               "module = eiger.meta_listener_adapter.MetaListenerAdapter\n" \
+               "module = odin_data.meta_listener_adapter.MetaListenerAdapter\n" \
                "endpoints = {}:5659\n" \
                "update_interval = 0.5".format(self.meta_endpoint)
 
