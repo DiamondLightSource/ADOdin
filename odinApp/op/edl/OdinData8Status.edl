@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1233
-y 186
-w 386
-h 783
+x 627
+y 235
+w 387
+h 526
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -32,185 +32,7 @@ major 4
 minor 1
 release 0
 x 0
-y 400
-w 385
-h 160
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 11
-displaySource "file"
-file "OdinDataHDF5_embed"
-sizeOfs 5
-numDsps 0
-noScroll
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 90
-y 475
-w 198
-h 13
-font "arial-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-visPv "DUMMY"
-visMin "0"
-value {
-  "OdinDataHDF5 Embedded Screen"
-}
-autoSize
-endObjectProperties
-
-# (Embedded Window)
-object activePipClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 330
-w 385
-h 65
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 11
-displaySource "menu"
-filePv "LOC\\dummy=i:0"
-sizeOfs 5
-numDsps 1
-displayFileName {
-  0 "OdinData1Status"
-}
-symbols {
-  0 "FP=1,FR=0"
-}
-noScroll
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 95
-y 355
-w 203
-h 13
-font "arial-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-visPv "DUMMY"
-visMin "0"
-value {
-  "OdinDataStatus Embedded Screen"
-}
-autoSize
-endObjectProperties
-
-# (Embedded Window)
-object activePipClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 565
-w 385
-h 210
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 11
-displaySource "file"
-file "MetaListener_embed"
-sizeOfs 5
-numDsps 0
-noScroll
-endObjectProperties
-
-# (Embedded Window)
-object activePipClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 85
-w 385
-h 210
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 11
-displaySource "file"
-file "EigerFan_embed"
-sizeOfs 5
-numDsps 0
-noScroll
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 100
-y 665
-w 183
-h 13
-font "arial-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-visPv "DUMMY"
-visMin "0"
-value {
-  "MetaListener Embedded Screen"
-}
-autoSize
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 105
-y 185
-w 163
-h 13
-font "arial-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-visPv "DUMMY"
-visMin "0"
-value {
-  "EigerFan Embedded Screen"
-}
-autoSize
-endObjectProperties
-
-# (Embedded Window)
-object activePipClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 300
+y 5
 w 385
 h 30
 fgColor index 14
@@ -237,9 +59,9 @@ major 4
 minor 1
 release 0
 x 0
-y 0
+y 35
 w 385
-h 80
+h 65
 fgColor index 14
 bgColor index 3
 topShadowColor index 1
@@ -249,30 +71,206 @@ filePv "LOC\\dummy=i:0"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataDriver_embed"
+  0 "OdinData1Status"
+}
+symbols {
+  0 "FP=1,FR=0"
 }
 noScroll
 endObjectProperties
 
-# (Static Text)
-object activeXTextClass
+# (Embedded Window)
+object activePipClass
 beginObjectProperties
 major 4
 minor 1
-release 1
-x 85
-y 30
-w 200
-h 13
-font "arial-medium-r-12.0"
+release 0
+x 0
+y 95
+w 385
+h 65
 fgColor index 14
 bgColor index 3
-useDisplayBg
-visPv "DUMMY"
-visMin "0"
-value {
-  "OdinDataDriver Embedded Screen"
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+file "OdinData1Status"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "OdinData1Status"
 }
-autoSize
+symbols {
+  0 "FP=2,FR=1"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 155
+w 385
+h 65
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+file "OdinData1Status"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "OdinData1Status"
+}
+symbols {
+  0 "FP=3,FR=2"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 215
+w 385
+h 65
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+file "OdinData1Status"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "OdinData1Status"
+}
+symbols {
+  0 "FP=4,FR=3"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 275
+w 385
+h 65
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "OdinData1Status"
+}
+symbols {
+  0 "FP=5,FR=4"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 335
+w 385
+h 65
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+file "OdinData1Status"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "OdinData1Status"
+}
+symbols {
+  0 "FP=6,FR=5"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 395
+w 385
+h 65
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+file "OdinData1Status"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "OdinData1Status"
+}
+symbols {
+  0 "FP=7,FR=6"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 455
+w 385
+h 65
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+file "OdinData1Status"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "OdinData1Status"
+}
+symbols {
+  0 "FP=8,FR=7"
+}
+noScroll
 endObjectProperties
 

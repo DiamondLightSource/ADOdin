@@ -286,11 +286,11 @@ topShadowColor index 1
 botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-file "OdinDataStatus_embed"
+file "OdinData1Status"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataStatus_embed"
+  0 "OdinData1Status"
 }
 symbols {
   0 "FP=1,FR=0"
@@ -314,11 +314,11 @@ topShadowColor index 1
 botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-file "OdinDataStatus_embed"
+file "OdinData1Status"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataStatus_embed"
+  0 "OdinData1Status"
 }
 symbols {
   0 "FP=2,FR=1"
@@ -342,11 +342,11 @@ topShadowColor index 1
 botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-file "OdinDataStatus_embed"
+file "OdinData1Status"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataStatus_embed"
+  0 "OdinData1Status"
 }
 symbols {
   0 "FP=3,FR=2"
@@ -370,11 +370,11 @@ topShadowColor index 1
 botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-file "OdinDataStatus_embed"
+file "OdinData1Status"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataStatus_embed"
+  0 "OdinData1Status"
 }
 symbols {
   0 "FP=4,FR=3"
@@ -1511,11 +1511,11 @@ topShadowColor index 1
 botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-file "OdinDataStatus_embed"
+file "OdinData1Status"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataStatus_embed"
+  0 "OdinData1Status"
 }
 symbols {
   0 "FP=5,FR=4"
@@ -1539,11 +1539,11 @@ topShadowColor index 1
 botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-file "OdinDataStatus_embed"
+file "OdinData1Status"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataStatus_embed"
+  0 "OdinData1Status"
 }
 symbols {
   0 "FP=6,FR=5"
@@ -1567,11 +1567,11 @@ topShadowColor index 1
 botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-file "OdinDataStatus_embed"
+file "OdinData1Status"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataStatus_embed"
+  0 "OdinData1Status"
 }
 symbols {
   0 "FP=7,FR=6"
@@ -1595,11 +1595,11 @@ topShadowColor index 1
 botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-file "OdinDataStatus_embed"
+file "OdinData1Status"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataStatus_embed"
+  0 "OdinData1Status"
 }
 symbols {
   0 "FP=8,FR=7"

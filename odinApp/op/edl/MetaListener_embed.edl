@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 810
-y 463
-w 387
-h 219
+x 814
+y 487
+w 388
+h 209
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -32,7 +32,7 @@ major 4
 minor 0
 release 0
 x 5
-y 10
+y 5
 w 375
 h 200
 lineColor index 14
@@ -47,7 +47,7 @@ major 4
 minor 0
 release 0
 x 15
-y 70
+y 65
 w 10
 h 10
 lineColor index 10
@@ -65,7 +65,7 @@ major 4
 minor 0
 release 0
 x 25
-y 65
+y 60
 w 345
 h 135
 lineColor index 14
@@ -79,7 +79,7 @@ major 4
 minor 1
 release 1
 x 5
-y 5
+y 0
 w 81
 h 13
 font "arial-medium-r-12.0"
@@ -99,7 +99,7 @@ major 4
 minor 1
 release 1
 x 10
-y 20
+y 15
 w 90
 h 20
 font "arial-bold-r-12.0"
@@ -118,7 +118,7 @@ major 10
 minor 0
 release 0
 x 110
-y 140
+y 135
 w 80
 h 20
 controlPv "$(P)$(R)META:FileName_RBV"
@@ -137,7 +137,7 @@ major 4
 minor 1
 release 1
 x 35
-y 170
+y 165
 w 60
 h 20
 font "arial-bold-r-12.0"
@@ -156,7 +156,7 @@ major 4
 minor 1
 release 1
 x 35
-y 140
+y 135
 w 65
 h 20
 font "arial-bold-r-12.0"
@@ -175,7 +175,7 @@ major 4
 minor 1
 release 1
 x 195
-y 170
+y 165
 w 55
 h 20
 font "arial-bold-r-12.0"
@@ -194,7 +194,7 @@ major 4
 minor 0
 release 0
 x 255
-y 170
+y 165
 w 45
 h 20
 controlPv "$(P)$(R)META:Writing_RBV"
@@ -212,7 +212,7 @@ major 10
 minor 0
 release 0
 x 110
-y 170
+y 165
 w 80
 h 20
 controlPv "$(P)$(R)META:FramesWritten_RBV"
@@ -231,7 +231,7 @@ major 10
 minor 0
 release 0
 x 310
-y 140
+y 135
 w 50
 h 20
 controlPv "$(P)$(R)META:ActiveProcessors_RBV"
@@ -250,7 +250,7 @@ major 4
 minor 1
 release 1
 x 195
-y 140
+y 135
 w 110
 h 20
 font "arial-bold-r-12.0"
@@ -269,7 +269,7 @@ major 4
 minor 1
 release 1
 x 35
-y 70
+y 65
 w 65
 h 20
 font "arial-bold-r-12.0"
@@ -288,7 +288,7 @@ major 4
 minor 1
 release 1
 x 35
-y 115
+y 110
 w 65
 h 20
 font "arial-bold-r-12.0"
@@ -307,7 +307,7 @@ major 10
 minor 0
 release 0
 x 110
-y 115
+y 110
 w 115
 h 20
 controlPv "$(P)$(R)META:FlushRate"
@@ -325,7 +325,7 @@ major 10
 minor 0
 release 0
 x 235
-y 115
+y 110
 w 125
 h 20
 controlPv "$(P)$(R)META:FlushRate_RBV"
@@ -344,7 +344,7 @@ major 4
 minor 1
 release 0
 x 310
-y 165
+y 160
 w 50
 h 25
 fgColor index 21
@@ -368,7 +368,7 @@ major 4
 minor 6
 release 0
 x 110
-y 70
+y 65
 w 250
 h 20
 controlPv "$(P)$(R)META:FilePath"
@@ -394,7 +394,7 @@ major 4
 minor 6
 release 0
 x 35
-y 90
+y 85
 w 325
 h 20
 controlPv "$(P)$(R)META:FilePath_RBV"
@@ -416,7 +416,7 @@ major 4
 minor 0
 release 0
 x 10
-y 40
+y 35
 w 5
 h 19
 lineColor index 10
@@ -433,7 +433,7 @@ major 4
 minor 0
 release 0
 x 10
-y 60
+y 55
 w 5
 h 20
 lineColor index 10
@@ -451,7 +451,7 @@ major 4
 minor 6
 release 0
 x 15
-y 40
+y 35
 w 355
 h 20
 controlPv "$(P)$(R)META:AcquisitionID_RBV"
@@ -473,7 +473,7 @@ major 4
 minor 6
 release 0
 x 100
-y 20
+y 15
 w 275
 h 20
 controlPv "$(P)$(R)META:AcquisitionID"
@@ -499,7 +499,7 @@ major 4
 minor 0
 release 1
 x 25
-y 65
+y 60
 w 0
 h 0
 lineColor index 14
@@ -509,7 +509,7 @@ xPoints {
   0 25
 }
 yPoints {
-  0 65
+  0 60
 }
 endObjectProperties
 
