@@ -14,7 +14,7 @@ FP1="cd ${APPS} && ./stFrameProcessor1.sh"
 FP2="cd ${APPS} && ./stFrameProcessor2.sh"
 OdinServer="export PYTHONPATH=${DETECTOR}/prefix/lib/python2.7/site-packages:${ODIN_DATA}/prefix/lib/python2.7/site-packages &&
             cd ${APPS} && ./stOdinServer.sh"
-IOC="sleep 3 && cd ${ROOT}/iocs/${IOC} && bin/linux-x86_64/st${IOC}.sh"
+IOC="sleep 5 && cd ${ROOT}/iocs/${IOC} && bin/linux-x86_64/st${IOC}.sh"
 
 gnome-terminal --tab --title="FR1"          -e "bash -c '$FR1; $SHELL'" \
                --tab --title="FR2"          -e "bash -c '$FR2; $SHELL'" \

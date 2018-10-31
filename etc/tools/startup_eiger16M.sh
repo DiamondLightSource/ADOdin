@@ -21,7 +21,7 @@ MetaListener="export PYTHONPATH=${DETECTOR}/prefix/lib/python2.7/site-packages &
               cd ${DATA} && ./stEigerMetaListener.sh"
 OdinServer="export PYTHONPATH=${DETECTOR}/prefix/lib/python2.7/site-packages:${ODIN_DATA}/prefix/lib/python2.7/site-packages &&
             cd ${DATA} && ./stOdinServer.sh"
-IOC="sleep 3 && cd ${ROOT}/iocs/${IOC} && bin/linux-x86_64/st${IOC}.sh"
+IOC="sleep 5 && cd ${ROOT}/iocs/${IOC} && bin/linux-x86_64/st${IOC}.sh"
 
 gnome-terminal --tab --title="Fan"          -e "bash -c '$Fan; $SHELL'" \
                --tab --title="FR1"          -e "bash -c '$FR1; $SHELL'" \
