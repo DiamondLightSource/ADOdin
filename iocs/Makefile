@@ -1,7 +1,7 @@
 TOP = ..
 include $(TOP)/configure/CONFIG
 
-DIRS := $(wildcard excalibur eiger)
+DIRS := $(wildcard excalibur eiger4M eiger16M)
 
 include $(TOP)/configure/RULES_TOP
 
@@ -22,4 +22,3 @@ $(1)$(DIVIDER)realuninstall:
 endef
 $(foreach dir, $(DIRS), $(eval $(call REALUNINSTALL_template,$(dir))))
 .PHONY: realuninstall $(realuninstallTargets)
-
