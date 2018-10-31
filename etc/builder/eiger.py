@@ -80,7 +80,7 @@ class EigerMetaListener(Device):
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
         IP=Simple("IP address of server hosting process", str),
-        SENSOR=Choice("Sensor type", ["4M"]),
+        SENSOR=Choice("Sensor type", ["4M", "16M"]),
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
