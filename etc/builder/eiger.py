@@ -188,12 +188,20 @@ class EigerOdinDataDriver(_OdinDataDriver):
 
     """Create an Eiger OdinData driver"""
 
+    OD_SCREENS = [1, 2, 4, 8]
+
     def __init__(self, **args):
         self.__super.__init__(DETECTOR="eiger", **args)
         # Update the attributes of self from the commandline args
         self.__dict__.update(locals())
 
+        if self.total_processes not in self.OD_SCREENS:
+            raise ValueError("Total number of OdinData processes must be {}".format(
+                self.OD_TEMPLATES))
+
         template_args = dict((key, args[key]) for key in ["P", "R", "PORT"])
+        template_args["OD_COUNT"] = self.total_processes
+        template_args["OD_BUTTON"] = args["PORT"][:args["PORT"].find(".")] + ".DAQ"
         makeTemplateInstance(_EigerDetectorTemplate, locals(), template_args)
 
     # __init__ arguments
