@@ -7,7 +7,7 @@
 # % macro, name, Name specifying builder GUI generation
 
 # This associates the template with an edm screen
-# % gui, $(name), edm, ExcaliburDAQ2Status.edl, P=$(P),R=$(R)
+# % gui, $(name), edm, ExcaliburDAQ4Status.edl, P=$(P),R=$(R)
 
 ################################################################################
 #
