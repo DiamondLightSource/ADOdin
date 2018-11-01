@@ -158,12 +158,6 @@ int OdinDataDriver::createParams()
                                               SSFPConfigHDF, "acquisition_id");
   mCloseFileTimeout       = createODRESTParam(OdinHDF5CloseFileTimeout, REST_P_INT,
                                               SSFPConfigHDF, "timeout_timer_period");
-  mStartCloseTimeout      = createODRESTParam(OdinHDF5StartCloseTimeout, REST_P_BOOL,
-                                              SSFPConfigHDF, "start_timeout_timer");
-  mNumCapture             = createRESTParam(OdinHDF5NumCapture, REST_P_INT,
-                                            SSFPConfigHDF, "frames");
-  mCapture                = createRESTParam(OdinHDF5Write, REST_P_BOOL,
-                                            SSFPConfigHDF, "write");
   mChunkBoundaryAlignment = createODRESTParam(OdinHDF5ChunkBoundaryAlignment, REST_P_INT,
                                               SSFPConfigHDFProcess, "alignment_value");
   mChunkBoundaryThreshold = createODRESTParam(OdinHDF5ChunkBoundaryThreshold, REST_P_INT,
@@ -172,6 +166,13 @@ int OdinDataDriver::createParams()
                                               SSFPConfigHDFDataset, mDatasetName + "/datatype");
   mCompression            = createODRESTParam(OdinHDF5Compression, REST_P_INT,
                                               SSFPConfigHDFDataset, mDatasetName + "/compression");
+  // Parameters fanned out to all processes - not array based
+  mStartCloseTimeout      = createRESTParam(OdinHDF5StartCloseTimeout, REST_P_BOOL,
+                                            SSFPConfigHDF, "start_timeout_timer");
+  mNumCapture             = createRESTParam(OdinHDF5NumCapture, REST_P_INT,
+                                            SSFPConfigHDF, "frames");
+  mCapture                = createRESTParam(OdinHDF5Write, REST_P_BOOL,
+                                            SSFPConfigHDF, "write");
   // Per OD Process Status Parameters
   mFRProcessConnected     = createODRESTParam(OdinFRProcessConnected, REST_P_BOOL,
                                               SSFRStatus, "connected");
@@ -205,11 +206,10 @@ int OdinDataDriver::createParams()
 
   // Stop clear error being sent during a push all
   mFPClearErrors->disablePushAll();
-  //mFPClearErrors->setCommand();
 
   mCapture->setCommand();
   mStartCloseTimeout->setCommand();
-  //mFPClearErrors->setCommand();
+  mFPClearErrors->setCommand();
 
   // Internal parameters
   createParam(OdinFPProcessInitialised, asynParamInt32, &mFPProcessInitialised);
