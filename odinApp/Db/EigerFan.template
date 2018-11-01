@@ -117,11 +117,9 @@ record(longin, "$(P)$(R)FAN:ZMQThreads_RBV")
     field(INP,  "@asyn($(PORT),0,1)_ODI1_eiger_fan/config/num_zmq_threads")
 }
 
-record(bi, "$(P)$(R)FAN:AllConnected_RBV")
+record(calc, "$(P)$(R)FAN:AllConsumersConnected_RBV")
 {
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,1))ODIN_FAN_ALL_CONNECTED")
-    field(ZNAM, "Done")
-    field(ONAM, "Writing")
-    field(SCAN, "I/O Intr")
+    field(INPA, "$(P)$(R)FAN:Consumers_RBV CP")
+    field(INPB, "$(P)$(R)FAN:ConsumersConnected_RBV CP")
+    field(CALC, "A==B?1:0")
 }
