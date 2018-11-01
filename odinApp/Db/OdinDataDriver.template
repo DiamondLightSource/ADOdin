@@ -231,7 +231,6 @@ record(waveform, "$(P)$(R)FileName")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_NAME")
     field(FTVL, "CHAR")
     field(NELM, "256")
-    field(FLNK, "EIGER:OD:AcquisitionID_Calc.PROC PP")
     info(autosaveFields, "VAL")
 }
 
@@ -247,7 +246,7 @@ record(waveform, "$(P)$(R)FileName_RBV")
 # Forward FileName to AcquisitionID
 record(acalcout, "$(P)$(R)AcquisitionID_Calc")
 {
-    field(INAA, "$(P)$(R)FileName_RBV CP")
+    field(INAA, "$(P)$(R)FileName CP")
     field(CALC, "AA")
     field(OOPT, "Every Time")
     field(DOPT, "Use CALC")
