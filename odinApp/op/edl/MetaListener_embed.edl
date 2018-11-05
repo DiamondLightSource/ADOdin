@@ -4,9 +4,9 @@ major 4
 minor 0
 release 1
 x 814
-y 487
-w 388
-h 209
+y 672
+w 387
+h 208
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -34,41 +34,9 @@ release 0
 x 5
 y 5
 w 375
-h 200
+h 195
 lineColor index 14
 fill
-fillColor index 3
-endObjectProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 15
-y 65
-w 10
-h 10
-lineColor index 10
-fill
-fillColor index 10
-visPv "$(P)$(R)META:Writing_RBV"
-visMin "1"
-visMax "2"
-endObjectProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 25
-y 60
-w 345
-h 135
-lineColor index 14
 fillColor index 3
 endObjectProperties
 
@@ -99,8 +67,8 @@ major 4
 minor 1
 release 1
 x 10
-y 15
-w 90
+y 20
+w 85
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
@@ -117,9 +85,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 110
-y 135
-w 80
+x 80
+y 70
+w 290
 h 20
 controlPv "$(P)$(R)META:FileName_RBV"
 fgColor index 16
@@ -127,7 +95,6 @@ fgAlarm
 bgColor index 10
 fill
 font "arial-bold-r-12.0"
-fontAlign "center"
 endObjectProperties
 
 # (Static Text)
@@ -136,9 +103,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 35
-y 165
-w 60
+x 225
+y 145
+w 50
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
@@ -155,8 +122,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 35
-y 135
+x 10
+y 70
 w 65
 h 20
 font "arial-bold-r-12.0"
@@ -174,8 +141,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 195
-y 165
+x 10
+y 170
 w 55
 h 20
 font "arial-bold-r-12.0"
@@ -193,10 +160,10 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 255
-y 165
-w 45
-h 20
+x 80
+y 175
+w 70
+h 15
 controlPv "$(P)$(R)META:Writing_RBV"
 lineColor index 14
 onColor index 15
@@ -211,9 +178,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 110
-y 165
-w 80
+x 280
+y 145
+w 90
 h 20
 controlPv "$(P)$(R)META:FramesWritten_RBV"
 fgColor index 16
@@ -230,9 +197,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 310
-y 135
-w 50
+x 340
+y 170
+w 30
 h 20
 controlPv "$(P)$(R)META:ActiveProcessors_RBV"
 fgColor index 16
@@ -249,8 +216,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 195
-y 135
+x 225
+y 170
 w 110
 h 20
 font "arial-bold-r-12.0"
@@ -268,8 +235,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 35
-y 65
+x 10
+y 95
 w 65
 h 20
 font "arial-bold-r-12.0"
@@ -287,8 +254,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 35
-y 110
+x 10
+y 145
 w 65
 h 20
 font "arial-bold-r-12.0"
@@ -306,9 +273,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 110
-y 110
-w 115
+x 80
+y 145
+w 75
 h 20
 controlPv "$(P)$(R)META:FlushRate"
 fgColor index 25
@@ -324,9 +291,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 235
-y 110
-w 125
+x 165
+y 145
+w 50
 h 20
 controlPv "$(P)$(R)META:FlushRate_RBV"
 fgColor index 16
@@ -343,8 +310,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 310
-y 160
+x 165
+y 170
 w 50
 h 25
 fgColor index 21
@@ -367,9 +334,9 @@ beginObjectProperties
 major 4
 minor 6
 release 0
-x 110
-y 65
-w 250
+x 80
+y 95
+w 290
 h 20
 controlPv "$(P)$(R)META:FilePath"
 font "helvetica-medium-r-10.0"
@@ -393,9 +360,9 @@ beginObjectProperties
 major 4
 minor 6
 release 0
-x 35
-y 85
-w 325
+x 10
+y 120
+w 360
 h 20
 controlPv "$(P)$(R)META:FilePath_RBV"
 font "helvetica-medium-r-10.0"
@@ -409,50 +376,15 @@ newPos
 objType "controls"
 endObjectProperties
 
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 10
-y 35
-w 5
-h 19
-lineColor index 10
-fill
-fillColor index 10
-visMin "1"
-visMax "2"
-endObjectProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 10
-y 55
-w 5
-h 20
-lineColor index 10
-fill
-fillColor index 10
-visPv "$(P)$(R)META:Writing_RBV"
-visMin "1"
-visMax "2"
-endObjectProperties
-
 # (Text Control)
 object activeXTextDspClass
 beginObjectProperties
 major 4
 minor 6
 release 0
-x 15
-y 35
-w 355
+x 10
+y 45
+w 260
 h 20
 controlPv "$(P)$(R)META:AcquisitionID_RBV"
 font "arial-bold-r-12.0"
@@ -473,8 +405,8 @@ major 4
 minor 6
 release 0
 x 100
-y 15
-w 275
+y 20
+w 170
 h 20
 controlPv "$(P)$(R)META:AcquisitionID"
 font "arial-bold-r-12.0"
@@ -498,18 +430,92 @@ beginObjectProperties
 major 4
 minor 0
 release 1
-x 25
-y 60
+x 15
+y 65
 w 0
 h 0
 lineColor index 14
 fillColor index 3
 numPoints 1
 xPoints {
-  0 25
+  0 15
 }
 yPoints {
-  0 60
+  0 65
 }
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 280
+y 20
+w 65
+h 15
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Initialised"
+}
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 350
+y 20
+w 20
+h 15
+controlPv "$(P)$(R)META:ProcessConnected_RBV"
+lineColor index 14
+onColor index 15
+offColor index 19
+lineWidth 2
+numBits 1
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 280
+y 45
+w 65
+h 15
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Active"
+}
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 350
+y 45
+w 20
+h 15
+controlPv "$(P)$(R)META:AcquisitionActive_RBV"
+lineColor index 14
+onColor index 15
+offColor index 19
+lineWidth 2
+numBits 1
 endObjectProperties
 

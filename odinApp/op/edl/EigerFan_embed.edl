@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2123
-y 117
+x 2043
+y 503
 w 388
-h 215
+h 175
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -34,7 +34,7 @@ release 0
 x 5
 y 10
 w 375
-h 195
+h 160
 lineColor index 14
 fill
 fillColor index 3
@@ -67,7 +67,7 @@ major 4
 minor 1
 release 1
 x 10
-y 50
+y 100
 w 90
 h 35
 font "arial-bold-r-12.0"
@@ -86,12 +86,13 @@ beginObjectProperties
 major 4
 minor 6
 release 0
-x 110
-y 180
+x 105
+y 75
 w 165
 h 20
 controlPv "$(P)$(R)FAN:State_RBV"
 font "helvetica-medium-r-10.0"
+fontAlign "center"
 fgColor index 16
 bgColor index 10
 limitsFromDb
@@ -109,26 +110,7 @@ major 4
 minor 1
 release 1
 x 10
-y 100
-w 85
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Block Size"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 10
-y 150
+y 25
 w 90
 h 20
 font "arial-bold-r-12.0"
@@ -147,7 +129,7 @@ major 4
 minor 1
 release 1
 x 10
-y 180
+y 75
 w 40
 h 20
 font "arial-bold-r-12.0"
@@ -166,7 +148,7 @@ major 4
 minor 1
 release 1
 x 10
-y 20
+y 140
 w 75
 h 20
 font "arial-bold-r-12.0"
@@ -184,9 +166,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 110
-y 20
-w 110
+x 105
+y 140
+w 80
 h 20
 controlPv "$(P)$(R)FAN:Offset"
 fgColor index 25
@@ -203,7 +185,7 @@ major 4
 minor 1
 release 1
 x 10
-y 125
+y 50
 w 75
 h 20
 font "arial-bold-r-12.0"
@@ -221,8 +203,8 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 110
-y 125
+x 195
+y 50
 w 75
 h 20
 controlPv "$(P)$(R)FAN:Consumers_RBV"
@@ -240,9 +222,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 200
-y 125
-w 75
+x 105
+y 50
+w 70
 h 20
 controlPv "$(P)$(R)FAN:ConsumersConnected_RBV"
 fgColor index 16
@@ -259,9 +241,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 250
-y 20
-w 115
+x 200
+y 140
+w 80
 h 20
 controlPv "$(P)$(R)FAN:Offset_RBV"
 fgColor index 16
@@ -279,8 +261,8 @@ major 10
 minor 0
 release 0
 x 290
-y 65
-w 75
+y 115
+w 80
 h 20
 controlPv "$(P)$(R)FAN:CurrentOffset_RBV"
 fgColor index 16
@@ -297,9 +279,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 110
-y 65
-w 75
+x 105
+y 115
+w 80
 h 20
 controlPv "$(P)$(R)FAN:CurrentFrame_RBV"
 fgColor index 16
@@ -317,8 +299,8 @@ major 10
 minor 0
 release 0
 x 200
-y 65
-w 75
+y 115
+w 80
 h 20
 controlPv "$(P)$(R)FAN:CurrentSeries_RBV"
 fgColor index 16
@@ -335,28 +317,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 110
-y 100
-w 75
-h 20
-controlPv "$(P)$(R)FAN:BlockSize_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 110
-y 150
-w 165
+x 105
+y 25
+w 110
 h 20
 controlPv "$(P)$(R)FAN:EigerAddress_RBV"
 fgColor index 16
@@ -373,9 +336,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 290
-y 150
-w 75
+x 225
+y 25
+w 45
 h 20
 controlPv "$(P)$(R)FAN:EigerPort_RBV"
 fgColor index 16
@@ -393,10 +356,10 @@ major 4
 minor 1
 release 1
 x 200
-y 45
-w 75
-h 20
-font "arial-bold-r-12.0"
+y 100
+w 80
+h 15
+font "arial-medium-r-10.0"
 fontAlign "center"
 fgColor index 14
 bgColor index 3
@@ -412,11 +375,11 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 110
-y 45
-w 75
-h 20
-font "arial-bold-r-12.0"
+x 105
+y 100
+w 80
+h 15
+font "arial-medium-r-10.0"
 fontAlign "center"
 fgColor index 14
 bgColor index 3
@@ -433,10 +396,10 @@ major 4
 minor 1
 release 1
 x 290
-y 45
-w 75
-h 20
-font "arial-bold-r-12.0"
+y 100
+w 80
+h 15
+font "arial-medium-r-10.0"
 fontAlign "center"
 fgColor index 14
 bgColor index 3
@@ -452,8 +415,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 290
-y 180
+x 280
+y 75
 w 40
 h 20
 font "arial-bold-r-12.0"
@@ -471,11 +434,125 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 340
-y 185
+x 350
+y 75
 w 20
-h 10
+h 15
 controlPv "$(P)$(R)FAN:StateReady_RBV"
+lineColor index 14
+onColor index 15
+offColor index 19
+lineWidth 2
+numBits 1
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 350
+y 50
+w 20
+h 15
+controlPv "$(P)$(R)FAN:AllConsumersConnected_RBV"
+lineColor index 14
+onColor index 15
+offColor index 19
+lineWidth 2
+numBits 1
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 180
+y 50
+w 10
+h 20
+font "arial-bold-r-16.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "/"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 215
+y 25
+w 10
+h 20
+font "arial-bold-r-16.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  ":"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 280
+y 50
+w 65
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Connected"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 280
+y 25
+w 65
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Initialised"
+}
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 350
+y 25
+w 20
+h 15
+controlPv "$(P)$(R)FAN:ProcessConnected_RBV"
 lineColor index 14
 onColor index 15
 offColor index 19

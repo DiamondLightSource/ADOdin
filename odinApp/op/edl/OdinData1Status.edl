@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1350
-y 542
+x 644
+y 685
 w 386
 h 62
 font "arial-medium-r-12.0"
@@ -19,7 +19,7 @@ ctlBgColor1 index 3
 ctlBgColor2 index 3
 topShadowColor index 1
 botShadowColor index 11
-title "Odin HDF"
+title "OdinData Status"
 showGrid
 snapToGrid
 gridSize 5
@@ -80,7 +80,7 @@ x 255
 y 5
 w 55
 h 20
-controlPv "$(P):OD$(FP):FreeBuffers_RBV"
+controlPv "$(P):OD$(RANK):FreeBuffers_RBV"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -99,7 +99,7 @@ x 90
 y 5
 w 30
 h 20
-controlPv "$(P):OD$(FP):Writing_RBV"
+controlPv "$(P):OD$(RANK):Writing_RBV"
 lineColor index 14
 onColor index 15
 offColor index 19
@@ -117,7 +117,7 @@ x 45
 y 35
 w 225
 h 20
-controlPv "$(P):OD$(FP):FPErrorMessage_RBV"
+controlPv "$(P):OD$(RANK):FPErrorMessage_RBV"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -142,7 +142,7 @@ onColor index 3
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):OD$(FP):FPClearErrors"
+controlPv "$(P):OD$(RANK):FPClearErrors"
 pressValue "0"
 onLabel "Clear"
 offLabel "Clear"
@@ -160,7 +160,7 @@ x 130
 y 5
 w 60
 h 20
-controlPv "$(P):OD1:FramesReceived_RBV"
+controlPv "$(P):OD$(RANK):FramesReceived_RBV"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -179,7 +179,7 @@ x 195
 y 5
 w 55
 h 20
-controlPv "$(P):OD1:FramesTimedOut_RBV"
+controlPv "$(P):OD$(RANK):FramesTimedOut_RBV"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -198,7 +198,7 @@ x 10
 y 5
 w 20
 h 20
-controlPv "$(P):OD$(FP):ProcessRank_RBV"
+controlPv "$(P):OD$(RANK):ProcessRank_RBV"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -217,7 +217,7 @@ x 50
 y 5
 w 10
 h 20
-controlPv "$(P):OD$(FP):FPProcessConnected_RBV"
+controlPv "$(P):OD$(RANK):FPProcessConnected_RBV"
 lineColor index 14
 onColor index 15
 offColor index 24
@@ -235,7 +235,7 @@ x 40
 y 5
 w 10
 h 20
-controlPv "$(P):OD$(FP):FRProcessConnected_RBV"
+controlPv "$(P):OD$(RANK):FRProcessConnected_RBV"
 lineColor index 14
 onColor index 15
 offColor index 24
@@ -253,7 +253,7 @@ x 65
 y 5
 w 20
 h 20
-controlPv "$(P):OD$(FP):FPErrorState_RBV"
+controlPv "$(P):OD$(RANK):FPErrorState_RBV"
 lineColor index 14
 onColor index 20
 offColor index 15
@@ -306,7 +306,7 @@ x 320
 y 5
 w 55
 h 20
-controlPv "$(P):OD$(FP):NumCaptured_RBV"
+controlPv "$(P):OD$(RANK):NumCaptured_RBV"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -325,7 +325,7 @@ x 320
 y 35
 w 55
 h 20
-controlPv "$(P):OD$(FP):NumExpected_RBV"
+controlPv "$(P):OD$(RANK):NumExpected_RBV"
 fgColor index 16
 fgAlarm
 bgColor index 10

@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 627
-y 235
+x 1065
+y 430
 w 387
 h 526
 font "arial-medium-r-12.0"
@@ -19,7 +19,7 @@ ctlBgColor1 index 3
 ctlBgColor2 index 3
 topShadowColor index 1
 botShadowColor index 11
-title "Odin HDF"
+title "OdinData Status"
 showGrid
 snapToGrid
 gridSize 5
@@ -74,7 +74,7 @@ displayFileName {
   0 "OdinData1Status"
 }
 symbols {
-  0 "FP=1,FR=0"
+  0 "RANK=1"
 }
 noScroll
 endObjectProperties
@@ -102,7 +102,7 @@ displayFileName {
   0 "OdinData1Status"
 }
 symbols {
-  0 "FP=2,FR=1"
+  0 "RANK=2"
 }
 noScroll
 endObjectProperties
@@ -130,7 +130,7 @@ displayFileName {
   0 "OdinData1Status"
 }
 symbols {
-  0 "FP=3,FR=2"
+  0 "RANK=3"
 }
 noScroll
 endObjectProperties
@@ -158,7 +158,7 @@ displayFileName {
   0 "OdinData1Status"
 }
 symbols {
-  0 "FP=4,FR=3"
+  0 "RANK=4"
 }
 noScroll
 endObjectProperties
@@ -185,7 +185,7 @@ displayFileName {
   0 "OdinData1Status"
 }
 symbols {
-  0 "FP=5,FR=4"
+  0 "RANK=5"
 }
 noScroll
 endObjectProperties
@@ -213,7 +213,7 @@ displayFileName {
   0 "OdinData1Status"
 }
 symbols {
-  0 "FP=6,FR=5"
+  0 "RANK=6"
 }
 noScroll
 endObjectProperties
@@ -241,7 +241,7 @@ displayFileName {
   0 "OdinData1Status"
 }
 symbols {
-  0 "FP=7,FR=6"
+  0 "RANK=7"
 }
 noScroll
 endObjectProperties
@@ -269,7 +269,7 @@ displayFileName {
   0 "OdinData1Status"
 }
 symbols {
-  0 "FP=8,FR=7"
+  0 "RANK=8"
 }
 noScroll
 endObjectProperties
