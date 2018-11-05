@@ -42,6 +42,12 @@ def main():
         json.dumps(message, sort_keys=True, indent=4, separators=(",", ": ")))
     )
 
+    control_socket.send(message_template.format("request_version"))
+    message = control_socket.recv_json()
+    print("Version: {}".format(
+        json.dumps(message, sort_keys=True, indent=4, separators=(",", ": ")))
+    )
+
     control_socket.close(linger=1000)
     context.term()
 
