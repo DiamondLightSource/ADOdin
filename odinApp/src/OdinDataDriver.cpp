@@ -187,7 +187,7 @@ int OdinDataDriver::createParams()
   mFullFileName           = createODRESTParam(OdinHDF5FullFileName, REST_P_STRING,
                                               SSFPStatusHDF, "file_name");
   mNumCaptured            = createODRESTParam(OdinHDF5NumCaptured, REST_P_INT,
-                                              SSFPStatusHDF, "frames_written");
+                                              SSFPStatusHDF, "frames_processed");
   mNumExpected            = createODRESTParam(OdinHDF5NumExpected, REST_P_INT,
                                               SSFPStatusHDF, "frames_max");
   mFreeBuffers            = createODRESTParam(OdinFRFreeBuffers, REST_P_INT,
