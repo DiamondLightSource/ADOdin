@@ -42,6 +42,14 @@ record(waveform, "$(P)$(R)META:Acquisitions_RBV")
 
 #### Status #######################################################################################
 
+#% archiver 1 monitor
+record(longin, "$(P)$(R)META:ProcessConnected_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP, "@asyn($(PORT),0,1)_ODB1_meta_listener/status/connected")
+    field(SCAN, "I/O Intr")
+}
+
 ## Acquisition Specific
 
 record(stringin, "$(P)$(R)META:FileName_RBV")
@@ -64,6 +72,15 @@ record(bi, "$(P)$(R)META:Writing_RBV")
     field(INP,  "@asyn($(PORT),0,1)_ODB_meta_listener/status/writing")
     field(ZNAM, "Done")
     field(ONAM, "Writing")
+    field(SCAN, "I/O Intr")
+}
+
+record(bi, "$(P)$(R)META:AcquisitionActive_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,1)_ODB_meta_listener/status/acquisition_active")
+    field(ZNAM, "Inactive")
+    field(ONAM, "Active")
     field(SCAN, "I/O Intr")
 }
 

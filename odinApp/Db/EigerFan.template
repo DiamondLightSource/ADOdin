@@ -4,6 +4,14 @@
 
 #### Status #######################################################################################
 
+#% archiver 1 monitor
+record(longin, "$(P)$(R)FAN:ProcessConnected_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP, "@asyn($(PORT),0,1)_ODB1_eiger_fan/status/connected")
+    field(SCAN, "I/O Intr")
+}
+
 record(longin, "$(P)$(R)FAN:CurrentSeries_RBV")
 {
     field(DTYP, "asynInt32")
