@@ -19,7 +19,7 @@ class EigerFan(Device):
     # Device attributes
     AutoInstantiate = True
 
-    def __init__(self, IP, DETECTOR_IP, PROCESSES, SOCKETS, BLOCK_SIZE=1):
+    def __init__(self, IP, DETECTOR_IP, PROCESSES, SOCKETS, SENSOR, THREADS=2, BLOCK_SIZE=1000):
         self.__super.__init__()
         # Update attributes with parameters
         self.__dict__.update(locals())
@@ -29,7 +29,7 @@ class EigerFan(Device):
     def create_startup_file(self):
         macros = dict(EIGER_DETECTOR_PATH=EIGER_PATH, IP=self.DETECTOR_IP,
                       PROCESSES=self.PROCESSES, SOCKETS=self.SOCKETS, BLOCK_SIZE=self.BLOCK_SIZE,
-                      LOG_CONFIG=os.path.join(EIGER_PATH, "log4cxx.xml"))
+                      THREADS=self.THREADS, LOG_CONFIG=os.path.join(EIGER_PATH, "log4cxx.xml"))
 
         expand_template_file("eiger_fan_startup", macros, "stEigerFan.sh",
                              executable=True)
@@ -40,6 +40,8 @@ class EigerFan(Device):
         DETECTOR_IP=Simple("IP address of Eiger detector", str),
         PROCESSES=Simple("Number of processes to fan out to", int),
         SOCKETS=Simple("Number of sockets to open to Eiger detector stream", int),
+        SENSOR=Choice("Sensor type", ["4M", "16M"]),
+        THREADS=Simple("Number of ZMQ threads to use", int),
         BLOCK_SIZE=Simple("Number of blocks per file", int)
     )
 
@@ -51,7 +53,7 @@ class EigerMetaListener(Device):
     # Device attributes
     AutoInstantiate = True
 
-    def __init__(self, IP, SENSOR,
+    def __init__(self, IP, SOURCE,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
                  ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None):
         self.__super.__init__()
@@ -72,7 +74,7 @@ class EigerMetaListener(Device):
     def create_startup_file(self):
         macros = dict(EIGER_DETECTOR_PATH=EIGER_PATH,
                       IP_LIST=",".join(self.ip_list),
-                      SENSOR=self.SENSOR)
+                      SENSOR=self.SOURCE.SENSOR)
 
         expand_template_file("eiger_meta_startup", macros, "stEigerMetaListener.sh",
                              executable=True)
@@ -80,7 +82,7 @@ class EigerMetaListener(Device):
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
         IP=Simple("IP address of server hosting process", str),
-        SENSOR=Choice("Sensor type", ["4M", "16M"]),
+        SOURCE=Ident("EigerFan instance", EigerFan),
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
@@ -95,14 +97,16 @@ class _EigerOdinData(_OdinData):
         "FrameReceiver": "fr_eiger.json"
     }
 
-    def __init__(self, server, READY, RELEASE, META, SOURCE_IP):
+    def __init__(self, server, READY, RELEASE, META, SOURCE_IP, SENSOR):
         super(_EigerOdinData, self).__init__(server, READY, RELEASE, META)
         self.source = SOURCE_IP
+        self.sensor = SENSOR
 
     def create_config_files(self, index):
         macros = dict(DETECTOR_ROOT=EIGER_PATH,
                       IP=self.source,
-                      RX_PORT_SUFFIX=index - 1)
+                      RX_PORT_SUFFIX=index - 1,
+                      SENSOR=self.sensor)
 
         super(_EigerOdinData, self).create_config_file(
             "fp", self.CONFIG_TEMPLATES["FrameProcessor"], index, extra_macros=macros)
@@ -114,19 +118,21 @@ class EigerOdinDataServer(_OdinDataServer):
 
     """Store configuration for an EigerOdinDataServer"""
 
-    def __init__(self, IP, PROCESSES, SOURCE, SHARED_MEM_SIZE=16000000000):
+    def __init__(self, IP, PROCESSES, SOURCE, SHARED_MEM_SIZE=16000000000, IO_THREADS=1):
         self.source = SOURCE.IP
-        self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE)
+        self.sensor = SOURCE.SENSOR
+        self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE, IO_THREADS)
 
     ArgInfo = makeArgInfo(__init__,
         IP=Simple("IP address of server hosting OdinData processes", str),
         PROCESSES=Simple("Number of OdinData processes on this server", int),
         SOURCE=Ident("EigerFan instance", EigerFan),
-        SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int)
+        SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
+        IO_THREADS=Simple("Number of FR Ipc Channel IO threads to use", int)
     )
 
     def create_odin_data_process(self, server, ready, release, meta):
-        return _EigerOdinData(server, ready, release, meta, self.source)
+        return _EigerOdinData(server, ready, release, meta, self.source, self.sensor)
 
 
 class EigerOdinControlServer(_OdinControlServer):

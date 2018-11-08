@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <components arch="linux-x86_64">
-	<ADOdin.EigerFan DETECTOR_IP="127.0.0.1" IP="127.0.0.1" PROCESSES="2" SOCKETS="4" name="EigerFan"/>
-	<ADOdin.EigerOdinDataServer IP="127.0.0.1" PROCESSES="2" SHARED_MEM_SIZE="160000000" SOURCE="EigerFan" name="ODServer1"/>
-	<ADOdin.EigerMetaListener IP="127.0.0.1" ODIN_DATA_SERVER_1="ODServer1" SENSOR="4M" name="EigerMeta"/>
+	<ADOdin.EigerFan DETECTOR_IP="127.0.0.1" IP="127.0.0.1" PROCESSES="2" SOCKETS="4" SENSOR="4M" name="EigerFan"/>
+	<ADOdin.EigerOdinDataServer IP="127.0.0.1" PROCESSES="2" SHARED_MEM_SIZE="160000000" IO_THREADS="2" SOURCE="EigerFan" name="ODServer1"/>
+	<ADOdin.EigerMetaListener IP="127.0.0.1" ODIN_DATA_SERVER_1="ODServer1" SOURCE="EigerFan" name="EigerMeta"/>
 	<ADOdin.EigerOdinControlServer EIGER_FAN="EigerFan" IP="127.0.0.1" META_LISTENER="EigerMeta" ODIN_DATA_SERVER_1="ODServer1" name="ControlServer"/>
 	<ADOdin.EigerOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" P="EIGER" PORT="ODN.OD" R=":OD:" TIMEOUT="1"/>
 	<ADOdin.OdinLogConfig BEAMLINE="iXX" DETECTOR="Eiger4M" name="LogConfig"/>
@@ -15,8 +15,11 @@
 	<EPICS_BASE.dbpf name="ChunkHeight" pv="EIGER:OD:NumRowChunks" value="2167"/>
 	<EPICS_BASE.dbpf name="DataType" pv="EIGER:OD:DataType" value="UInt16"/>
 	<EPICS_BASE.dbpf name="Compression" pv="EIGER:OD:Compression" value="BSLZ4"/>
-	<EPICS_BASE.dbpf name="FR1Config" pv="EIGER:OD1:FRConfigFile" value="$(INSTALL)/eigerApp/data/fr1.json"/>
-	<EPICS_BASE.dbpf name="FR2Config" pv="EIGER:OD2:FRConfigFile" value="$(INSTALL)/eigerApp/data/fr2.json"/>
-	<EPICS_BASE.dbpf name="FP1Config" pv="EIGER:OD1:FPConfigFile" value="$(INSTALL)/eigerApp/data/fp1.json"/>
-	<EPICS_BASE.dbpf name="FP2Config" pv="EIGER:OD2:FPConfigFile" value="$(INSTALL)/eigerApp/data/fp2.json"/>
+	<EPICS_BASE.dbpf name="BlockSize" pv="EIGER:OD:BlockSize" value="1000"/>
+	<EPICS_BASE.dbpf name="BlocksPerFile" pv="EIGER:OD:BlocksPerFile" value="1"/>
++	<EPICS_BASE.dbpf name="CloseFileTimeout" pv="EIGER:OD:CloseFileTimeout" value="6000"/>
+	<EPICS_BASE.dbpf name="FR1Config" pv="EIGER:OD1:FRConfigFile" value="$(INSTALL)/eiger4MApp/data/fr1.json"/>
+	<EPICS_BASE.dbpf name="FR2Config" pv="EIGER:OD2:FRConfigFile" value="$(INSTALL)/eiger4MApp/data/fr2.json"/>
+	<EPICS_BASE.dbpf name="FP1Config" pv="EIGER:OD1:FPConfigFile" value="$(INSTALL)/eiger4MApp/data/fp1.json"/>
+	<EPICS_BASE.dbpf name="FP2Config" pv="EIGER:OD2:FPConfigFile" value="$(INSTALL)/eiger4MApp/data/fp2.json"/>
 </components>
