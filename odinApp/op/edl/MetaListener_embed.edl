@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 814
-y 672
-w 387
-h 208
+x 2051
+y 451
+w 386
+h 132
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -34,7 +34,7 @@ release 0
 x 5
 y 5
 w 375
-h 195
+h 120
 lineColor index 14
 fill
 fillColor index 3
@@ -60,60 +60,22 @@ autoSize
 border
 endObjectProperties
 
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 10
-y 20
-w 85
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "AcquisitionID"
-}
-endObjectProperties
-
 # (Textupdate)
 object TextupdateClass
 beginObjectProperties
 major 10
 minor 0
 release 0
-x 80
-y 70
-w 290
+x 85
+y 45
+w 180
 h 20
 controlPv "$(P)$(R)META:FileName_RBV"
 fgColor index 16
 fgAlarm
 bgColor index 10
 fill
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 225
-y 145
-w 50
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Frames"
-}
+font "arial-bold-r-10.0"
 endObjectProperties
 
 # (Static Text)
@@ -123,15 +85,15 @@ major 4
 minor 1
 release 1
 x 10
-y 70
-w 65
+y 45
+w 70
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "File Name"
+  "Output File"
 }
 endObjectProperties
 
@@ -141,10 +103,10 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 10
-y 170
-w 55
-h 20
+x 275
+y 65
+w 60
+h 25
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
@@ -160,9 +122,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 80
-y 175
-w 70
+x 350
+y 70
+w 20
 h 15
 controlPv "$(P)$(R)META:Writing_RBV"
 lineColor index 14
@@ -172,63 +134,6 @@ lineWidth 2
 numBits 1
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 280
-y 145
-w 90
-h 20
-controlPv "$(P)$(R)META:FramesWritten_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 340
-y 170
-w 30
-h 20
-controlPv "$(P)$(R)META:ActiveProcessors_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 225
-y 170
-w 110
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Active Processors"
-}
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -236,27 +141,8 @@ major 4
 minor 1
 release 1
 x 10
-y 95
-w 65
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "File Path"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 10
-y 145
-w 65
+y 20
+w 70
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
@@ -273,9 +159,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 80
-y 145
-w 75
+x 85
+y 20
+w 85
 h 20
 controlPv "$(P)$(R)META:FlushRate"
 fgColor index 25
@@ -291,9 +177,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 165
-y 145
-w 50
+x 180
+y 20
+w 85
 h 20
 controlPv "$(P)$(R)META:FlushRate_RBV"
 fgColor index 16
@@ -310,10 +196,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 165
-y 170
-w 50
-h 25
+x 275
+y 95
+w 95
+h 20
 fgColor index 21
 onColor index 4
 offColor index 3
@@ -328,132 +214,15 @@ useEnumNumeric
 font "arial-bold-r-12.0"
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 6
-release 0
-x 80
-y 95
-w 290
-h 20
-controlPv "$(P)$(R)META:FilePath"
-font "helvetica-medium-r-10.0"
-fgColor index 25
-bgColor index 3
-editable
-motifWidget
-limitsFromDb
-nullColor index 0
-useKp
-file
-useHexPrefix
-newPos
-inputFocusUpdates
-objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 6
-release 0
-x 10
-y 120
-w 360
-h 20
-controlPv "$(P)$(R)META:FilePath_RBV"
-font "helvetica-medium-r-10.0"
-fgColor index 16
-bgColor index 10
-limitsFromDb
-nullColor index 0
-smartRefresh
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 6
-release 0
-x 10
-y 45
-w 260
-h 20
-controlPv "$(P)$(R)META:AcquisitionID_RBV"
-font "arial-bold-r-12.0"
-fgColor index 16
-bgColor index 10
-limitsFromDb
-nullColor index 0
-smartRefresh
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 6
-release 0
-x 100
-y 20
-w 170
-h 20
-controlPv "$(P)$(R)META:AcquisitionID"
-font "arial-bold-r-12.0"
-fgColor index 25
-bgColor index 3
-editable
-motifWidget
-limitsFromDb
-nullColor index 0
-useKp
-file
-useHexPrefix
-newPos
-inputFocusUpdates
-objType "controls"
-endObjectProperties
-
-# (Lines)
-object activeLineClass
-beginObjectProperties
-major 4
-minor 0
-release 1
-x 15
-y 65
-w 0
-h 0
-lineColor index 14
-fillColor index 3
-numPoints 1
-xPoints {
-  0 15
-}
-yPoints {
-  0 65
-}
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
 release 1
-x 280
+x 275
 y 20
-w 65
+w 70
 h 15
 font "arial-bold-r-12.0"
 fgColor index 14
@@ -488,9 +257,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 280
+x 275
 y 45
-w 65
+w 70
 h 15
 font "arial-bold-r-12.0"
 fgColor index 14
@@ -517,5 +286,81 @@ onColor index 15
 offColor index 19
 lineWidth 2
 numBits 1
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 70
+w 125
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Meta Frames Written"
+}
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 180
+y 70
+w 85
+h 20
+controlPv "$(P)$(R)META:FramesWritten_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 180
+y 95
+w 85
+h 20
+controlPv "$(P)$(R)META:ActiveProcessors_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 95
+w 125
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Active Data Writers"
+}
 endObjectProperties
 
