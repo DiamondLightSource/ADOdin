@@ -26,6 +26,13 @@ record(longin, "$(P)$(R)FAN:CurrentFrame_RBV")
     field(INP,  "@asyn($(PORT),0,1)_ODI1_eiger_fan/status/frame")
 }
 
+record(longin, "$(P)$(R)FAN:FramesSent_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODI1_eiger_fan/status/frames_sent")
+}
+
 record(longin, "$(P)$(R)FAN:CurrentOffset_RBV")
 {
     field(DTYP, "asynInt32")
