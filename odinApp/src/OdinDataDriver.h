@@ -32,14 +32,10 @@
 #define OdinHDF5EarliestVersion        "ODIN_HDF5_EARLIEST_VERSION"
 #define OdinHDF5MasterDataset          "ODIN_HDF5_MASTER_DATASET"
 #define OdinHDF5OffsetAdjustment       "ODIN_HDF5_OFFSET_ADJUSTMENT"
-#define OdinHDF5AcquisitionID          "ODIN_HDF5_ACQUISITION_ID"
 #define OdinHDF5CloseFileTimeout       "ODIN_HDF5_CLOSE_FILE_TIMEOUT"
 #define OdinHDF5StartCloseTimeout      "ODIN_HDF5_START_CLOSE_TIMEOUT"
 #define OdinHDF5TimeoutActive          "ODIN_HDF5_TIMEOUT_ACTIVE"
 #define OdinHDF5TimeoutActiveAny       "ODIN_HDF5_TIMEOUT_ACTIVE_ANY"
-#define OdinHDF5FilePath               "ODIN_HDF5_FILE_PATH"
-#define OdinHDF5FilePathExists         "ODIN_HDF5_FILE_PATH_EXISTS"
-#define OdinHDF5FileName               "ODIN_HDF5_FILE_NAME"
 #define OdinHDF5FileExtension          "ODIN_HDF5_FILE_EXTENSION"
 #define OdinHDF5FullFileName           "ODIN_HDF5_FULL_FILE_NAME"
 #define OdinHDF5NumCapture             "ODIN_HDF5_NUM_CAPTURE"
@@ -116,15 +112,12 @@ class OdinDataDriver : public OdinClient
   RestParam * mFRConfiguration;
   RestParam * mConnected;
   RestParam * mNumImages;
-  RestParam * mFilePath;
-  RestParam * mFileName;
   RestParam * mFileExtension;
   RestParam * mBlockSize;
   RestParam * mBlocksPerFile;
   RestParam * mEarliestVersion;
   RestParam * mMasterDataset;
   RestParam * mOffsetAdjustment;
-  RestParam * mAcquisitionID;
   RestParam * mCloseFileTimeout;
   RestParam * mStartCloseTimeout;
   RestParam * mNumCapture;

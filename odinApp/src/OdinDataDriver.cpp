@@ -138,10 +138,6 @@ int OdinDataDriver::createParams()
   mFRCount                = createRESTParam(OdinFRCount, REST_P_INT,
                                             SSFR, "count");
   // Configuration parameters shared by each OD process
-  mFilePath               = createODRESTParam(NDFilePathString, REST_P_STRING,
-                                              SSFPConfigHDF, "file/path");
-  mFileName               = createODRESTParam(NDFileNameString, REST_P_STRING,
-                                              SSFPConfigHDF, "file/name");
   mFileExtension          = createODRESTParam(OdinHDF5FileExtension, REST_P_STRING,
                                               SSFPConfigHDF, "file/extension");
   mBlockSize              = createODRESTParam(OdinHDF5BlockSize, REST_P_INT,
@@ -154,8 +150,6 @@ int OdinDataDriver::createParams()
                                               SSFPConfigHDF, "master");
   mOffsetAdjustment       = createODRESTParam(OdinHDF5OffsetAdjustment, REST_P_INT,
                                               SSFPConfigHDF, "offset");
-  mAcquisitionID          = createODRESTParam(OdinHDF5AcquisitionID, REST_P_STRING,
-                                              SSFPConfigHDF, "acquisition_id");
   mCloseFileTimeout       = createODRESTParam(OdinHDF5CloseFileTimeout, REST_P_INT,
                                               SSFPConfigHDF, "timeout_timer_period");
   mChunkBoundaryAlignment = createODRESTParam(OdinHDF5ChunkBoundaryAlignment, REST_P_INT,

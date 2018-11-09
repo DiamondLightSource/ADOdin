@@ -123,24 +123,6 @@ record(bi, "$(P)$(R)EarliestHDF5Version_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(waveform, "$(P)$(R)AcquisitionID")
-{
-    field(DTYP, "asynOctetWrite")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_ACQUISITION_ID")
-    field(FTVL, "CHAR")
-    field(NELM, "256")
-    info(autosaveFields, "VAL")
-}
-
-record(waveform, "$(P)$(R)AcquisitionID_RBV")
-{
-    field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_HDF5_ACQUISITION_ID")
-    field(FTVL, "CHAR")
-    field(NELM, "256")
-    field(SCAN, "I/O Intr")
-}
-
 record(longout, "$(P)$(R)CloseFileTimeout")
 {
     field(PINI, "YES")
@@ -193,21 +175,37 @@ record(mbbi, "$(P)$(R)FileFormat_RBV")
     field(ONVL, "1")
 }
 
-# File path
+# $(P)$(R)FilePath is defined by NDFile.template / asynNDArrayDriver - Override PINI
 record(waveform, "$(P)$(R)FilePath")
 {
-    field(PINI, "YES")
-    field(DTYP, "asynOctetWrite")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_PATH")
-    field(FTVL, "CHAR")
-    field(NELM, "256")
-    info(autosaveFields, "VAL")
+    field(PINI, "NO")
 }
 
-record(waveform, "$(P)$(R)FilePath_RBV")
+# Push top level file path to FP file path
+record(acalcout, "$(P)$(R)FP:FilePath_Calc")
+{
+    field(INAA, "$(P)$(R)FilePath CP")
+    field(CALC, "AA")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
+    field(OUT,  "$(P)$(R)FP:FilePath PP")
+    field(NELM, "256")
+    field(NUSE, "256")
+}
+
+# FileWriterPlugin File path
+record(waveform, "$(P)$(R)FP:FilePath")
+{
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_fp/config/hdf/file/path")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+}
+
+record(waveform, "$(P)$(R)FP:FilePath_RBV")
 {
     field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_PATH")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_fp/config/hdf/file/path")
     field(FTVL, "CHAR")
     field(NELM, "256")
     field(SCAN, "I/O Intr")
@@ -224,35 +222,69 @@ record(bi, "$(P)$(R)FilePathExists_RBV")
     field(SCAN, "I/O Intr")
 }
 
+# $(P)$(R)FileName is defined by NDFile.template / asynNDArrayDriver - Override PINI
 record(waveform, "$(P)$(R)FileName")
 {
-    field(PINI, "YES")
-    field(DTYP, "asynOctetWrite")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_NAME")
-    field(FTVL, "CHAR")
-    field(NELM, "256")
-    info(autosaveFields, "VAL")
+    field(PINI, "NO")
 }
 
-record(waveform, "$(P)$(R)FileName_RBV")
-{
-    field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_NAME")
-    field(FTVL, "CHAR")
-    field(NELM, "256")
-    field(SCAN, "I/O Intr")
-}
-
-# Forward FileName to AcquisitionID
-record(acalcout, "$(P)$(R)AcquisitionID_Calc")
+# Push top level file name to FP file name
+record(acalcout, "$(P)$(R)FP:FileName_Calc")
 {
     field(INAA, "$(P)$(R)FileName CP")
     field(CALC, "AA")
     field(OOPT, "Every Time")
     field(DOPT, "Use CALC")
-    field(OUT,  "$(P)$(R)AcquisitionID PP")
+    field(OUT,  "$(P)$(R)FP:FileName PP")
     field(NELM, "256")
     field(NUSE, "256")
+}
+
+# FileWriterPlugin File path
+record(waveform, "$(P)$(R)FP:FileName")
+{
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_fp/config/hdf/file/name")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+}
+
+record(waveform, "$(P)$(R)FP:FileName_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_fp/config/hdf/file/name")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+}
+
+# Push file name to acquisition ID
+record(acalcout, "$(P)$(R)FP:AcqID_Calc")
+{
+    field(INAA, "$(P)$(R)FileName CP")
+    field(CALC, "AA")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
+    field(OUT,  "$(P)$(R)FP:AcquisitionID PP")
+    field(NELM, "256")
+    field(NUSE, "256")
+}
+
+record(waveform, "$(P)$(R)FP:AcquisitionID")
+{
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_fp/config/hdf/acquisition_id")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+}
+
+record(waveform, "$(P)$(R)FP:AcquisitionID_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_fp/config/hdf/acquisition_id")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
 }
 
 record(stringout, "$(P)$(R)FileExtension")

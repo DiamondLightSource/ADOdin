@@ -2,10 +2,19 @@
 # % macro, R, Device Suffix
 # % macro, PORT, Asyn Port name
 
-# Fetch AcquisitionID from OdinDataDriver
-record(acalcout, "$(P)$(R)META:AcquisitionID_Calc")
+# Process AcqID_Calc when $(P)$(R):Capture set to 1
+record(calcout, "$(P)$(R)CalcCapture")
 {
-    field(INAA, "$(P)$(R)AcquisitionID CP")
+    field(INPA, "$(P)$(R)Capture CP")
+    field(CALC, "A=1?1:0")
+    field(OUT, "$(P)$(R)META:AcqID_Calc.PROC PP")
+    field(OOPT, "Transition To Non-zero")
+}
+
+# Fetch AcquisitionID from OdinDataDriver
+record(acalcout, "$(P)$(R)META:AcqID_Calc")
+{
+    field(INAA, "$(P)$(R)FP:AcquisitionID CP")
     field(CALC, "AA")
     field(OOPT, "Every Time")
     field(DOPT, "Use CALC")
@@ -94,6 +103,18 @@ record(longin, "$(P)$(R)META:FramesWritten_RBV")
 #### Config #######################################################################################
 
 ## Acquisition Specific
+
+# Fetch FilePath from OdinDataDriver
+record(acalcout, "$(P)$(R)META:FilePath_Calc")
+{
+    field(INAA, "$(P)$(R)FilePath CP")
+    field(CALC, "AA")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
+    field(OUT,  "$(P)$(R)META:FilePath PP")
+    field(NELM, "256")
+    field(NUSE, "256")
+}
 
 record(waveform, "$(P)$(R)META:FilePath")
 {
