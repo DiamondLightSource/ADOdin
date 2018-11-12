@@ -53,7 +53,7 @@ class EigerMetaListener(Device):
     # Device attributes
     AutoInstantiate = True
 
-    def __init__(self, IP, SOURCE,
+    def __init__(self, IP,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
                  ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None):
         self.__super.__init__()
@@ -61,6 +61,7 @@ class EigerMetaListener(Device):
         self.__dict__.update(locals())
 
         self.ip_list = []
+        self.sensor = None
         for server in [ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4]:
             if server is not None:
                 base_port = 5000
@@ -68,13 +69,21 @@ class EigerMetaListener(Device):
                     port = base_port + 8
                     self.ip_list.append("tcp://{}:{}".format(odin_data.IP, port))
                     base_port += 10
+                    self.set_sensor(odin_data.sensor)
 
         self.create_startup_file()
+
+    def set_sensor(self, sensor):
+        if self.sensor is None:
+            self.sensor = sensor
+        else:
+            if self.sensor != sensor:
+                raise ValueError("Inconsistent sensor sizes given on OdinData processes")
 
     def create_startup_file(self):
         macros = dict(EIGER_DETECTOR_PATH=EIGER_PATH,
                       IP_LIST=",".join(self.ip_list),
-                      SENSOR=self.SOURCE.SENSOR)
+                      SENSOR=self.sensor)
 
         expand_template_file("eiger_meta_startup", macros, "stEigerMetaListener.sh",
                              executable=True)
@@ -82,7 +91,6 @@ class EigerMetaListener(Device):
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
         IP=Simple("IP address of server hosting process", str),
-        SOURCE=Ident("EigerFan instance", EigerFan),
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
