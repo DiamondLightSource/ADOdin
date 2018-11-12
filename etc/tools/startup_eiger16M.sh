@@ -17,7 +17,7 @@ FP1="cd ${DATA} && ./stFrameProcessor1.sh"
 FP2="cd ${DATA} && ./stFrameProcessor2.sh"
 FP3="cd ${DATA} && ./stFrameProcessor3.sh"
 FP4="cd ${DATA} && ./stFrameProcessor4.sh"
-MetaListener="export PYTHONPATH=${DETECTOR}/prefix/lib/python2.7/site-packages &&
+MetaListener="export PYTHONPATH=${DETECTOR}/prefix/lib/python2.7/site-packages:${ODIN_DATA}/prefix/lib/python2.7/site-packages &&
               cd ${DATA} && ./stEigerMetaListener.sh"
 OdinServer="export PYTHONPATH=${DETECTOR}/prefix/lib/python2.7/site-packages:${ODIN_DATA}/prefix/lib/python2.7/site-packages &&
             cd ${DATA} && ./stOdinServer.sh"
