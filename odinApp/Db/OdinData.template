@@ -1,12 +1,26 @@
-# Macros:
 #% macro, P, Device Prefix
 #% macro, R, Device Suffix
+#% macro, OD, OdinDataDriver Suffix
 #% macro, PORT, Asyn Port name
 #% macro, TIMEOUT, Timeout
 #% macro, ADDR, Asyn Port address
 
 # % gui, $(PORT), readback, Write filename,   $(P)$(R)FullFileName_RBV
 # % gui, $(PORT), readback, N captured,   $(P)$(R)NumCaptured_RBV
+
+record(calcout, "$(P)$(R)CalcReconnected")
+{
+    field(INPA, "$(P)$(OD)DetectorState_RBV CP")
+    field(CALC, "A=9?0:1")
+    field(OUT,  "$(P)$(R)ReconnectFan.PROC PP")
+    field(OOPT, "Transition To Non-zero")
+}
+
+record(fanout, "$(P)$(R)ReconnectFan")
+{
+    field(LNK1, "$(P)$(R)FPConfigFile.PROC PP")
+    field(LNK2, "$(P)$(R)FRConfigFile.PROC PP")
+}
 
 record(waveform, "$(P)$(R)FPConfigFile")
 {

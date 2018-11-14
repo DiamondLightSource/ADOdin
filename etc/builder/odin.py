@@ -328,6 +328,7 @@ class _OdinDataDriver(AsynPort):
                 args["PORT"] = PORT
                 args["ADDR"] = odin_data.index - 1
                 args["R"] = odin_data.R
+                args["OD"] = args["R"]
                 _OdinDataTemplate(**args)
 
                 odin_data.create_config_files(process_idx + 1)
