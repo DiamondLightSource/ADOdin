@@ -43,7 +43,8 @@ class _ExcaliburOdinData(_OdinData):
                       RX_PORT_3=self.base_udp_port + 2,  # 3 - 6 will be ignored in the 1M template
                       RX_PORT_4=self.base_udp_port + 3,
                       RX_PORT_5=self.base_udp_port + 4,
-                      RX_PORT_6=self.base_udp_port + 5)
+                      RX_PORT_6=self.base_udp_port + 5,
+                      LIVE_VIEW_PORT=5020+index)
 
         super(_ExcaliburOdinData, self).create_config_file(
             "fp", self.CONFIG_TEMPLATES[self.sensor]["FrameProcessor"], index, extra_macros=macros)

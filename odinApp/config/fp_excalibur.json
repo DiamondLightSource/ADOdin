@@ -17,6 +17,15 @@
   {
     "plugin": {
       "load": {
+        "index": "view",
+        "name": "LiveViewPlugin",
+        "library": "$OD_ROOT/prefix/lib/libLiveViewPlugin.so"
+      }
+    }
+  },
+  {
+    "plugin": {
+      "load": {
         "index": "excalibur",
         "name": "ExcaliburProcessPlugin",
         "library": "$DETECTOR_ROOT/prefix/lib/libExcaliburProcessPlugin.so"
@@ -40,8 +49,22 @@
     }
   },
   {
+    "plugin": {
+      "connect": {
+        "index": "view",
+        "connection": "excalibur"
+      }
+    }
+  },
+  {
     "hdf": {
       "dataset": "data"
+    }
+  },
+  {
+    "view": {
+      "dataset_name": "data",
+      "live_view_socket_addr": "tcp://0.0.0.0:$LIVE_VIEW_PORT"
     }
   }
 ]
