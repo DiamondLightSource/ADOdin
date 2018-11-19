@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd $EIGER_DETECTOR_PATH
-prefix/bin/eigerMetaListener -i $IP_LIST --staticlogfields beamline=$${BEAMLINE},detector="Eiger$SENSOR"
+${NUMA}prefix/bin/eigerMetaListener -i $IP_LIST --staticlogfields beamline=$${BEAMLINE},detector="Eiger$SENSOR"

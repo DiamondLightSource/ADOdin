@@ -19,7 +19,8 @@ class EigerFan(Device):
     # Device attributes
     AutoInstantiate = True
 
-    def __init__(self, IP, DETECTOR_IP, PROCESSES, SOCKETS, SENSOR, THREADS=2, BLOCK_SIZE=1000):
+    def __init__(self, IP, DETECTOR_IP, PROCESSES, SOCKETS, SENSOR, THREADS=2, BLOCK_SIZE=1000,
+                 NUMA_NODE=-1):
         self.__super.__init__()
         # Update attributes with parameters
         self.__dict__.update(locals())
@@ -27,9 +28,14 @@ class EigerFan(Device):
         self.create_startup_file()
 
     def create_startup_file(self):
+        if self.NUMA_NODE >= 0:
+            numa_call = "numactl --membind={node} --cpunodebind={node} ".format(node=self.NUMA_NODE)
+        else:
+            numa_call = ""
         macros = dict(EIGER_DETECTOR_PATH=EIGER_PATH, IP=self.DETECTOR_IP,
                       PROCESSES=self.PROCESSES, SOCKETS=self.SOCKETS, BLOCK_SIZE=self.BLOCK_SIZE,
-                      THREADS=self.THREADS, LOG_CONFIG=os.path.join(EIGER_PATH, "log4cxx.xml"))
+                      THREADS=self.THREADS, LOG_CONFIG=os.path.join(EIGER_PATH, "log4cxx.xml"),
+                      NUMA=numa_call)
 
         expand_template_file("eiger_fan_startup", macros, "stEigerFan.sh",
                              executable=True)
@@ -42,7 +48,8 @@ class EigerFan(Device):
         SOCKETS=Simple("Number of sockets to open to Eiger detector stream", int),
         SENSOR=Choice("Sensor type", ["4M", "16M"]),
         THREADS=Simple("Number of ZMQ threads to use", int),
-        BLOCK_SIZE=Simple("Number of blocks per file", int)
+        BLOCK_SIZE=Simple("Number of blocks per file", int),
+        NUMA_NODE=Simple("Numa node to run process on - Optional for performance tuning", int)
     )
 
 
@@ -55,7 +62,8 @@ class EigerMetaListener(Device):
 
     def __init__(self, IP,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
-                 ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None):
+                 ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None,
+                 NUMA_NODE=-1):
         self.__super.__init__()
         # Update attributes with parameters
         self.__dict__.update(locals())
@@ -81,9 +89,14 @@ class EigerMetaListener(Device):
                 raise ValueError("Inconsistent sensor sizes given on OdinData processes")
 
     def create_startup_file(self):
+        if self.NUMA_NODE >= 0:
+            numa_call = "numactl --membind={node} --cpunodebind={node} ".format(node=self.NUMA_NODE)
+        else:
+            numa_call = ""
         macros = dict(EIGER_DETECTOR_PATH=EIGER_PATH,
                       IP_LIST=",".join(self.ip_list),
-                      SENSOR=self.sensor)
+                      SENSOR=self.sensor,
+                      NUMA=numa_call)
 
         expand_template_file("eiger_meta_startup", macros, "stEigerMetaListener.sh",
                              executable=True)
@@ -94,7 +107,8 @@ class EigerMetaListener(Device):
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer)
+        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
+        NUMA_NODE=Simple("Numa node to run process on - Optional for performance tuning", int)
     )
 
 
@@ -126,17 +140,20 @@ class EigerOdinDataServer(_OdinDataServer):
 
     """Store configuration for an EigerOdinDataServer"""
 
-    def __init__(self, IP, PROCESSES, SOURCE, SHARED_MEM_SIZE=16000000000, IO_THREADS=1):
+    def __init__(self, IP, PROCESSES, SOURCE, SHARED_MEM_SIZE=16000000000, IO_THREADS=1,
+                 TOTAL_NUMA_NODES=0):
         self.source = SOURCE.IP
         self.sensor = SOURCE.SENSOR
-        self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE, IO_THREADS)
+        self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE, IO_THREADS, TOTAL_NUMA_NODES)
 
     ArgInfo = makeArgInfo(__init__,
         IP=Simple("IP address of server hosting OdinData processes", str),
         PROCESSES=Simple("Number of OdinData processes on this server", int),
         SOURCE=Ident("EigerFan instance", EigerFan),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
-        IO_THREADS=Simple("Number of FR Ipc Channel IO threads to use", int)
+        IO_THREADS=Simple("Number of FR Ipc Channel IO threads to use", int),
+        TOTAL_NUMA_NODES=Simple("Total number of numa nodes available to distribute processes over"
+                                " - Optional for performance tuning", int)
     )
 
     def create_odin_data_process(self, server, ready, release, meta):

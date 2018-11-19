@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <components arch="linux-x86_64">
-	<ADOdin.EigerFan DETECTOR_IP="127.0.0.1" IP="127.0.0.1" PROCESSES="4" SENSOR="16M" SOCKETS="4" name="EigerFan"/>
-	<ADOdin.EigerOdinDataServer IP="127.0.0.1" PROCESSES="4" SHARED_MEM_SIZE="160000000" IO_THREADS="2" SOURCE="EigerFan" name="ODServer1"/>
-	<ADOdin.EigerMetaListener IP="127.0.0.1" ODIN_DATA_SERVER_1="ODServer1" name="EigerMeta"/>
+	<ADOdin.EigerFan DETECTOR_IP="127.0.0.1" IP="127.0.0.1" NUMA_NODE="0" PROCESSES="4" SENSOR="16M" SOCKETS="4" name="EigerFan"/>
+	<ADOdin.EigerOdinDataServer IO_THREADS="2" IP="127.0.0.1" PROCESSES="4" SHARED_MEM_SIZE="160000000" SOURCE="EigerFan" TOTAL_NUMA_NODES="2" name="ODServer1"/>
+	<ADOdin.EigerMetaListener IP="127.0.0.1" NUMA_NODE="1" ODIN_DATA_SERVER_1="ODServer1" name="EigerMeta"/>
 	<ADOdin.EigerOdinControlServer EIGER_FAN="EigerFan" IP="127.0.0.1" META_LISTENER="EigerMeta" ODIN_DATA_SERVER_1="ODServer1" name="ControlServer"/>
 	<ADOdin.EigerOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" P="EIGER" PORT="ODN.OD" R=":OD:" TIMEOUT="1"/>
 	<ADOdin.OdinLogConfig BEAMLINE="iXX" DETECTOR="Eiger16M" name="LogConfig"/>
@@ -26,4 +26,5 @@
 	<EPICS_BASE.dbpf name="FP2Config" pv="EIGER:OD2:FPConfigFile" value="$(INSTALL)/eiger16MApp/data/fp2.json"/>
 	<EPICS_BASE.dbpf name="FP3Config" pv="EIGER:OD3:FPConfigFile" value="$(INSTALL)/eiger16MApp/data/fp3.json"/>
 	<EPICS_BASE.dbpf name="FP4Config" pv="EIGER:OD4:FPConfigFile" value="$(INSTALL)/eiger16MApp/data/fp4.json"/>
+	<pvlogging.PvLogging name="pvlogging"/>
 </components>

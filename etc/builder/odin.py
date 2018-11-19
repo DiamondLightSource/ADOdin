@@ -105,7 +105,7 @@ class _OdinDataServer(Device):
     # Device attributes
     AutoInstantiate = True
 
-    def __init__(self, IP, PROCESSES, SHARED_MEM_SIZE, IO_THREADS=1):
+    def __init__(self, IP, PROCESSES, SHARED_MEM_SIZE, IO_THREADS=1, TOTAL_NUMA_NODES=0):
         self.__super.__init__()
         # Update attributes with parameters
         self.__dict__.update(locals())
@@ -125,6 +125,8 @@ class _OdinDataServer(Device):
         PROCESSES=Simple("Number of OdinData processes on this server", int),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
         IO_THREADS=Simple("Number of FR Ipc Channel IO threads to use", int),
+        TOTAL_NUMA_NODES=Simple("Total number of numa nodes available to distribute processes over"
+                                " - Optional for performance tuning", int)
     )
 
     def create_odin_data_process(self, server, ready, release, meta):
@@ -138,6 +140,13 @@ class _OdinDataServer(Device):
             ready_port_number = 5001 + (10 * idx)
             release_port_number = 5002 + (10 * idx)
 
+            # If TOTAL_NUMA_NODES was set, we enable the NUMA call macro instantitation
+            if self.TOTAL_NUMA_NODES > 0:
+                numa_node = idx % int(self.TOTAL_NUMA_NODES)
+                numa_call = "numactl --membind={node} --cpunodebind={node} ".format(node=numa_node)
+            else:
+                numa_call = ""
+
             # Store server designation on OdinData object
             process.RANK = rank
             process.FP_ENDPOINT = "{}:{}".format(self.IP, fp_port_number)
@@ -149,7 +158,8 @@ class _OdinDataServer(Device):
                 BUFFER_IDX=idx + 1, SHARED_MEMORY=self.SHARED_MEM_SIZE,
                 CTRL_PORT=fr_port_number, IO_THREADS=self.IO_THREADS,
                 READY_PORT=ready_port_number, RELEASE_PORT=release_port_number,
-                LOG_CONFIG=os.path.join(ADODIN_DATA, "log4cxx.xml"))
+                LOG_CONFIG=os.path.join(ADODIN_DATA, "log4cxx.xml"),
+                NUMA=numa_call)
             expand_template_file("fr_startup", macros, output_file, executable=True)
 
             output_file = "stFrameProcessor{}.sh".format(rank)
@@ -157,7 +167,8 @@ class _OdinDataServer(Device):
                 OD_ROOT=ODIN_DATA_ROOT,
                 CTRL_PORT=fp_port_number,
                 READY_PORT=ready_port_number, RELEASE_PORT=release_port_number,
-                LOG_CONFIG=os.path.join(ADODIN_DATA, "log4cxx.xml"))
+                LOG_CONFIG=os.path.join(ADODIN_DATA, "log4cxx.xml"),
+                NUMA=numa_call)
             expand_template_file("fp_startup", macros, output_file, executable=True)
 
             rank += total_servers
