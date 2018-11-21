@@ -4,10 +4,12 @@
 # % macro, P, Device Prefix
 # % macro, R, Device Suffix
 # % macro, DET, Detector Suffix
-# % macro, name, Name specifying builder GUI generation
+# % macro, FW_BUTTON, Name specifying OD Status Screen
+# % macro, PROC_BUTTON, Name specifying OD Processing Configuration Screen
 
 # This associates the template with an edm screen
-# % gui, $(name), edm, ExcaliburDAQ4Status.edl, P=$(P),R=$(R)
+# % gui, $(FW_BUTTON), edm, ExcaliburDAQ4Status.edl, P=$(P),R=$(R)
+# % gui, $(PROC_BUTTON), edm, ExcaliburAdvanced.edl, P=$(P),R=$(R)
 
 ################################################################################
 #

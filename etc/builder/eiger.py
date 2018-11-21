@@ -232,7 +232,7 @@ class EigerOdinDataDriver(_OdinDataDriver):
 
         template_args = dict((key, args[key]) for key in ["P", "R", "PORT"])
         template_args["OD_COUNT"] = self.total_processes
-        template_args["OD_BUTTON"] = args["PORT"][:args["PORT"].find(".")] + ".DAQ"
+        template_args["FW_BUTTON"] = args["PORT"][:args["PORT"].find(".")] + ".FW"
         makeTemplateInstance(_EigerDetectorTemplate, locals(), template_args)
 
     # __init__ arguments

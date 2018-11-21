@@ -2,11 +2,11 @@
 # % macro, R, Device Suffix
 # % macro, PORT, Asyn Port name
 # % macro, OD_COUNT, Number of OdinData processes
-# % macro, OD_BUTTON, Name on generated EDM button
+# % macro, FW_BUTTON, Name on generated EDM button
 
 # This associates the template with an edm screen
 # % gui, $(PORT), edmtab, EigerMain.edl, P=$(P),R=$(R)
-# % gui, $(OD_BUTTON), edm, OdinData$(OD_COUNT)Status.edl, P=$(P),R=$(R)
+# % gui, $(FW_BUTTON), edm, OdinData$(OD_COUNT)Status.edl, P=$(P),R=$(R)
 
 include "EigerFan.template"
 include "MetaListener.template"

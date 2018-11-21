@@ -214,14 +214,17 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
             raise ValueError("Total number of OdinData processes must be {}".format(
                 self.FP_TEMPLATES.keys()))
         else:
-            sensor = self.ODIN_DATA_PROCESSES[0].sensor 
-            gui_name = args["PORT"][:args["PORT"].find(".")] + ".System"
+            sensor = self.ODIN_DATA_PROCESSES[0].sensor
+            top_name = args["PORT"][:args["PORT"].find(".")]
+            fw_name = top_name + ".FW"
+            proc_name = top_name + ".PROC"
             template_args = {
                 "P": args["P"],
                 "R": ":OD:",
                 "DET": detector_arg,
                 "PORT": args["PORT"],
-                "name": gui_name,
+                "FW_BUTTON": fw_name,
+                "PROC_BUTTON": proc_name,
                 "TIMEOUT": args["TIMEOUT"],
                 "HEIGHT": EXCALIBUR_DIMENSIONS[sensor][1],
                 "WIDTH": EXCALIBUR_DIMENSIONS[sensor][0]
@@ -304,7 +307,7 @@ class ExcaliburDetector(_OdinDetector):
 
         # Instantiate template corresponding to SENSOR, passing through some of own args
         status_template = self.SENSOR_OPTIONS[SENSOR][0]
-        gui_name = PORT[:PORT.find(".")] + ".Status"
+        gui_name = PORT[:PORT.find(".")] + ".Detector"
         status_args = {
             "P": args["P"],
             "R": args["R"],
