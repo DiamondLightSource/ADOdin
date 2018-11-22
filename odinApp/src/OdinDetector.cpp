@@ -4,11 +4,26 @@
 #include <numeric>
 #include <algorithm>
 
+// EPICS includes
+#include <epicsThread.h>
+#include <epicsEvent.h>
+#include <epicsString.h>
+#include <drvSup.h>
 #include <epicsExport.h>
 #include <iocsh.h>
 
 static const std::string DRIVER_VERSION("0-1");
 static const char *driverName = "OdinDetector";
+
+/**
+ * Function to run the receive thread in a separate thread in C++
+ */
+static void odinLiveViewListenerTaskC(void *oPtr)
+{
+  OdinDetector *ptr = (OdinDetector *)oPtr;
+  ptr->live_view_task();
+}
+
 
 /* Constructor for Odin driver; most parameters are simply passed to ADDriver::ADDriver.
  * After calling the base class constructor this method creates a thread to collect the detector
@@ -43,11 +58,24 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
 
   createDetectorParams();
   this->fetchParams();
+
+  // Create the thread that runs the live image monitoring
+  int status = (epicsThreadCreate("LiveViewTask",
+                                  epicsThreadPriorityMedium,
+                                  epicsThreadGetStackSize(epicsThreadStackMedium),
+                                  (EPICSTHREADFUNC)odinLiveViewListenerTaskC,
+                                  this) == NULL);
+  if (status){
+    setStringParam(ADStatusMessage, "epicsTheadCreate failure for image task\n");
+  }
 }
 
 int OdinDetector::createDetectorParams()
 {
   //mConnected = createRESTParam(OdinDetectorConnected, REST_P_BOOL, SSDetectorStatus, "connected");
+
+  // Create the parameter to store the Live View endpoint
+  createParam(OdinDetectorLVEndpoint, asynParamOctet,   &mLiveViewEndpoint);
 
   // Bind the num_images parameter to NIMAGES asyn parameter
   mNumImages = createRESTParam(ADNumImagesString, REST_P_INT, SSDetector, "config/num_images");
@@ -67,6 +95,72 @@ int OdinDetector::createDetectorParams()
   mAcqComplete = createRESTParam("ACQ_COMPLETE", REST_P_BOOL, SSDetector, "status/acquisition_complete");
 
   return 0;
+}
+
+void OdinDetector::live_view_task()
+{
+  bool frame_ready = false;
+  int arrayCallbacks = 0;
+  NDArray *pImage;
+  epicsTimeStamp frameTime;
+  this->lock();
+  while(1){
+    this->unlock();
+    // Check to see if an image has been received
+    frame_ready = mLV.listen_for_frame(2000);
+    this->lock();
+
+    if (frame_ready) {
+        // Image has been received, so process it
+        ImageDescription img = mLV.read_full_image();
+        // Check we don't have a backlog of frames, we only want the most recent
+        while (mLV.listen_for_frame(0)){
+            img = mLV.read_full_image();
+        }
+
+        // Only forward the image if it is considered valid
+        if (img.valid) {
+          // Allocate NDArray memory
+          size_t dims[2] = {img.width, img.height};
+          // Convert the datatype into an ND datatype
+          NDDataType_t dtype = NDUInt8;
+          if (img.dtype == "uint8") {
+            dtype = NDUInt8;
+          } else if (img.dtype == "uint16") {
+            dtype = NDUInt16;
+          } else if (img.dtype == "uint32") {
+            dtype = NDUInt32;
+          } else if (img.dtype == "float") {
+            dtype = NDFloat32;
+          }
+          pImage = this->pNDArrayPool->alloc(2, dims, dtype, 0, NULL);
+          if (pImage) {
+            pImage->dims[0].size = dims[0];
+            pImage->dims[1].size = dims[1];
+            pImage->uniqueId = img.number;
+            epicsTimeGetCurrent(&frameTime);
+            pImage->timeStamp = frameTime.secPastEpoch + frameTime.nsec / 1.e9;
+            memcpy(pImage->pData, img.dPtr, img.bytes);
+
+            // Get any attributes that have been defined for this driver
+            this->getAttributes(pImage->pAttributeList);
+
+            getIntegerParam(NDArrayCallbacks, &arrayCallbacks);
+
+            if (arrayCallbacks) {
+              // Must release the lock here, or we can get into a deadlock, because we can
+              // block on the plugin lock, and the plugin can be calling us
+              this->unlock();
+              doCallbacksGenericPointer(pImage, NDArrayData, 0);
+              this->lock();
+            }
+
+            // Free the image buffer
+            pImage->release();
+          }
+        }
+    }
+  }
 }
 
 asynStatus OdinDetector::getStatus()
@@ -257,6 +351,11 @@ asynStatus OdinDetector::writeOctet(asynUser *pasynUser, const char *value,
 
   if (RestParam * p = this->getParamByIndex(function)) {
     status |= p->put(value);
+  }
+
+  if (function == mLiveViewEndpoint) {
+      setStringParam(mLiveViewEndpoint, value);
+      mLV.connect(value);
   }
 
   status |= ADDriver::writeOctet(pasynUser, value, nChars, nActual);

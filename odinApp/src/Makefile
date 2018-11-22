@@ -7,9 +7,11 @@ CXXFLAGS += -O0
 
 LIBRARY_IOC = OdinDetector
 
-LIB_SRCS += OdinDetector.cpp OdinDataDriver.cpp OdinClient.cpp OdinRestApi.cpp OdinDetectorRestApi.cpp OdinDataRestApi.cpp
+LIB_SRCS += OdinDetector.cpp OdinDataDriver.cpp OdinClient.cpp OdinRestApi.cpp OdinDetectorRestApi.cpp OdinDataRestApi.cpp OdinLiveViewListener.cpp
+
 
 LIB_LIBS += restClient
+LIB_LIBS += zmq
 
 DBD += OdinDetectorSupport.dbd
 
