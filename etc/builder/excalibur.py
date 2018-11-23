@@ -58,8 +58,10 @@ class ExcaliburOdinDataServer(_OdinDataServer):
 
     BASE_UDP_PORT = 61649
 
-    def __init__(self, IP, PROCESSES, SENSOR, FEM_DEST_MAC, FEM_DEST_IP="10.0.2.2",
-                 SHARED_MEM_SIZE=1048576000):
+    def __init__(self, IP, PROCESSES, SENSOR,
+                 FEM_DEST_MAC, FEM_DEST_IP="10.0.2.2",
+                 SHARED_MEM_SIZE=1048576000,
+                 FEM_DEST_MAC_2=None, FEM_DEST_IP_2=None, DIRECT_FEM_CONNECTION=False):
         self.sensor = SENSOR
         self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE)
         # Update attributes with parameters
@@ -71,7 +73,12 @@ class ExcaliburOdinDataServer(_OdinDataServer):
         SENSOR=Choice("Sensor type", ["1M", "3M"]),
         FEM_DEST_MAC=Simple("MAC address of node data link (destination for FEM to send to)", str),
         FEM_DEST_IP=Simple("IP address of node data link (destination for FEM to send to)", str),
-        SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int)
+        SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
+        FEM_DEST_MAC_2=Simple("MAC address of second node data link", str),
+        FEM_DEST_IP_2=Simple("IP address of second node data link", str),
+        DIRECT_FEM_CONNECTION=Simple("True if data links go direct from FEM to server. "
+                                     "False if data links go through a switch. "
+                                     "This determines what is done with the second FEM_DEST", bool)
     )
 
     def create_odin_data_process(self, server, ready, release, meta):
@@ -337,28 +344,14 @@ class ExcaliburDetector(_OdinDetector):
                 #    ]
             )
 
-        node_config = []
-        for idx, process in enumerate(sorted(self.control_server.odin_data_processes,
-                                             key=lambda x: x.RANK)):
-            config = dict(
-                name="dest{}".format(idx + 1), mac=process.server.FEM_DEST_MAC,
-                ip=process.server.FEM_DEST_IP, port=process.base_udp_port
-            )
-            node_config.append(
-                #    "nodes": [
-                "        {{\n"
-                "            \"name\": \"{name}\",\n"
-                "            \"mac\": \"{mac}\",\n"
-                "            \"ipaddr\": \"{ip}\",\n"
-                "            \"port\": {port}\n"
-                "        }}".format(**config)
-                #    ...
-                #    ]
-            )
+        if any(server.DIRECT_FEM_CONNECTION for server in self.control_server.odin_data_servers):
+            node_config = self.generate_direct_FEM_node_config()
+        else:
+            node_config = self.generate_simple_node_config()
 
         macros = dict(
             FEM_CONFIG=",\n".join(fem_config),
-            NODE_CONFIG=",\n".join(node_config),
+            NODE_CONFIG=node_config,
             NUM_DESTS=len(self.control_server.odin_data_processes)
         )
         expand_template_file("udp_excalibur.json", macros, "udp_excalibur.json")
@@ -373,3 +366,74 @@ class ExcaliburDetector(_OdinDetector):
         MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "
                       "attached plugins", int)
     )
+
+    def generate_simple_node_config(self):
+        fem_config = []
+        for idx, process in enumerate(sorted(self.control_server.odin_data_processes,
+                                             key=lambda x: x.RANK)):
+            config = dict(
+                name="dest{}".format(idx + 1), mac=process.server.FEM_DEST_MAC,
+                ip=process.server.FEM_DEST_IP, port=process.base_udp_port
+            )
+            fem_config.append(
+                #    "nodes": [
+                #        [
+                "            {{\n"
+                "                \"name\": \"{name}\",\n"
+                "                \"mac\": \"{mac}\",\n"
+                "                \"ipaddr\": \"{ip}\",\n"
+                "                \"port\": {port}\n"
+                "            }}".format(**config)
+                #        ...
+                #        ]
+                #    ...
+                #    ]
+            )
+
+        # A nested list to specify the same node config is valid for all FEMS
+        node_config = \
+            "        [\n" \
+            "{}\n" \
+            "        ]".format(",\n".join(fem_config))
+        return node_config
+
+    def generate_direct_FEM_node_config(self):
+        if len(self.control_server.odin_data_servers) != 1:
+            raise ValueError("Can only use DIRECT_FEM_CONNECTION with a single OdinDataServer")
+        server = self.control_server.odin_data_servers[0]
+        if server.FEM_DEST_MAC_2 is None or server.FEM_DEST_IP_2 is None:
+            raise ValueError("DIRECT_FEM_CONNECTION requires FEM_DEST_MAC_2 and FEM_DEST_IP_2")
+
+        node_config = []
+        dest_idx = 1
+        for mac, ip in [(server.FEM_DEST_MAC, server.FEM_DEST_IP),
+                        (server.FEM_DEST_MAC_2, server.FEM_DEST_IP_2)]:
+            fem_config = []
+            for process in sorted(self.control_server.odin_data_processes, key=lambda x: x.RANK):
+                config = dict(
+                    name="dest{}".format(dest_idx),
+                    mac=mac, ip=ip, port=process.base_udp_port
+                )
+                fem_config.append(
+                    #        [
+                    "            {{\n"
+                    "                \"name\": \"{name}\",\n"
+                    "                \"mac\": \"{mac}\",\n"
+                    "                \"ipaddr\": \"{ip}\",\n"
+                    "                \"port\": {port}\n"
+                    "            }}".format(**config)
+                    #        ...
+                    #        ]
+                )
+                dest_idx += 1
+
+            node_config.append(
+                #    "nodes": [
+                "        [\n"
+                "{}\n"
+                "        ]".format(",\n".join(fem_config))
+                #    ...
+                #    ]
+            )
+        node_config = ",\n".join(node_config)
+        return node_config
