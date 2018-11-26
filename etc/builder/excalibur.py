@@ -329,9 +329,9 @@ class ExcaliburDetector(_OdinDetector):
         self.create_udp_file()
 
     def create_udp_file(self):
-        fem_config = []
+        fem_dests = []
         for offset in range(self.SENSOR_OPTIONS[self.SENSOR][1]):  # 2 for 1M or 6 for 3M
-            fem_config.append(
+            fem_dests.append(
                 #    "fems": [
                 "        {{\n"
                 "            \"name\": \"fem{number}\",\n"
@@ -345,13 +345,41 @@ class ExcaliburDetector(_OdinDetector):
             )
 
         if any(server.DIRECT_FEM_CONNECTION for server in self.control_server.odin_data_servers):
-            node_config = self.generate_direct_FEM_node_config()
+            node_config = self.generate_direct_fem_node_config()  # [[<FEM1>], [<FEM2>], ...]
         else:
-            node_config = self.generate_simple_node_config()
+            node_config = self.generate_simple_node_config()  # [[<ALL_FEMS>]]
+
+        node_dests = []
+        for fem_config in node_config:
+            fem_node_dests = []
+            for dest_config in fem_config:
+                fem_node_dests.append(
+                    #    "nodes": [
+                    #        [
+                    "            {{\n"
+                    "                \"name\": \"dest{id}\",\n"
+                    "                \"mac\": \"{mac}\",\n"
+                    "                \"ipaddr\": \"{ip}\",\n"
+                    "                \"port\": {port}\n"
+                    "            }}".format(**dest_config)
+                    #        ...
+                    #        ]
+                    #    ...
+                    #    ]
+                )
+
+            node_dests.append(
+                #    "nodes": [
+                "        [\n"
+                "{}\n"
+                "        ]".format(",\n".join(fem_node_dests))
+                #    ...
+                #    ]
+            )
 
         macros = dict(
-            FEM_CONFIG=",\n".join(fem_config),
-            NODE_CONFIG=node_config,
+            FEM_CONFIG=",\n".join(fem_dests),
+            NODE_CONFIG=",\n".join(node_dests),
             NUM_DESTS=len(self.control_server.odin_data_processes)
         )
         expand_template_file("udp_excalibur.json", macros, "udp_excalibur.json")
@@ -372,68 +400,36 @@ class ExcaliburDetector(_OdinDetector):
         for idx, process in enumerate(sorted(self.control_server.odin_data_processes,
                                              key=lambda x: x.RANK)):
             config = dict(
-                name="dest{}".format(idx + 1), mac=process.server.FEM_DEST_MAC,
+                id=idx + 1, mac=process.server.FEM_DEST_MAC,
                 ip=process.server.FEM_DEST_IP, port=process.base_udp_port
             )
-            fem_config.append(
-                #    "nodes": [
-                #        [
-                "            {{\n"
-                "                \"name\": \"{name}\",\n"
-                "                \"mac\": \"{mac}\",\n"
-                "                \"ipaddr\": \"{ip}\",\n"
-                "                \"port\": {port}\n"
-                "            }}".format(**config)
-                #        ...
-                #        ]
-                #    ...
-                #    ]
-            )
+            fem_config.append(config)
 
-        # A nested list to specify the same node config is valid for all FEMS
-        node_config = \
-            "        [\n" \
-            "{}\n" \
-            "        ]".format(",\n".join(fem_config))
+        # A nested list to specify the same config is valid for all FEMS
+        node_config = [fem_config]
         return node_config
 
-    def generate_direct_FEM_node_config(self):
+    def generate_direct_fem_node_config(self):
         if len(self.control_server.odin_data_servers) != 1:
             raise ValueError("Can only use DIRECT_FEM_CONNECTION with a single OdinDataServer")
         server = self.control_server.odin_data_servers[0]
         if server.FEM_DEST_MAC_2 is None or server.FEM_DEST_IP_2 is None:
             raise ValueError("DIRECT_FEM_CONNECTION requires FEM_DEST_MAC_2 and FEM_DEST_IP_2")
 
+        # FEMs are connected directly to a NIC on the server
+        # Each will have its own list of entries, one for every receiver, with different ports
         node_config = []
-        dest_idx = 1
+        id = 1
         for mac, ip in [(server.FEM_DEST_MAC, server.FEM_DEST_IP),
                         (server.FEM_DEST_MAC_2, server.FEM_DEST_IP_2)]:
             fem_config = []
             for process in sorted(self.control_server.odin_data_processes, key=lambda x: x.RANK):
                 config = dict(
-                    name="dest{}".format(dest_idx),
-                    mac=mac, ip=ip, port=process.base_udp_port
+                    id=id, mac=mac, ip=ip, port=process.base_udp_port
                 )
-                fem_config.append(
-                    #        [
-                    "            {{\n"
-                    "                \"name\": \"{name}\",\n"
-                    "                \"mac\": \"{mac}\",\n"
-                    "                \"ipaddr\": \"{ip}\",\n"
-                    "                \"port\": {port}\n"
-                    "            }}".format(**config)
-                    #        ...
-                    #        ]
-                )
-                dest_idx += 1
+                fem_config.append(config)
+                id += 1
 
-            node_config.append(
-                #    "nodes": [
-                "        [\n"
-                "{}\n"
-                "        ]".format(",\n".join(fem_config))
-                #    ...
-                #    ]
-            )
-        node_config = ",\n".join(node_config)
+            node_config.append(fem_config)
+
         return node_config
