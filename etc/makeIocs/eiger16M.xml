@@ -8,16 +8,16 @@
 	<ADOdin.OdinLogConfig BEAMLINE="iXX" DETECTOR="Eiger16M" name="LogConfig"/>
 	<!--6 -> 1 Second-->
 	<EPICS_BASE.dbpf name="Polling" pv="EIGER:OD:ReadStatus.SCAN" value="6"/>
-	<EPICS_BASE.dbpf name="ImageWidth" pv="EIGER:OD:ImageWidth" value="4150"/>
-	<EPICS_BASE.dbpf name="ImageHeight" pv="EIGER:OD:ImageHeight" value="4371"/>
+	<EPICS_BASE.dbpf name="ImageWidth" pv="EIGER:OD:ImageWidth" value="4148"/>
+	<EPICS_BASE.dbpf name="ImageHeight" pv="EIGER:OD:ImageHeight" value="4362"/>
 	<EPICS_BASE.dbpf name="ChunkDepth" pv="EIGER:OD:NumFramesChunks" value="1"/>
-	<EPICS_BASE.dbpf name="ChunkWidth" pv="EIGER:OD:NumColChunks" value="4150"/>
-	<EPICS_BASE.dbpf name="ChunkHeight" pv="EIGER:OD:NumRowChunks" value="4371"/>
+	<EPICS_BASE.dbpf name="ChunkWidth" pv="EIGER:OD:NumColChunks" value="4148"/>
+	<EPICS_BASE.dbpf name="ChunkHeight" pv="EIGER:OD:NumRowChunks" value="4362"/>
 	<EPICS_BASE.dbpf name="DataType" pv="EIGER:OD:DataType" value="UInt16"/>
 	<EPICS_BASE.dbpf name="Compression" pv="EIGER:OD:Compression" value="BSLZ4"/>
 	<EPICS_BASE.dbpf name="BlockSize" pv="EIGER:OD:BlockSize" value="1000"/>
 	<EPICS_BASE.dbpf name="BlocksPerFile" pv="EIGER:OD:BlocksPerFile" value="1"/>
-	<EPICS_BASE.dbpf name="CloseFileTimeout" pv="EIGER:OD:CloseFileTimeout" value="6000"/>
+	<EPICS_BASE.dbpf name="CloseFileTimeout" pv="EIGER:OD:CloseFileTimeout" value="10000"/>
 	<EPICS_BASE.dbpf name="FR1Config" pv="EIGER:OD1:FRConfigFile" value="$(INSTALL)/eiger16MApp/data/fr1.json"/>
 	<EPICS_BASE.dbpf name="FR2Config" pv="EIGER:OD2:FRConfigFile" value="$(INSTALL)/eiger16MApp/data/fr2.json"/>
 	<EPICS_BASE.dbpf name="FR3Config" pv="EIGER:OD3:FRConfigFile" value="$(INSTALL)/eiger16MApp/data/fr3.json"/>
@@ -26,5 +26,4 @@
 	<EPICS_BASE.dbpf name="FP2Config" pv="EIGER:OD2:FPConfigFile" value="$(INSTALL)/eiger16MApp/data/fp2.json"/>
 	<EPICS_BASE.dbpf name="FP3Config" pv="EIGER:OD3:FPConfigFile" value="$(INSTALL)/eiger16MApp/data/fp3.json"/>
 	<EPICS_BASE.dbpf name="FP4Config" pv="EIGER:OD4:FPConfigFile" value="$(INSTALL)/eiger16MApp/data/fp4.json"/>
-	<pvlogging.PvLogging name="pvlogging"/>
 </components>
