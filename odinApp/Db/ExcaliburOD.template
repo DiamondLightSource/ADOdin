@@ -147,6 +147,12 @@ record(longout, "$(P)$(R)$(ADDRESS):PacketsLost")
     field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_fp/config/excalibur/packets_lost/$(ADDRESS)")
 }
 
+record(longout, "$(P)$(R)$(ADDRESS):ResetStatistics")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_fr/command/reset_statistics/$(ADDRESS)")
+}
+
 #% archiver 1 monitor
 record(longin, "$(P)$(R)$(ADDRESS):PacketsLost_RBV")
 {
