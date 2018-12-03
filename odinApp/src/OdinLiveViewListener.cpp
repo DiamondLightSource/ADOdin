@@ -89,7 +89,7 @@ void OdinLiveViewListener::parse_json_header(const std::string& header_str)
             image_.valid = false;
         }
 
-        rapidjson::Value::ConstMemberIterator itr = doc_.FindMember("frame");
+        rapidjson::Value::ConstMemberIterator itr = doc_.FindMember("frame_num");
         if (itr == doc_.MemberEnd())
         {
             image_.valid = false;
@@ -110,8 +110,10 @@ void OdinLiveViewListener::parse_json_header(const std::string& header_str)
         {
             image_.valid = false;
         } else {
-            image_.width = itr->value[0].GetInt();
-            image_.height = itr->value[1].GetInt();
+            std::string val = itr->value[1].GetString();
+            sscanf(val.c_str(), "%d", &(image_.width));
+            val = itr->value[0].GetString();
+            sscanf(val.c_str(), "%d", &(image_.height));
         }
     }
     catch (...) {
