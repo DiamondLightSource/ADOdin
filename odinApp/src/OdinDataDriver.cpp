@@ -297,7 +297,13 @@ asynStatus OdinDataDriver::getStatus()
 
   std::vector<bool> writing(mODCount);
   mWriting->get(writing);
-  setIntegerParam(mWritingAny, std::accumulate(writing.begin(), writing.end(), 0) == 0 ? 0 : 1);
+  int any_writing = std::accumulate(writing.begin(), writing.end(), 0);
+  setIntegerParam(mWritingAny, any_writing == 0 ? 0 : 1);
+  int currently_writing;
+  mCapture->get(currently_writing);
+  if (currently_writing && !any_writing) {
+    setIntegerParam(mCapture->getIndex(), 0);
+  }
 
   std::vector<bool> timeoutActive(mODCount);
   mTimeoutActive->get(timeoutActive);

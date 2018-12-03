@@ -172,15 +172,6 @@ record(stringin, "$(P)$(R)META:ProcessorAddresses_RBV")
 
 ## Acquisition Specific if there is an acquisition ID set, else Global
 
-# Press Stop when $(P)$(R):Capture set to 0
-record(calcout, "$(P)$(R)META:CalcCaptureStop")
-{
-    field(INPA, "$(P)$(R)Capture CP")
-    field(CALC, "A=0?1:0")
-    field(OUT, "$(P)$(R)META:Stop PP")
-    field(OOPT, "When Non-zero")
-}
-
 record(bo, "$(P)$(R)META:Stop")
 {
     field(DTYP, "asynInt32")
