@@ -346,16 +346,18 @@ class ExcaliburDetector(_OdinDetector):
 
         if any(server.DIRECT_FEM_CONNECTION for server in self.control_server.odin_data_servers):
             node_config = self.generate_direct_fem_node_config()  # [[<FEM1>], [<FEM2>], ...]
+            node_labels = ["fem{}".format(n) for n in range(1, len(fem_dests) + 1)]
         else:
             node_config = self.generate_simple_node_config()  # [[<ALL_FEMS>]]
+            node_labels = ["all_fems"]
 
         node_dests = []
-        for fem_config in node_config:
+        for node_label, fem_config in zip(node_labels, node_config):
             fem_node_dests = []
             for dest_config in fem_config:
                 fem_node_dests.append(
-                    #    "nodes": [
-                    #        [
+                    #    "nodes": {
+                    #        "fem1": [
                     "            {{\n"
                     "                \"name\": \"dest{id}\",\n"
                     "                \"mac\": \"{mac}\",\n"
@@ -363,18 +365,18 @@ class ExcaliburDetector(_OdinDetector):
                     "                \"port\": {port}\n"
                     "            }}".format(**dest_config)
                     #        ...
-                    #        ]
+                    #        ],
                     #    ...
-                    #    ]
+                    #    }
                 )
 
             node_dests.append(
-                #    "nodes": [
-                "        [\n"
+                #    "nodes": {
+                "        \"{}\": [\n"
                 "{}\n"
-                "        ]".format(",\n".join(fem_node_dests))
+                "        ]".format(node_label, ",\n".join(fem_node_dests))
                 #    ...
-                #    ]
+                #    }
             )
 
         macros = dict(
