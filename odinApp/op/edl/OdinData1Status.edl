@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 492
-y 241
+x 494
+y 267
 w 386
 h 62
 font "arial-medium-r-12.0"
@@ -373,7 +373,7 @@ onColor index 3
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):OD:$(RESET):ResetStatistics.PROC"
+controlPv "$(P):OD$(RANK):ResetStatistics.PROC"
 pressValue "1"
 onLabel "Rst"
 offLabel "Rst"

@@ -4,6 +4,7 @@
 #% macro, PORT, Asyn Port name
 #% macro, TIMEOUT, Timeout
 #% macro, ADDR, Asyn Port address
+#% macro, TOTAL, Total number of FR/FP pairs
 
 # % gui, $(PORT), readback, Write filename,   $(P)$(R)FullFileName_RBV
 # % gui, $(PORT), readback, N captured,   $(P)$(R)NumCaptured_RBV
@@ -40,6 +41,15 @@ record(waveform, "$(P)$(R)FRConfigFile")
      field(FTVL, "CHAR")
      field(NELM, "256")
      info(autosaveFields, "VAL")
+}
+
+###################################################################
+#  Reset the FrameReceiver statistics                             #
+###################################################################
+record(longout, "$(P)$(R)ResetStatistics")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_fr/command/reset_statistics/$(ADDR)")
 }
 
 record(longout, "$(P)$(R)FPClearErrors")

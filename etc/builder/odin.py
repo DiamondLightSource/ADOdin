@@ -326,12 +326,16 @@ class _OdinDataDriver(AsynPort):
         self.ODIN_DATA_PROCESSES = []
 
         self.total_processes = 0
+        # Calculate the total number of FR/FP pairs
         for server_idx, server in enumerate(self.control_server.odin_data_servers):
             if server.instantiated:
                 raise ValueError("Same OdinDataServer object given twice")
             else:
                 server.instantiated = True
+            for odin_data in server.processes:
+                self.total_processes += 1
 
+        for server_idx, server in enumerate(self.control_server.odin_data_servers):
             process_idx = server_idx
             for odin_data in server.processes:
                 self.ODIN_DATA_PROCESSES.append(odin_data)
@@ -340,11 +344,11 @@ class _OdinDataDriver(AsynPort):
                 args["ADDR"] = odin_data.index - 1
                 args["R"] = odin_data.R
                 args["OD"] = args["R"]
+                args["TOTAL"] = self.total_processes
                 _OdinDataTemplate(**args)
 
                 odin_data.create_config_files(process_idx + 1)
                 process_idx += self.server_count
-                self.total_processes += 1
 
             server.create_od_startup_scripts(server_idx + 1, self.server_count)
 
