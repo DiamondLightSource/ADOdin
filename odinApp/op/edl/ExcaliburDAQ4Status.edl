@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1983
-y 492
+x 767
+y 104
 w 782
 h 443
 font "arial-medium-r-12.0"
@@ -418,30 +418,6 @@ font "arial-bold-r-12.0"
 fontAlign "center"
 endObjectProperties
 
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 85
-y 35
-w 60
-h 20
-fgColor index 19
-onColor index 4
-offColor index 3
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):CAM:Acquire"
-pressValue "1"
-onLabel "Start"
-offLabel "Start"
-3d
-useEnumNumeric
-font "arial-bold-r-12.0"
-endObjectProperties
-
 # (Byte)
 object ByteClass
 beginObjectProperties
@@ -634,5 +610,72 @@ displayFileName {
   0 "OdinData4Status"
 }
 noScroll
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 75
+y 35
+w 85
+h 20
+font "arial-bold-r-12.0"
+fontAlign "center"
+fgColor index 20
+bgColor index 3
+visPv "$(P):CAM:Calibrating_RBV"
+visMin "1"
+visMax "2"
+value {
+  "Calibrating..."
+}
+border
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 85
+y 35
+w 60
+h 20
+
+beginGroup
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 85
+y 35
+w 60
+h 20
+fgColor index 19
+onColor index 4
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):CAM:Acquire"
+pressValue "1"
+onLabel "Start"
+offLabel "Start"
+3d
+useEnumNumeric
+font "arial-bold-r-12.0"
+endObjectProperties
+
+endGroup
+
+visPv "$(P):CAM:Calibrating_RBV"
+visMin "0"
+visMax "1"
 endObjectProperties
 

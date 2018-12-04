@@ -739,6 +739,17 @@ record(bi, "$(P)$(R)TestPulseEnable_RBV")
 
 ##########################################
 # Calibration file status
+# Read back of calibrating status
+record(bi, "$(P)$(R)Calibrating_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_status/calibrating")
+    field(ZNAM, "Idle")
+    field(ONAM, "Calibrating")
+}
+
+
 
 # Control of calibration file loading.
 # % autosave 2
