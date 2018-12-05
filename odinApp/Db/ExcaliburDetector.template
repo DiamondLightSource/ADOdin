@@ -11,6 +11,17 @@
 
 include "ADBase.template"
 
+###################################################################
+#  Override the detector state                                    # 
+###################################################################
+
+record(mbbi, "$(P)$(R)DetectorState_RBV")
+{
+    field(TWST, "Calibrating")
+    field(TWVL, "2")
+    field(TWSV, "NO_ALARM")
+}
+
 # Number of frames taken in current acquisition.
 #% archiver 1 monitor
 record(longin, "$(P)$(R)ArrayCounter_RBV")
@@ -739,6 +750,17 @@ record(bi, "$(P)$(R)TestPulseEnable_RBV")
 
 ##########################################
 # Calibration file status
+# Read back of calibrating status
+record(bi, "$(P)$(R)Calibrating_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_status/calibrating")
+    field(ZNAM, "Idle")
+    field(ONAM, "Calibrating")
+}
+
+
 
 # Control of calibration file loading.
 # % autosave 2
@@ -968,3 +990,20 @@ record(longout, "$(P)$(R)ManualLoadCalibration")
     field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_command/force_calibrate")
 }
 
+###################################################################
+#  Set the Live View Endpoint                                     #
+###################################################################
+record(stringout, "$(P)$(R)LiveViewEndpoint")
+{
+    field(DTYP, "asynOctetWrite")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_DETECTOR_LV")
+    field(VAL,  "")
+}
+
+record(stringin, "$(P)$(R)LiveViewEndpoint_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_DETECTOR_LV")
+    field(VAL,  "")
+    field(SCAN, "I/O Intr")
+}

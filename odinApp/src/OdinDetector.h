@@ -4,11 +4,13 @@
 #include "OdinClient.h"
 #include "OdinDataConfig.h"
 #include "OdinDetectorRestApi.h"
+#include "OdinLiveViewListener.h"
 
 // Odin Server
 #define OdinRestAPIVersion             "ODIN_REST_API_VERSION"
 // Detector
 #define OdinDetectorConnected          "ODIN_DETECTOR_CONNECTED"
+#define OdinDetectorLVEndpoint         "ODIN_DETECTOR_LV"
 // OdinData
 #define OdinFPCount                    "ODIN_NUM_PROCESSES"
 #define OdinProcessRank                "ODIN_PROCESS_RANK"
@@ -53,6 +55,8 @@ class OdinDetector : public OdinClient
                const char * detectorName, int maxBuffers,
                size_t maxMemory, int priority, int stackSize);
 
+  void live_view_task();
+
   // These are the methods that we override from ADDriver
   virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
   virtual asynStatus writeFloat64(asynUser *pasynUser, epicsFloat64 value);
@@ -78,10 +82,13 @@ class OdinDetector : public OdinClient
   int createDetectorParams();
   bool mOdinDataParamsCreated;
 
+  OdinLiveViewListener mLV;
+
   RestParam * mConnected;
   RestParam * mNumImages;
 
   RestParam * mAcqComplete;
+  RestParam * mDetectorState;
 
   // Internal PVs
   int mImageHeight;
@@ -89,6 +96,8 @@ class OdinDetector : public OdinClient
   int mChunkDepth;
   int mChunkHeight;
   int mChunkWidth;
+
+  int mLiveViewEndpoint;
 
   int mProcessInitialised;
   int mNumCapturedSum;

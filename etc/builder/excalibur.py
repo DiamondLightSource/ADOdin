@@ -223,8 +223,8 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
         else:
             sensor = self.ODIN_DATA_PROCESSES[0].sensor
             top_name = args["PORT"][:args["PORT"].find(".")]
-            fw_name = top_name + ".FW"
-            proc_name = top_name + ".PROC"
+            fw_name = top_name + ".OdinHDF"
+            proc_name = top_name + ".OdinPROC"
             template_args = {
                 "P": args["P"],
                 "R": ":OD:",

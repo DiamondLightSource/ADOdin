@@ -467,6 +467,7 @@ record(ao, "$(P)$(R)BIAS_LEVEL")
     field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_config/hv_bias")
     field(EGU,  "V")
     field(PREC, "2")
+    field(DRVH, "120.0")
     field(FLNK, "$(P)$(R)BIAS_LEVEL:HIGH")
     field(PINI, "1")
 }
