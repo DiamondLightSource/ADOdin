@@ -88,6 +88,7 @@ class OdinDetector : public OdinClient
   RestParam * mNumImages;
 
   RestParam * mAcqComplete;
+  RestParam * mDetectorState;
 
   // Internal PVs
   int mImageHeight;

@@ -94,6 +94,9 @@ int OdinDetector::createDetectorParams()
   // Create a parameter to store the acquisition complete status
   mAcqComplete = createRESTParam("ACQ_COMPLETE", REST_P_BOOL, SSDetector, "status/acquisition_complete");
 
+  // Create a parameter to store the state of the detector
+  mDetectorState = createRESTParam("DETECTOR_STATE", REST_P_INT, SSDetector, "status/state");
+
   return 0;
 }
 
@@ -197,6 +200,16 @@ asynStatus OdinDetector::getStatus()
         setStringParam(ADStatusMessage, "Acquiring...");
       }
       callParamCallbacks();
+    } else {
+      // Set the state from the detector adapter.  A non-standard state
+      // can be set here.  This will be overidden by any error messages below
+      int det_state = 0;
+      int current_state = 0;
+      getIntegerParam(ADStatus, &current_state);
+      mDetectorState->get(det_state);
+      if (!(current_state == ADStatusAborted && det_state == ADStatusIdle)){
+        setIntegerParam(ADStatus, det_state);
+      }
     }
 
     // Check for any errors
