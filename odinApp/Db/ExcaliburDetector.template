@@ -11,6 +11,17 @@
 
 include "ADBase.template"
 
+###################################################################
+#  Override the detector state                                    # 
+###################################################################
+
+record(mbbi, "$(P)$(R)DetectorState_RBV")
+{
+    field(TWST, "Calibrating")
+    field(TWVL, "2")
+    field(TWSV, "NO_ALARM")
+}
+
 # Number of frames taken in current acquisition.
 #% archiver 1 monitor
 record(longin, "$(P)$(R)ArrayCounter_RBV")
