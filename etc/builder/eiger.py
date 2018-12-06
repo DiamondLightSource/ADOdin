@@ -11,6 +11,7 @@ from odin import _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer
 EIGER, EIGER_PATH = find_module_path("eiger-detector")
 debug_print("Eiger: {} = {}".format(EIGER, EIGER_PATH), 1)
 
+ODIN_DATA_MACRO, ODIN_DATA_ROOT = find_module_path("odin-data")
 
 class EigerFan(Device):
 
@@ -95,6 +96,7 @@ class EigerMetaListener(Device):
             numa_call = ""
         macros = dict(EIGER_DETECTOR_PATH=EIGER_PATH,
                       IP_LIST=",".join(self.ip_list),
+                      OD_ROOT=ODIN_DATA_ROOT,
                       SENSOR=self.sensor,
                       NUMA=numa_call)
 

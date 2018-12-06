@@ -18,6 +18,7 @@
 	<EPICS_BASE.dbpf name="BlockSize" pv="EIGER:OD:BlockSize" value="1000"/>
 	<EPICS_BASE.dbpf name="BlocksPerFile" pv="EIGER:OD:BlocksPerFile" value="1"/>
 	<EPICS_BASE.dbpf name="CloseFileTimeout" pv="EIGER:OD:CloseFileTimeout" value="10000"/>
+	<EPICS_BASE.dbpf name="EarliestHDF5Version" pv="EIGER:OD:EarliestHDF5Version" value="Yes"/>
 	<EPICS_BASE.dbpf name="FR1Config" pv="EIGER:OD1:FRConfigFile" value="$(INSTALL)/eiger16MApp/data/fr1.json"/>
 	<EPICS_BASE.dbpf name="FR2Config" pv="EIGER:OD2:FRConfigFile" value="$(INSTALL)/eiger16MApp/data/fr2.json"/>
 	<EPICS_BASE.dbpf name="FR3Config" pv="EIGER:OD3:FRConfigFile" value="$(INSTALL)/eiger16MApp/data/fr3.json"/>
