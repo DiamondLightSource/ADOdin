@@ -188,6 +188,8 @@ int OdinDataDriver::createParams()
                                               SSFRStatus, "buffers/empty");
   mFramesReceived         = createODRESTParam(OdinFRFramesReceived, REST_P_INT,
                                               SSFRStatus, "frames/received");
+  mFramesDropped          = createODRESTParam(OdinFRFramesDropped, REST_P_INT,
+                                              SSFRStatus, "frames/dropped");
   mFramesTimedOut         = createODRESTParam(OdinFRFramesTimedOut, REST_P_INT,
                                               SSFRStatus, "frames/timedout");
   mFramesReleased         = createODRESTParam(OdinFRFramesReleased, REST_P_INT,

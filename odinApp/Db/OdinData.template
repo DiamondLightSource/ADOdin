@@ -185,6 +185,14 @@ record(longin, "$(P)$(R)FramesReceived_RBV")
 }
 
 #% archiver 1 monitor
+record(longin, "$(P)$(R)FramesDropped_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FR_FRAMES_DROPPED")
+    field(SCAN, "I/O Intr")
+}
+
+#% archiver 1 monitor
 record(longin, "$(P)$(R)FramesTimedOut_RBV")
 {
     field(DTYP, "asynInt32")

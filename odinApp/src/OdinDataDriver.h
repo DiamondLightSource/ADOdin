@@ -22,6 +22,7 @@
 #define OdinFPErrorState               "ODIN_FP_ERROR_STATE"
 #define OdinFPClearErrors              "ODIN_FP_CLEAR_ERRORS"
 #define OdinFRFramesReceived           "ODIN_FR_FRAMES_RECEIVED"
+#define OdinFRFramesDropped            "ODIN_FR_FRAMES_DROPPED"
 #define OdinFRFramesTimedOut           "ODIN_FR_FRAMES_TIMEDOUT"
 #define OdinFRFramesReleased           "ODIN_FR_FRAMES_RELEASED"
 // Buffers
@@ -128,6 +129,7 @@ class OdinDataDriver : public OdinClient
   RestParam * mDataType;
   RestParam * mFreeBuffers;
   RestParam * mFramesReceived;
+  RestParam * mFramesDropped;
   RestParam * mFramesTimedOut;
   RestParam * mFramesReleased;
 
