@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 767
-y 104
-w 782
-h 443
+x 552
+y 332
+w 389
+h 384
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -19,26 +19,11 @@ ctlBgColor1 index 3
 ctlBgColor2 index 3
 topShadowColor index 1
 botShadowColor index 11
-title "Odin HDF"
+title "Excalibur Acquisition"
 showGrid
 snapToGrid
 gridSize 5
 endScreenProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 400
-y 15
-w 375
-h 140
-lineColor index 14
-fill
-fillColor index 3
-endObjectProperties
 
 # (Embedded Window)
 object activePipClass
@@ -46,7 +31,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 5
+x 0
 y 170
 w 385
 h 160
@@ -67,7 +52,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 105
+x 85
 y 245
 w 198
 h 13
@@ -89,7 +74,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 15
+x 10
 y 355
 w 370
 h 20
@@ -108,7 +93,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 15
+x 10
 y 330
 w 125
 h 20
@@ -121,222 +106,15 @@ font "arial-bold-r-12.0"
 fontAlign "center"
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 405
-y 50
-w 75
-h 20
-controlPv "$(P):OD:0:PacketsLost_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-10.0"
-fontAlign "center"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 490
-y 50
-w 65
-h 20
-fgColor index 25
-onColor index 3
-offColor index 3
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):OD:0:PacketsLost"
-pressValue "0"
-onLabel "Reset"
-offLabel "Reset"
-3d
-font "arial-bold-r-10.0"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 405
-y 25
-w 160
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Receiver Packets Dropped"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 400
-y 5
-w 105
-h 15
-font "arial-bold-r-12.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 5
-value {
-  "UDP RX Status"
-}
-border
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 405
-y 75
-w 75
-h 20
-controlPv "$(P):OD:1:PacketsLost_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-10.0"
-fontAlign "center"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 490
-y 75
-w 65
-h 20
-fgColor index 25
-onColor index 3
-offColor index 3
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):OD:1:PacketsLost"
-pressValue "0"
-onLabel "Reset"
-offLabel "Reset"
-3d
-font "arial-bold-r-10.0"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 405
-y 100
-w 75
-h 20
-controlPv "$(P):OD:2:PacketsLost_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-10.0"
-fontAlign "center"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 490
-y 100
-w 65
-h 20
-fgColor index 25
-onColor index 3
-offColor index 3
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):OD:2:PacketsLost"
-pressValue "0"
-onLabel "Reset"
-offLabel "Reset"
-3d
-font "arial-bold-r-10.0"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 405
-y 125
-w 75
-h 20
-controlPv "$(P):OD:3:PacketsLost_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-10.0"
-fontAlign "center"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 490
-y 125
-w 65
-h 20
-fgColor index 25
-onColor index 3
-offColor index 3
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):OD:3:PacketsLost"
-pressValue "0"
-onLabel "Reset"
-offLabel "Reset"
-3d
-font "arial-bold-r-10.0"
-endObjectProperties
-
 # (Rectangle)
 object activeRectangleClass
 beginObjectProperties
 major 4
 minor 0
 release 0
-x 10
+x 5
 y 10
-w 380
+w 375
 h 105
 lineColor index 14
 fill
@@ -349,7 +127,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 230
+x 225
 y 65
 w 132
 h 20
@@ -368,7 +146,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 230
+x 225
 y 85
 w 132
 h 20
@@ -387,7 +165,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 230
+x 225
 y 35
 w 61
 h 20
@@ -405,7 +183,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 300
+x 295
 y 35
 w 61
 h 20
@@ -424,7 +202,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 165
+x 160
 y 35
 w 20
 h 20
@@ -442,7 +220,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 80
+x 75
 y 85
 w 110
 h 20
@@ -461,7 +239,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 80
+x 75
 y 65
 w 110
 h 20
@@ -479,7 +257,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 25
+x 20
 y 35
 w 53
 h 20
@@ -498,7 +276,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 25
+x 20
 y 65
 w 53
 h 20
@@ -517,7 +295,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 25
+x 20
 y 85
 w 53
 h 20
@@ -536,7 +314,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 10
+x 5
 y 5
 w 61
 h 15
@@ -556,7 +334,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 15
+x 10
 y 120
 w 132
 h 20
@@ -575,7 +353,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 15
+x 10
 y 145
 w 370
 h 20
@@ -588,37 +366,13 @@ font "arial-bold-r-12.0"
 lineWidth 0
 endObjectProperties
 
-# (Embedded Window)
-object activePipClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 395
-y 160
-w 385
-h 275
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 11
-displaySource "menu"
-filePv "LOC\\dummy=i:0"
-sizeOfs 5
-numDsps 1
-displayFileName {
-  0 "OdinData4Status"
-}
-noScroll
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
 release 1
-x 75
+x 70
 y 35
 w 85
 h 20
@@ -641,7 +395,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 85
+x 80
 y 35
 w 60
 h 20
@@ -654,7 +408,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 85
+x 80
 y 35
 w 60
 h 20
