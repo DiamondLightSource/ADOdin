@@ -71,7 +71,7 @@ filePv "LOC\\dummy=i:0"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinData1Status"
+  0 "OdinDataStatus1"
 }
 symbols {
   0 "RANK=1"
@@ -95,11 +95,11 @@ topShadowColor index 1
 botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-file "OdinData1Status"
+file "OdinDataStatus1"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinData1Status"
+  0 "OdinDataStatus1"
 }
 symbols {
   0 "RANK=2"

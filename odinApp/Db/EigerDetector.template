@@ -6,7 +6,7 @@
 
 # This associates the template with an edm screen
 # % gui, $(PORT), edmtab, EigerMain.edl, P=$(P),R=$(R)
-# % gui, $(FW_BUTTON), edm, OdinData$(OD_COUNT)Status.edl, P=$(P),R=$(R)
+# % gui, $(OD_STATUS_GUI), edm, OdinDataStatus$(OD_COUNT).edl, P=$(P),R=$(R)
 
 include "EigerFan.template"
 include "MetaListener.template"
