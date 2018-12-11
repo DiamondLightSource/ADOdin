@@ -3,9 +3,9 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 494
-y 267
-w 386
+x 234
+y 452
+w 481
 h 62
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
@@ -33,7 +33,7 @@ minor 0
 release 0
 x 5
 y 30
-w 315
+w 405
 h 30
 lineColor index 14
 fill
@@ -48,7 +48,7 @@ minor 0
 release 0
 x 5
 y 0
-w 110
+w 115
 h 30
 lineColor index 14
 fill
@@ -61,9 +61,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 115
+x 120
 y 0
-w 205
+w 290
 h 30
 lineColor index 14
 fill
@@ -76,7 +76,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 235
+x 310
 y 5
 w 50
 h 20
@@ -97,7 +97,7 @@ minor 0
 release 0
 x 90
 y 5
-w 20
+w 25
 h 20
 controlPv "$(P):OD$(RANK):Writing_RBV"
 lineColor index 14
@@ -115,7 +115,7 @@ minor 0
 release 0
 x 45
 y 35
-w 225
+w 315
 h 20
 controlPv "$(P):OD$(RANK):FPErrorMessage_RBV"
 fgColor index 16
@@ -133,7 +133,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 275
+x 365
 y 35
 w 40
 h 20
@@ -156,9 +156,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 120
+x 125
 y 5
-w 55
+w 60
 h 20
 controlPv "$(P):OD$(RANK):FramesReceived_RBV"
 fgColor index 16
@@ -175,11 +175,11 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 180
+x 190
 y 5
-w 50
+w 55
 h 20
-controlPv "$(P):OD$(RANK):FramesTimedOut_RBV"
+controlPv "$(P):OD$(RANK):FramesDropped_RBV"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -287,9 +287,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 320
+x 410
 y 0
-w 60
+w 65
 h 60
 lineColor index 14
 fill
@@ -302,9 +302,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 325
+x 415
 y 5
-w 50
+w 55
 h 20
 controlPv "$(P):OD$(RANK):NumCaptured_RBV"
 fgColor index 16
@@ -321,9 +321,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 325
+x 415
 y 35
-w 50
+w 55
 h 20
 controlPv "$(P):OD$(RANK):NumExpected_RBV"
 fgColor index 16
@@ -342,14 +342,14 @@ minor 0
 release 1
 x 5
 y 60
-w 375
+w 470
 h 0
 lineColor index 14
 fillColor index 3
 lineWidth 2
 numPoints 2
 xPoints {
-  0 380
+  0 475
   1 5
 }
 yPoints {
@@ -364,9 +364,9 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 290
+x 365
 y 5
-w 25
+w 40
 h 20
 fgColor index 25
 onColor index 3
@@ -375,9 +375,28 @@ topShadowColor index 1
 botShadowColor index 11
 controlPv "$(P):OD$(RANK):ResetStatistics.PROC"
 pressValue "1"
-onLabel "Rst"
-offLabel "Rst"
+onLabel "Reset"
+offLabel "Reset"
 3d
 font "arial-bold-r-10.0"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 250
+y 5
+w 55
+h 20
+controlPv "$(P):OD$(RANK):FramesTimedOut_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
 endObjectProperties
 

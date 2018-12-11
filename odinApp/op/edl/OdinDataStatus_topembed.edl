@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1104
-y 505
-w 386
-h 30
+x 234
+y 458
+w 481
+h 31
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -30,9 +30,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 125
+x 120
 y 5
-w 190
+w 290
 h 25
 lineColor index 14
 fillColor index 3
@@ -46,7 +46,7 @@ minor 0
 release 0
 x 5
 y 5
-w 120
+w 115
 h 25
 lineColor index 14
 fillColor index 3
@@ -141,7 +141,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 140
+x 135
 y 7
 w 42
 h 22
@@ -163,9 +163,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 195
+x 197
 y 7
-w 49
+w 40
 h 22
 font "arial-medium-r-10.0"
 fontAlign "center"
@@ -174,7 +174,7 @@ bgColor index 3
 useDisplayBg
 value {
   "Frames"
-  "Timed Out"
+  "Dropped"
 }
 autoSize
 endObjectProperties
@@ -185,7 +185,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 265
+x 318
 y 7
 w 34
 h 22
@@ -228,7 +228,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 315
+x 410
 y 5
 w 65
 h 25
@@ -242,7 +242,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 325
+x 420
 y 7
 w 44
 h 22
@@ -254,6 +254,28 @@ useDisplayBg
 value {
   "Frames"
   "Captured"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 252
+y 7
+w 49
+h 22
+font "arial-medium-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Frames"
+  "Timed Out"
 }
 autoSize
 endObjectProperties
