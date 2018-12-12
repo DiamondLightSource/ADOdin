@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 52
-y 113
+x 278
+y 173
 w 740
-h 860
+h 820
 font "arial-medium-r-18.0"
 ctlFont "arial-medium-r-18.0"
 btnFont "arial-medium-r-18.0"
@@ -32,7 +32,7 @@ major 4
 minor 1
 release 0
 x 670
-y 825
+y 785
 w 60
 h 25
 fgColor index 46
@@ -152,7 +152,7 @@ major 4
 minor 1
 release 1
 x 5
-y 470
+y 430
 w 110
 h 20
 font "arial-bold-r-12.0"
@@ -171,7 +171,7 @@ major 10
 minor 0
 release 0
 x 570
-y 470
+y 430
 w 75
 h 20
 controlPv "$(P)0:MOLY_TEMPERATURE.HIGH"
@@ -188,7 +188,7 @@ major 10
 minor 0
 release 0
 x 650
-y 470
+y 430
 w 75
 h 20
 controlPv "$(P)0:MOLY_TEMPERATURE.LOW"
@@ -205,7 +205,7 @@ major 4
 minor 1
 release 1
 x 570
-y 445
+y 405
 w 75
 h 20
 font "arial-bold-r-12.0"
@@ -225,7 +225,7 @@ major 4
 minor 1
 release 1
 x 650
-y 445
+y 405
 w 75
 h 20
 font "arial-bold-r-12.0"
@@ -245,7 +245,7 @@ major 4
 minor 1
 release 1
 x 5
-y 495
+y 455
 w 110
 h 20
 font "arial-bold-r-12.0"
@@ -264,7 +264,7 @@ major 10
 minor 0
 release 0
 x 570
-y 495
+y 455
 w 75
 h 20
 controlPv "$(P)0:LOCAL_TEMP.HIGH"
@@ -281,7 +281,7 @@ major 10
 minor 0
 release 0
 x 650
-y 495
+y 455
 w 75
 h 20
 controlPv "$(P)0:LOCAL_TEMP.LOW"
@@ -298,7 +298,7 @@ major 4
 minor 1
 release 1
 x 5
-y 520
+y 480
 w 110
 h 20
 font "arial-bold-r-12.0"
@@ -317,7 +317,7 @@ major 10
 minor 0
 release 0
 x 570
-y 520
+y 480
 w 75
 h 20
 controlPv "$(P)0:REMOTE_DIODE_TEMP.HIGH"
@@ -334,7 +334,7 @@ major 10
 minor 0
 release 0
 x 650
-y 520
+y 480
 w 75
 h 20
 controlPv "$(P)0:REMOTE_DIODE_TEMP.LOW"
@@ -351,7 +351,7 @@ major 4
 minor 1
 release 1
 x 5
-y 545
+y 505
 w 110
 h 20
 font "arial-bold-r-12.0"
@@ -370,7 +370,7 @@ major 10
 minor 0
 release 0
 x 570
-y 545
+y 505
 w 75
 h 20
 controlPv "$(P)0:MOLY_HUMIDITY.HIGH"
@@ -387,7 +387,7 @@ major 10
 minor 0
 release 0
 x 650
-y 545
+y 505
 w 75
 h 20
 controlPv "$(P)0:MOLY_HUMIDITY.LOW"
@@ -404,7 +404,7 @@ major 4
 minor 1
 release 1
 x 5
-y 570
+y 530
 w 110
 h 20
 font "arial-bold-r-12.0"
@@ -423,7 +423,7 @@ major 4
 minor 1
 release 1
 x 5
-y 595
+y 555
 w 110
 h 20
 font "arial-bold-r-12.0"
@@ -442,7 +442,7 @@ major 4
 minor 1
 release 1
 x 5
-y 620
+y 580
 w 110
 h 20
 font "arial-bold-r-12.0"
@@ -461,7 +461,7 @@ major 4
 minor 1
 release 1
 x 5
-y 645
+y 605
 w 110
 h 20
 font "arial-bold-r-12.0"
@@ -480,7 +480,7 @@ major 4
 minor 1
 release 1
 x 5
-y 670
+y 630
 w 110
 h 20
 font "arial-bold-r-12.0"
@@ -499,7 +499,7 @@ major 4
 minor 1
 release 1
 x 5
-y 695
+y 655
 w 110
 h 20
 font "arial-bold-r-12.0"
@@ -518,7 +518,7 @@ major 4
 minor 1
 release 1
 x 5
-y 745
+y 705
 w 110
 h 20
 font "arial-bold-r-12.0"
@@ -537,7 +537,7 @@ major 4
 minor 1
 release 1
 x 5
-y 795
+y 755
 w 110
 h 20
 font "arial-bold-r-12.0"
@@ -556,7 +556,7 @@ major 4
 minor 1
 release 1
 x 5
-y 820
+y 780
 w 110
 h 20
 font "arial-bold-r-12.0"
@@ -575,7 +575,7 @@ major 4
 minor 1
 release 0
 x 610
-y 760
+y 720
 w 120
 h 25
 fgColor index 25
@@ -598,7 +598,7 @@ major 10
 minor 0
 release 0
 x 610
-y 790
+y 750
 w 120
 h 20
 controlPv "$(P)HK:FEMRESETSTATE"
@@ -616,7 +616,7 @@ major 4
 minor 1
 release 0
 x 115
-y 440
+y 400
 w 80
 h 400
 fgColor index 14
@@ -644,7 +644,7 @@ major 4
 minor 1
 release 0
 x 195
-y 440
+y 400
 w 80
 h 400
 fgColor index 14
@@ -674,7 +674,7 @@ release 0
 x 0
 y 30
 w 740
-h 410
+h 370
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
@@ -685,7 +685,7 @@ setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "ExcaliburPowerStatus_embed.edl"
+  0 "ExcaliburPowerStatus1M_embed.edl"
 }
 noScroll
 endObjectProperties
