@@ -47,9 +47,9 @@ record(stringin, "$(P)$(R)FAN:State_RBV")
     field(INP,  "@asyn($(PORT),0,1)_ODS1_eiger_fan/status/state")
 }
 
-record(scalcout, "EIGER:OD:FAN:StateReady_RBV")
+record(scalcout, "$(P)$(R)FAN:StateReady_RBV")
 {
-     field(INAA, "EIGER:OD:FAN:State_RBV CP")
+     field(INAA, "$(P)$(R)FAN:State_RBV CP")
      field(CALC, "AA==BB?1:0")
      field(BB,   "DSTR_HEADER")
 }
