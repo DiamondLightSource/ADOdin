@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 481
-y 98
+y 135
 w 419
 h 544
 font "arial-bold-r-12.0"
@@ -102,7 +102,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 345
+x 275
 y 75
 w 55
 h 20
@@ -120,7 +120,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 345
+x 275
 y 95
 w 55
 h 20
@@ -176,7 +176,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 275
+x 345
 y 95
 w 55
 h 20
@@ -195,7 +195,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 275
+x 345
 y 75
 w 55
 h 20
@@ -222,7 +222,7 @@ fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Image Width / Height:"
+  "Image Height / Widtht:"
 }
 endObjectProperties
 
@@ -241,7 +241,7 @@ fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Chunk Depth / Width / Height:"
+  "Chunk Depth / Height / Width:"
 }
 endObjectProperties
 
@@ -441,7 +441,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 275
+x 345
 y 120
 w 55
 h 20
@@ -459,7 +459,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 275
+x 345
 y 140
 w 55
 h 20
@@ -478,7 +478,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 345
+x 275
 y 140
 w 55
 h 20
@@ -497,7 +497,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 345
+x 275
 y 120
 w 55
 h 20
