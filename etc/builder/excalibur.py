@@ -222,20 +222,18 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
                 self.FP_TEMPLATES.keys()))
         else:
             sensor = self.ODIN_DATA_PROCESSES[0].sensor
-            top_name = args["PORT"][:args["PORT"].find(".")]
-            fw_name = top_name + ".OdinHDF"
-            proc_name = top_name + ".OdinPROC"
-            template_args = {
-                "P": args["P"],
-                "R": ":OD:",
-                "DET": detector_arg,
-                "PORT": args["PORT"],
-                "FW_BUTTON": fw_name,
-                "PROC_BUTTON": proc_name,
-                "TIMEOUT": args["TIMEOUT"],
-                "HEIGHT": EXCALIBUR_DIMENSIONS[sensor][1],
-                "WIDTH": EXCALIBUR_DIMENSIONS[sensor][0]
-            }
+            template_args = dict(
+                P=args["P"],
+                R=":OD:",
+                DET=detector_arg,
+                PORT=args["PORT"],
+                TIMEOUT=args["TIMEOUT"],
+                HEIGHT=EXCALIBUR_DIMENSIONS[sensor][1],
+                WIDTH=EXCALIBUR_DIMENSIONS[sensor][0],
+                OD_DET_CONFIG_GUI=self.gui_macro(args["PORT"], "ODExcalbur"),
+                ACQ_GUI=self.gui_macro(args["PORT"], "Acquisition"),
+                **self.create_gui_macros(args["PORT"])
+            )
             _ExcaliburXNodeFPTemplate = self.FP_TEMPLATES[len(self.ODIN_DATA_PROCESSES)]
             _ExcaliburXNodeFPTemplate(**template_args)
 

@@ -387,6 +387,16 @@ class _OdinDataDriver(AsynPort):
               "\"%(DATASET)s\", \"%(DETECTOR_PLUGIN)s\", " \
               "%(BUFFERS)d, %(MEMORY)d)" % self.__dict__
 
+    def gui_macro(self, port, name):
+        top = port[:port.find(".")]
+        return "{}.{}".format(top, name)
+
+    def create_gui_macros(self, port):
+        return dict(
+            OD_HDF_STATUS_GUI=self.gui_macro(port, "HDFStatus"),
+            OD_HDF_CONFIG_GUI=self.gui_macro(port, "HDFConfig")
+        )
+
 
 class OdinLogConfig(Device):
 

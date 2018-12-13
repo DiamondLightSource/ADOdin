@@ -1,0 +1,276 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 129
+y 506
+w 536
+h 468
+font "arial-medium-r-12.0"
+ctlFont "arial-medium-r-12.0"
+btnFont "arial-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 25
+ctlFgColor2 index 25
+ctlBgColor1 index 3
+ctlBgColor2 index 3
+topShadowColor index 1
+botShadowColor index 11
+title "OdinData Config"
+showGrid
+snapToGrid
+gridSize 5
+disableScroll
+endScreenProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 20
+w 535
+h 60
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+file "OdinDataStatus1"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "OdinDataConfig_embed"
+}
+symbols {
+  0 "RANK=1"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 5
+w 535
+h 20
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "OdinDataConfig_topembed"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 75
+w 535
+h 60
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+file "OdinDataStatus1"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "OdinDataConfig_embed"
+}
+symbols {
+  0 "RANK=2"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 130
+w 535
+h 60
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+file "OdinDataStatus1"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "OdinDataConfig_embed"
+}
+symbols {
+  0 "RANK=3"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 185
+w 535
+h 60
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+file "OdinDataStatus1"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "OdinDataConfig_embed"
+}
+symbols {
+  0 "RANK=4"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 240
+w 535
+h 60
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+file "OdinDataStatus1"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "OdinDataConfig_embed"
+}
+symbols {
+  0 "RANK=5"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 295
+w 535
+h 60
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+file "OdinDataStatus1"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "OdinDataConfig_embed"
+}
+symbols {
+  0 "RANK=6"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 350
+w 535
+h 60
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+file "OdinDataStatus1"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "OdinDataConfig_embed"
+}
+symbols {
+  0 "RANK=7"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 405
+w 535
+h 60
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+file "OdinDataStatus1"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "OdinDataConfig_embed"
+}
+symbols {
+  0 "RANK=8"
+}
+noScroll
+endObjectProperties
+

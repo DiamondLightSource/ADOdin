@@ -1,15 +1,18 @@
-# excalibur4Node.template
-# Defines the parameters required for the Excalibur processing plugin
-
 # % macro, P, Device Prefix
 # % macro, R, Device Suffix
 # % macro, DET, Detector Suffix
-# % macro, FW_BUTTON, Name specifying OD Status Screen
-# % macro, PROC_BUTTON, Name specifying OD Processing Configuration Screen
+# % macro, PORT, Asyn Port name
+# % macro, OD_HDF_STATUS_GUI, Label for OdinData Status EDM button
+# % macro, OD_HDF_CONFIG_GUI, Label for OdinData Config EDM button
+# % macro, OD_DET_CONFIG_GUI, Label for OdinData Process EDM button
+# % macro, ACQ_GUI, Label for Excalibur Acquisition EDM button
 
 # This associates the template with an edm screen
-# % gui, $(FW_BUTTON), edm, ExcaliburDAQ4Status.edl, P=$(P),R=$(R)
-# % gui, $(PROC_BUTTON), edm, ExcaliburAdvanced.edl, P=$(P),R=$(R)
+# % gui, $(PORT), edmtab, ExcaliburDAQMain.edl, P=$(P),R=$(R)
+# % gui, $(OD_HDF_STATUS_GUI), edm, OdinDataStatus2.edl, P=$(P),R=$(R)
+# % gui, $(OD_HDF_CONFIG_GUI), edm, OdinDataConfig2.edl, P=$(P),R=$(R)
+# % gui, $(OD_DET_CONFIG_GUI), edm, ExcaliburOD.edl, P=$(P),R=$(R)
+# % gui, $(ACQ_GUI), edm, ExcaliburAcquisition.edl, P=$(P),R=$(R)
 
 ################################################################################
 #

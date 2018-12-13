@@ -3,9 +3,9 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 628
-y 421
-w 386
+x 332
+y 178
+w 391
 h 77
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
@@ -21,7 +21,9 @@ topShadowColor index 1
 botShadowColor index 11
 title "Odin HDF"
 showGrid
+snapToGrid
 gridSize 5
+disableScroll
 endScreenProperties
 
 # (Rectangle)
@@ -32,8 +34,8 @@ minor 0
 release 0
 x 5
 y 10
-w 375
-h 65
+w 380
+h 60
 lineColor index 14
 fill
 fillColor index 3
@@ -66,8 +68,8 @@ major 10
 minor 0
 release 0
 x 10
-y 50
-w 365
+y 45
+w 370
 h 20
 controlPv "$(P):OD:StatusMessage_RBV"
 fgColor index 16
@@ -85,8 +87,8 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 245
-y 25
+x 250
+y 20
 w 130
 h 20
 controlPv "$(P):OD:DetectorState_RBV"
@@ -105,7 +107,7 @@ major 4
 minor 1
 release 1
 x 10
-y 28
+y 25
 w 24
 h 13
 font "arial-bold-r-12.0"
@@ -125,9 +127,9 @@ major 4
 minor 1
 release 1
 x 200
-y 28
-w 30
-h 13
+y 20
+w 50
+h 20
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
@@ -144,9 +146,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 45
-y 25
-w 145
+x 50
+y 20
+w 140
 h 20
 controlPv "$(P):OD:PortName_RBV"
 fgColor index 16

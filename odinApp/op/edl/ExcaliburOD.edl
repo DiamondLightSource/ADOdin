@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1108
-y 88
-w 544
-h 537
+x 466
+y 333
+w 547
+h 389
 font "arial-bold-r-12.0"
 ctlFont "arial-bold-r-12.0"
 btnFont "arial-bold-r-12.0"
@@ -19,6 +19,7 @@ ctlBgColor1 index 3
 ctlBgColor2 index 3
 topShadowColor index 1
 botShadowColor index 11
+title "OdinData Excalibur"
 showGrid
 snapToGrid
 gridSize 5
@@ -32,45 +33,9 @@ major 4
 minor 0
 release 0
 x 5
-y 275
-w 530
-h 255
-lineColor index 14
-fill
-fillColor index 3
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 0
-y 0
-w 545
-h 45
-font "arial-bold-r-14.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 48
-value {
-  "Excalibur Advanced"
-  "$(P)$(R)"
-}
-border
-endObjectProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 5
-y 60
-w 530
-h 195
+y 15
+w 535
+h 175
 lineColor index 14
 fill
 fillColor index 3
@@ -83,7 +48,7 @@ major 4
 minor 1
 release 1
 x 5
-y 50
+y 5
 w 155
 h 13
 font "arial-medium-r-12.0"
@@ -102,9 +67,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 345
+x 265
 y 65
-w 55
+w 65
 h 20
 controlPv "$(P)$(R)0FPProcHeight"
 fgColor index 25
@@ -121,8 +86,8 @@ major 10
 minor 0
 release 0
 x 345
-y 85
-w 55
+y 65
+w 65
 h 20
 controlPv "$(P)$(R)0FPProcHeight"
 fgColor index 16
@@ -139,9 +104,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 275
-y 85
-w 55
+x 170
+y 65
+w 65
 h 20
 controlPv "$(P)$(R)0FPProcWidth"
 fgColor index 16
@@ -158,9 +123,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 275
+x 90
 y 65
-w 55
+w 65
 h 20
 controlPv "$(P)$(R)0FPProcWidth"
 fgColor index 25
@@ -177,8 +142,8 @@ major 4
 minor 1
 release 1
 x 15
-y 75
-w 215
+y 30
+w 175
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
@@ -195,9 +160,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 345
-y 110
-w 55
+x 265
+y 95
+w 65
 h 20
 controlPv "$(P)$(R)1FPProcHeight"
 fgColor index 25
@@ -214,8 +179,8 @@ major 10
 minor 0
 release 0
 x 345
-y 130
-w 55
+y 95
+w 65
 h 20
 controlPv "$(P)$(R)1FPProcHeight"
 fgColor index 16
@@ -232,9 +197,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 275
-y 130
-w 55
+x 170
+y 95
+w 65
 h 20
 controlPv "$(P)$(R)1FPProcWidth"
 fgColor index 16
@@ -251,9 +216,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 275
-y 110
-w 55
+x 90
+y 95
+w 65
 h 20
 controlPv "$(P)$(R)1FPProcWidth"
 fgColor index 25
@@ -269,9 +234,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 345
-y 155
-w 55
+x 265
+y 125
+w 65
 h 20
 controlPv "$(P)$(R)2FPProcHeight"
 fgColor index 25
@@ -288,8 +253,8 @@ major 10
 minor 0
 release 0
 x 345
-y 175
-w 55
+y 125
+w 65
 h 20
 controlPv "$(P)$(R)2FPProcHeight"
 fgColor index 16
@@ -306,9 +271,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 275
-y 175
-w 55
+x 170
+y 125
+w 65
 h 20
 controlPv "$(P)$(R)2FPProcWidth"
 fgColor index 16
@@ -325,27 +290,27 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 275
+x 90
+y 125
+w 65
+h 20
+controlPv "$(P)$(R)2FPProcWidth"
+fgColor index 25
+fgAlarm
+bgColor index 3
+fill
+font "arial-medium-r-12.0"
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 265
 y 155
-w 55
-h 20
-controlPv "$(P)$(R)2FPProcWidth"
-fgColor index 25
-fgAlarm
-bgColor index 3
-fill
-font "arial-medium-r-12.0"
-endObjectProperties
-
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 345
-y 200
-w 55
+w 65
 h 20
 controlPv "$(P)$(R)3FPProcHeight"
 fgColor index 25
@@ -362,8 +327,8 @@ major 10
 minor 0
 release 0
 x 345
-y 220
-w 55
+y 155
+w 65
 h 20
 controlPv "$(P)$(R)3FPProcHeight"
 fgColor index 16
@@ -380,9 +345,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 275
-y 220
-w 55
+x 170
+y 155
+w 65
 h 20
 controlPv "$(P)$(R)3FPProcWidth"
 fgColor index 16
@@ -399,9 +364,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 275
-y 200
-w 55
+x 90
+y 155
+w 65
 h 20
 controlPv "$(P)$(R)3FPProcWidth"
 fgColor index 25
@@ -411,188 +376,133 @@ fill
 font "arial-medium-r-12.0"
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
+# (Static Text)
+object activeXTextClass
 beginObjectProperties
 major 4
-minor 6
-release 0
-x 105
-y 290
-w 420
+minor 1
+release 1
+x 30
+y 65
+w 25
 h 20
-controlPv "$(P):OD1:FRConfigFile"
-font "helvetica-medium-r-10.0"
-fgColor index 25
+font "arial-bold-r-12.0"
+fgColor index 14
 bgColor index 3
-editable
-motifWidget
-limitsFromDb
-nullColor index 25
-useHexPrefix
-newPos
-objType "controls"
+useDisplayBg
+value {
+  "OD1"
+}
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
+# (Static Text)
+object activeXTextClass
 beginObjectProperties
 major 4
-minor 6
-release 0
-x 105
-y 320
-w 420
+minor 1
+release 1
+x 30
+y 95
+w 25
 h 20
-controlPv "$(P):OD1:FPConfigFile"
-font "helvetica-medium-r-10.0"
-fgColor index 25
+font "arial-bold-r-12.0"
+fgColor index 14
 bgColor index 3
-editable
-motifWidget
-limitsFromDb
-nullColor index 25
-useHexPrefix
-newPos
-objType "controls"
+useDisplayBg
+value {
+  "OD2"
+}
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
+# (Static Text)
+object activeXTextClass
 beginObjectProperties
 major 4
-minor 6
-release 0
-x 105
-y 350
-w 420
+minor 1
+release 1
+x 30
+y 125
+w 25
 h 20
-controlPv "$(P):OD2:FRConfigFile"
-font "helvetica-medium-r-10.0"
-fgColor index 25
+font "arial-bold-r-12.0"
+fgColor index 14
 bgColor index 3
-editable
-motifWidget
-limitsFromDb
-nullColor index 25
-useHexPrefix
-newPos
-objType "controls"
+useDisplayBg
+value {
+  "OD3"
+}
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
+# (Static Text)
+object activeXTextClass
 beginObjectProperties
 major 4
-minor 6
-release 0
-x 105
-y 380
-w 420
+minor 1
+release 1
+x 30
+y 155
+w 25
 h 20
-controlPv "$(P):OD2:FPConfigFile"
-font "helvetica-medium-r-10.0"
-fgColor index 25
+font "arial-bold-r-12.0"
+fgColor index 14
 bgColor index 3
-editable
-motifWidget
-limitsFromDb
-nullColor index 25
-useHexPrefix
-newPos
-objType "controls"
+useDisplayBg
+value {
+  "OD4"
+}
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
+# (Static Text)
+object activeXTextClass
 beginObjectProperties
 major 4
-minor 6
-release 0
-x 105
-y 410
-w 420
+minor 1
+release 1
+x 375
+y 250
+w 45
 h 20
-controlPv "$(P):OD3:FRConfigFile"
-font "helvetica-medium-r-10.0"
-fgColor index 25
+font "arial-medium-r-12.0"
+fgColor index 14
 bgColor index 3
-editable
-motifWidget
-limitsFromDb
-nullColor index 25
-useHexPrefix
-newPos
-objType "controls"
+useDisplayBg
+value {
+  "Width"
+}
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
+# (Static Text)
+object activeXTextClass
 beginObjectProperties
 major 4
-minor 6
-release 0
-x 105
-y 440
-w 420
+minor 1
+release 1
+x 375
+y 300
+w 45
 h 20
-controlPv "$(P):OD3:FPConfigFile"
-font "helvetica-medium-r-10.0"
-fgColor index 25
+font "arial-medium-r-12.0"
+fgColor index 14
 bgColor index 3
-editable
-motifWidget
-limitsFromDb
-nullColor index 25
-useHexPrefix
-newPos
-objType "controls"
+useDisplayBg
+value {
+  "Height"
+}
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
+# (Rectangle)
+object activeRectangleClass
 beginObjectProperties
 major 4
-minor 6
+minor 0
 release 0
-x 105
-y 470
-w 420
-h 20
-controlPv "$(P):OD4:FRConfigFile"
-font "helvetica-medium-r-10.0"
-fgColor index 25
-bgColor index 3
-editable
-motifWidget
-limitsFromDb
-nullColor index 25
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 6
-release 0
-x 105
-y 500
-w 420
-h 20
-controlPv "$(P):OD4:FPConfigFile"
-font "helvetica-medium-r-10.0"
-fgColor index 25
-bgColor index 3
-editable
-motifWidget
-limitsFromDb
-nullColor index 25
-useHexPrefix
-newPos
-objType "controls"
+x 5
+y 205
+w 535
+h 175
+lineColor index 14
+fill
+fillColor index 3
 endObjectProperties
 
 # (Static Text)
@@ -602,36 +512,185 @@ major 4
 minor 1
 release 1
 x 5
-y 265
-w 117
+y 195
+w 98
 h 13
 font "arial-medium-r-12.0"
 fgColor index 14
 bgColor index 5
 value {
-  "  Configuration Files  "
+  "  UDP RX Status  "
 }
 autoSize
 border
 endObjectProperties
 
-# (Static Text)
-object activeXTextClass
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 90
+y 235
+w 75
+h 20
+controlPv "$(P):OD:0:PacketsLost_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-10.0"
+fontAlign "center"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
 beginObjectProperties
 major 4
 minor 1
-release 1
-x 210
-y 75
-w 55
+release 0
+x 175
+y 235
+w 60
 h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "FR/FP 1"
-}
+fgColor index 25
+onColor index 3
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):OD:0:PacketsLost"
+pressValue "0"
+onLabel "Reset"
+offLabel "Reset"
+3d
+font "arial-bold-r-10.0"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 90
+y 265
+w 75
+h 20
+controlPv "$(P):OD:1:PacketsLost_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-10.0"
+fontAlign "center"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 175
+y 265
+w 60
+h 20
+fgColor index 25
+onColor index 3
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):OD:1:PacketsLost"
+pressValue "0"
+onLabel "Reset"
+offLabel "Reset"
+3d
+font "arial-bold-r-10.0"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 90
+y 295
+w 75
+h 20
+controlPv "$(P):OD:2:PacketsLost_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-10.0"
+fontAlign "center"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 175
+y 295
+w 60
+h 20
+fgColor index 25
+onColor index 3
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):OD:2:PacketsLost"
+pressValue "0"
+onLabel "Reset"
+offLabel "Reset"
+3d
+font "arial-bold-r-10.0"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 90
+y 325
+w 75
+h 20
+controlPv "$(P):OD:3:PacketsLost_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-10.0"
+fontAlign "center"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 175
+y 325
+w 60
+h 20
+fgColor index 25
+onColor index 3
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):OD:3:PacketsLost"
+pressValue "0"
+onLabel "Reset"
+offLabel "Reset"
+3d
+font "arial-bold-r-10.0"
 endObjectProperties
 
 # (Static Text)
@@ -640,54 +699,16 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 210
-y 120
-w 55
+x 30
+y 235
+w 25
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "FR/FP 2"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 210
-y 165
-w 55
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "FR/FP 3"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 210
-y 210
-w 55
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "FR/FP 4"
+  "OD1"
 }
 endObjectProperties
 
@@ -698,15 +719,15 @@ major 4
 minor 1
 release 1
 x 30
-y 305
-w 55
+y 265
+w 25
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "FR/FP 1"
+  "OD2"
 }
 endObjectProperties
 
@@ -717,15 +738,15 @@ major 4
 minor 1
 release 1
 x 30
-y 365
-w 55
+y 295
+w 25
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "FR/FP 2"
+  "OD3"
 }
 endObjectProperties
 
@@ -736,34 +757,15 @@ major 4
 minor 1
 release 1
 x 30
-y 425
-w 55
+y 325
+w 25
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "FR/FP 3"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 30
-y 485
-w 55
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "FR/FP 4"
+  "OD4"
 }
 endObjectProperties
 
