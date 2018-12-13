@@ -4,9 +4,9 @@ major 4
 minor 0
 release 1
 x 552
-y 332
-w 389
-h 384
+y 406
+w 391
+h 381
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -23,6 +23,7 @@ title "Excalibur Acquisition"
 showGrid
 snapToGrid
 gridSize 5
+disableScroll
 endScreenProperties
 
 # (Embedded Window)
@@ -33,7 +34,7 @@ minor 1
 release 0
 x 0
 y 170
-w 385
+w 390
 h 160
 fgColor index 14
 bgColor index 3
@@ -114,7 +115,7 @@ minor 0
 release 0
 x 5
 y 10
-w 375
+w 380
 h 105
 lineColor index 14
 fill
@@ -127,7 +128,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 225
+x 235
 y 65
 w 132
 h 20
@@ -146,7 +147,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 225
+x 235
 y 85
 w 132
 h 20
@@ -165,7 +166,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 225
+x 235
 y 35
 w 61
 h 20
@@ -183,7 +184,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 295
+x 305
 y 35
 w 61
 h 20
