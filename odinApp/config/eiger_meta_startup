@@ -2,4 +2,4 @@
 
 cd $OD_ROOT
 export PYTHONPATH=$EIGER_DETECTOR_PATH/data/tools/python/
-${NUMA}prefix/bin/meta_writer -w metalistener.eiger_meta_writer.EigerMetaWriter -i $IP_LIST --staticlogfields beamline=$${BEAMLINE},detector="Eiger$SENSOR"
+${NUMA}prefix/bin/meta_writer -w metalistener.eiger_meta_writer.EigerMetaWriter -i $IP_LIST --staticlogfields beamline=$${BEAMLINE},detector="Eiger$SENSOR" --logserver "graylog2.diamond.ac.uk:12210"

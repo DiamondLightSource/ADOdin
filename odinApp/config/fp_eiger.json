@@ -44,5 +44,14 @@
     "hdf": {
       "dataset": "data"
     }
+  },
+  {
+    "hdf": {
+      "dataset": {
+        "data": {
+          "indexes": true
+        }
+      }
+    }
   }
 ]
