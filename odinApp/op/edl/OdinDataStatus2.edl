@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 747
-y 527
-w 482
-h 159
+x 637
+y 451
+w 481
+h 163
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -23,6 +23,7 @@ title "OdinData Status"
 showGrid
 snapToGrid
 gridSize 5
+disableScroll
 endScreenProperties
 
 # (Embedded Window)
@@ -32,9 +33,9 @@ major 4
 minor 1
 release 0
 x 0
-y 5
-w 485
-h 30
+y 0
+w 480
+h 155
 fgColor index 14
 bgColor index 3
 topShadowColor index 1
@@ -44,65 +45,7 @@ filePv "LOC\\dummy=i:0"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataStatus_topembed"
-}
-symbols {
-  0 "FP=1,FR=0"
-}
-noScroll
-endObjectProperties
-
-# (Embedded Window)
-object activePipClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 35
-w 485
-h 65
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 11
-displaySource "menu"
-filePv "LOC\\dummy=i:0"
-sizeOfs 5
-numDsps 1
-displayFileName {
-  0 "OdinDataStatus1"
-}
-symbols {
-  0 "RANK=1"
-}
-noScroll
-endObjectProperties
-
-# (Embedded Window)
-object activePipClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 95
-w 485
-h 65
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 11
-displaySource "menu"
-filePv "LOC\\dummy=i:0"
-file "OdinDataStatus1"
-sizeOfs 5
-numDsps 1
-displayFileName {
-  0 "OdinDataStatus1"
-}
-symbols {
-  0 "RANK=2"
+  0 "OdinDataStatus8"
 }
 noScroll
 endObjectProperties

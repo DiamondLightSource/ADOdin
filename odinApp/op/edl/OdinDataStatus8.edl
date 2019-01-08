@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 747
-y 379
+y 416
 w 481
 h 523
 font "arial-medium-r-12.0"
@@ -71,7 +71,7 @@ filePv "LOC\\dummy=i:0"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataStatus1"
+  0 "OdinDataStatus_embed"
 }
 symbols {
   0 "RANK=1"
@@ -95,11 +95,11 @@ topShadowColor index 1
 botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-file "OdinDataStatus1"
+file "OdinDataStatus_embed"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataStatus1"
+  0 "OdinDataStatus_embed"
 }
 symbols {
   0 "RANK=2"
@@ -123,11 +123,11 @@ topShadowColor index 1
 botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-file "OdinDataStatus1"
+file "OdinDataStatus_embed"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataStatus1"
+  0 "OdinDataStatus_embed"
 }
 symbols {
   0 "RANK=3"
@@ -151,11 +151,11 @@ topShadowColor index 1
 botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-file "OdinDataStatus1"
+file "OdinDataStatus_embed"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataStatus1"
+  0 "OdinDataStatus_embed"
 }
 symbols {
   0 "RANK=4"
@@ -182,7 +182,7 @@ filePv "LOC\\dummy=i:0"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataStatus1"
+  0 "OdinDataStatus_embed"
 }
 symbols {
   0 "RANK=5"
@@ -206,11 +206,11 @@ topShadowColor index 1
 botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-file "OdinDataStatus1"
+file "OdinDataStatus_embed"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataStatus1"
+  0 "OdinDataStatus_embed"
 }
 symbols {
   0 "RANK=6"
@@ -234,11 +234,11 @@ topShadowColor index 1
 botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-file "OdinDataStatus1"
+file "OdinDataStatus_embed"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataStatus1"
+  0 "OdinDataStatus_embed"
 }
 symbols {
   0 "RANK=7"
@@ -262,11 +262,11 @@ topShadowColor index 1
 botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-file "OdinDataStatus1"
+file "OdinDataStatus_embed"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataStatus1"
+  0 "OdinDataStatus_embed"
 }
 symbols {
   0 "RANK=8"

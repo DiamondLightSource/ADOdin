@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 913
-y 320
+y 357
 w 535
 h 85
 font "arial-medium-r-12.0"
@@ -42,7 +42,6 @@ topShadowColor index 1
 botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-file "OdinDataStatus1"
 sizeOfs 5
 numDsps 1
 displayFileName {

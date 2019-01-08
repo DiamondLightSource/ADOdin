@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 234
-y 452
+x 635
+y 287
 w 481
-h 62
+h 104
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -23,380 +23,30 @@ title "OdinData Status"
 showGrid
 snapToGrid
 gridSize 5
+disableScroll
 endScreenProperties
 
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 5
-y 30
-w 405
-h 30
-lineColor index 14
-fill
-fillColor index 3
-endObjectProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 5
-y 0
-w 115
-h 30
-lineColor index 14
-fill
-fillColor index 3
-endObjectProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 120
-y 0
-w 290
-h 30
-lineColor index 14
-fill
-fillColor index 3
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 310
-y 5
-w 50
-h 20
-controlPv "$(P):OD$(RANK):FreeBuffers_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Byte)
-object ByteClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 90
-y 5
-w 25
-h 20
-controlPv "$(P):OD$(RANK):Writing_RBV"
-lineColor index 14
-onColor index 15
-offColor index 19
-lineWidth 2
-numBits 1
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 45
-y 35
-w 315
-h 20
-controlPv "$(P):OD$(RANK):FPErrorMessage_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-10.0"
-fontAlign "right"
-lineWidth 0
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
+# (Embedded Window)
+object activePipClass
 beginObjectProperties
 major 4
 minor 1
 release 0
-x 365
-y 35
-w 40
-h 20
-fgColor index 25
-onColor index 3
-offColor index 3
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):OD$(RANK):FPClearErrors"
-pressValue "0"
-onLabel "Clear"
-offLabel "Clear"
-3d
-font "arial-bold-r-10.0"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 125
-y 5
-w 60
-h 20
-controlPv "$(P):OD$(RANK):FramesReceived_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 190
-y 5
-w 55
-h 20
-controlPv "$(P):OD$(RANK):FramesDropped_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 10
-y 5
-w 20
-h 20
-controlPv "$(P):OD$(RANK):ProcessRank_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Byte)
-object ByteClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 50
-y 5
-w 10
-h 20
-controlPv "$(P):OD$(RANK):FPProcessConnected_RBV"
-lineColor index 14
-onColor index 15
-offColor index 24
-lineWidth 2
-numBits 1
-endObjectProperties
-
-# (Byte)
-object ByteClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 40
-y 5
-w 10
-h 20
-controlPv "$(P):OD$(RANK):FRProcessConnected_RBV"
-lineColor index 14
-onColor index 15
-offColor index 24
-lineWidth 2
-numBits 1
-endObjectProperties
-
-# (Byte)
-object ByteClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 65
-y 5
-w 20
-h 20
-controlPv "$(P):OD$(RANK):FPErrorState_RBV"
-lineColor index 14
-onColor index 20
-offColor index 15
-lineWidth 2
-numBits 1
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 10
-y 40
-w 30
-h 13
-font "arial-bold-r-12.0"
+x 0
+y 0
+w 480
+h 95
 fgColor index 14
 bgColor index 3
-useDisplayBg
-value {
-  "Error"
-}
-autoSize
-endObjectProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 410
-y 0
-w 65
-h 60
-lineColor index 14
-fill
-fillColor index 3
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 415
-y 5
-w 55
-h 20
-controlPv "$(P):OD$(RANK):NumCaptured_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 415
-y 35
-w 55
-h 20
-controlPv "$(P):OD$(RANK):NumExpected_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Lines)
-object activeLineClass
-beginObjectProperties
-major 4
-minor 0
-release 1
-x 5
-y 60
-w 470
-h 0
-lineColor index 14
-fillColor index 3
-lineWidth 2
-numPoints 2
-xPoints {
-  0 475
-  1 5
-}
-yPoints {
-  0 60
-  1 60
-}
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 365
-y 5
-w 40
-h 20
-fgColor index 25
-onColor index 3
-offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):OD$(RANK):ResetStatistics.PROC"
-pressValue "1"
-onLabel "Reset"
-offLabel "Reset"
-3d
-font "arial-bold-r-10.0"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 250
-y 5
-w 55
-h 20
-controlPv "$(P):OD$(RANK):FramesTimedOut_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "OdinDataStatus8"
+}
+noScroll
 endObjectProperties
 
