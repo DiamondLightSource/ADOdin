@@ -63,6 +63,35 @@ record(longin, "$(P)$(R)FAN:ConsumersConnected_RBV")
 
 #### Config #######################################################################################
 
+# Fetch AcquisitionID from OdinDataDriver
+record(acalcout, "$(P)$(R)FAN:AcqID_Calc")
+{
+    field(INAA, "$(P)$(R)FP:AcquisitionID CP")
+    field(CALC, "AA")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
+    field(OUT,  "$(P)$(R)FAN:AcquisitionID PP")
+    field(NELM, "256")
+    field(NUSE, "256")
+}
+
+record(waveform, "$(P)$(R)FAN:AcquisitionID")
+{
+    field(DTYP, "asynOctetWrite")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(INP,  "@asyn($(PORT),0,1)_ODS_eiger_fan/config/acqid")
+}
+
+record(waveform, "$(P)$(R)FAN:AcquisitionID_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODS_eiger_fan/config/acqid")
+}
+
 record(longout, "$(P)$(R)FAN:Offset")
 {
     field(DTYP, "asynInt32")
