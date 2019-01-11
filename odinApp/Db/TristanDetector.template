@@ -1,0 +1,92 @@
+# TristanDetector.template
+
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, PORT, Asyn Port name
+# % macro, ADDR, Asyn Port address
+# % macro, TIMEOUT, Timeout
+
+# This associates the template with an edm screen
+# % gui, $(PORT), edmtab, TristanMain.edl, P=$(P),R=$(R)
+
+include "ADBase.template"
+
+# Number of frames taken in current acquisition.
+#% archiver 1 monitor
+record(longin, "$(P)$(R)ArrayCounter_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_status/frames_acquired")
+}
+
+# Operation mode.
+# % autosave 2
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)OperationMode")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/mode")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(ZRST, "Time_Energy")
+    field(ONST, "Time_Only")
+    field(TWST, "Count")
+    field(PINI, "1")
+}
+
+# Operation mode read back.
+record(mbbi, "$(P)$(R)OperationMode_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/mode")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(ZRST, "Time_Energy")
+    field(ONST, "Time_Only")
+    field(TWST, "Count")
+}
+
+# Profile.
+# % autosave 2
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)Profile")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/profile")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(ZRST, "Standard")
+    field(ONST, "Fast")
+    field(TWST, "Energy")
+    field(THST, "User")
+    field(FRST, "Current")
+    field(PINI, "1")
+}
+
+# Operation mode read back.
+record(mbbi, "$(P)$(R)Profile_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/profile")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(ZRST, "Standard")
+    field(ONST, "Fast")
+    field(TWST, "Energy")
+    field(THST, "User")
+    field(FRST, "Current")
+}
+

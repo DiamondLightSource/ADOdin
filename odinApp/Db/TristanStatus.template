@@ -1,0 +1,101 @@
+# femHousekeeping.template
+# Defines the housekeeping parameters available from all FEMs.
+#
+# Parameters:
+#   P       - EPICS name prefix
+#   R       - EPICS plugin name
+#   PORT    - Asyn port
+#   ADDRESS - Asyn address
+#   TOTAL   - Total number of FEMs
+#   TIMEOUT - Timeout
+
+#% archiver 1 monitor
+record(longin, "$(P)$(R)$(ADDRESS):FEMPowerEnabled_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODB$(TOTAL)_status/housekeeping/fem_power_enabled")
+}
+
+#% archiver 1 monitor
+record(longin, "$(P)$(R)$(ADDRESS):OutputAlert_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODB$(TOTAL)_status/housekeeping/output_alert")
+}
+
+#% archiver 1 monitor
+record(longin, "$(P)$(R)$(ADDRESS):PSUTempAlert_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODB$(TOTAL)_status/housekeeping/psu_temp_alert")
+}
+
+#% archiver 1 monitor
+record(longin, "$(P)$(R)$(ADDRESS):FanAlert_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODB$(TOTAL)_status/housekeeping/fan_alert")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):FEMTemp_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/fem/temp")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):RemoteTemp_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/housekeeping/remote_temp")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):PSUTemp_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/housekeeping/psu_temp")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):FanTemp_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/housekeeping/fan_control_temp")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorHumidity_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/humidity")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorTemp_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp")
+}
+
