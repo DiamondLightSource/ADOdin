@@ -4,8 +4,8 @@ from iocbuilder import Device, AutoSubstitution
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.ADCore import makeTemplateInstance
 
-from odin import _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, \
-    find_module_path, expand_template_file, debug_print
+from odin import _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, OdinBatchFile,\
+    find_module_path, expand_template_file, create_batch_entry, debug_print
 
 
 EIGER, EIGER_PATH = find_module_path("eiger-detector")
@@ -40,6 +40,10 @@ class EigerFan(Device):
 
         expand_template_file("eiger_fan_startup", macros, "stEigerFan.sh",
                              executable=True)
+
+    def add_batch_entry(self, entries, beamline, number):
+        entries.append(create_batch_entry(beamline, number, "EigerFan"))
+        return number + 1
 
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
@@ -102,6 +106,10 @@ class EigerMetaListener(Device):
 
         expand_template_file("eiger_meta_startup", macros, "stEigerMetaListener.sh",
                              executable=True)
+
+    def add_batch_entry(self, entries, beamline, number):
+        entries.append(create_batch_entry(beamline, number, "EigerMetaListener"))
+        return number + 1
 
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
@@ -174,8 +182,8 @@ class EigerOdinControlServer(_OdinControlServer):
         self.__dict__.update(locals())
         self.ADAPTERS.extend(["eiger_fan", "meta_listener"])
 
-        self.fan_endpoint = EIGER_FAN.IP
-        self.meta_endpoint = META_LISTENER.IP
+        self.eiger_fan = EIGER_FAN
+        self.meta_listener = META_LISTENER
 
         super(EigerOdinControlServer, self).__init__(
             IP, PORT, ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4
@@ -204,13 +212,13 @@ class EigerOdinControlServer(_OdinControlServer):
         return "[adapter.eiger_fan]\n" \
                "module = eiger.eiger_fan_adapter.EigerFanAdapter\n" \
                "endpoints = {}:5559\n" \
-               "update_interval = 0.5".format(self.fan_endpoint)
+               "update_interval = 0.5".format(self.eiger_fan.IP)
 
     def _create_meta_listener_config_entry(self):
         return "[adapter.meta_listener]\n" \
                "module = odin_data.meta_listener_adapter.MetaListenerAdapter\n" \
                "endpoints = {}:5659\n" \
-               "update_interval = 0.5".format(self.meta_endpoint)
+               "update_interval = 0.5".format(self.meta_listener.IP)
 
 
 class _EigerDetectorTemplate(AutoSubstitution):
@@ -239,3 +247,16 @@ class EigerOdinDataDriver(_OdinDataDriver):
 
     # __init__ arguments
     ArgInfo = _OdinDataDriver.ArgInfo.filtered(without=["DETECTOR"])
+
+
+class EigerOdinBatchFile(OdinBatchFile):
+
+    def add_extra_entries(self, entries, process_number):
+        process_number = \
+            self.odin_control_server.eiger_fan.add_batch_entry(entries, self.beamline,
+                                                               process_number)
+        process_number = \
+            self.odin_control_server.meta_listener.add_batch_entry(entries, self.beamline,
+                                                                   process_number)
+
+        return process_number

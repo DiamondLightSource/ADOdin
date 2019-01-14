@@ -55,6 +55,12 @@ def expand_template_file(template, macros, output_file, executable=False):
     stream.write(output)
 
 
+def create_batch_entry(beamline, number, name):
+    return "{beamline}-EA-ODN-{number:02d} st{name}.sh".format(
+        beamline=beamline, number=number, name=name
+    )
+
+
 class _OdinDataTemplate(AutoSubstitution):
     TemplateFile = "OdinData.template"
 
@@ -94,6 +100,12 @@ class _OdinData(Device):
 
     def create_config_files(self, index):
         raise NotImplementedError("Method must be implemented by child classes")
+
+    def add_batch_entries(self, entries, beamline, number):
+        entries.append(create_batch_entry(beamline, number, "FrameReceiver{}".format(self.RANK)))
+        number += 1
+        entries.append(create_batch_entry(beamline, number, "FrameProcessor{}".format(self.RANK)))
+        return number + 1
 
 
 class _OdinDataServer(Device):
@@ -248,6 +260,10 @@ class _OdinControlServer(Device):
                "module = odin_data.frame_receiver_adapter.FrameReceiverAdapter\n" \
                "endpoints = {}\n" \
                "update_interval = 0.2".format(", ".join(fp_endpoints), ", ".join(fr_endpoints))
+
+    def add_batch_entry(self, entries, beamline, number):
+        entries.append(create_batch_entry(beamline, number, "OdinServer"))
+        return number + 1
 
 
 class _OdinDetector(AsynPort):
@@ -421,4 +437,42 @@ class OdinLogConfig(Device):
     ArgInfo = makeArgInfo(__init__,
         BEAMLINE=Simple("Beamline name, e.g. b21, i02-2", str),
         DETECTOR=Choice("Detector type", ["Excalibur1M", "Excalibur3M", "Eiger4M", "Eiger16M"])
+    )
+
+
+class OdinBatchFile(Device):
+
+    """Create configure-ioc batch file for all processes"""
+
+    # Device attributes
+    AutoInstantiate = True
+
+    def __init__(self, BEAMLINE, ODIN_CONTROL_SERVER):
+        self.__super.__init__()
+        self.odin_control_server = ODIN_CONTROL_SERVER
+        self.beamline = BEAMLINE
+
+        self.create_batch_file()
+
+    def create_batch_file(self):
+        entries = []
+        process_number = 1
+        process_number = \
+            self.odin_control_server.add_batch_entry(entries, self.beamline, process_number)
+        for odin_data_server in self.odin_control_server.odin_data_servers:
+            for odin_data_process in odin_data_server.processes:
+                process_number = \
+                    odin_data_process.add_batch_entries(entries, self.beamline, process_number)
+        self.add_extra_entries(entries, process_number)
+
+        stream = IocDataStream("configure_odin")
+        stream.write("\n".join(entries))
+
+    def add_extra_entries(self, entries, process_number):
+        pass
+
+    # __init__ arguments
+    ArgInfo = makeArgInfo(__init__,
+        BEAMLINE=Simple("Beamline domain name, e.g. BL14I, BL21B", str),
+        ODIN_CONTROL_SERVER=Ident("Odin control server", _OdinControlServer)
     )
