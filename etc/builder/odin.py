@@ -166,6 +166,7 @@ class _OdinDataServer(Device):
 
             output_file = "stFrameReceiver{}.sh".format(rank)
             macros = dict(
+                RANK=rank,
                 OD_ROOT=ODIN_DATA_ROOT,
                 BUFFER_IDX=idx + 1, SHARED_MEMORY=self.SHARED_MEM_SIZE,
                 CTRL_PORT=fr_port_number, IO_THREADS=self.IO_THREADS,
