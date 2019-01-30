@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 481
-y 135
+y 172
 w 419
 h 544
 font "arial-bold-r-12.0"
@@ -222,7 +222,7 @@ fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Image Height / Widtht:"
+  "Image Height / Width:"
 }
 endObjectProperties
 
