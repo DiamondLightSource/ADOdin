@@ -62,6 +62,12 @@
     }
   },
   {
+    "excalibur": {
+      "width": $WIDTH,
+      "height": $HEIGHT
+    }
+  },
+  {
     "view": {
       "dataset_name": "data",
       "live_view_socket_addr": "tcp://0.0.0.0:$LIVE_VIEW_PORT"
