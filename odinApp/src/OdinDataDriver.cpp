@@ -49,79 +49,8 @@ OdinDataDriver::OdinDataDriver(const char * portName, const char * serverHostnam
   // Register the detector API with the Odin client parent
   this->registerAPI(&mAPI);
 
-  mFPConfiguration = createODRESTParam(OdinFPConfig, REST_P_STRING, SSFPConfig, "config_file");
-  mFRConfiguration = createODRESTParam(OdinFRConfig, REST_P_STRING, SSFRConfig, "config_file");
-
-//  if (initialiseAll()) {
-//    asynPrint(pasynUserSelf, ASYN_TRACE_ERROR, "Failed to initialise all OdinData processes\n");
-//  }
-//  printf("Initialised all params\n");
-  mInitialised.resize(mODCount);
-  mFRInitialised.resize(mODCount);
-
   createParams();
   fetchParams();
-}
-
-int OdinDataDriver::initialiseAll()
-{
-  int status = 0;
-  mInitialised.resize(mODCount);
-  mFRInitialised.resize(mODCount);
-  for (int index = 0; index != (int) mODConfig.size(); ++index) {
-    status |= initialiseFR(index);
-    status |= initialiseFP(index);
-  }
-  this->pushParams();
-  return status;
-}
-
-int OdinDataDriver::initialiseFR(int index)
-{
-  int status = 0;
-  mFRInitialised[index] = 0;
-
-  std::string currentConfigFile;
-  // Force a reload of the FR configuration
-  //mFRConfiguration->get(currentConfigFile, index);
-  //mFRConfiguration->put(currentConfigFile, index);
-
-  mFRConfiguration->push();
-
-  if (status) {
-    asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
-              "Failed to initialise OdinData process rank %d\n", index);
-  }
-  else {
-    mFRInitialised[index] = 1;
-  }
-  return status;
-}
-
-int OdinDataDriver::initialiseFP(int index)
-{
-  int status = 0;
-  mInitialised[index] = 0;
-
-  std::string currentConfigFile;
-  // Force a reload of the FP configuration
-  //mFPConfiguration->get(currentConfigFile, index);
-  //mFPConfiguration->put(currentConfigFile, index);
-
-  mFPConfiguration->push();
-
-  // Force re-configure of the dims
-  this->configureImageDims();
-  this->configureChunkDims();
-
-  if (status) {
-    asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
-              "Failed to initialise OdinData process rank %d\n", index);
-  }
-  else {
-    mInitialised[index] = 1;
-  }
-  return status;
 }
 
 void OdinDataDriver::configureOdinDataProcess(const char * ipAddress,
@@ -208,8 +137,6 @@ int OdinDataDriver::createParams()
   mFPClearErrors->setCommand();
 
   // Internal parameters
-  createParam(OdinFPProcessInitialised, asynParamInt32, &mFPProcessInitialised);
-  createParam(OdinFRProcessInitialised, asynParamInt32, &mFRProcessInitialised);
   createParam(OdinFPErrorState,         asynParamInt32, &mFPErrorState);
   createParam(OdinHDF5NumCapturedSum,   asynParamInt32, &mNumCapturedSum);
   createParam(OdinHDF5WritingAny,       asynParamInt32, &mWritingAny);
@@ -233,28 +160,8 @@ RestParam * OdinDataDriver::createODRESTParam(const std::string& asynName,
 
 asynStatus OdinDataDriver::getStatus()
 {
-  int status = 0;
-
   // Fetch status items
-  std::vector<std::string> fp_configs(mODConfig.size());
-  std::vector<std::string> fr_configs(mODConfig.size());
-  for (int index = 0; index != (int) mODConfig.size(); ++index) {
-    getStringParam(index, mFPConfiguration->getIndex(), fp_configs[index]);
-    getStringParam(index, mFRConfiguration->getIndex(), fr_configs[index]);
-  }
   this->fetchParams();
-  for (int index = 0; index != (int) mODConfig.size(); ++index) {
-    std::string new_config;
-    getStringParam(index, mFPConfiguration->getIndex(), new_config);
-    if (new_config == "" && fp_configs[index] != ""){
-      mFPConfiguration->put(fp_configs[index], index);
-    }
-    getStringParam(index, mFRConfiguration->getIndex(), new_config);
-    if (new_config == "" && fr_configs[index] != ""){
-      mFRConfiguration->put(fr_configs[index], index);
-    }
-  }
-
   if (!mAPI.connected()){
     setIntegerParam(ADStatus, ADStatusDisconnected);
     setStringParam(ADStatusMessage, "Unable to connect to Odin Server");
@@ -311,37 +218,6 @@ asynStatus OdinDataDriver::getStatus()
   mTimeoutActive->get(timeoutActive);
   setIntegerParam(mTimeoutActiveAny,
                   std::accumulate(timeoutActive.begin(), timeoutActive.end(), 0) == 0 ? 0 : 1);
-
-  bool connected;
-  for (int index = 0; index != (int) mODConfig.size(); ++index) {
-    mFPProcessConnected->get(connected, index);
-    if (!connected && mInitialised[index] == 1) {
-      // Lost connection - Set not initialised
-      mInitialised[index] = 0;
-    }
-    else if (mInitialised[index] == 0 && connected) {
-      // Restored connection - Re-initialise
-//      initialiseFP(index);
-//      this->pushParams();
-    }
-    setIntegerParam(index, mFPProcessInitialised, mInitialised[index]);
-
-    mFRProcessConnected->get(connected, index);
-    if (!connected && mFRInitialised[index] == 1) {
-      // Lost connection - Set not initialised
-      mFRInitialised[index] = 0;
-    }
-    else if (mFRInitialised[index] == 0 && connected) {
-      // Restored connection - Re-initialise
-//      initialiseFR(index);
-//      this->pushParams();
-    }
-    setIntegerParam(index, mFRProcessInitialised, mFRInitialised[index]);
-  }
-
-  if(status) {
-    return asynError;
-  }
 
   callParamCallbacks();
   return asynSuccess;
@@ -525,14 +401,6 @@ asynStatus OdinDataDriver::writeOctet(asynUser *pasynUser, const char *value,
 
   if (RestParam * p = this->getParamByIndex(function)) {
     int address = -1;
-    if (function == mFPConfiguration->getIndex()) {
-      printf("FP configuration file applied : %s\n", value);
-      getAddress(pasynUser, &address);
-    }
-    if (function == mFRConfiguration->getIndex()) {
-      printf("FR configuration file applied : %s\n", value);
-      getAddress(pasynUser, &address);
-    }
     status |= p->put(value, address);
   }
   if(function < mFirstParam) {
