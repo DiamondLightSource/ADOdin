@@ -4,9 +4,9 @@ major 4
 minor 0
 release 1
 x 466
-y 333
+y 370
 w 547
-h 389
+h 196
 font "arial-bold-r-12.0"
 ctlFont "arial-bold-r-12.0"
 btnFont "arial-bold-r-12.0"
@@ -25,6 +25,44 @@ snapToGrid
 gridSize 5
 disableScroll
 endScreenProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 375
+y 60
+w 45
+h 20
+font "arial-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Width"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 375
+y 110
+w 45
+h 20
+font "arial-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Height"
+}
+endObjectProperties
 
 # (Rectangle)
 object activeRectangleClass
@@ -49,470 +87,6 @@ minor 1
 release 1
 x 5
 y 5
-w 155
-h 13
-font "arial-medium-r-12.0"
-fgColor index 14
-bgColor index 5
-value {
-  "  Processing Configuration  "
-}
-autoSize
-border
-endObjectProperties
-
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 265
-y 65
-w 65
-h 20
-controlPv "$(P)$(R)0FPProcHeight"
-fgColor index 25
-fgAlarm
-bgColor index 3
-fill
-font "arial-medium-r-12.0"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 345
-y 65
-w 65
-h 20
-controlPv "$(P)$(R)0FPProcHeight"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-medium-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 170
-y 65
-w 65
-h 20
-controlPv "$(P)$(R)0FPProcWidth"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-medium-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 90
-y 65
-w 65
-h 20
-controlPv "$(P)$(R)0FPProcWidth"
-fgColor index 25
-fgAlarm
-bgColor index 3
-fill
-font "arial-medium-r-12.0"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 15
-y 30
-w 175
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Process Node Width / Height:"
-}
-endObjectProperties
-
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 265
-y 95
-w 65
-h 20
-controlPv "$(P)$(R)1FPProcHeight"
-fgColor index 25
-fgAlarm
-bgColor index 3
-fill
-font "arial-medium-r-12.0"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 345
-y 95
-w 65
-h 20
-controlPv "$(P)$(R)1FPProcHeight"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-medium-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 170
-y 95
-w 65
-h 20
-controlPv "$(P)$(R)1FPProcWidth"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-medium-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 90
-y 95
-w 65
-h 20
-controlPv "$(P)$(R)1FPProcWidth"
-fgColor index 25
-fgAlarm
-bgColor index 3
-fill
-font "arial-medium-r-12.0"
-endObjectProperties
-
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 265
-y 125
-w 65
-h 20
-controlPv "$(P)$(R)2FPProcHeight"
-fgColor index 25
-fgAlarm
-bgColor index 3
-fill
-font "arial-medium-r-12.0"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 345
-y 125
-w 65
-h 20
-controlPv "$(P)$(R)2FPProcHeight"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-medium-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 170
-y 125
-w 65
-h 20
-controlPv "$(P)$(R)2FPProcWidth"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-medium-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 90
-y 125
-w 65
-h 20
-controlPv "$(P)$(R)2FPProcWidth"
-fgColor index 25
-fgAlarm
-bgColor index 3
-fill
-font "arial-medium-r-12.0"
-endObjectProperties
-
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 265
-y 155
-w 65
-h 20
-controlPv "$(P)$(R)3FPProcHeight"
-fgColor index 25
-fgAlarm
-bgColor index 3
-fill
-font "arial-medium-r-12.0"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 345
-y 155
-w 65
-h 20
-controlPv "$(P)$(R)3FPProcHeight"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-medium-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 170
-y 155
-w 65
-h 20
-controlPv "$(P)$(R)3FPProcWidth"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-medium-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 90
-y 155
-w 65
-h 20
-controlPv "$(P)$(R)3FPProcWidth"
-fgColor index 25
-fgAlarm
-bgColor index 3
-fill
-font "arial-medium-r-12.0"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 30
-y 65
-w 25
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "OD1"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 30
-y 95
-w 25
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "OD2"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 30
-y 125
-w 25
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "OD3"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 30
-y 155
-w 25
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "OD4"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 375
-y 250
-w 45
-h 20
-font "arial-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Width"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 375
-y 300
-w 45
-h 20
-font "arial-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Height"
-}
-endObjectProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 5
-y 205
-w 535
-h 175
-lineColor index 14
-fill
-fillColor index 3
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 5
-y 195
 w 98
 h 13
 font "arial-medium-r-12.0"
@@ -532,7 +106,7 @@ major 10
 minor 0
 release 0
 x 90
-y 235
+y 45
 w 75
 h 20
 controlPv "$(P):OD:0:PacketsLost_RBV"
@@ -551,7 +125,7 @@ major 4
 minor 1
 release 0
 x 175
-y 235
+y 45
 w 60
 h 20
 fgColor index 25
@@ -574,7 +148,7 @@ major 10
 minor 0
 release 0
 x 90
-y 265
+y 75
 w 75
 h 20
 controlPv "$(P):OD:1:PacketsLost_RBV"
@@ -593,7 +167,7 @@ major 4
 minor 1
 release 0
 x 175
-y 265
+y 75
 w 60
 h 20
 fgColor index 25
@@ -616,7 +190,7 @@ major 10
 minor 0
 release 0
 x 90
-y 295
+y 105
 w 75
 h 20
 controlPv "$(P):OD:2:PacketsLost_RBV"
@@ -635,7 +209,7 @@ major 4
 minor 1
 release 0
 x 175
-y 295
+y 105
 w 60
 h 20
 fgColor index 25
@@ -658,7 +232,7 @@ major 10
 minor 0
 release 0
 x 90
-y 325
+y 135
 w 75
 h 20
 controlPv "$(P):OD:3:PacketsLost_RBV"
@@ -677,7 +251,7 @@ major 4
 minor 1
 release 0
 x 175
-y 325
+y 135
 w 60
 h 20
 fgColor index 25
@@ -700,7 +274,7 @@ major 4
 minor 1
 release 1
 x 30
-y 235
+y 45
 w 25
 h 20
 font "arial-bold-r-12.0"
@@ -719,7 +293,7 @@ major 4
 minor 1
 release 1
 x 30
-y 265
+y 75
 w 25
 h 20
 font "arial-bold-r-12.0"
@@ -738,7 +312,7 @@ major 4
 minor 1
 release 1
 x 30
-y 295
+y 105
 w 25
 h 20
 font "arial-bold-r-12.0"
@@ -757,7 +331,7 @@ major 4
 minor 1
 release 1
 x 30
-y 325
+y 135
 w 25
 h 20
 font "arial-bold-r-12.0"
