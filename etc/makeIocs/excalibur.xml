@@ -13,10 +13,6 @@
 	<EPICS_BASE.dbpf name="ChunkWidth" pv="EXCALIBUR:OD:NumColChunks" value="2048"/>
 	<EPICS_BASE.dbpf name="ChunkHeight" pv="EXCALIBUR:OD:NumRowChunks" value="512"/>
 	<EPICS_BASE.dbpf name="DataType" pv="EXCALIBUR:OD:DataType" value="UInt16"/>
-	<EPICS_BASE.dbpf name="FR1Config" pv="EXCALIBUR:OD1:FRConfigFile" value="$(INSTALL)/excaliburApp/data/fr1.json"/>
-	<EPICS_BASE.dbpf name="FP1Config" pv="EXCALIBUR:OD1:FPConfigFile" value="$(INSTALL)/excaliburApp/data/fp1.json"/>
-	<EPICS_BASE.dbpf name="FR2Config" pv="EXCALIBUR:OD2:FRConfigFile" value="$(INSTALL)/excaliburApp/data/fr2.json"/>
-	<EPICS_BASE.dbpf name="FP2Config" pv="EXCALIBUR:OD2:FPConfigFile" value="$(INSTALL)/excaliburApp/data/fp2.json"/>
 	<EPICS_BASE.dbpf name="UDPConfig" pv="EXCALIBUR:CAM:UdpConfigFile" value="$(INSTALL)/excaliburApp/data/udp_excalibur.json"/>
 	<!--<EPICS_BASE.dbpf pv="EXCALIBUR:CAM:CalFileRoot" value="/dls_sw/i13-1/epics/excalibur/V2.7"/>-->
 </components>
