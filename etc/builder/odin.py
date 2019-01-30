@@ -176,6 +176,7 @@ class _OdinDataServer(Device):
 
             output_file = "stFrameProcessor{}.sh".format(rank)
             macros = dict(
+                RANK=rank,
                 OD_ROOT=ODIN_DATA_ROOT,
                 CTRL_PORT=fp_port_number,
                 READY_PORT=ready_port_number, RELEASE_PORT=release_port_number,
