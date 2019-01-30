@@ -4,5 +4,4 @@ SCRIPT_DIR="$$( cd "$$( dirname "$$0" )" && pwd )"
 
 export HDF5_PLUGIN_PATH=/dls_sw/prod/tools/RHEL6-x86_64/hdf5filters/0-3-0/prefix/hdf5_1.10/h5plugin
 
-cd $OD_ROOT
-${NUMA}prefix/bin/frameProcessor --ctrl=tcp://0.0.0.0:$CTRL_PORT --ready=tcp://127.0.0.1:$READY_PORT --release=tcp://127.0.0.1:$RELEASE_PORT --logconfig $$SCRIPT_DIR/log4cxx.xml
+$OD_ROOT/${NUMA}prefix/bin/frameProcessor --ctrl=tcp://0.0.0.0:$CTRL_PORT --ready=tcp://127.0.0.1:$READY_PORT --release=tcp://127.0.0.1:$RELEASE_PORT --json_file=$$SCRIPT_DIR/fp$RANK.json --logconfig $$SCRIPT_DIR/log4cxx.xml
