@@ -230,8 +230,6 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
                 DET=detector_arg,
                 PORT=args["PORT"],
                 TIMEOUT=args["TIMEOUT"],
-                HEIGHT=EXCALIBUR_DIMENSIONS[sensor][1],
-                WIDTH=EXCALIBUR_DIMENSIONS[sensor][0],
                 OD_DET_CONFIG_GUI=self.gui_macro(args["PORT"], "ODExcalbur"),
                 ACQ_GUI=self.gui_macro(args["PORT"], "Acquisition"),
                 **self.create_gui_macros(args["PORT"])

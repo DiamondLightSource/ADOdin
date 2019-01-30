@@ -361,7 +361,6 @@ class _OdinDataDriver(AsynPort):
                 args["PORT"] = PORT
                 args["ADDR"] = odin_data.index - 1
                 args["R"] = odin_data.R
-                args["OD"] = args["R"]
                 args["TOTAL"] = self.total_processes
                 _OdinDataTemplate(**args)
 
@@ -411,8 +410,7 @@ class _OdinDataDriver(AsynPort):
 
     def create_gui_macros(self, port):
         return dict(
-            OD_HDF_STATUS_GUI=self.gui_macro(port, "HDFStatus"),
-            OD_HDF_CONFIG_GUI=self.gui_macro(port, "HDFConfig")
+            OD_HDF_STATUS_GUI=self.gui_macro(port, "HDFStatus")
         )
 
 
