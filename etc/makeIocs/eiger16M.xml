@@ -19,12 +19,4 @@
 	<EPICS_BASE.dbpf name="BlocksPerFile" pv="EIGER:OD:BlocksPerFile" value="1"/>
 	<EPICS_BASE.dbpf name="CloseFileTimeout" pv="EIGER:OD:CloseFileTimeout" value="10000"/>
 	<EPICS_BASE.dbpf name="EarliestHDF5Version" pv="EIGER:OD:EarliestHDF5Version" value="Yes"/>
-	<EPICS_BASE.dbpf name="FR1Config" pv="EIGER:OD1:FRConfigFile" value="$(INSTALL)/eiger16MApp/data/fr1.json"/>
-	<EPICS_BASE.dbpf name="FR2Config" pv="EIGER:OD2:FRConfigFile" value="$(INSTALL)/eiger16MApp/data/fr2.json"/>
-	<EPICS_BASE.dbpf name="FR3Config" pv="EIGER:OD3:FRConfigFile" value="$(INSTALL)/eiger16MApp/data/fr3.json"/>
-	<EPICS_BASE.dbpf name="FR4Config" pv="EIGER:OD4:FRConfigFile" value="$(INSTALL)/eiger16MApp/data/fr4.json"/>
-	<EPICS_BASE.dbpf name="FP1Config" pv="EIGER:OD1:FPConfigFile" value="$(INSTALL)/eiger16MApp/data/fp1.json"/>
-	<EPICS_BASE.dbpf name="FP2Config" pv="EIGER:OD2:FPConfigFile" value="$(INSTALL)/eiger16MApp/data/fp2.json"/>
-	<EPICS_BASE.dbpf name="FP3Config" pv="EIGER:OD3:FPConfigFile" value="$(INSTALL)/eiger16MApp/data/fp3.json"/>
-	<EPICS_BASE.dbpf name="FP4Config" pv="EIGER:OD4:FPConfigFile" value="$(INSTALL)/eiger16MApp/data/fp4.json"/>
 </components>
