@@ -26,6 +26,7 @@ record(longin, "$(P)$(R)FAN:CurrentFrame_RBV")
     field(INP,  "@asyn($(PORT),0,1)_ODI1_eiger_fan/status/frame")
 }
 
+#% archiver 1 monitor
 record(longin, "$(P)$(R)FAN:FramesSent_RBV")
 {
     field(DTYP, "asynInt32")
@@ -47,6 +48,7 @@ record(stringin, "$(P)$(R)FAN:State_RBV")
     field(INP,  "@asyn($(PORT),0,1)_ODS1_eiger_fan/status/state")
 }
 
+#% archiver 1 monitor
 record(scalcout, "$(P)$(R)FAN:StateReady_RBV")
 {
      field(INAA, "$(P)$(R)FAN:State_RBV CP")

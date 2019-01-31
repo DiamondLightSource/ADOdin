@@ -93,6 +93,7 @@ record(bi, "$(P)$(R)META:AcquisitionActive_RBV")
     field(SCAN, "I/O Intr")
 }
 
+#% archiver 1 monitor
 record(longin, "$(P)$(R)META:FramesWritten_RBV")
 {
     field(DTYP, "asynInt32")

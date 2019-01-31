@@ -353,6 +353,7 @@ record(busy, "$(P)$(R)Capture")
 }
 
 # -- Map capture readback to && of individual processes writing state
+#% archiver 1 monitor
 record(bi, "$(P)$(R)Capture_RBV")
 {
     field(DTYP, "asynInt32")
@@ -381,6 +382,7 @@ record(longout, "$(P)$(R)NumCapture")
     info(autosaveFields, "VAL")
 }
 
+#% archiver 1 monitor
 record(longin, "$(P)$(R)NumCapture_RBV")
 {
     field(DTYP, "asynInt32")
@@ -388,6 +390,7 @@ record(longin, "$(P)$(R)NumCapture_RBV")
     field(SCAN, "I/O Intr")
 }
 
+#% archiver 1 monitor
 record(longin, "$(P)$(R)NumCaptured_RBV")
 {
     field(DTYP, "asynInt32")
