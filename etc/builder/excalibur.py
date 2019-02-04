@@ -44,6 +44,8 @@ class _ExcaliburOdinData(_OdinData):
                       RX_PORT_4=self.base_udp_port + 3,
                       RX_PORT_5=self.base_udp_port + 4,
                       RX_PORT_6=self.base_udp_port + 5,
+                      WIDTH=EXCALIBUR_DIMENSIONS[self.sensor][0],
+                      HEIGHT=EXCALIBUR_DIMENSIONS[self.sensor][1],
                       LIVE_VIEW_PORT=5020+index)
 
         super(_ExcaliburOdinData, self).create_config_file(
@@ -228,8 +230,6 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
                 DET=detector_arg,
                 PORT=args["PORT"],
                 TIMEOUT=args["TIMEOUT"],
-                HEIGHT=EXCALIBUR_DIMENSIONS[sensor][1],
-                WIDTH=EXCALIBUR_DIMENSIONS[sensor][0],
                 OD_DET_CONFIG_GUI=self.gui_macro(args["PORT"], "ODExcalbur"),
                 ACQ_GUI=self.gui_macro(args["PORT"], "Acquisition"),
                 **self.create_gui_macros(args["PORT"])

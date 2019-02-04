@@ -7,17 +7,12 @@
 
 // Odin Server
 #define OdinRestAPIVersion             "ODIN_REST_API_VERSION"
-// Process Configuration
-#define OdinFPConfig                   "ODIN_FP_CONFIG"
-#define OdinFRConfig                   "ODIN_FR_CONFIG"
 // OdinData
 #define OdinProcessRank                "ODIN_PROCESS_RANK"
 #define OdinFPCount                    "ODIN_FP_COUNT"
 #define OdinFRCount                    "ODIN_FR_COUNT"
 #define OdinFRProcessConnected         "ODIN_FR_PROCESS_CONNECTED"
 #define OdinFPProcessConnected         "ODIN_FP_PROCESS_CONNECTED"
-#define OdinFRProcessInitialised       "ODIN_FR_PROCESS_INITIALISED"
-#define OdinFPProcessInitialised       "ODIN_FP_PROCESS_INITIALISED"
 #define OdinFPErrorMessage             "ODIN_FP_ERROR_MESSAGE"
 #define OdinFPErrorState               "ODIN_FP_ERROR_STATE"
 #define OdinFPClearErrors              "ODIN_FP_CLEAR_ERRORS"
@@ -98,19 +93,12 @@ class OdinDataDriver : public OdinClient
   char mHostname[512];
   OdinDataRestAPI mAPI;
 
-  int initialiseFP(int index);
-  int initialiseFR(int index);
-  int initialiseAll();
-  std::vector<int> mFRInitialised;
-  std::vector<int> mInitialised;
   int createParams();
 
   RestParam * createODRESTParam(const std::string &asynName, rest_param_type_t restType,
                                 sys_t subSystem, const std::string &name);
 
   RestParam * mAPIVersion;
-  RestParam * mFPConfiguration;
-  RestParam * mFRConfiguration;
   RestParam * mConnected;
   RestParam * mNumImages;
   RestParam * mFileExtension;
@@ -147,8 +135,6 @@ class OdinDataDriver : public OdinClient
   RestParam * mNumExpected;
 
   // Internal PVs
-  int mFPProcessInitialised;
-  int mFRProcessInitialised;
   int mFPErrorState;
   int mNumCapturedSum;
   int mWritingAny;

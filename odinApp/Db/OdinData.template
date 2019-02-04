@@ -1,6 +1,5 @@
 #% macro, P, Device Prefix
 #% macro, R, Device Suffix
-#% macro, OD, OdinDataDriver Suffix
 #% macro, PORT, Asyn Port name
 #% macro, TIMEOUT, Timeout
 #% macro, ADDR, Asyn Port address
@@ -8,40 +7,6 @@
 
 # % gui, $(PORT), readback, Write filename,   $(P)$(R)FullFileName_RBV
 # % gui, $(PORT), readback, N captured,   $(P)$(R)NumCaptured_RBV
-
-record(calcout, "$(P)$(R)CalcReconnected")
-{
-    field(INPA, "$(P)$(OD)DetectorState_RBV CP")
-    field(CALC, "A=9?0:1")
-    field(OUT,  "$(P)$(R)ReconnectFan.PROC PP")
-    field(OOPT, "Transition To Non-zero")
-}
-
-record(fanout, "$(P)$(R)ReconnectFan")
-{
-    field(LNK1, "$(P)$(R)FPConfigFile.PROC PP")
-    field(LNK2, "$(P)$(R)FRConfigFile.PROC PP")
-}
-
-record(waveform, "$(P)$(R)FPConfigFile")
-{
-     field(PINI, "NO")
-     field(DTYP, "asynOctetWrite")
-     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FP_CONFIG")
-     field(FTVL, "CHAR")
-     field(NELM, "256")
-     info(autosaveFields, "VAL")
-}
-
-record(waveform, "$(P)$(R)FRConfigFile")
-{
-     field(PINI, "NO")
-     field(DTYP, "asynOctetWrite")
-     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FR_CONFIG")
-     field(FTVL, "CHAR")
-     field(NELM, "256")
-     info(autosaveFields, "VAL")
-}
 
 ###################################################################
 #  Reset the FrameReceiver statistics                             #
@@ -76,14 +41,6 @@ record(longin, "$(P)$(R)FPProcessConnected_RBV")
     field(PINI, "NO")
     field(SCAN, "I/O Intr")
 }
-
-#record(longin, "$(P)$(R)ProcessInitialised_RBV")
-#{
-#    field(DTYP, "asynInt32")
-#    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_PROCESS_INITIALISED")
-#    field(PINI, "NO")
-#    field(SCAN, "I/O Intr")
-#}
 
 record(waveform, "$(P)$(R)FPErrorMessage_RBV")
 {
