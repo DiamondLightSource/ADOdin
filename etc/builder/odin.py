@@ -1,7 +1,4 @@
-import os
-from string import Template
-
-from dls_dependency_tree import dependency_tree
+import json
 
 from iocbuilder import AutoSubstitution, Device
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
@@ -11,54 +8,16 @@ from iocbuilder.modules.ADCore import ADCore, ADBaseTemplate, makeTemplateInstan
 from iocbuilder.modules.restClient import restClient
 from iocbuilder.modules.calc import Calc
 
-
-def debug_print(message, level):
-    if int(os.getenv("ODIN_BUILDER_DEBUG", 0)) == level:
-        print(message)
+from util import debug_print, find_module_path, data_file_path, expand_template_file, \
+    create_batch_entry
 
 
-ADODIN_ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../.."))
-ADODIN_DATA = os.path.join(ADODIN_ROOT, "data")
-
-TREE = None
-
-
-def find_module_path(module):
-    global TREE
-    if TREE is None:
-        TREE = dependency_tree()
-        TREE.process_module(ADODIN_ROOT)
-    for macro, path in TREE.macros.items():
-        if "/{}".format(module) in path:
-            return macro, path
-
+# ~~~~~~~~ #
+# OdinData #
+# ~~~~~~~~ #
 
 ODIN_DATA_MACRO, ODIN_DATA_ROOT = find_module_path("odin-data")
 debug_print("OdinData: {} = {}".format(ODIN_DATA_MACRO, ODIN_DATA_ROOT), 1)
-
-
-def expand_template_file(template, macros, output_file, executable=False):
-    if executable:
-        mode = 0755
-    else:
-        mode = None
-
-    with open(os.path.join(ADODIN_DATA, template)) as template_file:
-        template_config = Template(template_file.read())
-
-    output = template_config.substitute(macros)
-    debug_print("--- {} ----------------------------------------------".format(output_file), 2)
-    debug_print(output, 2)
-    debug_print("---", 2)
-
-    stream = IocDataStream(output_file, mode)
-    stream.write(output)
-
-
-def create_batch_entry(beamline, number, name):
-    return "{beamline}-EA-ODN-{number:02d} st{name}.sh".format(
-        beamline=beamline, number=number, name=name
-    )
 
 
 class _OdinDataTemplate(AutoSubstitution):
@@ -69,43 +28,149 @@ class _OdinData(Device):
 
     """Store configuration for an OdinData process"""
     INDEX = 1  # Unique index for each OdinData instance
-    RANK = 0
+    RANK = None
     FP_ENDPOINT = ""
     FR_ENDPOINT = ""
 
     # Device attributes
     AutoInstantiate = True
 
-    def __init__(self, server, READY, RELEASE, META):
+    def __init__(self, server, READY, RELEASE, META, PLUGINS):
         self.__super.__init__()
         # Update attributes with parameters
         self.__dict__.update(locals())
 
         self.IP = server.IP
+        self.plugins = PLUGINS
 
         # Create unique R MACRO for template file - OD1, OD2 etc.
         self.R = ":OD{}:".format(self.INDEX)
         self.index = _OdinData.INDEX
         _OdinData.INDEX += 1
 
-    def create_config_file(self, prefix, template, index, extra_macros=None):
+    def create_config_file(self, prefix, template, extra_macros=None):
         macros = dict(
             IP=self.server.IP, OD_ROOT=ODIN_DATA_ROOT,
             RD_PORT=self.READY, RL_PORT=self.RELEASE, META_PORT=self.META
         )
         if extra_macros is not None:
             macros.update(extra_macros)
+        if self.plugins is not None:
+            load_entries = []
+            connect_entries = []
+            config_entries = []
+            for plugin in self.plugins:
+                load_entries.append(plugin.create_config_load_entry())
+                connect_entries.append(plugin.create_config_connect_entry())
+                config_entries += plugin.create_extra_config_entries(self.RANK)
+            custom_plugin_config_macros = dict(
+                LOAD_ENTRIES=",\n  ".join(load_entries),
+                CONNECT_ENTRIES=",\n  ".join(connect_entries),
+                CONFIG_ENTRIES=",\n  ".join(config_entries)
+            )
+            macros.update(custom_plugin_config_macros)
 
-        expand_template_file(template, macros, "{}{}.json".format(prefix, index))
+        expand_template_file(template, macros, "{}{}.json".format(prefix, self.RANK + 1))
 
     def create_config_files(self, index):
         raise NotImplementedError("Method must be implemented by child classes")
 
     def add_batch_entries(self, entries, beamline, number):
-        entries.append(create_batch_entry(beamline, number, "FrameReceiver{}".format(self.RANK)))
+        entries.append(
+            create_batch_entry(beamline, number, "FrameReceiver{}".format(self.RANK + 1))
+        )
         number += 1
-        entries.append(create_batch_entry(beamline, number, "FrameProcessor{}".format(self.RANK)))
+        entries.append(
+            create_batch_entry(beamline, number, "FrameProcessor{}".format(self.RANK + 1))
+        )
         return number + 1
+
+
+class FrameProcessorPlugin(Device):
+
+    NAME = None
+    CLASS_NAME = None
+    LIBRARY_NAME = None
+    ROOT_PATH = ODIN_DATA_ROOT
+
+    TEMPLATE = None
+    TEMPLATE_INSTANTIATED = False
+
+    def __init__(self, source=None):
+        self.template_args = None
+
+        if source is not None:
+            self.source = source.NAME
+        else:
+            self.source = "frame_receiver"
+
+    def create_config_load_entry(self):
+        library_name = self.LIBRARY_NAME if self.LIBRARY_NAME is not None else self.CLASS_NAME
+        entry = {
+            "plugin": {
+                "load": {
+                    "index": self.NAME,
+                    "name": self.CLASS_NAME,
+                    "library": "{}/prefix/lib/lib{}.so".format(self.ROOT_PATH, library_name)
+                }
+            }
+        }
+        return self._create_entry(entry)
+
+    def create_config_connect_entry(self):
+        entry = {
+            "plugin": {
+                "connect": {
+                    "index": self.NAME,
+                    "connection": self.source,
+                }
+            }
+        }
+        return self._create_entry(entry)
+
+    def create_extra_config_entries(self, rank):
+        return []
+
+    @staticmethod
+    def _create_entry(dictionary):
+        entry = json.dumps(dictionary, indent=2)
+        return entry.replace("\n", "\n  ")
+
+    def create_template(self, template_args):
+        if self.TEMPLATE is not None and not self.TEMPLATE_INSTANTIATED:
+            makeTemplateInstance(self.TEMPLATE, locals(), template_args)
+            self.template_args = template_args
+        self.TEMPLATE_INSTANTIATED = True
+
+
+FrameProcessorPlugin.ArgInfo = makeArgInfo(FrameProcessorPlugin.__init__,
+    source=Ident("Plugin to connect to", FrameProcessorPlugin)
+)
+
+
+class PluginConfig(Device):
+
+    def __init__(self, PLUGIN_1=None, PLUGIN_2=None, PLUGIN_3=None, PLUGIN_4=None, PLUGIN_5=None,
+                 PLUGIN_6=None, PLUGIN_7=None, PLUGIN_8=None):
+        self.plugins = [plugin for plugin in
+                        [PLUGIN_1, PLUGIN_2, PLUGIN_3, PLUGIN_4,
+                         PLUGIN_5, PLUGIN_6, PLUGIN_7, PLUGIN_8]
+                        if plugin is not None]
+
+    ArgInfo = makeArgInfo(__init__,
+        PLUGIN_1=Ident("Plugin 1", FrameProcessorPlugin),
+        PLUGIN_2=Ident("Plugin 2", FrameProcessorPlugin),
+        PLUGIN_3=Ident("Plugin 3", FrameProcessorPlugin),
+        PLUGIN_4=Ident("Plugin 4", FrameProcessorPlugin),
+        PLUGIN_5=Ident("Plugin 5", FrameProcessorPlugin),
+        PLUGIN_6=Ident("Plugin 6", FrameProcessorPlugin),
+        PLUGIN_7=Ident("Plugin 7", FrameProcessorPlugin),
+        PLUGIN_8=Ident("Plugin 8", FrameProcessorPlugin)
+    )
+
+    def __iter__(self):
+        for plugin in self.plugins:
+            yield plugin
 
 
 class _OdinDataServer(Device):
@@ -117,16 +182,19 @@ class _OdinDataServer(Device):
     # Device attributes
     AutoInstantiate = True
 
-    def __init__(self, IP, PROCESSES, SHARED_MEM_SIZE, IO_THREADS=1, TOTAL_NUMA_NODES=0):
+    def __init__(self, IP, PROCESSES, SHARED_MEM_SIZE, PLUGIN_CONFIG=None,
+                 IO_THREADS=1, TOTAL_NUMA_NODES=0):
         self.__super.__init__()
         # Update attributes with parameters
         self.__dict__.update(locals())
+
+        self.plugins = PLUGIN_CONFIG
 
         self.processes = []
         for _ in range(PROCESSES):
             self.processes.append(
                 self.create_odin_data_process(
-                    self, self.PORT_BASE + 1, self.PORT_BASE + 2, self.PORT_BASE + 8)
+                    self, self.PORT_BASE + 1, self.PORT_BASE + 2, self.PORT_BASE + 8, PLUGIN_CONFIG)
             )
             self.PORT_BASE += 10
 
@@ -136,16 +204,22 @@ class _OdinDataServer(Device):
         IP=Simple("IP address of server hosting OdinData processes", str),
         PROCESSES=Simple("Number of OdinData processes on this server", int),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
+        PLUGIN_CONFIG=Ident("Define a custom set of plugins", PluginConfig),
         IO_THREADS=Simple("Number of FR Ipc Channel IO threads to use", int),
         TOTAL_NUMA_NODES=Simple("Total number of numa nodes available to distribute processes over"
                                 " - Optional for performance tuning", int)
     )
 
-    def create_odin_data_process(self, server, ready, release, meta):
+    def create_odin_data_process(self, server, ready, release, meta, plugin_config):
         raise NotImplementedError("Method must be implemented by child classes")
 
-    def create_od_startup_scripts(self, server_rank, total_servers):
+    def configure_processes(self, server_rank, total_servers):
         rank = server_rank
+        for idx, process in enumerate(self.processes):
+            process.RANK = rank
+            rank += total_servers
+
+    def create_od_startup_scripts(self):
         for idx, process in enumerate(self.processes):
             fp_port_number = 5004 + (10 * idx)
             fr_port_number = 5000 + (10 * idx)
@@ -160,37 +234,60 @@ class _OdinDataServer(Device):
                 numa_call = ""
 
             # Store server designation on OdinData object
-            process.RANK = rank
             process.FP_ENDPOINT = "{}:{}".format(self.IP, fp_port_number)
             process.FR_ENDPOINT = "{}:{}".format(self.IP, fr_port_number)
 
-            output_file = "stFrameReceiver{}.sh".format(rank)
+            output_file = "stFrameReceiver{}.sh".format(process.RANK + 1)
             macros = dict(
-                RANK=rank,
+                NUMBER=process.RANK + 1,
                 OD_ROOT=ODIN_DATA_ROOT,
                 BUFFER_IDX=idx + 1, SHARED_MEMORY=self.SHARED_MEM_SIZE,
                 CTRL_PORT=fr_port_number, IO_THREADS=self.IO_THREADS,
                 READY_PORT=ready_port_number, RELEASE_PORT=release_port_number,
-                LOG_CONFIG=os.path.join(ADODIN_DATA, "log4cxx.xml"),
+                LOG_CONFIG=data_file_path("log4cxx.xml"),
                 NUMA=numa_call)
             expand_template_file("fr_startup", macros, output_file, executable=True)
 
-            output_file = "stFrameProcessor{}.sh".format(rank)
+            output_file = "stFrameProcessor{}.sh".format(process.RANK + 1)
             macros = dict(
-                RANK=rank,
+                NUMBER=process.RANK + 1,
                 OD_ROOT=ODIN_DATA_ROOT,
                 CTRL_PORT=fp_port_number,
                 READY_PORT=ready_port_number, RELEASE_PORT=release_port_number,
-                LOG_CONFIG=os.path.join(ADODIN_DATA, "log4cxx.xml"),
+                LOG_CONFIG=data_file_path("log4cxx.xml"),
                 NUMA=numa_call)
             expand_template_file("fp_startup", macros, output_file, executable=True)
 
-            rank += total_servers
+
+class OdinLogConfig(Device):
+
+    """Create logging configuration file"""
+
+    # Device attributes
+    AutoInstantiate = True
+
+    def __init__(self, BEAMLINE, DETECTOR):
+        self.__super.__init__()
+        # Update attributes with parameters
+        self.__dict__.update(locals())
+
+        self.create_config_file(BEAMLINE, DETECTOR)
+
+    def create_config_file(self, BEAMLINE, DETECTOR):
+        macros = dict(BEAMLINE=BEAMLINE, DETECTOR=DETECTOR)
+
+        expand_template_file("log4cxx_template.xml", macros, "log4cxx.xml")
+
+    # __init__ arguments
+    ArgInfo = makeArgInfo(__init__,
+        BEAMLINE=Simple("Beamline name, e.g. b21, i02-2", str),
+        DETECTOR=Choice("Detector type", ["Excalibur1M", "Excalibur3M", "Eiger4M", "Eiger16M"])
+    )
 
 
-class _OdinDetectorTemplate(AutoSubstitution):
-    TemplateFile = "OdinDetector.template"
-
+# ~~~~~~~~~~~ #
+# OdinControl #
+# ~~~~~~~~~~~ #
 
 class _OdinControlServer(Device):
 
@@ -268,6 +365,14 @@ class _OdinControlServer(Device):
         return number + 1
 
 
+# ~~~~~~~~~~~~ #
+# AreaDetector #
+# ~~~~~~~~~~~~ #
+
+class _OdinDetectorTemplate(AutoSubstitution):
+    TemplateFile = "OdinDetector.template"
+
+
 class _OdinDetector(AsynPort):
 
     """Create an odin detector"""
@@ -323,8 +428,6 @@ class _OdinDataDriver(AsynPort):
     # This tells xmlbuilder to use PORT instead of name as the row ID
     UniqueName = "PORT"
 
-    _SpecificTemplate = _OdinDataDriverTemplate
-
     def __init__(self, PORT, ODIN_CONTROL_SERVER, DETECTOR=None, DATASET="data",
                  BUFFERS=0, MEMORY=0, **args):
         # Init the superclass (AsynPort)
@@ -332,7 +435,7 @@ class _OdinDataDriver(AsynPort):
         # Update the attributes of self from the commandline args
         self.__dict__.update(locals())
         # Make an instance of our template
-        makeTemplateInstance(self._SpecificTemplate, locals(), args)
+        makeTemplateInstance(_OdinDataDriverTemplate, locals(), args)
 
         self.control_server = ODIN_CONTROL_SERVER
         self.server_count = len(self.control_server.odin_data_servers)
@@ -354,26 +457,39 @@ class _OdinDataDriver(AsynPort):
                 self.total_processes += 1
 
         for server_idx, server in enumerate(self.control_server.odin_data_servers):
+            server.configure_processes(server_idx, self.server_count)
+
             process_idx = server_idx
             for odin_data in server.processes:
                 self.ODIN_DATA_PROCESSES.append(odin_data)
                 # Use some OdinDataDriver macros to instantiate an OdinData.template
-                args["PORT"] = PORT
-                args["ADDR"] = odin_data.index - 1
-                args["R"] = odin_data.R
-                args["TOTAL"] = self.total_processes
-                _OdinDataTemplate(**args)
+                od_args = dict((key, args[key]) for key in ["P", "TIMEOUT"])
+                od_args["PORT"] = PORT
+                od_args["ADDR"] = odin_data.index - 1
+                od_args["R"] = odin_data.R
+                od_args["TOTAL"] = self.total_processes
+                _OdinDataTemplate(**od_args)
 
                 odin_data.create_config_files(process_idx + 1)
                 process_idx += self.server_count
 
-            server.create_od_startup_scripts(server_idx + 1, self.server_count)
+            if server.plugins is not None:
+                for plugin in server.plugins:
+                    if not plugin.TEMPLATE_INSTANTIATED:
+                        plugin_args = dict((key, args[key]) for key in ["P", "R"])
+                        plugin_args["PORT"] = PORT
+                        plugin_args["TOTAL"] = self.total_processes
+                        plugin_args["GUI"] = \
+                            self.gui_macro(PORT, "OdinData." + plugin.NAME.capitalize())
+                        plugin.create_template(plugin_args)
+
+            server.create_od_startup_scripts()
 
         # Now OdinData instances are configured, OdinControlServer can generate its config from them
         self.control_server.create_config_file()
 
     # __init__ arguments
-    ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
+    ArgInfo = ADBaseTemplate.ArgInfo + _OdinDataDriverTemplate.ArgInfo + makeArgInfo(__init__,
         PORT=Simple("Port name for the detector", str),
         BUFFERS=Simple("Maximum number of NDArray buffers to be created for plugin callbacks", int),
         MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "
@@ -412,32 +528,6 @@ class _OdinDataDriver(AsynPort):
         return dict(
             OD_HDF_STATUS_GUI=self.gui_macro(port, "HDFStatus")
         )
-
-
-class OdinLogConfig(Device):
-
-    """Create logging configuration file"""
-
-    # Device attributes
-    AutoInstantiate = True
-
-    def __init__(self, BEAMLINE, DETECTOR):
-        self.__super.__init__()
-        # Update attributes with parameters
-        self.__dict__.update(locals())
-
-        self.create_config_file(BEAMLINE, DETECTOR)
-
-    def create_config_file(self, BEAMLINE, DETECTOR):
-        macros = dict(BEAMLINE=BEAMLINE, DETECTOR=DETECTOR)
-
-        expand_template_file("log4cxx_template.xml", macros, "log4cxx.xml")
-
-    # __init__ arguments
-    ArgInfo = makeArgInfo(__init__,
-        BEAMLINE=Simple("Beamline name, e.g. b21, i02-2", str),
-        DETECTOR=Choice("Detector type", ["Excalibur1M", "Excalibur3M", "Eiger4M", "Eiger16M"])
-    )
 
 
 class OdinBatchFile(Device):

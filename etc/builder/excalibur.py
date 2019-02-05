@@ -4,18 +4,29 @@ from iocbuilder import AutoSubstitution
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
 
+from util import find_module_path, expand_template_file, debug_print
 from odin import _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, \
-                 find_module_path, expand_template_file, debug_print
+                 PluginConfig, FrameProcessorPlugin
 
 
-EXCALIBUR, EXCALIBUR_PATH = find_module_path("excalibur-detector")
-debug_print("Excalibur: {} = {}".format(EXCALIBUR, EXCALIBUR_PATH), 1)
+EXCALIBUR, EXCALIBUR_ROOT = find_module_path("excalibur-detector")
+debug_print("Excalibur: {} = {}".format(EXCALIBUR, EXCALIBUR_ROOT), 1)
 
 EXCALIBUR_DIMENSIONS = {
     # Sensor: (Width, Height)
     "1M": (2048, 512),
     "3M": (2048, 1536)
 }
+
+
+class ExcaliburProcessPlugin(FrameProcessorPlugin):
+
+    NAME = "excalibur"
+    CLASS_NAME = "ExcaliburProcessPlugin"
+    ROOT_PATH = EXCALIBUR_ROOT
+
+    def __init__(self):
+        super(ExcaliburProcessPlugin, self).__init__(None)
 
 
 class _ExcaliburOdinData(_OdinData):
@@ -31,13 +42,14 @@ class _ExcaliburOdinData(_OdinData):
         }
     }
 
-    def __init__(self, server, READY, RELEASE, META, SENSOR, BASE_UDP_PORT):
-        super(_ExcaliburOdinData, self).__init__(server, READY, RELEASE, META)
+    def __init__(self, server, READY, RELEASE, META, PLUGINS, SENSOR, BASE_UDP_PORT):
+        super(_ExcaliburOdinData, self).__init__(server, READY, RELEASE, META, PLUGINS)
+        self.plugins = PLUGINS
         self.sensor = SENSOR
         self.base_udp_port = BASE_UDP_PORT
 
     def create_config_files(self, index):
-        macros = dict(DETECTOR_ROOT=EXCALIBUR_PATH,
+        macros = dict(DETECTOR_ROOT=EXCALIBUR_ROOT,
                       RX_PORT_1=self.base_udp_port,
                       RX_PORT_2=self.base_udp_port + 1,
                       RX_PORT_3=self.base_udp_port + 2,  # 3 - 6 will be ignored in the 1M template
@@ -45,13 +57,17 @@ class _ExcaliburOdinData(_OdinData):
                       RX_PORT_5=self.base_udp_port + 4,
                       RX_PORT_6=self.base_udp_port + 5,
                       WIDTH=EXCALIBUR_DIMENSIONS[self.sensor][0],
-                      HEIGHT=EXCALIBUR_DIMENSIONS[self.sensor][1],
-                      LIVE_VIEW_PORT=5020+index)
+                      HEIGHT=EXCALIBUR_DIMENSIONS[self.sensor][1])
+
+        if self.plugins is None:
+            super(_ExcaliburOdinData, self).create_config_file(
+                "fp", self.CONFIG_TEMPLATES[self.sensor]["FrameProcessor"], extra_macros=macros)
+        else:
+            super(_ExcaliburOdinData, self).create_config_file(
+                "fp", "fp_custom.json", extra_macros=macros)
 
         super(_ExcaliburOdinData, self).create_config_file(
-            "fp", self.CONFIG_TEMPLATES[self.sensor]["FrameProcessor"], index, extra_macros=macros)
-        super(_ExcaliburOdinData, self).create_config_file(
-            "fr", self.CONFIG_TEMPLATES[self.sensor]["FrameReceiver"], index, extra_macros=macros)
+            "fr", self.CONFIG_TEMPLATES[self.sensor]["FrameReceiver"], extra_macros=macros)
 
 
 class ExcaliburOdinDataServer(_OdinDataServer):
@@ -62,10 +78,10 @@ class ExcaliburOdinDataServer(_OdinDataServer):
 
     def __init__(self, IP, PROCESSES, SENSOR,
                  FEM_DEST_MAC, FEM_DEST_IP="10.0.2.2",
-                 SHARED_MEM_SIZE=1048576000,
+                 SHARED_MEM_SIZE=1048576000, PLUGIN_CONFIG=None,
                  FEM_DEST_MAC_2=None, FEM_DEST_IP_2=None, DIRECT_FEM_CONNECTION=False):
         self.sensor = SENSOR
-        self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE)
+        self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE, PLUGIN_CONFIG)
         # Update attributes with parameters
         self.__dict__.update(locals())
 
@@ -76,6 +92,7 @@ class ExcaliburOdinDataServer(_OdinDataServer):
         FEM_DEST_MAC=Simple("MAC address of node data link (destination for FEM to send to)", str),
         FEM_DEST_IP=Simple("IP address of node data link (destination for FEM to send to)", str),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
+        PLUGIN_CONFIG=Ident("Define a custom set of plugins", PluginConfig),
         FEM_DEST_MAC_2=Simple("MAC address of second node data link", str),
         FEM_DEST_IP_2=Simple("IP address of second node data link", str),
         DIRECT_FEM_CONNECTION=Simple("True if data links go direct from FEM to server. "
@@ -83,8 +100,9 @@ class ExcaliburOdinDataServer(_OdinDataServer):
                                      "This determines what is done with the second FEM_DEST", bool)
     )
 
-    def create_odin_data_process(self, server, ready, release, meta):
-        process = _ExcaliburOdinData(server, ready, release, meta, self.sensor, self.BASE_UDP_PORT)
+    def create_odin_data_process(self, server, ready, release, meta, plugin_config):
+        process = _ExcaliburOdinData(server, ready, release, meta, plugin_config,
+                                     self.sensor, self.BASE_UDP_PORT)
         self.BASE_UDP_PORT += 6
         return process
 
@@ -93,7 +111,7 @@ class ExcaliburOdinControlServer(_OdinControlServer):
 
     """Store configuration for an ExcaliburOdinControlServer"""
 
-    ODIN_SERVER = os.path.join(EXCALIBUR_PATH, "prefix/bin/excalibur_odin")
+    ODIN_SERVER = os.path.join(EXCALIBUR_ROOT, "prefix/bin/excalibur_odin")
     CONFIG_TEMPLATES = {
         "1M": {
             "chip_mask": "0xFF, 0xFF",
@@ -230,7 +248,7 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
                 DET=detector_arg,
                 PORT=args["PORT"],
                 TIMEOUT=args["TIMEOUT"],
-                OD_DET_CONFIG_GUI=self.gui_macro(args["PORT"], "ODExcalbur"),
+                OD_DET_CONFIG_GUI=self.gui_macro(args["PORT"], "OdinData.Excalibur"),
                 ACQ_GUI=self.gui_macro(args["PORT"], "Acquisition"),
                 **self.create_gui_macros(args["PORT"])
             )

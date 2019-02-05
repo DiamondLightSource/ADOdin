@@ -1,0 +1,35 @@
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, PORT, Asyn Port name
+# % macro, TOTAL, Total number of FR/FP pairs
+# % macro, GUI, Label for EDM button
+
+# % gui, $(GUI), edm, OffsetAdjustmentPlugin.edl, P=$(P),R=$(R)
+
+#### Config #######################################################################################
+
+record(longout, "$(P)$(R)OFF:Adjustment")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/offset/offset_adjustment")
+}
+
+record(longin, "$(P)$(R)OFF:Adjustment_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/offset/offset_adjustment")
+}
+
+record(longout, "$(P)$(R)OFF:ActiveFrame")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/offset/first_frame_number")
+}
+
+record(longin, "$(P)$(R)OFF:ActiveFrame_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/offset/first_frame_number")
+}

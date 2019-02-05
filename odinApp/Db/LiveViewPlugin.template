@@ -1,0 +1,22 @@
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, PORT, Asyn Port name
+# % macro, TOTAL, Total number of FR/FP pairs
+# % macro, GUI, Label for EDM button
+
+# % gui, $(GUI), edm, LiveViewPlugin.edl, P=$(P),R=$(R)
+
+#### Config #######################################################################################
+
+record(longout, "$(P)$(R)LVW:FrameRate")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/view/per_second")
+}
+
+record(longin, "$(P)$(R)LVW:FrameRate_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/view/per_second")
+}

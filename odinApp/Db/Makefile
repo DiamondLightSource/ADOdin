@@ -26,6 +26,9 @@ DB += Excalibur8NodeOD.template
 DB += EigerDetector.template
 DB += EigerFan.template
 DB += MetaListener.template
+DB += OffsetAdjustmentPlugin.template
+DB += UIDAdjustmentPlugin.template
+DB += LiveViewPlugin.template
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add

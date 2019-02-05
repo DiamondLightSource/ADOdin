@@ -4,8 +4,9 @@ from iocbuilder import Device, AutoSubstitution
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.ADCore import makeTemplateInstance
 
-from odin import _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, OdinBatchFile,\
-    find_module_path, expand_template_file, create_batch_entry, debug_print
+from util import find_module_path, expand_template_file, create_batch_entry, debug_print
+from odin import _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, OdinBatchFile, \
+    PluginConfig
 
 
 EIGER, EIGER_PATH = find_module_path("eiger-detector")
@@ -129,45 +130,47 @@ class _EigerOdinData(_OdinData):
         "FrameReceiver": "fr_eiger.json"
     }
 
-    def __init__(self, server, READY, RELEASE, META, SOURCE_IP, SENSOR):
-        super(_EigerOdinData, self).__init__(server, READY, RELEASE, META)
+    def __init__(self, server, READY, RELEASE, META, PLUGIN_CONFIG, SOURCE_IP, SENSOR):
+        super(_EigerOdinData, self).__init__(server, READY, RELEASE, META, PLUGIN_CONFIG)
         self.source = SOURCE_IP
         self.sensor = SENSOR
 
     def create_config_files(self, index):
         macros = dict(DETECTOR_ROOT=EIGER_PATH,
                       IP=self.source,
-                      RX_PORT_SUFFIX=index - 1,
+                      RX_PORT_SUFFIX=self.RANK,
                       SENSOR=self.sensor)
 
         super(_EigerOdinData, self).create_config_file(
-            "fp", self.CONFIG_TEMPLATES["FrameProcessor"], index, extra_macros=macros)
+            "fp", self.CONFIG_TEMPLATES["FrameProcessor"], extra_macros=macros)
         super(_EigerOdinData, self).create_config_file(
-            "fr", self.CONFIG_TEMPLATES["FrameReceiver"], index, extra_macros=macros)
+            "fr", self.CONFIG_TEMPLATES["FrameReceiver"], extra_macros=macros)
 
 
 class EigerOdinDataServer(_OdinDataServer):
 
     """Store configuration for an EigerOdinDataServer"""
 
-    def __init__(self, IP, PROCESSES, SOURCE, SHARED_MEM_SIZE=16000000000, IO_THREADS=1,
-                 TOTAL_NUMA_NODES=0):
+    def __init__(self, IP, PROCESSES, SOURCE, SHARED_MEM_SIZE=16000000000, PLUGIN_CONFIG=None,
+                 IO_THREADS=1, TOTAL_NUMA_NODES=0):
         self.source = SOURCE.IP
         self.sensor = SOURCE.SENSOR
-        self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE, IO_THREADS, TOTAL_NUMA_NODES)
+        self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE, PLUGIN_CONFIG,
+                              IO_THREADS, TOTAL_NUMA_NODES)
 
     ArgInfo = makeArgInfo(__init__,
         IP=Simple("IP address of server hosting OdinData processes", str),
         PROCESSES=Simple("Number of OdinData processes on this server", int),
         SOURCE=Ident("EigerFan instance", EigerFan),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
+        PLUGIN_CONFIG=Ident("Define a custom set of plugins", PluginConfig),
         IO_THREADS=Simple("Number of FR Ipc Channel IO threads to use", int),
         TOTAL_NUMA_NODES=Simple("Total number of numa nodes available to distribute processes over"
                                 " - Optional for performance tuning", int)
     )
 
-    def create_odin_data_process(self, server, ready, release, meta):
-        return _EigerOdinData(server, ready, release, meta, self.source, self.sensor)
+    def create_odin_data_process(self, server, ready, release, meta, plugin_config):
+        return _EigerOdinData(server, ready, release, meta, plugin_config, self.source, self.sensor)
 
 
 class EigerOdinControlServer(_OdinControlServer):
