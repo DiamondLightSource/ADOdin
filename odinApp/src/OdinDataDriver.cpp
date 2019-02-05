@@ -77,8 +77,6 @@ int OdinDataDriver::createParams()
                                               SSFPConfigHDFProcess, "earliest_version");
   mMasterDataset          = createODRESTParam(OdinHDF5MasterDataset, REST_P_STRING,
                                               SSFPConfigHDF, "master");
-  mOffsetAdjustment       = createODRESTParam(OdinHDF5OffsetAdjustment, REST_P_INT,
-                                              SSFPConfigHDF, "offset");
   mCloseFileTimeout       = createODRESTParam(OdinHDF5CloseFileTimeout, REST_P_INT,
                                               SSFPConfigHDF, "timeout_timer_period");
   mChunkBoundaryAlignment = createODRESTParam(OdinHDF5ChunkBoundaryAlignment, REST_P_INT,

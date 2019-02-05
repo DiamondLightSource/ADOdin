@@ -27,7 +27,6 @@
 #define OdinHDF5BlocksPerFile          "ODIN_HDF5_BLOCKS_PER_FILE"
 #define OdinHDF5EarliestVersion        "ODIN_HDF5_EARLIEST_VERSION"
 #define OdinHDF5MasterDataset          "ODIN_HDF5_MASTER_DATASET"
-#define OdinHDF5OffsetAdjustment       "ODIN_HDF5_OFFSET_ADJUSTMENT"
 #define OdinHDF5CloseFileTimeout       "ODIN_HDF5_CLOSE_FILE_TIMEOUT"
 #define OdinHDF5StartCloseTimeout      "ODIN_HDF5_START_CLOSE_TIMEOUT"
 #define OdinHDF5TimeoutActive          "ODIN_HDF5_TIMEOUT_ACTIVE"
@@ -106,7 +105,6 @@ class OdinDataDriver : public OdinClient
   RestParam * mBlocksPerFile;
   RestParam * mEarliestVersion;
   RestParam * mMasterDataset;
-  RestParam * mOffsetAdjustment;
   RestParam * mCloseFileTimeout;
   RestParam * mStartCloseTimeout;
   RestParam * mNumCapture;
