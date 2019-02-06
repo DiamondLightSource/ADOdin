@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <components arch="linux-x86_64">
-	<ADOdin.ExcaliburProcessPlugin name="excalibur"/>
+	<ADOdin.ExcaliburProcessPlugin name="excalibur" sensor="1M"/>
 	<ADOdin.LiveViewPlugin name="view" source="excalibur"/>
 	<ADOdin.OffsetAdjustmentPlugin name="offset" source="excalibur"/>
 	<ADOdin.UIDAdjustmentPlugin name="uid" source="offset"/>

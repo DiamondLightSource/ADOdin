@@ -25,8 +25,26 @@ class ExcaliburProcessPlugin(FrameProcessorPlugin):
     CLASS_NAME = "ExcaliburProcessPlugin"
     ROOT_PATH = EXCALIBUR_ROOT
 
-    def __init__(self):
+    def __init__(self, sensor):
         super(ExcaliburProcessPlugin, self).__init__(None)
+
+        self.sensor = sensor
+
+    def create_extra_config_entries(self, rank):
+        entries = []
+        dimensions_entry = {
+            self.NAME: {
+                "width": EXCALIBUR_DIMENSIONS[self.sensor][0],
+                "height": EXCALIBUR_DIMENSIONS[self.sensor][1]
+            }
+        }
+        entries.append(self._create_entry(dimensions_entry))
+
+        return entries
+
+    ArgInfo = FrameProcessorPlugin.ArgInfo + makeArgInfo(__init__,
+        sensor=Choice("Sensor type", ["1M", "3M"])
+    )
 
 
 class _ExcaliburOdinData(_OdinData):
