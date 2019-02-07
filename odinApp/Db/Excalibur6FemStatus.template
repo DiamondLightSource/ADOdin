@@ -8,7 +8,7 @@
 # % macro, NAME, Name specifying builder GUI generation
 
 # This associates an edm screen with the template
-# % gui, $(NAME), edm, Excalibur6FemStatus.edl, P=$(P)$(R)
+# % gui, $(NAME), edm, Excalibur6FemStatus.edl, P=$(P),R=$(R)
 
 ################################################################################
 #

@@ -174,7 +174,7 @@ x 570
 y 430
 w 75
 h 20
-controlPv "$(P)0:MOLY_TEMPERATURE.HIGH"
+controlPv "$(P)$(R)0:MOLY_TEMPERATURE.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -191,7 +191,7 @@ x 650
 y 430
 w 75
 h 20
-controlPv "$(P)0:MOLY_TEMPERATURE.LOW"
+controlPv "$(P)$(R)0:MOLY_TEMPERATURE.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -267,7 +267,7 @@ x 570
 y 455
 w 75
 h 20
-controlPv "$(P)0:LOCAL_TEMP.HIGH"
+controlPv "$(P)$(R)0:LOCAL_TEMP.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -284,7 +284,7 @@ x 650
 y 455
 w 75
 h 20
-controlPv "$(P)0:LOCAL_TEMP.LOW"
+controlPv "$(P)$(R)0:LOCAL_TEMP.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -320,7 +320,7 @@ x 570
 y 480
 w 75
 h 20
-controlPv "$(P)0:REMOTE_DIODE_TEMP.HIGH"
+controlPv "$(P)$(R)0:REMOTE_DIODE_TEMP.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -337,7 +337,7 @@ x 650
 y 480
 w 75
 h 20
-controlPv "$(P)0:REMOTE_DIODE_TEMP.LOW"
+controlPv "$(P)$(R)0:REMOTE_DIODE_TEMP.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -373,7 +373,7 @@ x 570
 y 505
 w 75
 h 20
-controlPv "$(P)0:MOLY_HUMIDITY.HIGH"
+controlPv "$(P)$(R)0:MOLY_HUMIDITY.HIGH"
 fgColor index 25
 bgColor index 3
 fill
@@ -390,7 +390,7 @@ x 650
 y 505
 w 75
 h 20
-controlPv "$(P)0:MOLY_HUMIDITY.LOW"
+controlPv "$(P)$(R)0:MOLY_HUMIDITY.LOW"
 fgColor index 25
 bgColor index 3
 fill
@@ -583,7 +583,7 @@ onColor index 3
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)HK:FEMRESET.PROC"
+controlPv "$(P)$(R)HK:FEMRESET.PROC"
 pressValue "1"
 onLabel "Reset Fems"
 offLabel "Reset Fems"
@@ -601,7 +601,7 @@ x 610
 y 750
 w 120
 h 20
-controlPv "$(P)HK:FEMRESETSTATE"
+controlPv "$(P)$(R)HK:FEMRESETSTATE"
 fgColor index 16
 bgColor index 10
 fill
