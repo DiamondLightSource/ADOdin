@@ -4,7 +4,7 @@ from iocbuilder import AutoSubstitution
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
 
-from util import find_module_path, expand_template_file, debug_print
+from util import find_module_path, expand_template_file, debug_print, create_config_entry
 from odin import _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, \
                  PluginConfig, FrameProcessorPlugin
 
@@ -38,7 +38,7 @@ class ExcaliburProcessPlugin(FrameProcessorPlugin):
                 "height": EXCALIBUR_DIMENSIONS[self.sensor][1]
             }
         }
-        entries.append(self._create_entry(dimensions_entry))
+        entries.append(create_config_entry(dimensions_entry))
 
         return entries
 

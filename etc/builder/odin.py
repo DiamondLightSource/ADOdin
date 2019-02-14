@@ -1,5 +1,3 @@
-import json
-
 from iocbuilder import AutoSubstitution, Device
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.iocinit import IocDataStream
@@ -9,7 +7,7 @@ from iocbuilder.modules.restClient import restClient
 from iocbuilder.modules.calc import Calc
 
 from util import debug_print, find_module_path, data_file_path, expand_template_file, \
-    create_batch_entry
+    create_batch_entry, create_config_entry
 
 
 # ~~~~~~~~ #
@@ -115,7 +113,7 @@ class FrameProcessorPlugin(Device):
                 }
             }
         }
-        return self._create_entry(entry)
+        return create_config_entry(entry)
 
     def create_config_connect_entry(self):
         entry = {
@@ -126,15 +124,10 @@ class FrameProcessorPlugin(Device):
                 }
             }
         }
-        return self._create_entry(entry)
+        return create_config_entry(entry)
 
     def create_extra_config_entries(self, rank):
         return []
-
-    @staticmethod
-    def _create_entry(dictionary):
-        entry = json.dumps(dictionary, indent=2)
-        return entry.replace("\n", "\n  ")
 
     def create_template(self, template_args):
         if self.TEMPLATE is not None and not self.TEMPLATE_INSTANTIATED:

@@ -1,4 +1,6 @@
 import os
+import json
+import uuid
 from string import Template
 
 from iocbuilder.iocinit import IocDataStream
@@ -52,3 +54,44 @@ def create_batch_entry(beamline, number, name):
     return "{beamline}-EA-ODN-{number:02d} st{name}.sh".format(
         beamline=beamline, number=number, name=name
     )
+
+
+class OneLineEntry(object):
+
+    """A wrapper to stop JSON entries being split across multiple lines.
+
+    Wrap this around lists, dictionaries, etc to stop json.dumps from
+    splitting them over multiple lines. Must pass OneLineEncoder to
+    json.dumps(cls=).
+
+    """
+    def __init__(self, value):
+        self.value = value
+
+
+class OneLineEncoder(json.JSONEncoder):
+
+    def __init__(self, *args, **kwargs):
+        super(OneLineEncoder, self).__init__(*args, **kwargs)
+        self.kwargs = dict(kwargs)
+        del self.kwargs["indent"]
+        self._replacement_map = {}
+
+    def default(self, o):
+        if isinstance(o, OneLineEntry):
+            key = uuid.uuid4().hex
+            self._replacement_map[key] = json.dumps(o.value, **self.kwargs)
+            return "@@%s@@" % (key,)
+        else:
+            return super(OneLineEncoder, self).default(o)
+
+    def encode(self, o):
+        result = super(OneLineEncoder, self).encode(o)
+        for key, value in self._replacement_map.iteritems():
+            result = result.replace("\"@@%s@@\"" % (key,), value)
+        return result
+
+
+def create_config_entry(dictionary):
+    entry = json.dumps(dictionary, indent=2, cls=OneLineEncoder)
+    return entry.replace("\n", "\n  ")

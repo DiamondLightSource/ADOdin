@@ -1,5 +1,6 @@
 from iocbuilder import AutoSubstitution
 
+from util import OneLineEntry, create_config_entry
 from odin import FrameProcessorPlugin
 
 
@@ -27,10 +28,15 @@ class DatasetCreationPlugin(FrameProcessorPlugin):
         entries = []
         dataset_entry = {
             FileWriterPlugin.NAME: {
-                "dataset": self.NAME,
+                "dataset": {
+                    self.NAME: {
+                        "chunks": OneLineEntry([1]),
+                        "datatype": 3
+                    }
+                }
             }
         }
-        entries.append(self._create_entry(dataset_entry))
+        entries.append(create_config_entry(dataset_entry))
 
         return entries
 
@@ -77,7 +83,7 @@ class FileWriterPlugin(FrameProcessorPlugin):
                 "dataset": self.DATASET_NAME,
             }
         }
-        entries.append(self._create_entry(dataset_entry))
+        entries.append(create_config_entry(dataset_entry))
         if self.indexes:
             indexes_entry = {
                 self.NAME: {
@@ -88,7 +94,7 @@ class FileWriterPlugin(FrameProcessorPlugin):
                     }
                 }
             }
-            entries.append(self._create_entry(indexes_entry))
+            entries.append(create_config_entry(indexes_entry))
 
         return entries
 
@@ -118,6 +124,6 @@ class LiveViewPlugin(FrameProcessorPlugin):
                 "live_view_socket_addr": self.endpoint
             }
         }
-        entries.append(self._create_entry(source_entry))
+        entries.append(create_config_entry(source_entry))
 
         return entries
