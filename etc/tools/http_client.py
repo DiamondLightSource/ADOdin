@@ -5,18 +5,22 @@ require("requests")
 import requests
 
 import sys
+import json
 from argparse import ArgumentParser
 
 
-def print_response(res, debug=False):
+def print_response(response, debug=False):
     if debug:
         print('HTTP/1.1 {status_code}\n{headers}\n\n{body}'.format(
-            status_code=res.status_code,
-            headers='\n'.join('{}: {}'.format(k, v) for k, v in res.headers.items()),
-            body=res.content,
+            status_code=response.status_code,
+            headers='\n'.join('{}: {}'.format(k, v) for k, v in response.headers.items()),
+            body=response.content,
         ))
     else:
-        print(res.content)
+        print(json.dumps(
+            json.loads(response.content),
+            sort_keys=True, indent=4, separators=(",", ": ")
+        ))
 
 
 def main():
