@@ -20,6 +20,7 @@ DB += Excalibur2FemStatus.template
 DB += Excalibur6FemStatus.template
 DB += ExcaliburFemStatus.template
 DB += ExcaliburOD.template
+DB += Excalibur1NodeOD.template
 DB += Excalibur2NodeOD.template
 DB += Excalibur4NodeOD.template
 DB += Excalibur8NodeOD.template

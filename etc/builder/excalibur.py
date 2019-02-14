@@ -223,6 +223,11 @@ def add_excalibur_fp_template(cls):
 
 
 @add_excalibur_fp_template
+class _Excalibur1NodeFPTemplate(AutoSubstitution):
+    TemplateFile = "Excalibur1NodeOD.template"
+
+
+@add_excalibur_fp_template
 class _Excalibur2NodeFPTemplate(AutoSubstitution):
     TemplateFile = "Excalibur2NodeOD.template"
 
@@ -243,6 +248,7 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
 
     FP_TEMPLATES = {
         # Number of OdinData nodes: Template
+        1: _Excalibur1NodeFPTemplate,
         2: _Excalibur2NodeFPTemplate,
         4: _Excalibur4NodeFPTemplate,
         8: _Excalibur8NodeFPTemplate
