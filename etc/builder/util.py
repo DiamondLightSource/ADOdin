@@ -8,7 +8,7 @@ from dls_dependency_tree import dependency_tree
 
 
 def debug_print(message, level):
-    if int(os.getenv("ODIN_BUILDER_DEBUG", 0)) == level:
+    if int(os.getenv("ODIN_BUILDER_DEBUG", 0)) >= level:
         print(message)
 
 
