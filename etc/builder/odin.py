@@ -547,13 +547,12 @@ class OdinBatchFile(Device):
     def create_batch_file(self):
         entries = []
         process_number = 1
-        process_number = \
-            self.odin_control_server.add_batch_entry(entries, self.beamline, process_number)
+        process_number = self.add_extra_entries(entries, process_number)
         for odin_data_server in self.odin_control_server.odin_data_servers:
             for odin_data_process in odin_data_server.processes:
                 process_number = \
                     odin_data_process.add_batch_entries(entries, self.beamline, process_number)
-        self.add_extra_entries(entries, process_number)
+        self.odin_control_server.add_batch_entry(entries, self.beamline, process_number)
 
         stream = IocDataStream("configure_odin")
         stream.write("\n".join(entries))
