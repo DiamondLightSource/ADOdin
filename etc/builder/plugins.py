@@ -43,7 +43,7 @@ class DatasetCreationPlugin(FrameProcessorPlugin):
 
 class UIDAdjustmentPlugin(DatasetCreationPlugin):
 
-    NAME = "uid"
+    NAME = "UID"
     CLASS_NAME = "UIDAdjustmentPlugin"
     TEMPLATE = _UIDAdjustmentPluginTemplate
 
@@ -57,7 +57,7 @@ class _SumPluginTemplate(AutoSubstitution):
 
 class SumPlugin(DatasetCreationPlugin):
 
-    NAME = "sum"
+    NAME = "SUM"
     CLASS_NAME = "SumPlugin"
 
     def __init__(self, source=None):
