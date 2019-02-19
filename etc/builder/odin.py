@@ -551,7 +551,7 @@ class OdinBatchFile(Device):
         stream.write("\n".join(entries))
 
     def add_extra_entries(self, entries, process_number):
-        pass
+        return process_number
 
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
