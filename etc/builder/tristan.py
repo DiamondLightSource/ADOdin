@@ -8,7 +8,7 @@ from odin import _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _Od
                  find_module_path, expand_template_file, debug_print
 
 
-TRISTAN, TRISTAN_PATH = find_module_path("LATRD")
+TRISTAN, TRISTAN_PATH = find_module_path("tristan-detector")
 debug_print("Tristan: {} = {}".format(TRISTAN, TRISTAN_PATH), 1)
 
 
@@ -334,7 +334,7 @@ class TristanOdinDataDriver(_OdinDataDriver):
     def __init__(self, **args):
         detector_arg = args["R"]
         args["R"] = ":OD:"
-        self.__super.__init__(DETECTOR="LATRD", **args)
+        self.__super.__init__(DETECTOR="tristan", **args)
         # Update the attributes of self from the commandline args
         self.__dict__.update(locals())
 
