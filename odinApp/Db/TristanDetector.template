@@ -90,3 +90,21 @@ record(mbbi, "$(P)$(R)Profile_RBV")
     field(FRST, "Current")
 }
 
+###################################################################
+#  Set the Live View Endpoint                                     #
+###################################################################
+record(stringout, "$(P)$(R)LiveViewEndpoint")
+{
+    field(DTYP, "asynOctetWrite")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_DETECTOR_LV")
+    field(VAL,  "")
+}
+
+record(stringin, "$(P)$(R)LiveViewEndpoint_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_DETECTOR_LV")
+    field(VAL,  "")
+    field(SCAN, "I/O Intr")
+}
+
