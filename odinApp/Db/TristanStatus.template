@@ -91,11 +91,20 @@ record(ai, "$(P)$(R)$(ADDRESS):SensorHumidity_RBV")
 }
 
 #% archiver 1 monitor
-record(ai, "$(P)$(R)$(ADDRESS):SensorTemp_RBV")
+record(ai, "$(P)$(R)$(ADDRESS):SensorTemp_0_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynFloat64")
     field(VAL,  "0.0")
-    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_0")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorTemp_1_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_1")
 }
 
