@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 385
-y 363
+y 400
 w 81
 h 406
 font "arial-medium-r-18.0"
@@ -232,7 +232,28 @@ x 5
 y 280
 w 70
 h 20
-controlPv "$(P)$(FEM):SensorTemp_RBV"
+controlPv "$(P)$(FEM):SensorTemp_0_RBV"
+displayMode "decimal"
+precision 1
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 5
+y 305
+w 70
+h 20
+controlPv "$(P)$(FEM):SensorTemp_1_RBV"
 displayMode "decimal"
 precision 1
 fgColor index 16
