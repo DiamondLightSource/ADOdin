@@ -4,8 +4,9 @@ from iocbuilder import AutoSubstitution
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
 
+from util import find_module_path, expand_template_file, debug_print, create_config_entry
 from odin import _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, \
-                 find_module_path, expand_template_file, debug_print
+                 PluginConfig, FrameProcessorPlugin
 
 
 TRISTAN, TRISTAN_PATH = find_module_path("tristan-detector")
@@ -243,8 +244,9 @@ class _TristanOdinData(_OdinData):
         }
     }
 
-    def __init__(self, server, READY, RELEASE, META, SENSOR, BASE_UDP_PORT):
-        super(_TristanOdinData, self).__init__(server, READY, RELEASE, META)
+    def __init__(self, server, READY, RELEASE, META, PLUGINS, SENSOR, BASE_UDP_PORT):
+        super(_TristanOdinData, self).__init__(server, READY, RELEASE, META, PLUGINS)
+        self.plugins = PLUGINS
         self.sensor = SENSOR
         self.base_udp_port = BASE_UDP_PORT
 
@@ -253,12 +255,19 @@ class _TristanOdinData(_OdinData):
                       RX_PORT_1=self.base_udp_port,
                       RX_PORT_2=self.base_udp_port + 1,
                       RX_PORT_3=self.base_udp_port + 2,
-                      RX_PORT_4=self.base_udp_port + 3)
+                      RX_PORT_4=self.base_udp_port + 3,
+                      WIDTH=TRISTAN_DIMENSIONS[self.sensor][0],
+                      HEIGHT=TRISTAN_DIMENSIONS[self.sensor][1])
+
+        if self.plugins is None:
+            super(_TristanOdinData, self).create_config_file(
+                "fp", self.CONFIG_TEMPLATES[self.sensor]["FrameProcessor"], extra_macros=macros)
+        else:
+            super(_TristanOdinData, self).create_config_file(
+                "fp", "fp_custom.json", extra_macros=macros)
 
         super(_TristanOdinData, self).create_config_file(
-            "fp", self.CONFIG_TEMPLATES[self.sensor]["FrameProcessor"], index, extra_macros=macros)
-        super(_TristanOdinData, self).create_config_file(
-            "fr", self.CONFIG_TEMPLATES[self.sensor]["FrameReceiver"], index, extra_macros=macros)
+            "fr", self.CONFIG_TEMPLATES[self.sensor]["FrameReceiver"], extra_macros=macros)
 
 
 class TristanOdinDataServer(_OdinDataServer):
@@ -268,9 +277,9 @@ class TristanOdinDataServer(_OdinDataServer):
     BASE_UDP_PORT = 61649
 
     def __init__(self, IP, PROCESSES, SENSOR, FEM_DEST_MAC, FEM_DEST_IP="127.0.0.1",
-                 SHARED_MEM_SIZE=1048576000):
+                 SHARED_MEM_SIZE=1048576000, PLUGIN_CONFIG=None):
         self.sensor = SENSOR
-        self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE)
+        self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE, PLUGIN_CONFIG)
         # Update attributes with parameters
         self.__dict__.update(locals())
 
@@ -280,12 +289,13 @@ class TristanOdinDataServer(_OdinDataServer):
         SENSOR=Choice("Sensor type", ["1M", "10M"]),
         FEM_DEST_MAC=Simple("MAC address of node data link (destination for FEM to send to)", str),
         FEM_DEST_IP=Simple("IP address of node data link (destination for FEM to send to)", str),
-        SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int)
+        SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
+        PLUGIN_CONFIG=Ident("Define a custom set of plugins", PluginConfig)
     )
 
-    def create_odin_data_process(self, server, ready, release, meta):
-        process = _TristanOdinData(server, ready, release, meta, self.sensor, self.BASE_UDP_PORT)
-        self.BASE_UDP_PORT += 10
+    def create_odin_data_process(self, server, ready, release, meta, plugin_config):
+        process = _TristanOdinData(server, ready, release, meta, plugin_config, self.sensor, self.BASE_UDP_PORT)
+        self.BASE_UDP_PORT += 1
         return process
 
 
