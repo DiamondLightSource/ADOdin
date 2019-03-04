@@ -1,13 +1,11 @@
 [
   {
-    "decoder_type": "Excalibur",
+    "decoder_type": "LATRD",
     "decoder_path": "$DETECTOR_ROOT/prefix/lib",
-    "rx_ports": "$RX_PORT_1,$RX_PORT_2",
+    "rx_ports": "$RX_PORT_1",
     "decoder_config": {
       "enable_packet_logging": false,
-      "frame_timeout_ms": 1000,
-      "fem_port_map": "$RX_PORT_1:0,$RX_PORT_2:1",
-      "bitdepth": "12-bit"
+      "frame_timeout_ms": 1000
     }
   }
 ]

@@ -17,16 +17,16 @@
   {
     "plugin": {
       "load": {
-        "index": "excalibur",
-        "name": "ExcaliburProcessPlugin",
-        "library": "$DETECTOR_ROOT/prefix/lib/libExcaliburProcessPlugin.so"
+        "index": "latrd",
+        "name": "LATRDProcessPlugin",
+        "library": "$DETECTOR_ROOT/prefix/lib/libLATRDProcessPlugin.so"
       }
     }
   },
   {
     "plugin": {
       "connect": {
-        "index": "excalibur",
+        "index": "latrd",
         "connection": "frame_receiver"
       }
     }
@@ -35,13 +35,121 @@
     "plugin": {
       "connect": {
         "index": "hdf",
-        "connection": "excalibur"
+        "connection": "latrd"
+      }
+    }
+  },
+  {
+    "latrd": {
+      "process": {
+        "number": 4,
+        "rank": 0
+      },
+      "sensor": {
+        "width": $WIDTH,
+        "height": $HEIGHT
       }
     }
   },
   {
     "hdf": {
-      "dataset": "data"
+      "process": {
+        "number": 4,
+        "rank": 0
+      }
+    }
+  },
+  {
+    "hdf": {
+      "dataset": {
+        "raw_data": {
+          "datatype": 3,
+          "chunks": [524288]
+        }
+      }
+    }
+  },
+  {
+    "hdf": {
+      "dataset": {
+        "event_id": {
+          "datatype": 2,
+          "chunks": [524288]
+        }
+      }
+    }
+  },
+  {
+    "hdf": {
+      "dataset": {
+        "event_time_offset": {
+          "datatype": 3,
+          "chunks": [524288]
+        }
+      }
+    }
+  },
+  {
+    "hdf": {
+      "dataset": {
+        "event_energy": {
+          "datatype": 2,
+          "chunks": [524288]
+        }
+      }
+    }
+  },
+  {
+    "hdf": {
+      "dataset": {
+        "image": {
+          "datatype": 1,
+          "dims": [512, 2048],
+          "chunks": [1, 512, 2048]
+        }
+      }
+    }
+  },
+  {
+    "hdf": {
+      "dataset": {
+        "cue_timestamp_zero": {
+          "datatype": 3,
+          "chunks": [524288]
+        }
+      }
+    }
+  },
+  {
+    "hdf": {
+      "dataset": {
+        "cue_id": {
+          "datatype": 1,
+          "chunks": [524288]
+        }
+      }
+    }
+  },
+  {
+    "hdf": {
+      "dataset": {
+        "data": {
+          "datatype": 1,
+          "dims": [1,1],
+          "chunks": [1,1,1]
+        }
+      }
+    }
+  },
+  {
+    "hdf": {
+      "dataset": {
+        "time_slice": {
+          "datatype": 2,
+          "chunks": [40]
+        }
+      }
     }
   }
 ]
+
