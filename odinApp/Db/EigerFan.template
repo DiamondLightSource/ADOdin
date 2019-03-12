@@ -65,6 +65,24 @@ record(longin, "$(P)$(R)FAN:ConsumersConnected_RBV")
 
 #### Config #######################################################################################
 
+record(bo, "$(P)$(R)FAN:ForwardStream")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,1)_ODB1_eiger_fan/config/forward_stream")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+    info(autosaveFields, "VAL")
+}
+
+record(bi, "$(P)$(R)FAN:ForwardStream_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,1)_ODB1_eiger_fan/config/forward_stream")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+    field(SCAN, "I/O Intr")
+}
+
 # Fetch AcquisitionID from OdinDataDriver
 record(acalcout, "$(P)$(R)FAN:AcqID_Calc")
 {

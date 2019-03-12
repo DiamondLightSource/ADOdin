@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2043
-y 540
+x 330
+y 611
 w 388
-h 175
+h 193
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -23,6 +23,7 @@ title "Odin HDF"
 showGrid
 snapToGrid
 gridSize 5
+disableScroll
 endScreenProperties
 
 # (Rectangle)
@@ -32,9 +33,9 @@ major 4
 minor 0
 release 0
 x 5
-y 10
+y 5
 w 375
-h 160
+h 180
 lineColor index 14
 fill
 fillColor index 3
@@ -47,7 +48,7 @@ major 4
 minor 1
 release 1
 x 5
-y 5
+y 0
 w 64
 h 13
 font "arial-medium-r-12.0"
@@ -67,7 +68,7 @@ major 4
 minor 1
 release 1
 x 10
-y 100
+y 95
 w 90
 h 35
 font "arial-bold-r-12.0"
@@ -87,7 +88,7 @@ major 4
 minor 6
 release 0
 x 105
-y 75
+y 70
 w 165
 h 20
 controlPv "$(P)$(R)FAN:State_RBV"
@@ -110,7 +111,7 @@ major 4
 minor 1
 release 1
 x 10
-y 25
+y 20
 w 90
 h 20
 font "arial-bold-r-12.0"
@@ -129,7 +130,7 @@ major 4
 minor 1
 release 1
 x 10
-y 75
+y 70
 w 40
 h 20
 font "arial-bold-r-12.0"
@@ -148,7 +149,7 @@ major 4
 minor 1
 release 1
 x 10
-y 140
+y 135
 w 75
 h 20
 font "arial-bold-r-12.0"
@@ -167,7 +168,7 @@ major 10
 minor 0
 release 0
 x 105
-y 140
+y 135
 w 80
 h 20
 controlPv "$(P)$(R)FAN:Offset"
@@ -185,7 +186,7 @@ major 4
 minor 1
 release 1
 x 10
-y 50
+y 45
 w 75
 h 20
 font "arial-bold-r-12.0"
@@ -204,7 +205,7 @@ major 10
 minor 0
 release 0
 x 195
-y 50
+y 45
 w 75
 h 20
 controlPv "$(P)$(R)FAN:Consumers_RBV"
@@ -223,7 +224,7 @@ major 10
 minor 0
 release 0
 x 105
-y 50
+y 45
 w 70
 h 20
 controlPv "$(P)$(R)FAN:ConsumersConnected_RBV"
@@ -242,7 +243,7 @@ major 10
 minor 0
 release 0
 x 200
-y 140
+y 135
 w 80
 h 20
 controlPv "$(P)$(R)FAN:Offset_RBV"
@@ -261,7 +262,7 @@ major 10
 minor 0
 release 0
 x 290
-y 115
+y 110
 w 80
 h 20
 controlPv "$(P)$(R)FAN:CurrentOffset_RBV"
@@ -280,7 +281,7 @@ major 10
 minor 0
 release 0
 x 105
-y 115
+y 110
 w 80
 h 20
 controlPv "$(P)$(R)FAN:FramesSent_RBV"
@@ -299,7 +300,7 @@ major 10
 minor 0
 release 0
 x 200
-y 115
+y 110
 w 80
 h 20
 controlPv "$(P)$(R)FAN:CurrentSeries_RBV"
@@ -318,7 +319,7 @@ major 10
 minor 0
 release 0
 x 105
-y 25
+y 20
 w 110
 h 20
 controlPv "$(P)$(R)FAN:EigerAddress_RBV"
@@ -337,7 +338,7 @@ major 10
 minor 0
 release 0
 x 225
-y 25
+y 20
 w 45
 h 20
 controlPv "$(P)$(R)FAN:EigerPort_RBV"
@@ -356,7 +357,7 @@ major 4
 minor 1
 release 1
 x 200
-y 100
+y 95
 w 80
 h 15
 font "arial-medium-r-10.0"
@@ -376,7 +377,7 @@ major 4
 minor 1
 release 1
 x 105
-y 100
+y 95
 w 80
 h 15
 font "arial-medium-r-10.0"
@@ -396,7 +397,7 @@ major 4
 minor 1
 release 1
 x 290
-y 100
+y 95
 w 80
 h 15
 font "arial-medium-r-10.0"
@@ -416,7 +417,7 @@ major 4
 minor 1
 release 1
 x 280
-y 75
+y 70
 w 40
 h 20
 font "arial-bold-r-12.0"
@@ -435,7 +436,7 @@ major 4
 minor 0
 release 0
 x 350
-y 75
+y 70
 w 20
 h 15
 controlPv "$(P)$(R)FAN:StateReady_RBV"
@@ -453,7 +454,7 @@ major 4
 minor 0
 release 0
 x 350
-y 50
+y 45
 w 20
 h 15
 controlPv "$(P)$(R)FAN:AllConsumersConnected_RBV"
@@ -471,7 +472,7 @@ major 4
 minor 1
 release 1
 x 180
-y 50
+y 45
 w 10
 h 20
 font "arial-bold-r-16.0"
@@ -491,7 +492,7 @@ major 4
 minor 1
 release 1
 x 215
-y 25
+y 20
 w 10
 h 20
 font "arial-bold-r-16.0"
@@ -511,7 +512,7 @@ major 4
 minor 1
 release 1
 x 280
-y 50
+y 45
 w 65
 h 20
 font "arial-bold-r-12.0"
@@ -530,7 +531,7 @@ major 4
 minor 1
 release 1
 x 280
-y 25
+y 20
 w 65
 h 20
 font "arial-bold-r-12.0"
@@ -549,7 +550,7 @@ major 4
 minor 0
 release 0
 x 350
-y 25
+y 20
 w 20
 h 15
 controlPv "$(P)$(R)FAN:ProcessConnected_RBV"
@@ -558,5 +559,45 @@ onColor index 15
 offColor index 19
 lineWidth 2
 numBits 1
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 155
+w 105
+h 30
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Forward"
+  "Stream"
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 105
+y 160
+w 175
+h 20
+fgColor index 25
+bgColor index 3
+inconsistentColor index 0
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)FAN:ForwardStream"
+indicatorPv "$(P)$(R)FAN:ForwardStream_RBV"
+font "arial-bold-r-12.0"
 endObjectProperties
 
