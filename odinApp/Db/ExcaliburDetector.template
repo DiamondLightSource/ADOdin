@@ -201,27 +201,6 @@ record(longin, "$(P)$(R)NumTestPulses_RBV")
     field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/num_test_pulses")
 }
 
-###############################
-# Number of test pulses.
-# % autosave 2 
-#% archiver 10 Monitor
-#record(longout, "$(P)$(R)NumTestPulses1")
-#{
-#    field(SCAN, "Passive")
-#    field(DTYP, "asynInt32")
-#    field(OUT,  "@asyn($(PORT),1,$(TIMEOUT))MPXIII_NUMTESTPULSES")
-#    field(PINI, "1")
-#}
-
-# Number of test pulses.
-#record(longin, "$(P)$(R)NumTestPulses1_RBV")
-#{
-#    field(SCAN, "I/O Intr")
-#    field(DTYP, "asynInt32")
-#    field(INP,  "@asyn($(PORT),1,$(TIMEOUT))MPXIII_NUMTESTPULSES")
-#}
-#######################
-
 # Read write mode.  Actually part of the operation mode register but the FEM
 # has to be in control of that.
 # % autosave 2 
@@ -545,34 +524,6 @@ record(stringout, "$(P)$(R)DacName")
 {
     field(VAL, "")
 }
-
-#
-# These records should really be in their own template file rather than
-# sharing the global register template file.  They are adfem plugin records.
-#
-
-# The number of corrupt images signalled by the FEM library
-#% archiver 10 Monitor
-#record(longin, "$(P)$(R)CorruptImages_RBV")
-#{
-#    field(SCAN, "I/O Intr")
-#    field(DTYP, "asynInt32")
-#    field(VAL,  "0")
-#    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))ADFEM_CORRUPTIMAGES")
-#}
-
-# Manual/auto mode for the loading of DAC and pixel arrays into the Medipix chips.
-# % autosave 2 
-#% archiver 10 Monitor
-#record(bo, "$(P)$(R)AutoLoad")
-#{
-#    field(SCAN, "Passive")
-#    field(DTYP, "asynInt32")
-#    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))ADFEM_AUTOLOAD")
-#    field(ZNAM, "Manual")
-#    field(ONAM, "Auto")
-#    field(PINI, "1")
-#}
 
 # DAC scan DAC selection.
 # % autosave 2 
