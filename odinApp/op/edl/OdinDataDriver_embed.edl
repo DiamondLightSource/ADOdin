@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 332
-y 178
-w 391
-h 77
+x 335
+y 243
+w 388
+h 78
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -34,7 +34,7 @@ minor 0
 release 0
 x 5
 y 10
-w 380
+w 375
 h 60
 lineColor index 14
 fill
@@ -69,7 +69,7 @@ minor 0
 release 0
 x 10
 y 45
-w 370
+w 365
 h 20
 controlPv "$(P):OD:StatusMessage_RBV"
 fgColor index 16
@@ -89,7 +89,7 @@ minor 0
 release 0
 x 250
 y 20
-w 130
+w 125
 h 20
 controlPv "$(P):OD:DetectorState_RBV"
 fgColor index 16
@@ -128,8 +128,8 @@ minor 1
 release 1
 x 200
 y 20
-w 50
-h 20
+w 30
+h 13
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3

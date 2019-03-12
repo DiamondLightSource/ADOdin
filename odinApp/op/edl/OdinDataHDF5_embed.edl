@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 365
-y 234
-w 392
-h 159
+x 331
+y 335
+w 388
+h 162
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -23,6 +23,7 @@ title "Odin HDF"
 showGrid
 snapToGrid
 gridSize 5
+disableScroll
 endScreenProperties
 
 # (Rectangle)
@@ -33,7 +34,7 @@ minor 0
 release 0
 x 5
 y 5
-w 380
+w 375
 h 150
 lineColor index 14
 fill
@@ -109,7 +110,7 @@ minor 6
 release 0
 x 100
 y 15
-w 280
+w 275
 h 20
 controlPv "$(P)$(R)FilePath"
 font "helvetica-medium-r-10.0"
@@ -217,7 +218,7 @@ minor 0
 release 0
 x 310
 y 90
-w 70
+w 65
 h 20
 controlPv "$(P)$(R)NumCaptured_RBV"
 fgColor index 16
@@ -300,7 +301,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 360
+x 355
 y 40
 w 18
 h 18
@@ -320,7 +321,7 @@ minor 4
 release 0
 x 310
 y 120
-w 70
+w 65
 h 30
 fgColor index 43
 bgColor index 3
@@ -391,7 +392,7 @@ minor 6
 release 0
 x 225
 y 65
-w 155
+w 150
 h 20
 controlPv "$(P)$(R)FileName_RBV"
 font "helvetica-medium-r-10.0"
