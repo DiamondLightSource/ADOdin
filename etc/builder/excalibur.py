@@ -7,6 +7,8 @@ from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
 from util import find_module_path, expand_template_file, debug_print, create_config_entry
 from odin import _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, \
                  PluginConfig, FrameProcessorPlugin
+from plugins import LiveViewPlugin, OffsetAdjustmentPlugin, UIDAdjustmentPlugin, \
+                    SumPlugin, BloscPlugin, FileWriterPlugin
 
 
 EXCALIBUR, EXCALIBUR_ROOT = find_module_path("excalibur-detector")
@@ -65,6 +67,7 @@ class _ExcaliburOdinData(_OdinData):
         self.plugins = PLUGINS
         self.sensor = SENSOR
         self.base_udp_port = BASE_UDP_PORT
+        self.modes = ['default', 'no_compression']
 
     def create_config_files(self, index):
         macros = dict(DETECTOR_ROOT=EXCALIBUR_ROOT,
@@ -99,6 +102,26 @@ class ExcaliburOdinDataServer(_OdinDataServer):
                  SHARED_MEM_SIZE=1048576000, PLUGIN_CONFIG=None,
                  FEM_DEST_MAC_2=None, FEM_DEST_IP_2=None, DIRECT_FEM_CONNECTION=False):
         self.sensor = SENSOR
+        if PLUGIN_CONFIG is None:
+            # Create each of the required plugin objects connecting them in the required chain
+            pl1 = ExcaliburProcessPlugin(sensor=SENSOR)
+            pl2 = LiveViewPlugin(source=pl1)
+            pl3 = OffsetAdjustmentPlugin(source=pl1)
+            pl4 = UIDAdjustmentPlugin(source=pl3)
+            pl5 = SumPlugin(source=pl4)
+            pl6 = BloscPlugin(source=pl5)
+            pl7 = FileWriterPlugin(source=pl6)
+            # Now we need to create the no compression mode chain (no blosc in the chain)
+            pl1.add_mode('no_compression')
+            pl2.add_mode('no_compression', source=pl1)
+            pl3.add_mode('no_compression', source=pl1)
+            pl4.add_mode('no_compression', source=pl3)
+            pl5.add_mode('no_compression', source=pl4)
+            pl7.add_mode('no_compression', source=pl5)
+            
+            
+            PLUGIN_CONFIG = PluginConfig(PLUGIN_1=pl1, PLUGIN_2=pl2, PLUGIN_3=pl3, PLUGIN_4=pl4, PLUGIN_5=pl5, PLUGIN_6=pl6, PLUGIN_7=pl7)
+            
         self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE, PLUGIN_CONFIG)
         # Update attributes with parameters
         self.__dict__.update(locals())
