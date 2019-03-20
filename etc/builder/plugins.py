@@ -127,3 +127,18 @@ class LiveViewPlugin(FrameProcessorPlugin):
         entries.append(create_config_entry(source_entry))
 
         return entries
+        
+
+class _BloscPluginTemplate(AutoSubstitution):
+    TemplateFile = "BloscPlugin.template"
+
+
+class BloscPlugin(FrameProcessorPlugin):
+
+    NAME = "blosc"
+    CLASS_NAME = "BloscPlugin"
+    TEMPLATE = _BloscPluginTemplate
+
+    def __init__(self, source=None):
+        super(BloscPlugin, self).__init__(source)
+
