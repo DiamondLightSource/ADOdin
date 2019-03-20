@@ -30,6 +30,7 @@ DB += MetaListener.template
 DB += OffsetAdjustmentPlugin.template
 DB += UIDAdjustmentPlugin.template
 DB += LiveViewPlugin.template
+DB += BloscPlugin.template
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add
