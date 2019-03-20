@@ -40,6 +40,7 @@ class _OdinData(Device):
 
         self.IP = server.IP
         self.plugins = PLUGINS
+        self.modes = ['default']
 
         # Create unique R MACRO for template file - OD1, OD2 etc.
         self.R = ":OD{}:".format(self.INDEX)
@@ -59,8 +60,19 @@ class _OdinData(Device):
             config_entries = []
             for plugin in self.plugins:
                 load_entries.append(plugin.create_config_load_entry())
-                connect_entries.append(plugin.create_config_connect_entry())
+                connect_entries.append(create_config_entry(plugin.create_config_connect_entry('default')))
                 config_entries += plugin.create_extra_config_entries(self.RANK)
+            for mode in self.modes:
+                valid_entries = False
+                mode_config_dict = {'store': {'index': mode, 'value': [{'plugin': {'disconnect': 'all'}}]}}
+                for plugin in self.plugins:
+                    entry = plugin.create_config_connect_entry(mode)
+                    if entry is not None:
+                        valid_entries = True
+                        mode_config_dict['store']['value'].append(entry)
+                if valid_entries:
+                    connect_entries.append(create_config_entry(mode_config_dict))
+            
             custom_plugin_config_macros = dict(
                 LOAD_ENTRIES=",\n  ".join(load_entries),
                 CONNECT_ENTRIES=",\n  ".join(connect_entries),
@@ -96,11 +108,18 @@ class FrameProcessorPlugin(Device):
 
     def __init__(self, source=None):
         self.template_args = None
+        self.source = {}
 
         if source is not None:
-            self.source = source.NAME
+            self.source['default'] = source.NAME
         else:
-            self.source = "frame_receiver"
+            self.source['default'] = "frame_receiver"
+
+    def add_mode(self, mode, source=None):
+        if source is not None:
+            self.source[mode] = source.NAME
+        else:
+            self.source[mode] = "frame_receiver"
 
     def create_config_load_entry(self):
         library_name = self.LIBRARY_NAME if self.LIBRARY_NAME is not None else self.CLASS_NAME
@@ -115,16 +134,18 @@ class FrameProcessorPlugin(Device):
         }
         return create_config_entry(entry)
 
-    def create_config_connect_entry(self):
-        entry = {
-            "plugin": {
-                "connect": {
-                    "index": self.NAME,
-                    "connection": self.source,
+    def create_config_connect_entry(self, mode):
+        entry = None
+        if mode in self.source:
+            entry = {
+                "plugin": {
+                    "connect": {
+                        "index": self.NAME,
+                        "connection": self.source[mode],
+                    }
                 }
             }
-        }
-        return create_config_entry(entry)
+        return entry
 
     def create_extra_config_entries(self, rank):
         return []
