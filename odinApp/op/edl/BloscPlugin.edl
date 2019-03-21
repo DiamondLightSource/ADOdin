@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 991
-y 208
+y 245
 w 386
 h 131
 font "arial-medium-r-12.0"
@@ -81,25 +81,6 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 215
-y 20
-w 80
-h 20
-controlPv "$(P)$(R)BLOSC:Compressor_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -128,7 +109,7 @@ minor 0
 release 0
 x 110
 y 45
-w 80
+w 125
 h 20
 controlPv "$(P)$(R)BLOSC:Threads"
 fgColor index 25
@@ -144,7 +125,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 215
+x 250
 y 45
 w 80
 h 20
@@ -185,7 +166,7 @@ minor 0
 release 0
 x 110
 y 70
-w 80
+w 125
 h 20
 controlPv "$(P)$(R)BLOSC:Level"
 fgColor index 25
@@ -201,7 +182,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 215
+x 250
 y 70
 w 80
 h 20
@@ -234,25 +215,6 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 215
-y 95
-w 80
-h 20
-controlPv "$(P)$(R)BLOSC:Shuffle_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
 # (Menu Button)
 object activeMenuButtonClass
 beginObjectProperties
@@ -261,7 +223,7 @@ minor 0
 release 0
 x 110
 y 20
-w 95
+w 125
 h 20
 fgColor index 25
 bgColor index 3
@@ -281,7 +243,7 @@ minor 0
 release 0
 x 110
 y 95
-w 95
+w 125
 h 20
 fgColor index 25
 bgColor index 3
