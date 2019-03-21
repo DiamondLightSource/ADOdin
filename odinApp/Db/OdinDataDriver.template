@@ -288,19 +288,19 @@ record(waveform, "$(P)$(R)FP:FileName_RBV")
     field(SCAN, "I/O Intr")
 }
 
-# Push file name to acquisition ID
-record(acalcout, "$(P)$(R)FP:AcqID_Calc")
+# Push top level file name to acquisition ID
+record(acalcout, "$(P)$(R)AcqID_Calc")
 {
     field(INAA, "$(P)$(R)FileName CP")
     field(CALC, "AA")
     field(OOPT, "Every Time")
     field(DOPT, "Use CALC")
-    field(OUT,  "$(P)$(R)FP:AcquisitionID PP")
+    field(OUT,  "$(P)$(R)AcquisitionID PP")
     field(NELM, "256")
     field(NUSE, "256")
 }
 
-record(waveform, "$(P)$(R)FP:AcquisitionID")
+record(waveform, "$(P)$(R)AcquisitionID")
 {
     field(DTYP, "asynOctetWrite")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_fp/config/hdf/acquisition_id")
@@ -308,7 +308,7 @@ record(waveform, "$(P)$(R)FP:AcquisitionID")
     field(NELM, "256")
 }
 
-record(waveform, "$(P)$(R)FP:AcquisitionID_RBV")
+record(waveform, "$(P)$(R)AcquisitionID_RBV")
 {
     field(DTYP, "asynOctetRead")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_fp/config/hdf/acquisition_id")

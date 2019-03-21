@@ -14,7 +14,7 @@ record(calcout, "$(P)$(R)META:CalcCaptureStart")
 # Fetch AcquisitionID from OdinDataDriver
 record(acalcout, "$(P)$(R)META:AcqID_Calc")
 {
-    field(INAA, "$(P)$(R)FP:AcquisitionID CP")
+    field(INAA, "$(P)$(R)AcquisitionID CP")
     field(CALC, "AA")
     field(OOPT, "Every Time")
     field(DOPT, "Use CALC")
@@ -61,7 +61,7 @@ record(longin, "$(P)$(R)META:ProcessConnected_RBV")
 
 ## Acquisition Specific
 
-record(stringin, "$(P)$(R)META:FileName_RBV")
+record(stringin, "$(P)$(R)META:OutputFile_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(SCAN, "I/O Intr")
@@ -130,6 +130,35 @@ record(waveform, "$(P)$(R)META:FilePath_RBV")
 {
     field(DTYP, "asynOctetRead")
     field(INP,  "@asyn($(PORT),0,1)_ODS_meta_listener/config/output_dir")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+}
+
+# Fetch FileName from OdinDataDriver
+record(acalcout, "$(P)$(R)META:FileName_Calc")
+{
+    field(INAA, "$(P)$(R)FileName CP")
+    field(CALC, "AA")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
+    field(OUT,  "$(P)$(R)META:FileName PP")
+    field(NELM, "256")
+    field(NUSE, "256")
+}
+
+record(waveform, "$(P)$(R)META:FileName")
+{
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT),0,1)_ODS_meta_listener/config/file_prefix")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+}
+
+record(waveform, "$(P)$(R)META:FileName_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),0,1)_ODS_meta_listener/config/file_prefix")
     field(FTVL, "CHAR")
     field(NELM, "256")
     field(SCAN, "I/O Intr")

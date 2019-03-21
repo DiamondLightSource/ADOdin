@@ -86,7 +86,7 @@ record(bi, "$(P)$(R)FAN:ForwardStream_RBV")
 # Fetch AcquisitionID from OdinDataDriver
 record(acalcout, "$(P)$(R)FAN:AcqID_Calc")
 {
-    field(INAA, "$(P)$(R)FP:AcquisitionID CP")
+    field(INAA, "$(P)$(R)AcquisitionID CP")
     field(CALC, "AA")
     field(OOPT, "Every Time")
     field(DOPT, "Use CALC")

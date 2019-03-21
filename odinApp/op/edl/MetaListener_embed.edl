@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2051
-y 451
+x 643
+y 416
 w 386
-h 132
+h 162
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -34,7 +34,7 @@ release 0
 x 5
 y 5
 w 375
-h 120
+h 150
 lineColor index 14
 fill
 fillColor index 3
@@ -67,10 +67,10 @@ major 10
 minor 0
 release 0
 x 85
-y 45
+y 70
 w 180
 h 20
-controlPv "$(P)$(R)META:FileName_RBV"
+controlPv "$(P)$(R)META:OutputFile_RBV"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -85,7 +85,7 @@ major 4
 minor 1
 release 1
 x 10
-y 45
+y 70
 w 70
 h 20
 font "arial-bold-r-12.0"
@@ -161,7 +161,7 @@ minor 0
 release 0
 x 85
 y 20
-w 85
+w 90
 h 20
 controlPv "$(P)$(R)META:FlushRate"
 fgColor index 25
@@ -295,7 +295,7 @@ major 4
 minor 1
 release 1
 x 10
-y 70
+y 95
 w 125
 h 20
 font "arial-bold-r-12.0"
@@ -314,7 +314,7 @@ major 10
 minor 0
 release 0
 x 180
-y 70
+y 95
 w 85
 h 20
 controlPv "$(P)$(R)META:FramesWritten_RBV"
@@ -333,7 +333,7 @@ major 10
 minor 0
 release 0
 x 180
-y 95
+y 120
 w 85
 h 20
 controlPv "$(P)$(R)META:ActiveProcessors_RBV"
@@ -352,7 +352,7 @@ major 4
 minor 1
 release 1
 x 10
-y 95
+y 120
 w 125
 h 20
 font "arial-bold-r-12.0"
@@ -362,5 +362,68 @@ useDisplayBg
 value {
   "Active Data Writers"
 }
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 45
+w 70
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "File Name"
+}
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 180
+y 45
+w 85
+h 20
+controlPv "$(P)$(R)META:FileName_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-10.0"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 6
+release 0
+x 85
+y 45
+w 90
+h 20
+controlPv "$(P)$(R)META:FileName"
+font "helvetica-medium-r-10.0"
+fgColor index 25
+bgColor index 3
+editable
+motifWidget
+limitsFromDb
+nullColor index 0
+useKp
+file
+useHexPrefix
+newPos
+inputFocusUpdates
+objType "controls"
 endObjectProperties
 

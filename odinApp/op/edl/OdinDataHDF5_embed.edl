@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 331
-y 335
+x 0
+y 310
 w 388
 h 162
 font "arial-medium-r-12.0"
@@ -394,7 +394,7 @@ x 225
 y 65
 w 150
 h 20
-controlPv "$(P)$(R)FileName_RBV"
+controlPv "$(P)$(R)FP:FileName_RBV"
 font "helvetica-medium-r-10.0"
 fgColor index 16
 bgColor index 10

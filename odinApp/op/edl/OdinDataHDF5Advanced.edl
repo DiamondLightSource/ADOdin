@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 481
-y 172
+x 485
+y 201
 w 419
-h 544
+h 600
 font "arial-bold-r-12.0"
 ctlFont "arial-bold-r-12.0"
 btnFont "arial-bold-r-12.0"
@@ -34,7 +34,7 @@ release 0
 x 5
 y 270
 w 405
-h 265
+h 325
 lineColor index 14
 fill
 fillColor index 3
@@ -861,8 +861,8 @@ major 4
 minor 1
 release 1
 x 15
-y 505
-w 165
+y 510
+w 175
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
@@ -880,7 +880,7 @@ major 4
 minor 0
 release 0
 x 205
-y 505
+y 510
 w 195
 h 20
 fgColor index 25
@@ -930,5 +930,139 @@ botShadowColor index 11
 controlPv "$(P)$(R)DataType"
 indicatorPv "$(P)$(R)DataType_RBV"
 font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 15
+y 540
+w 175
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Data File Name"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 6
+release 0
+x 205
+y 540
+w 90
+h 20
+controlPv "$(P)$(R)FP:FileName"
+font "helvetica-medium-r-10.0"
+fgColor index 25
+bgColor index 3
+editable
+motifWidget
+limitsFromDb
+nullColor index 0
+useKp
+file
+useHexPrefix
+newPos
+inputFocusUpdates
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 6
+release 0
+x 310
+y 540
+w 90
+h 20
+controlPv "$(P)$(R)FP:FileName_RBV"
+font "helvetica-medium-r-10.0"
+fgColor index 16
+bgColor index 10
+limitsFromDb
+nullColor index 0
+smartRefresh
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 15
+y 565
+w 175
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Acquisition ID"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 6
+release 0
+x 205
+y 565
+w 90
+h 20
+controlPv "$(P)$(R)AcquisitionID"
+font "helvetica-medium-r-10.0"
+fgColor index 25
+bgColor index 3
+editable
+motifWidget
+limitsFromDb
+nullColor index 0
+useKp
+file
+useHexPrefix
+newPos
+inputFocusUpdates
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 6
+release 0
+x 310
+y 565
+w 90
+h 20
+controlPv "$(P)$(R)AcquisitionID_RBV"
+font "helvetica-medium-r-10.0"
+fgColor index 16
+bgColor index 10
+limitsFromDb
+nullColor index 0
+smartRefresh
+useHexPrefix
+newPos
+objType "controls"
 endObjectProperties
 
