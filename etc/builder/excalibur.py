@@ -67,7 +67,6 @@ class _ExcaliburOdinData(_OdinData):
         self.plugins = PLUGINS
         self.sensor = SENSOR
         self.base_udp_port = BASE_UDP_PORT
-        self.modes = ['default', 'no_compression']
 
     def create_config_files(self, index):
         macros = dict(DETECTOR_ROOT=EXCALIBUR_ROOT,
@@ -91,6 +90,55 @@ class _ExcaliburOdinData(_OdinData):
             "fr", self.CONFIG_TEMPLATES[self.sensor]["FrameReceiver"], extra_macros=macros)
 
 
+class _ExcaliburModeTemplate(AutoSubstitution):
+    TemplateFile = "ExcaliburODMode.template"
+
+
+class _ExcaliburPluginConfig(PluginConfig):
+    # Device attributes
+    AutoInstantiate = True
+
+    def __init__(self, SENSOR):
+        pl1=ExcaliburProcessPlugin(sensor=SENSOR)
+        pl2=LiveViewPlugin(source=pl1)
+        pl3=OffsetAdjustmentPlugin(source=pl1)
+        pl4=UIDAdjustmentPlugin(source=pl3)
+        pl5=SumPlugin(source=pl4)
+        pl6=BloscPlugin(source=pl5)
+        pl7=FileWriterPlugin(source=pl6)
+        super(_ExcaliburPluginConfig, self).__init__(PLUGIN_1=pl1,
+                                                     PLUGIN_2=pl2,
+                                                     PLUGIN_3=pl3,
+                                                     PLUGIN_4=pl4,
+                                                     PLUGIN_5=pl5,
+                                                     PLUGIN_6=pl6,
+                                                     PLUGIN_7=pl7)
+        
+        # Set the modes
+        self.modes = ['compression', 'no_compression']
+        
+        # Now we need to create the standard mode chain (with compression)
+        pl1.add_mode('compression')
+        pl2.add_mode('compression', source=pl1)
+        pl3.add_mode('compression', source=pl1)
+        pl4.add_mode('compression', source=pl3)
+        pl5.add_mode('compression', source=pl4)
+        pl6.add_mode('compression', source=pl5)
+        pl7.add_mode('compression', source=pl6)
+
+        # Now we need to create the no compression mode chain (no blosc in the chain)
+        pl1.add_mode('no_compression')
+        pl2.add_mode('no_compression', source=pl1)
+        pl3.add_mode('no_compression', source=pl1)
+        pl4.add_mode('no_compression', source=pl3)
+        pl5.add_mode('no_compression', source=pl4)
+        pl7.add_mode('no_compression', source=pl5)
+
+    def detector_setup(self, od_args):
+        ## Make an instance of our template
+        makeTemplateInstance(_ExcaliburModeTemplate, locals(), od_args)
+
+
 class ExcaliburOdinDataServer(_OdinDataServer):
 
     """Store configuration for an ExcaliburOdinDataServer"""
@@ -103,25 +151,9 @@ class ExcaliburOdinDataServer(_OdinDataServer):
                  FEM_DEST_MAC_2=None, FEM_DEST_IP_2=None, DIRECT_FEM_CONNECTION=False):
         self.sensor = SENSOR
         if PLUGIN_CONFIG is None:
-            # Create each of the required plugin objects connecting them in the required chain
-            pl1 = ExcaliburProcessPlugin(sensor=SENSOR)
-            pl2 = LiveViewPlugin(source=pl1)
-            pl3 = OffsetAdjustmentPlugin(source=pl1)
-            pl4 = UIDAdjustmentPlugin(source=pl3)
-            pl5 = SumPlugin(source=pl4)
-            pl6 = BloscPlugin(source=pl5)
-            pl7 = FileWriterPlugin(source=pl6)
-            # Now we need to create the no compression mode chain (no blosc in the chain)
-            pl1.add_mode('no_compression')
-            pl2.add_mode('no_compression', source=pl1)
-            pl3.add_mode('no_compression', source=pl1)
-            pl4.add_mode('no_compression', source=pl3)
-            pl5.add_mode('no_compression', source=pl4)
-            pl7.add_mode('no_compression', source=pl5)
-            
-            
-            PLUGIN_CONFIG = PluginConfig(PLUGIN_1=pl1, PLUGIN_2=pl2, PLUGIN_3=pl3, PLUGIN_4=pl4, PLUGIN_5=pl5, PLUGIN_6=pl6, PLUGIN_7=pl7)
-            
+            # Create the standard Excalibur plugin config
+            PLUGIN_CONFIG = _ExcaliburPluginConfig(SENSOR)
+
         self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE, PLUGIN_CONFIG)
         # Update attributes with parameters
         self.__dict__.update(locals())

@@ -1,0 +1,35 @@
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, PORT, Asyn Port name
+# % macro, ADDRESS, Asyn Port address
+# % macro, TIMEOUT, Timeout
+
+# OdinData Operation mode.
+# % autosave 2
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)Mode")
+{
+    field(SCAN, "Passive")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "compression")
+    field(ONST, "no_compression")
+    field(PINI, "1")
+}
+
+# Obtain the string representation of the mode
+record(scalcout, "$(P)$(R)Mode_STR")
+{
+    field(INPA, "$(P)$(R)Mode CP")
+    field(INAA, "$(P)$(R)Mode.ZRST CP")
+    field(INBB, "$(P)$(R)Mode.ONST CP")
+    field(CALC, "@@A")
+    field(OUT, "$(P)$(R)WriteMode PP")
+}
+
+record(stringout, "$(P)$(R)WriteMode")
+{
+    field(DTYP, "asynOctetWrite")
+    field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS_fp/config/execute/index")
+}
+
