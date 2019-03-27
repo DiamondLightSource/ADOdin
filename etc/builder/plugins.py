@@ -2,6 +2,7 @@ from iocbuilder import AutoSubstitution
 
 from util import OneLineEntry, create_config_entry
 from odin import FrameProcessorPlugin
+from iocbuilder.arginfo import makeArgInfo, Simple
 
 
 class _OffsetAdjustmentPluginTemplate(AutoSubstitution):

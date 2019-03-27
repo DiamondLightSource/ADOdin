@@ -355,8 +355,11 @@ class _OdinControlServer(Device):
         ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer)
     )
 
+    def get_extra_startup_macro(self):
+        return ""
+
     def create_startup_script(self):
-        macros = dict(ODIN_SERVER=self.ODIN_SERVER, CONFIG="odin_server.cfg")
+        macros = dict(ODIN_SERVER=self.ODIN_SERVER, CONFIG="odin_server.cfg", EXTRA_PARAMS=self.get_extra_startup_macro())
         expand_template_file("odin_server_startup", macros, "stOdinServer.sh", executable=True)
 
     def create_config_file(self):
