@@ -59,8 +59,19 @@ class _OdinData(Device):
             config_entries = []
             for plugin in self.plugins:
                 load_entries.append(plugin.create_config_load_entry())
-                connect_entries.append(plugin.create_config_connect_entry())
+                connect_entries.append(create_config_entry(plugin.create_config_connect_entry()))
                 config_entries += plugin.create_extra_config_entries(self.RANK)
+            for mode in self.plugins.modes:
+                valid_entries = False
+                mode_config_dict = {'store': {'index': mode, 'value': [{'plugin': {'disconnect': 'all'}}]}}
+                for plugin in self.plugins:
+                    entry = plugin.create_config_connect_entry(mode)
+                    if entry is not None:
+                        valid_entries = True
+                        mode_config_dict['store']['value'].append(entry)
+                if valid_entries:
+                    connect_entries.append(create_config_entry(mode_config_dict))
+            
             custom_plugin_config_macros = dict(
                 LOAD_ENTRIES=",\n  ".join(load_entries),
                 CONNECT_ENTRIES=",\n  ".join(connect_entries),
@@ -96,11 +107,18 @@ class FrameProcessorPlugin(Device):
 
     def __init__(self, source=None):
         self.template_args = None
+        self.connections = {}
 
         if source is not None:
             self.source = source.NAME
         else:
             self.source = "frame_receiver"
+
+    def add_mode(self, mode, source=None):
+        if source is not None:
+            self.connections[mode] = source.NAME
+        else:
+            self.connections[mode] = "frame_receiver"
 
     def create_config_load_entry(self):
         library_name = self.LIBRARY_NAME if self.LIBRARY_NAME is not None else self.CLASS_NAME
@@ -115,16 +133,24 @@ class FrameProcessorPlugin(Device):
         }
         return create_config_entry(entry)
 
-    def create_config_connect_entry(self):
-        entry = {
-            "plugin": {
-                "connect": {
-                    "index": self.NAME,
-                    "connection": self.source,
+    def create_config_connect_entry(self, mode=None):
+        cnxn = None
+        if mode is None:
+            cnxn = self.source
+        elif mode in self.connections:
+            cnxn = self.connections[mode]
+
+        entry = None
+        if cnxn is not None:
+            entry = {
+                "plugin": {
+                    "connect": {
+                        "index": self.NAME,
+                        "connection": cnxn,
+                    }
                 }
             }
-        }
-        return create_config_entry(entry)
+        return entry
 
     def create_extra_config_entries(self, rank):
         return []
@@ -149,6 +175,7 @@ class PluginConfig(Device):
                         [PLUGIN_1, PLUGIN_2, PLUGIN_3, PLUGIN_4,
                          PLUGIN_5, PLUGIN_6, PLUGIN_7, PLUGIN_8]
                         if plugin is not None]
+        self.modes = []
 
     ArgInfo = makeArgInfo(__init__,
         PLUGIN_1=Ident("Plugin 1", FrameProcessorPlugin),
@@ -160,6 +187,10 @@ class PluginConfig(Device):
         PLUGIN_7=Ident("Plugin 7", FrameProcessorPlugin),
         PLUGIN_8=Ident("Plugin 8", FrameProcessorPlugin)
     )
+
+    def detector_setup(self, od_args):
+        # No op, should be overridden by specific detector
+        pass
 
     def __iter__(self):
         for plugin in self.plugins:
@@ -324,8 +355,11 @@ class _OdinControlServer(Device):
         ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer)
     )
 
+    def get_extra_startup_macro(self):
+        return ""
+
     def create_startup_script(self):
-        macros = dict(ODIN_SERVER=self.ODIN_SERVER, CONFIG="odin_server.cfg")
+        macros = dict(ODIN_SERVER=self.ODIN_SERVER, CONFIG="odin_server.cfg", EXTRA_PARAMS=self.get_extra_startup_macro())
         expand_template_file("odin_server_startup", macros, "stOdinServer.sh", executable=True)
 
     def create_config_file(self):
@@ -449,6 +483,7 @@ class _OdinDataDriver(AsynPort):
             for odin_data in server.processes:
                 self.total_processes += 1
 
+        plugin_config = None
         for server_idx, server in enumerate(self.control_server.odin_data_servers):
             server.configure_processes(server_idx, self.server_count)
 
@@ -467,6 +502,7 @@ class _OdinDataDriver(AsynPort):
                 process_idx += self.server_count
 
             if server.plugins is not None:
+                plugin_config = server.plugins
                 for plugin in server.plugins:
                     if not plugin.TEMPLATE_INSTANTIATED:
                         plugin_args = dict((key, args[key]) for key in ["P", "R"])
@@ -477,6 +513,13 @@ class _OdinDataDriver(AsynPort):
                         plugin.create_template(plugin_args)
 
             server.create_od_startup_scripts()
+
+        if plugin_config is not None:
+            od_args = dict((key, args[key]) for key in ["P", "TIMEOUT"])
+            od_args["PORT"] = PORT
+            od_args["ADDRESS"] = 0
+            od_args["R"] = ":OD:"
+            plugin_config.detector_setup(od_args)
 
         # Now OdinData instances are configured, OdinControlServer can generate its config from them
         self.control_server.create_config_file()

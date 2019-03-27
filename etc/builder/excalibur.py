@@ -7,6 +7,8 @@ from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
 from util import find_module_path, expand_template_file, debug_print, create_config_entry
 from odin import _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, \
                  PluginConfig, FrameProcessorPlugin
+from plugins import LiveViewPlugin, OffsetAdjustmentPlugin, UIDAdjustmentPlugin, \
+                    SumPlugin, BloscPlugin, FileWriterPlugin
 
 
 EXCALIBUR, EXCALIBUR_ROOT = find_module_path("excalibur-detector")
@@ -88,18 +90,76 @@ class _ExcaliburOdinData(_OdinData):
             "fr", self.CONFIG_TEMPLATES[self.sensor]["FrameReceiver"], extra_macros=macros)
 
 
+class _ExcaliburModeTemplate(AutoSubstitution):
+    TemplateFile = "ExcaliburODMode.template"
+
+
+class _ExcaliburPluginConfig(PluginConfig):
+    # Device attributes
+    AutoInstantiate = True
+
+    def __init__(self, SENSOR):
+        pl1=ExcaliburProcessPlugin(sensor=SENSOR)
+        pl2=LiveViewPlugin(source=pl1)
+        pl3=OffsetAdjustmentPlugin(source=pl1)
+        pl4=UIDAdjustmentPlugin(source=pl3)
+        pl5=SumPlugin(source=pl4)
+        pl6=_ExcaliburGapFillPlugin(source=pl5, SENSOR=SENSOR, CHIP_GAP=3, MODULE_GAP=124)
+        pl7=BloscPlugin(source=pl6)
+        pl8=FileWriterPlugin(source=pl7)
+        super(_ExcaliburPluginConfig, self).__init__(PLUGIN_1=pl1,
+                                                     PLUGIN_2=pl2,
+                                                     PLUGIN_3=pl3,
+                                                     PLUGIN_4=pl4,
+                                                     PLUGIN_5=pl5,
+                                                     PLUGIN_6=pl6,
+                                                     PLUGIN_7=pl7,
+                                                     PLUGIN_8=pl8)
+        
+        # Set the modes
+        self.modes = ['compression', 'no_compression']
+        
+        # Now we need to create the standard mode chain (with compression)
+        pl1.add_mode('compression')
+        pl2.add_mode('compression', source=pl1)
+        pl3.add_mode('compression', source=pl1)
+        pl4.add_mode('compression', source=pl3)
+        pl5.add_mode('compression', source=pl4)
+        pl6.add_mode('compression', source=pl5)
+        pl7.add_mode('compression', source=pl6)
+        pl8.add_mode('compression', source=pl7)
+
+        # Now we need to create the no compression mode chain (no blosc in the chain)
+        pl1.add_mode('no_compression')
+        pl2.add_mode('no_compression', source=pl1)
+        pl3.add_mode('no_compression', source=pl1)
+        pl4.add_mode('no_compression', source=pl3)
+        pl5.add_mode('no_compression', source=pl4)
+        pl8.add_mode('no_compression', source=pl5)
+
+    def detector_setup(self, od_args):
+        ## Make an instance of our template
+        makeTemplateInstance(_ExcaliburModeTemplate, locals(), od_args)
+
+
 class ExcaliburOdinDataServer(_OdinDataServer):
 
     """Store configuration for an ExcaliburOdinDataServer"""
 
     BASE_UDP_PORT = 61649
+    PLUGIN_CONFIG = None
 
     def __init__(self, IP, PROCESSES, SENSOR,
                  FEM_DEST_MAC, FEM_DEST_IP="10.0.2.2",
                  SHARED_MEM_SIZE=1048576000, PLUGIN_CONFIG=None,
                  FEM_DEST_MAC_2=None, FEM_DEST_IP_2=None, DIRECT_FEM_CONNECTION=False):
         self.sensor = SENSOR
-        self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE, PLUGIN_CONFIG)
+        if PLUGIN_CONFIG is None:
+            if ExcaliburOdinDataServer.PLUGIN_CONFIG is None:
+                # Create the standard Excalibur plugin config
+                ExcaliburOdinDataServer.PLUGIN_CONFIG = _ExcaliburPluginConfig(SENSOR)
+
+        self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE, ExcaliburOdinDataServer.PLUGIN_CONFIG)
         # Update attributes with parameters
         self.__dict__.update(locals())
 
@@ -164,6 +224,11 @@ class ExcaliburOdinControlServer(_OdinControlServer):
         ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer)
     )
+
+    def get_extra_startup_macro(self):
+        return '--staticlogfields beamline=${{BEAMLINE}},\
+application_name="excalibur_odin",detector="Excalibur{}" \
+--logserver="graylog2.diamond.ac.uk:12210" --access_logging=ERROR'.format(self.SENSOR)
 
     def create_odin_server_config_entries(self):
         return [
@@ -475,3 +540,64 @@ class ExcaliburDetector(_OdinDetector):
             node_config.append(fem_config)
 
         return node_config
+
+class _ExcaliburGapFillPlugin(FrameProcessorPlugin):
+
+    NAME = "gap"
+    CLASS_NAME = "GapFillPlugin"
+
+    def __init__(self, source=None, SENSOR='3M', CHIP_GAP=3, MODULE_GAP=124):
+        super(_ExcaliburGapFillPlugin, self).__init__(source)
+        self.sensor = SENSOR
+        self.chip_gap = CHIP_GAP
+        self.module_gap = MODULE_GAP
+
+    def create_extra_config_entries(self, rank):
+        entries = []
+
+        if self.sensor == "1M":
+            source_entry = {
+                self.NAME: {
+                    'grid_size': [2, 8],
+                    'chip_size': [256, 256],
+                    'x_gaps': [0,
+                               self.chip_gap,
+                               self.chip_gap,
+                               self.chip_gap,
+                               self.chip_gap,
+                               self.chip_gap,
+                               self.chip_gap,
+                               self.chip_gap,
+                               0],
+                    'y_gaps': [0,
+                               self.chip_gap,
+                               0]
+                }
+            }
+
+        else:
+            source_entry = {
+                self.NAME: {
+                    'grid_size': [6, 8],
+                    'chip_size': [256, 256],
+                    'x_gaps': [0,
+                               self.chip_gap,
+                               self.chip_gap,
+                               self.chip_gap,
+                               self.chip_gap,
+                               self.chip_gap,
+                               self.chip_gap,
+                               self.chip_gap,
+                               0],
+                    'y_gaps': [0,
+                               self.chip_gap,
+                               self.module_gap,
+                               self.chip_gap,
+                               self.module_gap,
+                               self.chip_gap,
+                               0]
+                }
+            }
+        entries.append(create_config_entry(source_entry))
+
+        return entries

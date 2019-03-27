@@ -1,13 +1,6 @@
 <?xml version="1.0" ?>
 <components arch="linux-x86_64">
-	<ADOdin.ExcaliburProcessPlugin name="excalibur" sensor="1M"/>
-	<ADOdin.LiveViewPlugin name="view" source="excalibur"/>
-	<ADOdin.OffsetAdjustmentPlugin name="offset" source="excalibur"/>
-	<ADOdin.UIDAdjustmentPlugin name="uid" source="offset"/>
-	<ADOdin.SumPlugin name="sum" source="uid"/>
-	<ADOdin.FileWriterPlugin name="hdf" source="sum"/>
-	<ADOdin.PluginConfig PLUGIN_1="excalibur" PLUGIN_2="view" PLUGIN_3="offset" PLUGIN_4="uid" PLUGIN_5="sum" PLUGIN_6="hdf" name="plugins"/>
-	<ADOdin.ExcaliburOdinDataServer FEM_DEST_MAC="A0:36:9F:8C:52:3C" IP="127.0.0.1" PLUGIN_CONFIG="plugins" PROCESSES="2" SENSOR="1M" SHARED_MEM_SIZE="10485760" name="DataServer1"/>
+	<ADOdin.ExcaliburOdinDataServer FEM_DEST_MAC="A0:36:9F:8C:52:3C" IP="127.0.0.1" PROCESSES="2" SENSOR="1M" SHARED_MEM_SIZE="10485760" name="DataServer1"/>
 	<ADOdin.ExcaliburOdinControlServer IP="127.0.0.1" ODIN_DATA_SERVER_1="DataServer1" SENSOR="1M" name="ControlServer"/>
 	<ADOdin.ExcaliburOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" P="EXCALIBUR" PORT="ODN.OD" R=":CAM:" TIMEOUT="1"/>
 	<ADOdin.ExcaliburDetector ADDR="0" ODIN_CONTROL_SERVER="ControlServer" ODIN_DATA_DRIVER="ODN.OD" P="EXCALIBUR" PORT="ODN.CAM" R=":CAM:" SENSOR="1M" TIMEOUT="1"/>

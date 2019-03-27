@@ -1,0 +1,126 @@
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, PORT, Asyn Port name
+# % macro, TOTAL, Total number of FR/FP pairs
+# % macro, GUI, Label for EDM button
+
+# % gui, $(GUI), edm, BloscPlugin.edl, P=$(P),R=$(R)
+
+#### Config #######################################################################################
+
+# Blosc number of threads.
+# % autosave 2
+#% archiver 10 Monitor
+record(longout, "$(P)$(R)BLOSC:Threads")
+{
+    field(DTYP, "asynInt32")
+    field(HOPR, "8")
+    field(LOPR, "0")
+    field(OUT,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/blosc/threads")
+}
+
+# Blosc number of threads read back.
+#% archiver 10 Monitor
+record(longin, "$(P)$(R)BLOSC:Threads_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/blosc/threads")
+}
+
+# Blosc level.
+# % autosave 2
+#% archiver 10 Monitor
+record(longout, "$(P)$(R)BLOSC:Level")
+{
+    field(DTYP, "asynInt32")
+    field(HOPR, "9")
+    field(LOPR, "1")
+    field(OUT,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/blosc/level")
+}
+
+# Blosc level read back.
+#% archiver 10 Monitor
+record(longin, "$(P)$(R)BLOSC:Level_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/blosc/level")
+}
+
+# Blosc shuffle.
+# % autosave 2
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)BLOSC:Shuffle")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/blosc/shuffle")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(ZRST, "NOSHUFFLE")
+    field(ONST, "SHUFFLE")
+    field(TWST, "BITSHUFFLE")
+    field(PINI, "1")
+}
+
+# Blosc shuffle read back.
+#% archiver 10 Monitor
+record(mbbi, "$(P)$(R)BLOSC:Shuffle_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/blosc/shuffle")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(ZRST, "NOSHUFFLE")
+    field(ONST, "SHUFFLE")
+    field(TWST, "BITSHUFFLE")
+}
+
+# Blosc compressor.
+# % autosave 2
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)BLOSC:Compressor")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/blosc/compressor")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(FVVL, "5")
+    field(ZRST, "BLOSCLZ")
+    field(ONST, "LZ4")
+    field(TWST, "LZ4HC")
+    field(THST, "SNAPPY")
+    field(FRST, "ZLIB")
+    field(FVST, "ZSTD")
+    field(PINI, "1")
+}
+
+# Blosc compressor read back.
+#% archiver 10 Monitor
+record(mbbi, "$(P)$(R)BLOSC:Compressor_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/blosc/compressor")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(FVVL, "5")
+    field(ZRST, "BLOSCLZ")
+    field(ONST, "LZ4")
+    field(TWST, "LZ4HC")
+    field(THST, "SNAPPY")
+    field(FRST, "ZLIB")
+    field(FVST, "ZSTD")
+}
+

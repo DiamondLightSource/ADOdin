@@ -1,0 +1,257 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 991
+y 245
+w 386
+h 131
+font "arial-medium-r-12.0"
+ctlFont "arial-medium-r-12.0"
+btnFont "arial-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 25
+ctlFgColor2 index 25
+ctlBgColor1 index 3
+ctlBgColor2 index 3
+topShadowColor index 1
+botShadowColor index 11
+title "Odin Blosc Plugin"
+showGrid
+snapToGrid
+gridSize 5
+disableScroll
+endScreenProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 5
+y 5
+w 375
+h 120
+lineColor index 14
+fill
+fillColor index 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 0
+w 44
+h 13
+font "arial-medium-r-12.0"
+fgColor index 14
+bgColor index 5
+value {
+  "  Blosc  "
+}
+autoSize
+border
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 20
+w 80
+h 20
+font "arial-bold-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Compressor"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 45
+w 80
+h 20
+font "arial-bold-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Threads"
+}
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 110
+y 45
+w 125
+h 20
+controlPv "$(P)$(R)BLOSC:Threads"
+fgColor index 25
+fgAlarm
+bgColor index 3
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 250
+y 45
+w 80
+h 20
+controlPv "$(P)$(R)BLOSC:Threads_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 70
+w 80
+h 20
+font "arial-bold-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Level"
+}
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 110
+y 70
+w 125
+h 20
+controlPv "$(P)$(R)BLOSC:Level"
+fgColor index 25
+fgAlarm
+bgColor index 3
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 250
+y 70
+w 80
+h 20
+controlPv "$(P)$(R)BLOSC:Level_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 95
+w 80
+h 20
+font "arial-bold-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Shuffle"
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 110
+y 20
+w 125
+h 20
+fgColor index 25
+bgColor index 3
+inconsistentColor index 0
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)BLOSC:Compressor"
+indicatorPv "$(P)$(R)BLOSC:Compressor_RBV"
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 110
+y 95
+w 125
+h 20
+fgColor index 25
+bgColor index 3
+inconsistentColor index 0
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)BLOSC:Shuffle"
+indicatorPv "$(P)$(R)BLOSC:Shuffle_RBV"
+font "arial-bold-r-12.0"
+endObjectProperties
+
