@@ -104,15 +104,17 @@ class _ExcaliburPluginConfig(PluginConfig):
         pl3=OffsetAdjustmentPlugin(source=pl1)
         pl4=UIDAdjustmentPlugin(source=pl3)
         pl5=SumPlugin(source=pl4)
-        pl6=BloscPlugin(source=pl5)
-        pl7=FileWriterPlugin(source=pl6)
+        pl6=_ExcaliburGapFillPlugin(source=pl5, SENSOR=SENSOR, CHIP_GAP=3, MODULE_GAP=124)
+        pl7=BloscPlugin(source=pl6)
+        pl8=FileWriterPlugin(source=pl7)
         super(_ExcaliburPluginConfig, self).__init__(PLUGIN_1=pl1,
                                                      PLUGIN_2=pl2,
                                                      PLUGIN_3=pl3,
                                                      PLUGIN_4=pl4,
                                                      PLUGIN_5=pl5,
                                                      PLUGIN_6=pl6,
-                                                     PLUGIN_7=pl7)
+                                                     PLUGIN_7=pl7,
+                                                     PLUGIN_8=pl8)
         
         # Set the modes
         self.modes = ['compression', 'no_compression']
@@ -125,6 +127,7 @@ class _ExcaliburPluginConfig(PluginConfig):
         pl5.add_mode('compression', source=pl4)
         pl6.add_mode('compression', source=pl5)
         pl7.add_mode('compression', source=pl6)
+        pl8.add_mode('compression', source=pl7)
 
         # Now we need to create the no compression mode chain (no blosc in the chain)
         pl1.add_mode('no_compression')
@@ -132,7 +135,7 @@ class _ExcaliburPluginConfig(PluginConfig):
         pl3.add_mode('no_compression', source=pl1)
         pl4.add_mode('no_compression', source=pl3)
         pl5.add_mode('no_compression', source=pl4)
-        pl7.add_mode('no_compression', source=pl5)
+        pl8.add_mode('no_compression', source=pl5)
 
     def detector_setup(self, od_args):
         ## Make an instance of our template
@@ -530,3 +533,64 @@ class ExcaliburDetector(_OdinDetector):
             node_config.append(fem_config)
 
         return node_config
+
+class _ExcaliburGapFillPlugin(FrameProcessorPlugin):
+
+    NAME = "gap"
+    CLASS_NAME = "GapFillPlugin"
+
+    def __init__(self, source=None, SENSOR='3M', CHIP_GAP=3, MODULE_GAP=124):
+        super(_ExcaliburGapFillPlugin, self).__init__(source)
+        self.sensor = SENSOR
+        self.chip_gap = CHIP_GAP
+        self.module_gap = MODULE_GAP
+
+    def create_extra_config_entries(self, rank):
+        entries = []
+
+        if self.sensor == "1M":
+            source_entry = {
+                self.NAME: {
+                    'grid_size': [2, 8],
+                    'chip_size': [256, 256],
+                    'x_gaps': [0,
+                               self.chip_gap,
+                               self.chip_gap,
+                               self.chip_gap,
+                               self.chip_gap,
+                               self.chip_gap,
+                               self.chip_gap,
+                               self.chip_gap,
+                               0],
+                    'y_gaps': [0,
+                               self.chip_gap,
+                               0]
+                }
+            }
+
+        else:
+            source_entry = {
+                self.NAME: {
+                    'grid_size': [6, 8],
+                    'chip_size': [256, 256],
+                    'x_gaps': [0,
+                               self.chip_gap,
+                               self.chip_gap,
+                               self.chip_gap,
+                               self.chip_gap,
+                               self.chip_gap,
+                               self.chip_gap,
+                               self.chip_gap,
+                               0],
+                    'y_gaps': [0,
+                               self.chip_gap,
+                               self.module_gap,
+                               self.chip_gap,
+                               self.module_gap,
+                               self.chip_gap,
+                               0]
+                }
+            }
+        entries.append(create_config_entry(source_entry))
+
+        return entries
