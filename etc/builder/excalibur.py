@@ -147,6 +147,7 @@ class ExcaliburOdinDataServer(_OdinDataServer):
     """Store configuration for an ExcaliburOdinDataServer"""
 
     BASE_UDP_PORT = 61649
+    PLUGIN_CONFIG = None
 
     def __init__(self, IP, PROCESSES, SENSOR,
                  FEM_DEST_MAC, FEM_DEST_IP="10.0.2.2",
@@ -154,10 +155,11 @@ class ExcaliburOdinDataServer(_OdinDataServer):
                  FEM_DEST_MAC_2=None, FEM_DEST_IP_2=None, DIRECT_FEM_CONNECTION=False):
         self.sensor = SENSOR
         if PLUGIN_CONFIG is None:
-            # Create the standard Excalibur plugin config
-            PLUGIN_CONFIG = _ExcaliburPluginConfig(SENSOR)
+            if ExcaliburOdinDataServer.PLUGIN_CONFIG is None:
+                # Create the standard Excalibur plugin config
+                ExcaliburOdinDataServer.PLUGIN_CONFIG = _ExcaliburPluginConfig(SENSOR)
 
-        self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE, PLUGIN_CONFIG)
+        self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE, ExcaliburOdinDataServer.PLUGIN_CONFIG)
         # Update attributes with parameters
         self.__dict__.update(locals())
 
