@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 485
-y 201
+x 1238
+y 221
 w 419
-h 600
+h 609
 font "arial-bold-r-12.0"
 ctlFont "arial-bold-r-12.0"
 btnFont "arial-bold-r-12.0"
@@ -32,9 +32,9 @@ major 4
 minor 0
 release 0
 x 5
-y 270
+y 335
 w 405
-h 325
+h 265
 lineColor index 14
 fill
 fillColor index 3
@@ -70,7 +70,7 @@ release 0
 x 5
 y 60
 w 405
-h 195
+h 265
 lineColor index 14
 fill
 fillColor index 3
@@ -252,7 +252,7 @@ major 10
 minor 0
 release 0
 x 310
-y 455
+y 520
 w 90
 h 20
 controlPv "$(P)$(R)BoundaryAlign_RBV"
@@ -271,7 +271,7 @@ major 10
 minor 0
 release 0
 x 205
-y 455
+y 520
 w 90
 h 20
 controlPv "$(P)$(R)BoundaryAlign"
@@ -289,7 +289,7 @@ major 4
 minor 1
 release 1
 x 15
-y 455
+y 520
 w 175
 h 20
 font "arial-bold-r-12.0"
@@ -308,7 +308,7 @@ major 4
 minor 1
 release 1
 x 5
-y 265
+y 330
 w 111
 h 13
 font "arial-medium-r-12.0"
@@ -328,7 +328,7 @@ major 10
 minor 0
 release 0
 x 310
-y 480
+y 545
 w 90
 h 20
 controlPv "$(P)$(R)BoundaryThreshold_RBV"
@@ -347,7 +347,7 @@ major 10
 minor 0
 release 0
 x 205
-y 480
+y 545
 w 90
 h 20
 controlPv "$(P)$(R)BoundaryThreshold"
@@ -365,7 +365,7 @@ major 4
 minor 1
 release 1
 x 15
-y 480
+y 545
 w 175
 h 20
 font "arial-bold-r-12.0"
@@ -555,7 +555,7 @@ major 4
 minor 1
 release 1
 x 15
-y 285
+y 350
 w 170
 h 20
 font "arial-bold-r-12.0"
@@ -574,7 +574,7 @@ major 10
 minor 0
 release 0
 x 205
-y 285
+y 350
 w 95
 h 20
 controlPv "$(P)$(R)NumFramesFlush"
@@ -593,7 +593,7 @@ major 10
 minor 0
 release 0
 x 310
-y 285
+y 350
 w 90
 h 20
 controlPv "$(P)$(R)NumFramesFlush_RBV"
@@ -613,7 +613,7 @@ major 4
 minor 1
 release 0
 x 205
-y 310
+y 375
 w 195
 h 20
 fgColor index 34
@@ -637,7 +637,7 @@ major 10
 minor 0
 release 0
 x 310
-y 400
+y 465
 w 90
 h 20
 controlPv "$(P)$(R)BlockSize_RBV"
@@ -656,7 +656,7 @@ major 10
 minor 0
 release 0
 x 205
-y 400
+y 465
 w 90
 h 20
 controlPv "$(P)$(R)BlockSize"
@@ -674,7 +674,7 @@ major 4
 minor 1
 release 1
 x 15
-y 400
+y 465
 w 170
 h 20
 font "arial-bold-r-12.0"
@@ -693,7 +693,7 @@ major 10
 minor 0
 release 0
 x 310
-y 425
+y 490
 w 90
 h 20
 controlPv "$(P)$(R)BlocksPerFile_RBV"
@@ -712,7 +712,7 @@ major 10
 minor 0
 release 0
 x 205
-y 425
+y 490
 w 90
 h 20
 controlPv "$(P)$(R)BlocksPerFile"
@@ -730,7 +730,7 @@ major 4
 minor 1
 release 1
 x 15
-y 425
+y 490
 w 170
 h 20
 font "arial-bold-r-12.0"
@@ -749,7 +749,7 @@ major 10
 minor 0
 release 0
 x 310
-y 340
+y 405
 w 90
 h 20
 controlPv "$(P)$(R)FrameOffset_RBV"
@@ -768,7 +768,7 @@ major 10
 minor 0
 release 0
 x 205
-y 340
+y 405
 w 90
 h 20
 controlPv "$(P)$(R)FrameOffset"
@@ -786,7 +786,7 @@ major 4
 minor 1
 release 1
 x 15
-y 340
+y 405
 w 170
 h 20
 font "arial-bold-r-12.0"
@@ -805,7 +805,7 @@ major 10
 minor 0
 release 0
 x 310
-y 370
+y 435
 w 90
 h 20
 controlPv "$(P)$(R)CloseFileTimeout_RBV"
@@ -824,7 +824,7 @@ major 10
 minor 0
 release 0
 x 205
-y 370
+y 435
 w 90
 h 20
 controlPv "$(P)$(R)CloseFileTimeout"
@@ -842,7 +842,7 @@ major 4
 minor 1
 release 1
 x 15
-y 370
+y 435
 w 170
 h 20
 font "arial-bold-r-12.0"
@@ -861,8 +861,8 @@ major 4
 minor 1
 release 1
 x 15
-y 510
-w 175
+y 570
+w 165
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
@@ -880,7 +880,7 @@ major 4
 minor 0
 release 0
 x 205
-y 510
+y 570
 w 195
 h 20
 fgColor index 25
@@ -932,71 +932,61 @@ indicatorPv "$(P)$(R)DataType_RBV"
 font "arial-bold-r-12.0"
 endObjectProperties
 
-# (Static Text)
-object activeXTextClass
+# (Textupdate)
+object TextupdateClass
 beginObjectProperties
-major 4
-minor 1
-release 1
-x 15
-y 540
-w 175
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Data File Name"
-}
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 6
-release 0
-x 205
-y 540
-w 90
-h 20
-controlPv "$(P)$(R)FP:FileName"
-font "helvetica-medium-r-10.0"
-fgColor index 25
-bgColor index 3
-editable
-motifWidget
-limitsFromDb
-nullColor index 0
-useKp
-file
-useHexPrefix
-newPos
-inputFocusUpdates
-objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 6
+major 10
+minor 0
 release 0
 x 310
-y 540
+y 250
 w 90
 h 20
-controlPv "$(P)$(R)FP:FileName_RBV"
-font "helvetica-medium-r-10.0"
+controlPv "$(P)$(R)BloscLevel_RBV"
 fgColor index 16
+fgAlarm
 bgColor index 10
-limitsFromDb
-nullColor index 0
-smartRefresh
-useHexPrefix
-newPos
-objType "controls"
+fill
+font "arial-medium-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 205
+y 250
+w 90
+h 20
+controlPv "$(P)$(R)BloscLevel"
+fgColor index 25
+fgAlarm
+bgColor index 3
+fill
+font "arial-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 310
+y 300
+w 90
+h 20
+fgColor index 25
+bgColor index 3
+inconsistentColor index 0
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)BloscCompressor"
+indicatorPv "$(P)$(R)BloscCompressor_RBV"
+font "arial-bold-r-12.0"
 endObjectProperties
 
 # (Static Text)
@@ -1005,64 +995,74 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 15
-y 565
-w 175
+x 80
+y 250
+w 115
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Acquisition ID"
+  "Blosc Level:"
 }
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
+# (Static Text)
+object activeXTextClass
 beginObjectProperties
 major 4
-minor 6
-release 0
-x 205
-y 565
-w 90
+minor 1
+release 1
+x 80
+y 275
+w 115
 h 20
-controlPv "$(P)$(R)AcquisitionID"
-font "helvetica-medium-r-10.0"
-fgColor index 25
+font "arial-bold-r-12.0"
+fgColor index 14
 bgColor index 3
-editable
-motifWidget
-limitsFromDb
-nullColor index 0
-useKp
-file
-useHexPrefix
-newPos
-inputFocusUpdates
-objType "controls"
+useDisplayBg
+value {
+  "Blosc Shuffle:"
+}
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
+# (Static Text)
+object activeXTextClass
 beginObjectProperties
 major 4
-minor 6
+minor 1
+release 1
+x 80
+y 300
+w 115
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Blosc Compressor:"
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
 release 0
 x 310
-y 565
+y 275
 w 90
 h 20
-controlPv "$(P)$(R)AcquisitionID_RBV"
-font "helvetica-medium-r-10.0"
-fgColor index 16
-bgColor index 10
-limitsFromDb
-nullColor index 0
-smartRefresh
-useHexPrefix
-newPos
-objType "controls"
+fgColor index 25
+bgColor index 3
+inconsistentColor index 0
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)BloscShuffle"
+indicatorPv "$(P)$(R)BloscShuffle_RBV"
+font "arial-bold-r-12.0"
 endObjectProperties
 
