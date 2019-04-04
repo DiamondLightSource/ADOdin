@@ -31,7 +31,7 @@ class DatasetCreationPlugin(FrameProcessorPlugin):
             FileWriterPlugin.NAME: {
                 "dataset": {
                     self.NAME: {
-                        "chunks": OneLineEntry([1]),
+                        "chunks": OneLineEntry([1000]),
                         "datatype": 3
                     }
                 }
