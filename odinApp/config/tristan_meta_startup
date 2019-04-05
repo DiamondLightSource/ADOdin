@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd $OD_ROOT
+export PYTHONPATH=$TRISTAN_DETECTOR_PATH/control/
+${NUMA}prefix/bin/meta_writer -w latrd.meta.tristan_meta_writer.TristanMetaWriter -i $IP_LIST --staticlogfields beamline=$${BEAMLINE},detector="Tristan$SENSOR" --logserver "graylog2.diamond.ac.uk:12210"
