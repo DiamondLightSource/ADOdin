@@ -339,7 +339,6 @@ class _TristanOdinData(_OdinData):
         self.base_udp_port = BASE_UDP_PORT
 
     def create_config_files(self, index, total):
-        print("Index: {}   Total: {}".format(index, total))
         macros = dict(DETECTOR_ROOT=TRISTAN_PATH,
                       PROC_NUMBER=total,
                       PROC_RANK=index-1,
