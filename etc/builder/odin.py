@@ -80,7 +80,7 @@ class _OdinData(Device):
 
         expand_template_file(template, macros, "{}{}.json".format(prefix, self.RANK + 1))
 
-    def create_config_files(self, index):
+    def create_config_files(self, index, total):
         raise NotImplementedError("Method must be implemented by child classes")
 
     def add_batch_entries(self, entries, beamline, number):
@@ -502,7 +502,7 @@ class _OdinDataDriver(AsynPort):
                 od_args["TOTAL"] = self.odin_data_processes
                 _OdinDataTemplate(**od_args)
 
-                odin_data.create_config_files(process_idx + 1)
+                odin_data.create_config_files(process_idx + 1, self.total_processes)
                 process_idx += self.server_count
 
             if server.plugins is not None:
