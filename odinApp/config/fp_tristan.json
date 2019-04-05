@@ -3,7 +3,8 @@
     "fr_setup": {
       "fr_ready_cnxn": "tcp://127.0.0.1:$RD_PORT",
       "fr_release_cnxn": "tcp://127.0.0.1:$RL_PORT"
-    }
+    },
+    "meta_endpoint": "tcp://*:$META_PORT"
   },
   {
     "plugin": {
@@ -42,8 +43,8 @@
   {
     "latrd": {
       "process": {
-        "number": 4,
-        "rank": 0
+        "number": $PROC_NUMBER,
+        "rank": $PROC_RANK
       },
       "sensor": {
         "width": $WIDTH,
@@ -54,8 +55,8 @@
   {
     "hdf": {
       "process": {
-        "number": 4,
-        "rank": 0
+        "number": $PROC_NUMBER,
+        "rank": $PROC_RANK
       }
     }
   },
