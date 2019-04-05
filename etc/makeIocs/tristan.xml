@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <components arch="linux-x86_64">
 	<ADOdin.TristanOdinDataServer FEM_DEST_MAC="AA:AA:AA:AA" IP="127.0.0.1" PROCESSES="4" SENSOR="1M" name="TRS.DATA1"/>
-	<ADOdin.TristanOdinControlServer IP="127.0.0.1" ODIN_DATA_SERVER_1="TRS.DATA1" SENSOR="1M" name="TRS.CTRL"/>
+	<ADOdin.TristanOdinControlServer IP="127.0.0.1" META_IP="127.0.0.1" ODIN_DATA_SERVER_1="TRS.DATA1" SENSOR="1M" name="TRS.CTRL"/>
 	<ADOdin.TristanOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="TRS.CTRL" P="TEST-TRST-01" PORT="TRS.DATA" R=":CAM:" TIMEOUT="1"/>
 	<ADOdin.TristanDetector ADDR="0" ODIN_CONTROL_SERVER="TRS.CTRL" ODIN_DATA_DRIVER="TRS.DATA" P="TEST-TRST-01" PORT="TRS.CAM" R=":CAM:" SENSOR="1M" TIMEOUT="1"/>
 	<gdaPlugins.gdaPlugins CAM="TRS.CAM" P="TEST-TRST-01" PORTPREFIX="TRS" name="plugins"/>
