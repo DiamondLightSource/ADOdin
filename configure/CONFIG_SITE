@@ -41,10 +41,8 @@ ifdef T_A
   -include $(AREA_DETECTOR)/configure/CONFIG_SITE.$(EPICS_HOST_ARCH).$(T_A)
 endif
 
-# If zeromq is not installed as a system library, set its path here
-ZMQ = /dls_sw/prod/tools/RHEL6-x86_64/zeromq/3-2-4/prefix
-ZMQ_LIB = $(ZMQ)/lib
-ZMQ_INCLUDE = -I$(ZMQ)/include
+ZMQ_LIB = /usr/lib64
+ZMQ_INCLUDE = -I/usr/include
 
 HDF5          = /dls_sw/prod/tools/RHEL6-x86_64/hdf5/1-10-1/prefix
 HDF5_LIB      = $(HDF5)/lib

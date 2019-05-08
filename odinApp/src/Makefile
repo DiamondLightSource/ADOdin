@@ -11,6 +11,9 @@ LIB_SRCS += OdinDetector.cpp OdinDataDriver.cpp OdinClient.cpp OdinRestApi.cpp O
 
 
 LIB_LIBS += restClient
+
+USR_INCLUDES += $(ZMQ_INCLUDE)
+zmq_DIR=$(ZMQ_LIB)
 LIB_LIBS += zmq
 
 DBD += OdinDetectorSupport.dbd

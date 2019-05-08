@@ -1,14 +1,15 @@
-EPICS_BASE = /dls_sw/epics/R3.14.12.3/base
+EPICS_BASE = /dls_sw/epics/R3.14.12.7/base
 
-SUPPORT = /dls_sw/prod/R3.14.12.3/support
-TOOLS = /dls_sw/prod/tools/RHEL6-x86_64
+SUPPORT = /dls_sw/prod/R3.14.12.7/support
+WORK = /dls_sw/work/R3.14.12.7/support
+TOOLS = /dls_sw/prod/tools/RHEL7-x86_64
+WORK_TOOLS = /dls_sw/work/tools/RHEL7-x86_64
 
-ASYN = $(SUPPORT)/asyn/4-31
-ADCORE = $(SUPPORT)/ADCore/2-6dls7
-CALC = $(SUPPORT)/calc/3-1
-RESTCLIENT = $(SUPPORT)/restClient/0-2
+ASYN = $(SUPPORT)/asyn/4-34
+ADCORE = $(SUPPORT)/ADCore/3-4dls3
+CALC = $(SUPPORT)/calc/3-7
+RESTCLIENT = $(SUPPORT)/restClient/0-4
 
-ODINDATA = $(TOOLS)/odin-data/1-1-0dls2
-EXCALIBURDETECTOR = $(TOOLS)/excalibur-detector/0-5-0
-EIGERDETECTOR = $(TOOLS)/eiger-detector/1-4-4
-ZMQ = $(TOOLS)/zeromq/3-2-4
+ODINDATA = $(TOOLS)/odin-data/1-1-0dls3
+EXCALIBURDETECTOR = $(TOOLS)/excalibur-detector/0-6-0
+EIGERDETECTOR = $(TOOLS)/eiger-detector/1-5-0
