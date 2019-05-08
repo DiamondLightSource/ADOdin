@@ -111,9 +111,9 @@ void OdinLiveViewListener::parse_json_header(const std::string& header_str)
             image_.valid = false;
         } else {
             std::string val = itr->value[1].GetString();
-            sscanf(val.c_str(), "%d", &(image_.width));
+            sscanf(val.c_str(), "%zu", &(image_.width));
             val = itr->value[0].GetString();
-            sscanf(val.c_str(), "%d", &(image_.height));
+            sscanf(val.c_str(), "%zu", &(image_.height));
         }
     }
     catch (...) {

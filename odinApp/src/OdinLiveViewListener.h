@@ -25,8 +25,8 @@ struct ImageDescription
     bool valid;
     int number;
     std::string dtype;
-    int width;
-    int height;
+    size_t width;
+    size_t height;
     size_t bytes;
     void *dPtr;
 };
