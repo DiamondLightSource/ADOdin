@@ -2,7 +2,6 @@ from iocbuilder import AutoSubstitution
 
 from util import OneLineEntry, create_config_entry
 from odin import FrameProcessorPlugin
-from iocbuilder.arginfo import makeArgInfo, Simple
 
 
 class _OffsetAdjustmentPluginTemplate(AutoSubstitution):
@@ -44,7 +43,7 @@ class DatasetCreationPlugin(FrameProcessorPlugin):
 
 class UIDAdjustmentPlugin(DatasetCreationPlugin):
 
-    NAME = "UID"
+    NAME = "uid"
     CLASS_NAME = "UIDAdjustmentPlugin"
     TEMPLATE = _UIDAdjustmentPluginTemplate
 
@@ -58,7 +57,7 @@ class _SumPluginTemplate(AutoSubstitution):
 
 class SumPlugin(DatasetCreationPlugin):
 
-    NAME = "SUM"
+    NAME = "sum"
     CLASS_NAME = "SumPlugin"
 
     def __init__(self, source=None):
