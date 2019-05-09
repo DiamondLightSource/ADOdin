@@ -595,7 +595,7 @@ record(longout, "$(P)$(R)BloscLevel")
     field(DTYP, "asynInt32")
     field(HOPR, "9")
     field(LOPR, "1")
-    field(OUT,  "@asyn($(PORT),0,1)_ODI4_fp/config/hdf/dataset/data/blosc_level")
+    field(OUT,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/hdf/dataset/data/blosc_level")
 }
 
 # Blosc level read back.
@@ -604,7 +604,7 @@ record(longin, "$(P)$(R)BloscLevel_RBV")
 {
     field(DTYP, "asynInt32")
     field(SCAN, "I/O Intr")
-    field(INP,  "@asyn($(PORT),0,1)_ODI4_fp/config/hdf/dataset/data/blosc_level")
+    field(INP,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/hdf/dataset/data/blosc_level")
 }
 
 # Blosc shuffle.
@@ -614,7 +614,7 @@ record(mbbo, "$(P)$(R)BloscShuffle")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,1)_ODI4_fp/config/hdf/dataset/data/blosc_shuffle")
+    field(OUT,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/hdf/dataset/data/blosc_shuffle")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(TWVL, "2")
@@ -630,7 +630,7 @@ record(mbbi, "$(P)$(R)BloscShuffle_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,1)_ODI4_fp/config/hdf/dataset/data/blosc_shuffle")
+    field(INP,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/hdf/dataset/data/blosc_shuffle")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(TWVL, "2")
@@ -646,7 +646,7 @@ record(mbbo, "$(P)$(R)BloscCompressor")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,1)_ODI4_fp/config/hdf/dataset/data/blosc_compressor")
+    field(OUT,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/hdf/dataset/data/blosc_compressor")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(TWVL, "2")
@@ -668,7 +668,7 @@ record(mbbi, "$(P)$(R)BloscCompressor_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,1)_ODI4_fp/config/hdf/dataset/data/blosc_compressor")
+    field(INP,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/hdf/dataset/data/blosc_compressor")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(TWVL, "2")
