@@ -1,0 +1,13 @@
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, PORT, Asyn Port name
+# % macro, TOTAL, Total number of FR/FP pairs
+# % macro, PLUGIN_NAME, Plugin name to insert into PV
+# % macro, PLUGIN_URI, Plugin name in uri endpoint
+
+record(stringin, "$(P)$(R)$(PLUGIN_NAME):PluginVersion_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),0,1)_ODS$(TOTAL)_fp/version/$(PLUGIN_URI)/full")
+    field(SCAN, "I/O Intr")
+}

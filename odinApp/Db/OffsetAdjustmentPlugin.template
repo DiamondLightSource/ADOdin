@@ -33,3 +33,7 @@ record(longin, "$(P)$(R)OFF:ActiveFrame_RBV")
     field(SCAN, "I/O Intr")
     field(INP,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/offset/first_frame_number")
 }
+
+substitute "PLUGIN_NAME=OFF"
+substitute "PLUGIN_URI=offset"
+include "FrameProcessorPlugin.template"

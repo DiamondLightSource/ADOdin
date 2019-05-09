@@ -124,3 +124,6 @@ record(mbbi, "$(P)$(R)BLOSC:Compressor_RBV")
     field(FVST, "ZSTD")
 }
 
+substitute "PLUGIN_NAME=BLOSC"
+substitute "PLUGIN_URI=blosc"
+include "FrameProcessorPlugin.template"

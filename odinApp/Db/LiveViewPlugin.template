@@ -20,3 +20,7 @@ record(longin, "$(P)$(R)LVW:FrameRate_RBV")
     field(SCAN, "I/O Intr")
     field(INP,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/view/per_second")
 }
+
+substitute "PLUGIN_NAME=LVW"
+substitute "PLUGIN_URI=view"
+include "FrameProcessorPlugin.template"

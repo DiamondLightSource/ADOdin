@@ -461,11 +461,13 @@ class _OdinDataDriver(AsynPort):
         self.__super.__init__(PORT)
         # Update the attributes of self from the commandline args
         self.__dict__.update(locals())
-        # Make an instance of our template
-        makeTemplateInstance(_OdinDataDriverTemplate, locals(), args)
 
         self.control_server = ODIN_CONTROL_SERVER
         self.server_count = len(self.control_server.odin_data_servers)
+
+        # Make an instance of our template
+        args["TOTAL"] = self.server_count
+        makeTemplateInstance(_OdinDataDriverTemplate, locals(), args)
 
         # Define Macros for Initialise substitutions
         self.CONTROL_SERVER_IP = ODIN_CONTROL_SERVER.IP

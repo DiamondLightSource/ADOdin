@@ -1,0 +1,3 @@
+substitute "PLUGIN_NAME=SUM"
+substitute "PLUGIN_URI=sum"
+include "FrameProcessorPlugin.template"

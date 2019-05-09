@@ -53,7 +53,7 @@ class UIDAdjustmentPlugin(DatasetCreationPlugin):
 
 
 class _SumPluginTemplate(AutoSubstitution):
-    TemplateFile = "UIDAdjustmentPlugin.template"
+    TemplateFile = "SumPlugin.template"
 
 
 class SumPlugin(DatasetCreationPlugin):

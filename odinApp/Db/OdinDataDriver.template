@@ -4,6 +4,7 @@
 #% macro, PORT, Asyn Port name
 #% macro, TIMEOUT, Timeout
 #% macro, ADDR, Asyn Port address
+#% macro, TOTAL, Total number of FR/FP pairs
 
 # % gui, $(PORT), demand, File path,   $(P)$(R)FilePath
 # % gui, $(PORT), readback, File path RBV,   $(P)$(R)FilePath_RBV
@@ -85,6 +86,27 @@ record(fanout, "$(P)$(R)ReconnectFan3")
     field(LNK4, "$(P)$(R)BoundaryAlign.PROC PP")
     field(LNK5, "$(P)$(R)BoundaryThreshold.PROC PP")
     field(LNK6, "$(P)$(R)EarliestHDF5Version.PROC PP")
+}
+
+record(stringin, "$(P)$(R):FrameReceiverVersion_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),0,1)_ODS$(TOTAL)_fr/version/odin-data/full")
+    field(SCAN, "I/O Intr")
+}
+
+record(stringin, "$(P)$(R):FrameDecoderVersion_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),0,1)_ODS$(TOTAL)_fr/version/decoder/full")
+    field(SCAN, "I/O Intr")
+}
+
+record(stringin, "$(P)$(R):FrameProcessorVersion_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),0,1)_ODS$(TOTAL)_fp/version/odin-data/full")
+    field(SCAN, "I/O Intr")
 }
 
 record(stringin, "$(P)$(R)RestAPIVersion_RBV")
