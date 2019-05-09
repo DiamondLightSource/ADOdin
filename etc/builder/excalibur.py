@@ -99,43 +99,44 @@ class _ExcaliburPluginConfig(PluginConfig):
     AutoInstantiate = True
 
     def __init__(self, SENSOR):
-        pl1=ExcaliburProcessPlugin(sensor=SENSOR)
-        pl2=LiveViewPlugin(source=pl1)
-        pl3=OffsetAdjustmentPlugin(source=pl1)
-        pl4=UIDAdjustmentPlugin(source=pl3)
-        pl5=SumPlugin(source=pl4)
-        pl6=_ExcaliburGapFillPlugin(source=pl5, SENSOR=SENSOR, CHIP_GAP=3, MODULE_GAP=124)
-        pl7=BloscPlugin(source=pl6)
-        pl8=FileWriterPlugin(source=pl7)
-        super(_ExcaliburPluginConfig, self).__init__(PLUGIN_1=pl1,
-                                                     PLUGIN_2=pl2,
-                                                     PLUGIN_3=pl3,
-                                                     PLUGIN_4=pl4,
-                                                     PLUGIN_5=pl5,
-                                                     PLUGIN_6=pl6,
-                                                     PLUGIN_7=pl7,
-                                                     PLUGIN_8=pl8)
+        excalibur = ExcaliburProcessPlugin(sensor=SENSOR)
+        offset = OffsetAdjustmentPlugin(source=excalibur)
+        uid = UIDAdjustmentPlugin(source=offset)
+        sum = SumPlugin(source=uid)
+        gap = _ExcaliburGapFillPlugin(source=sum, SENSOR=SENSOR, CHIP_GAP=3, MODULE_GAP=124)
+        view = LiveViewPlugin(source=gap)
+        blosc = BloscPlugin(source=gap)
+        hdf = FileWriterPlugin(source=blosc)
+        super(_ExcaliburPluginConfig, self).__init__(PLUGIN_1=excalibur,
+                                                     PLUGIN_2=offset,
+                                                     PLUGIN_3=uid,
+                                                     PLUGIN_4=sum,
+                                                     PLUGIN_5=gap,
+                                                     PLUGIN_6=view,
+                                                     PLUGIN_7=blosc,
+                                                     PLUGIN_8=hdf)
         
         # Set the modes
         self.modes = ['compression', 'no_compression']
         
         # Now we need to create the standard mode chain (with compression)
-        pl1.add_mode('compression')
-        pl2.add_mode('compression', source=pl1)
-        pl3.add_mode('compression', source=pl1)
-        pl4.add_mode('compression', source=pl3)
-        pl5.add_mode('compression', source=pl4)
-        pl6.add_mode('compression', source=pl5)
-        pl7.add_mode('compression', source=pl6)
-        pl8.add_mode('compression', source=pl7)
+        excalibur.add_mode('compression')
+        offset.add_mode('compression', source=excalibur)
+        uid.add_mode('compression', source=offset)
+        sum.add_mode('compression', source=uid)
+        gap.add_mode('compression', source=sum)
+        view.add_mode('compression', source=gap)
+        blosc.add_mode('compression', source=gap)
+        hdf.add_mode('compression', source=blosc)
 
         # Now we need to create the no compression mode chain (no blosc in the chain)
-        pl1.add_mode('no_compression')
-        pl2.add_mode('no_compression', source=pl1)
-        pl3.add_mode('no_compression', source=pl1)
-        pl4.add_mode('no_compression', source=pl3)
-        pl5.add_mode('no_compression', source=pl4)
-        pl8.add_mode('no_compression', source=pl5)
+        excalibur.add_mode('no_compression')
+        offset.add_mode('no_compression', source=excalibur)
+        uid.add_mode('no_compression', source=offset)
+        sum.add_mode('no_compression', source=uid)
+        gap.add_mode('no_compression', source=sum)
+        view.add_mode('no_compression', source=gap)
+        hdf.add_mode('no_compression', source=gap)
 
     def detector_setup(self, od_args):
         ## Make an instance of our template
