@@ -4,7 +4,8 @@ from iocbuilder import AutoSubstitution
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
 
-from util import find_module_path, expand_template_file, debug_print, create_config_entry
+from util import find_module_path, expand_template_file, debug_print, \
+                 create_config_entry, OneLineEntry
 from odin import _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, \
                  PluginConfig, FrameProcessorPlugin
 from plugins import LiveViewPlugin, OffsetAdjustmentPlugin, UIDAdjustmentPlugin, \
@@ -542,12 +543,13 @@ class ExcaliburDetector(_OdinDetector):
 
         return node_config
 
+
 class _ExcaliburGapFillPlugin(FrameProcessorPlugin):
 
     NAME = "gap"
     CLASS_NAME = "GapFillPlugin"
 
-    def __init__(self, source=None, SENSOR='3M', CHIP_GAP=3, MODULE_GAP=124):
+    def __init__(self, source=None, SENSOR="3M", CHIP_GAP=3, MODULE_GAP=124):
         super(_ExcaliburGapFillPlugin, self).__init__(source)
         self.sensor = SENSOR
         self.chip_gap = CHIP_GAP
@@ -556,49 +558,41 @@ class _ExcaliburGapFillPlugin(FrameProcessorPlugin):
     def create_extra_config_entries(self, rank):
         entries = []
 
+        chip_size = [256, 256]
+        x_gaps = [0] + [self.chip_gap] * 7 + [0]
         if self.sensor == "1M":
-            source_entry = {
-                self.NAME: {
-                    'grid_size': [2, 8],
-                    'chip_size': [256, 256],
-                    'x_gaps': [0,
-                               self.chip_gap,
-                               self.chip_gap,
-                               self.chip_gap,
-                               self.chip_gap,
-                               self.chip_gap,
-                               self.chip_gap,
-                               self.chip_gap,
-                               0],
-                    'y_gaps': [0,
-                               self.chip_gap,
-                               0]
-                }
-            }
-
+            grid_size = [2, 8]
+            y_gaps = [0, self.chip_gap, 0]
         else:
-            source_entry = {
-                self.NAME: {
-                    'grid_size': [6, 8],
-                    'chip_size': [256, 256],
-                    'x_gaps': [0,
-                               self.chip_gap,
-                               self.chip_gap,
-                               self.chip_gap,
-                               self.chip_gap,
-                               self.chip_gap,
-                               self.chip_gap,
-                               self.chip_gap,
-                               0],
-                    'y_gaps': [0,
-                               self.chip_gap,
-                               self.module_gap,
-                               self.chip_gap,
-                               self.module_gap,
-                               self.chip_gap,
-                               0]
+            grid_size = [6, 8]
+            y_gaps = [
+                0, self.chip_gap, self.module_gap, self.chip_gap, self.module_gap, self.chip_gap, 0
+            ]
+
+        layout_config = {
+            self.NAME: {
+                "grid_size": grid_size,
+                "chip_size": chip_size,
+                "x_gaps": x_gaps,
+                "y_gaps": y_gaps
+            }
+        }
+        entries.append(create_config_entry(layout_config))
+
+        dimensions = [
+            EXCALIBUR_DIMENSIONS[self.sensor][1] + sum(y_gaps),
+            EXCALIBUR_DIMENSIONS[self.sensor][0] + sum(x_gaps)
+        ]
+        dataset_config = {
+            FileWriterPlugin.NAME: {
+                "dataset": {
+                    FileWriterPlugin.DATASET_NAME: {
+                        "dims": OneLineEntry(dimensions),
+                        "chunks": OneLineEntry([1] + dimensions),
+                    }
                 }
             }
-        entries.append(create_config_entry(source_entry))
+        }
+        entries.append(create_config_entry(dataset_config))
 
         return entries
