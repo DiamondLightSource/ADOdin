@@ -1,3 +1,12 @@
-substitute "PLUGIN_NAME=SUM"
-substitute "PLUGIN_URI=sum"
-include "FrameProcessorPlugin.template"
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, PORT, Asyn Port name
+# % macro, TOTAL, Total number of FR/FP pairs
+
+
+record(stringin, "$(P)$(R)SUM:PluginVersion_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),0,1)_ODS$(TOTAL)_fp/version/sum/full")
+    field(SCAN, "I/O Intr")
+}

@@ -59,9 +59,16 @@ class SumPlugin(DatasetCreationPlugin):
 
     NAME = "sum"
     CLASS_NAME = "SumPlugin"
+    DATASET_NAME = "sum"
+    TEMPLATE = _SumPluginTemplate
 
     def __init__(self, source=None):
         super(SumPlugin, self).__init__(source)
+
+    def create_template(self, template_args):
+        template_args = dict((k, v) for k, v in template_args.items()
+                             if k in ["P", "R", "PORT", "TOTAL"])
+        super(SumPlugin, self).create_template(template_args)
 
 
 class FileWriterPlugin(FrameProcessorPlugin):
@@ -127,7 +134,7 @@ class LiveViewPlugin(FrameProcessorPlugin):
         entries.append(create_config_entry(source_entry))
 
         return entries
-        
+
 
 class _BloscPluginTemplate(AutoSubstitution):
     TemplateFile = "BloscPlugin.template"
@@ -141,4 +148,3 @@ class BloscPlugin(FrameProcessorPlugin):
 
     def __init__(self, source=None):
         super(BloscPlugin, self).__init__(source)
-
