@@ -1,0 +1,23 @@
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, PORT, Asyn Port name
+# % macro, TOTAL, Total number of FR/FP pairs
+
+#### Config #######################################################################################
+
+record(longout, "$(P)$(R)PARAM:ActiveFrame")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/param/first_frame_number")
+}
+
+record(longin, "$(P)$(R)PARAM:ActiveFrame_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/param/first_frame_number")
+}
+
+substitute "PLUGIN_NAME=PARAM"
+substitute "PLUGIN_URI=param"
+include "FrameProcessorPlugin.template"

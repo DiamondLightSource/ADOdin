@@ -8,17 +8,17 @@
 
 #### Config #######################################################################################
 
-record(longout, "$(P)$(R)UID:Adjustment")
+record(longout, "$(P)$(R)PARAM:UID:Adjustment")
 {
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/uid/uid_adjustment")
+    field(OUT,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/param/uid/adjustment")
 }
 
-record(longin, "$(P)$(R)UID:Adjustment_RBV")
+record(longin, "$(P)$(R)PARAM:UID:Adjustment_RBV")
 {
     field(DTYP, "asynInt32")
     field(SCAN, "I/O Intr")
-    field(INP,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/uid/uid_adjustment")
+    field(INP,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/param/uid/adjustment")
 }
 
 record(longout, "$(P)$(R)UID:ActiveFrame")

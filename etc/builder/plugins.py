@@ -30,7 +30,7 @@ class DatasetCreationPlugin(FrameProcessorPlugin):
         dataset_entry = {
             FileWriterPlugin.NAME: {
                 "dataset": {
-                    self.NAME: {
+                    self.DATASET_NAME: {
                         "chunks": OneLineEntry([1000]),
                         "datatype": 3
                     }
@@ -42,14 +42,52 @@ class DatasetCreationPlugin(FrameProcessorPlugin):
         return entries
 
 
-class UIDAdjustmentPlugin(DatasetCreationPlugin):
+class _ParameterAdjustmentPluginTemplate(AutoSubstitution):
+    TemplateFile = "ParameterAdjustmentPlugin.template"
 
-    NAME = "uid"
-    CLASS_NAME = "UIDAdjustmentPlugin"
+
+class ParameterAdjustmentPlugin(DatasetCreationPlugin):
+
+    NAME = "param"
+    CLASS_NAME = "ParameterAdjustmentPlugin"
+    DATASET_NAME = None
+    PARAMETER_PLUGIN_INSTANTIATED = False
+
+    def __init__(self, source=None):
+        super(ParameterAdjustmentPlugin, self).__init__(source)
+
+    def create_template(self, template_args):
+        if not self.PARAMETER_PLUGIN_INSTANTIATED:
+            # If this is the first parameter plugin, instantiate base template
+            base_args = dict((k, v) for k, v in template_args.items()
+                             if k in ["P", "R", "PORT", "TOTAL"])
+            _ParameterAdjustmentPluginTemplate(**base_args)
+            self.PARAMETER_PLUGIN_INSTANTIATED = True
+        super(ParameterAdjustmentPlugin, self).create_template(template_args)
+
+
+class UIDAdjustmentPlugin(ParameterAdjustmentPlugin):
+
+    DATASET_NAME = "uid"
     TEMPLATE = _UIDAdjustmentPluginTemplate
 
     def __init__(self, source=None):
         super(UIDAdjustmentPlugin, self).__init__(source)
+
+    def create_extra_config_entries(self, rank):
+        entries = []
+        parameter_entry = {
+            self.DATASET_NAME: {
+                "parameter": {
+                    self.DATASET_NAME: {
+                        "adjustment": 0
+                    }
+                }
+            }
+        }
+        entries.append(create_config_entry(parameter_entry))
+
+        return entries
 
 
 class _SumPluginTemplate(AutoSubstitution):

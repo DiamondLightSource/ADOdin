@@ -31,6 +31,7 @@ DB += MetaListener.template
 DB += FrameProcessorPlugin.template
 DB += SumPlugin.template
 DB += OffsetAdjustmentPlugin.template
+DB += ParameterAdjustmentPlugin.template
 DB += UIDAdjustmentPlugin.template
 DB += LiveViewPlugin.template
 DB += BloscPlugin.template
