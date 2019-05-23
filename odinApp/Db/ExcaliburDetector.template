@@ -863,6 +863,7 @@ record(mbbo, "$(P)$(R)ImageMode")
    field(DTYP, "asynInt32")
    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/image_mode")
    field(TWST, "")
+   field(VAL, "1")
 }
 
 record(mbbi, "$(P)$(R)ImageMode_RBV")
@@ -871,6 +872,7 @@ record(mbbi, "$(P)$(R)ImageMode_RBV")
    field(DTYP, "asynInt32")
    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/image_mode")
    field(TWST, "")
+   field(VAL, "1")
 }
 
 ###################################################################
