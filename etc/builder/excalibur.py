@@ -347,7 +347,7 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
             _ExcaliburXNodeFPTemplate(**template_args)
 
     # __init__ arguments
-    ArgInfo = _OdinDataDriver.ArgInfo.filtered(without=["DETECTOR"])
+    ArgInfo = _OdinDataDriver.ArgInfo.filtered(without=["DETECTOR", "TOTAL"])
 
 
 class _ExcaliburFemHousekeepingTemplate(AutoSubstitution):
