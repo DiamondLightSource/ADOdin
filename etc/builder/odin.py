@@ -106,7 +106,6 @@ class FrameProcessorPlugin(Device):
     TEMPLATE_INSTANTIATED = False
 
     def __init__(self, source=None):
-        self.template_args = None
         self.connections = {}
 
         if source is not None:
@@ -158,7 +157,6 @@ class FrameProcessorPlugin(Device):
     def create_template(self, template_args):
         if self.TEMPLATE is not None and not self.TEMPLATE_INSTANTIATED:
             makeTemplateInstance(self.TEMPLATE, locals(), template_args)
-            self.template_args = template_args
         self.TEMPLATE_INSTANTIATED = True
 
 
