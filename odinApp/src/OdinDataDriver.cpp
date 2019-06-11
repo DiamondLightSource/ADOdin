@@ -83,9 +83,9 @@ int OdinDataDriver::createParams()
                                               SSFPConfigHDFProcess, "alignment_value");
   mChunkBoundaryThreshold = createODRESTParam(OdinHDF5ChunkBoundaryThreshold, REST_P_INT,
                                               SSFPConfigHDFProcess, "alignment_threshold");
-  mDataType               = createODRESTParam(NDDataTypeString, REST_P_INT,
+  mDataType               = createODRESTParam(NDDataTypeString, REST_P_ENUM,
                                               SSFPConfigHDFDataset, mDatasetName + "/datatype");
-  mCompression            = createODRESTParam(OdinHDF5Compression, REST_P_INT,
+  mCompression            = createODRESTParam(OdinHDF5Compression, REST_P_ENUM,
                                               SSFPConfigHDFDataset, mDatasetName + "/compression");
   // Parameters fanned out to all processes - not array based
   mStartCloseTimeout      = createRESTParam(OdinHDF5StartCloseTimeout, REST_P_BOOL,
@@ -133,6 +133,23 @@ int OdinDataDriver::createParams()
   mCapture->setCommand();
   mStartCloseTimeout->setCommand();
   mFPClearErrors->setCommand();
+
+  // Set enum values
+  std::vector<std::string> dataTypeEnum;
+  dataTypeEnum.push_back("unknown");
+  dataTypeEnum.push_back("uint8");
+  dataTypeEnum.push_back("uint16");
+  dataTypeEnum.push_back("uint32");
+  dataTypeEnum.push_back("uint64");
+  dataTypeEnum.push_back("float");
+  mDataType->setEnumValues(dataTypeEnum);
+  std::vector<std::string> compressionEnum;
+  compressionEnum.push_back("unknown");
+  compressionEnum.push_back("none");
+  compressionEnum.push_back("LZ4");
+  compressionEnum.push_back("BSLZ4");
+  compressionEnum.push_back("blosc");
+  mCompression->setEnumValues(compressionEnum);
 
   // Internal parameters
   createParam(OdinFPErrorState,         asynParamInt32, &mFPErrorState);
