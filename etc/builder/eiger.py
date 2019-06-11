@@ -6,13 +6,24 @@ from iocbuilder.modules.ADCore import makeTemplateInstance
 
 from util import find_module_path, expand_template_file, create_batch_entry, debug_print
 from odin import _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, OdinBatchFile, \
-    PluginConfig
+    PluginConfig, FrameProcessorPlugin
 
 
-EIGER, EIGER_PATH = find_module_path("eiger-detector")
-debug_print("Eiger: {} = {}".format(EIGER, EIGER_PATH), 1)
+EIGER, EIGER_ROOT = find_module_path("eiger-detector")
+debug_print("Eiger: {} = {}".format(EIGER, EIGER_ROOT), 1)
 
 ODIN_DATA_MACRO, ODIN_DATA_ROOT = find_module_path("odin-data")
+
+
+class EigerProcessPlugin(FrameProcessorPlugin):
+
+    NAME = "eiger"
+    CLASS_NAME = "EigerProcessPlugin"
+    ROOT_PATH = EIGER_ROOT
+
+    def __init__(self):
+        super(EigerProcessPlugin, self).__init__(None)
+
 
 class EigerFan(Device):
 
@@ -34,9 +45,9 @@ class EigerFan(Device):
             numa_call = "numactl --membind={node} --cpunodebind={node} ".format(node=self.NUMA_NODE)
         else:
             numa_call = ""
-        macros = dict(EIGER_DETECTOR_PATH=EIGER_PATH, IP=self.DETECTOR_IP,
+        macros = dict(EIGER_DETECTOR_PATH=EIGER_ROOT, IP=self.DETECTOR_IP,
                       PROCESSES=self.PROCESSES, SOCKETS=self.SOCKETS, BLOCK_SIZE=self.BLOCK_SIZE,
-                      THREADS=self.THREADS, LOG_CONFIG=os.path.join(EIGER_PATH, "log4cxx.xml"),
+                      THREADS=self.THREADS, LOG_CONFIG=os.path.join(EIGER_ROOT, "log4cxx.xml"),
                       NUMA=numa_call)
 
         expand_template_file("eiger_fan_startup", macros, "stEigerFan.sh",
@@ -99,7 +110,7 @@ class EigerMetaListener(Device):
             numa_call = "numactl --membind={node} --cpunodebind={node} ".format(node=self.NUMA_NODE)
         else:
             numa_call = ""
-        macros = dict(EIGER_DETECTOR_PATH=EIGER_PATH,
+        macros = dict(EIGER_DETECTOR_PATH=EIGER_ROOT,
                       IP_LIST=",".join(self.ip_list),
                       OD_ROOT=ODIN_DATA_ROOT,
                       SENSOR=self.sensor,
@@ -136,13 +147,18 @@ class _EigerOdinData(_OdinData):
         self.sensor = SENSOR
 
     def create_config_files(self, index):
-        macros = dict(DETECTOR_ROOT=EIGER_PATH,
+        macros = dict(DETECTOR_ROOT=EIGER_ROOT,
                       IP=self.source,
                       RX_PORT_SUFFIX=self.RANK,
                       SENSOR=self.sensor)
 
-        super(_EigerOdinData, self).create_config_file(
-            "fp", self.CONFIG_TEMPLATES["FrameProcessor"], extra_macros=macros)
+        if self.plugins is None:
+            super(_EigerOdinData, self).create_config_file(
+                "fp", self.CONFIG_TEMPLATES["FrameProcessor"], extra_macros=macros)
+        else:
+            super(_EigerOdinData, self).create_config_file(
+                "fp", "fp_custom.json", extra_macros=macros)
+
         super(_EigerOdinData, self).create_config_file(
             "fr", self.CONFIG_TEMPLATES["FrameReceiver"], extra_macros=macros)
 
@@ -177,7 +193,7 @@ class EigerOdinControlServer(_OdinControlServer):
 
     """Store configuration for an EigerOdinControlServer"""
 
-    ODIN_SERVER = os.path.join(EIGER_PATH, "prefix/bin/eiger_odin")
+    ODIN_SERVER = os.path.join(EIGER_ROOT, "prefix/bin/eiger_odin")
 
     def __init__(self, IP, EIGER_FAN, META_LISTENER, PORT=8888,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,

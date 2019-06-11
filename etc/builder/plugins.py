@@ -1,4 +1,5 @@
 from iocbuilder import AutoSubstitution
+from iocbuilder.arginfo import makeArgInfo, Simple, Ident
 
 from util import OneLineEntry, create_config_entry
 from odin import FrameProcessorPlugin
@@ -69,6 +70,35 @@ class SumPlugin(DatasetCreationPlugin):
         template_args = dict((k, v) for k, v in template_args.items()
                              if k in ["P", "R", "PORT", "TOTAL"])
         super(SumPlugin, self).create_template(template_args)
+
+
+class KafkaPlugin(FrameProcessorPlugin):
+
+    NAME = "kafka"
+    CLASS_NAME = "KafkaProducerPlugin"
+
+    def __init__(self, servers, source=None):
+        super(KafkaPlugin, self).__init__(source)
+
+        self.servers = servers
+
+    def create_extra_config_entries(self, rank):
+        entries = []
+        source_entry = {
+            self.NAME: {
+                "dataset": "data",
+                "topic": "data",
+                "servers": self.servers
+            }
+        }
+        entries.append(create_config_entry(source_entry))
+
+        return entries
+
+    ArgInfo = FrameProcessorPlugin.ArgInfo + makeArgInfo(__init__,
+        source=Ident("Plugin to connect to", FrameProcessorPlugin),
+        servers=Simple("Servers to connect to (comma separated)", str)
+    )
 
 
 class FileWriterPlugin(FrameProcessorPlugin):
