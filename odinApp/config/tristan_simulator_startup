@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export PYTHONPATH=$TRISTAN_DETECTOR_PATH/control/
+$TRISTAN_DETECTOR_PATH/prefix/bin/tristan_simulator -c tcp://*:$PORT
