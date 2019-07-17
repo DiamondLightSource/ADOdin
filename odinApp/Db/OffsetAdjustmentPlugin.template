@@ -21,19 +21,6 @@ record(longin, "$(P)$(R)OFF:Adjustment_RBV")
     field(INP,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/offset/offset_adjustment")
 }
 
-record(longout, "$(P)$(R)OFF:ActiveFrame")
-{
-    field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/offset/first_frame_number")
-}
-
-record(longin, "$(P)$(R)OFF:ActiveFrame_RBV")
-{
-    field(DTYP, "asynInt32")
-    field(SCAN, "I/O Intr")
-    field(INP,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/offset/first_frame_number")
-}
-
 substitute "PLUGIN_NAME=OFF"
 substitute "PLUGIN_URI=offset"
 include "FrameProcessorPlugin.template"

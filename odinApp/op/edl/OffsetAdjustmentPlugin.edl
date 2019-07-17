@@ -4,9 +4,9 @@ major 4
 minor 0
 release 1
 x 988
-y 61
+y 108
 w 386
-h 85
+h 59
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -35,7 +35,7 @@ release 0
 x 5
 y 5
 w 375
-h 70
+h 45
 lineColor index 14
 fill
 fillColor index 3
@@ -109,62 +109,6 @@ y 20
 w 80
 h 20
 controlPv "$(P)$(R)OFF:Adjustment_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 10
-y 45
-w 80
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Active Frame"
-}
-endObjectProperties
-
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 110
-y 45
-w 80
-h 20
-controlPv "$(P)$(R)OFF:ActiveFrame"
-fgColor index 25
-fgAlarm
-bgColor index 3
-fill
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 215
-y 45
-w 80
-h 20
-controlPv "$(P)$(R)OFF:ActiveFrame_RBV"
 fgColor index 16
 fgAlarm
 bgColor index 10

@@ -21,19 +21,6 @@ record(longin, "$(P)$(R)PARAM:UID:Adjustment_RBV")
     field(INP,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/param/uid/adjustment")
 }
 
-record(longout, "$(P)$(R)UID:ActiveFrame")
-{
-    field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/uid/first_frame_number")
-}
-
-record(longin, "$(P)$(R)UID:ActiveFrame_RBV")
-{
-    field(DTYP, "asynInt32")
-    field(SCAN, "I/O Intr")
-    field(INP,  "@asyn($(PORT),0,1)_ODI$(TOTAL)_fp/config/uid/first_frame_number")
-}
-
 substitute "PLUGIN_NAME=UID"
 substitute "PLUGIN_URI=uid"
 include "FrameProcessorPlugin.template"
