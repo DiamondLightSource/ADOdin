@@ -6,7 +6,9 @@ from iocbuilder.modules.ADCore import makeTemplateInstance
 
 from util import find_module_path, expand_template_file, create_batch_entry, debug_print
 from odin import _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, OdinBatchFile, \
-    PluginConfig, FrameProcessorPlugin
+    PluginConfig
+from plugins import OffsetAdjustmentPlugin, UIDAdjustmentPlugin, FileWriterPlugin, KafkaPlugin, \
+    DatasetCreationPlugin
 
 
 EIGER, EIGER_ROOT = find_module_path("eiger-detector")
@@ -15,14 +17,24 @@ debug_print("Eiger: {} = {}".format(EIGER, EIGER_ROOT), 1)
 ODIN_DATA_MACRO, ODIN_DATA_ROOT = find_module_path("odin-data")
 
 
-class EigerProcessPlugin(FrameProcessorPlugin):
+class EigerProcessPlugin(DatasetCreationPlugin):
 
     NAME = "eiger"
     CLASS_NAME = "EigerProcessPlugin"
     ROOT_PATH = EIGER_ROOT
+    DATASET_NAME = "compressed_size"
 
-    def __init__(self):
+    def __init__(self, size_dataset):
         super(EigerProcessPlugin, self).__init__(None)
+
+        self.size_dataset = size_dataset
+
+    def create_extra_config_entries(self, rank):
+        entries = []
+        if self.size_dataset:
+            entries = super(EigerProcessPlugin, self).create_extra_config_entries(rank)
+
+        return entries
 
 
 class EigerFan(Device):
@@ -163,15 +175,58 @@ class _EigerOdinData(_OdinData):
             "fr", self.CONFIG_TEMPLATES["FrameReceiver"], extra_macros=macros)
 
 
+class EigerPluginConfig(PluginConfig):
+    # Device attributes
+    AutoInstantiate = True
+
+    def __init__(self, MODE="Simple", KAFKA_SERVERS=None):
+        if MODE == "Simple":
+            eiger = EigerProcessPlugin(size_dataset=False)
+            hdf = FileWriterPlugin(source=eiger)
+            plugins = [eiger, hdf]
+        elif MODE == "Malcolm":
+            eiger = EigerProcessPlugin(size_dataset=True)
+            offset = OffsetAdjustmentPlugin(source=eiger)
+            uid = UIDAdjustmentPlugin(source=offset)
+            hdf = FileWriterPlugin(source=uid)
+            plugins = [eiger, offset, uid, hdf]
+        elif MODE == "Kafka":
+            if KAFKA_SERVERS is None:
+                raise ValueError("Must provide Kafka servers with Kafka mode")
+            eiger = EigerProcessPlugin(size_dataset=False)
+            kafka = KafkaPlugin(KAFKA_SERVERS, source=eiger)
+            hdf = FileWriterPlugin(source=kafka)
+            plugins = [eiger, kafka, hdf]
+        else:
+            raise ValueError("Invalid mode for EigerPluginConfig")
+
+        super(EigerPluginConfig, self).__init__(*plugins)
+
+    # __init__ arguments
+    ArgInfo = makeArgInfo(__init__,
+        MODE=Choice("Which plugin configuration mode to use", ["Simple", "Malcolm", "Kafka"]),
+        KAFKA_SERVERS=Simple("Kafka servers, if using Kafka (comma separated).", str),
+    )
+
+
 class EigerOdinDataServer(_OdinDataServer):
 
     """Store configuration for an EigerOdinDataServer"""
+
+    PLUGIN_CONFIG = None
 
     def __init__(self, IP, PROCESSES, SOURCE, SHARED_MEM_SIZE=16000000000, PLUGIN_CONFIG=None,
                  IO_THREADS=1, TOTAL_NUMA_NODES=0):
         self.source = SOURCE.IP
         self.sensor = SOURCE.SENSOR
-        self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE, PLUGIN_CONFIG,
+        if PLUGIN_CONFIG is None:
+            if EigerOdinDataServer.PLUGIN_CONFIG is None:
+                # Create the standard Eiger plugin config
+                EigerOdinDataServer.PLUGIN_CONFIG = EigerPluginConfig()
+        else:
+            EigerOdinDataServer.PLUGIN_CONFIG = PLUGIN_CONFIG
+
+        self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE, EigerOdinDataServer.PLUGIN_CONFIG,
                               IO_THREADS, TOTAL_NUMA_NODES)
 
     ArgInfo = makeArgInfo(__init__,
