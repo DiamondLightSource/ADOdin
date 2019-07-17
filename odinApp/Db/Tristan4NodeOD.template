@@ -53,7 +53,7 @@ record(calcout, "$(P)$(R)Proc:CalcCaptureStart")
 # Fetch AcquisitionID from OdinDataDriver
 record(acalcout, "$(P)$(R)Proc:AcqID_Calc")
 {
-    field(INAA, "$(P)$(R)FP:AcquisitionID CP")
+    field(INAA, "$(P)$(R)AcquisitionID CP")
     field(CALC, "AA")
     field(OOPT, "Every Time")
     field(DOPT, "Use CALC")
