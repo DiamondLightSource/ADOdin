@@ -32,7 +32,7 @@ class DatasetCreationPlugin(FrameProcessorPlugin):
                 "dataset": {
                     self.DATASET_NAME: {
                         "chunks": OneLineEntry([1000]),
-                        "datatype": 3
+                        "datatype": "uint64"
                     }
                 }
             }
