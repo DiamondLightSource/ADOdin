@@ -94,6 +94,25 @@ class _TristanMetaListener(Device):
     #                      NUMA_NODE=Simple("Numa node to run process on - Optional for performance tuning", int)
     #                      )
 
+class TristanControlSimulator(Device):
+
+    # Device attributes
+    AutoInstantiate = True
+
+    """Store configuration for an TristanOdinControlServer"""
+    def __init__(self, PORT=5100, **args):
+        self.__dict__.update(locals())
+        macros = dict(TRISTAN_DETECTOR_PATH=TRISTAN_PATH,
+                      PORT=PORT)
+
+        expand_template_file("tristan_simulator_startup", macros, "stTristanSimulator.sh", executable=True)
+        super(TristanControlSimulator, self).__init__()
+
+    # __init__ arguments
+    ArgInfo = makeArgInfo(__init__,
+                          PORT=Simple("Port number of the simulator", int)
+                          )
+
 
 class TristanOdinControlServer(_OdinControlServer):
 
