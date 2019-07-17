@@ -155,13 +155,8 @@ class _EigerOdinData(_OdinData):
         self.source = SOURCE_IP
         self.sensor = SENSOR
 
-<<<<<<< HEAD
     def create_config_files(self, index):
         macros = dict(DETECTOR=OdinPaths.EIGER_DETECTOR,
-=======
-    def create_config_files(self, index, total):
-        macros = dict(DETECTOR_ROOT=EIGER_PATH,
->>>>>>> Updated create_config_files to accept the total number of processes.
                       IP=self.source,
                       RX_PORT_SUFFIX=self.RANK,
                       SENSOR=self.sensor)

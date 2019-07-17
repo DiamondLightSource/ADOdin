@@ -68,13 +68,8 @@ class _ExcaliburOdinData(_OdinData):
         self.sensor = SENSOR
         self.base_udp_port = BASE_UDP_PORT
 
-<<<<<<< HEAD
     def create_config_files(self, index):
         macros = dict(DETECTOR=OdinPaths.EXCALIBUR_DETECTOR,
-=======
-    def create_config_files(self, index, total):
-        macros = dict(DETECTOR_ROOT=EXCALIBUR_ROOT,
->>>>>>> Updated create_config_files to accept the total number of processes.
                       RX_PORT_1=self.base_udp_port,
                       RX_PORT_2=self.base_udp_port + 1,
                       RX_PORT_3=self.base_udp_port + 2,  # 3 - 6 will be ignored in the 1M template
