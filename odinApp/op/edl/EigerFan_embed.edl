@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 330
-y 611
+x 370
+y 436
 w 388
-h 193
+h 215
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
 btnFont "arial-medium-r-12.0"
@@ -35,7 +35,7 @@ release 0
 x 5
 y 5
 w 375
-h 180
+h 205
 lineColor index 14
 fill
 fillColor index 3
@@ -568,7 +568,7 @@ major 4
 minor 1
 release 1
 x 10
-y 155
+y 180
 w 105
 h 30
 font "arial-bold-r-12.0"
@@ -588,7 +588,7 @@ major 4
 minor 0
 release 0
 x 105
-y 160
+y 185
 w 175
 h 20
 fgColor index 25
@@ -599,5 +599,61 @@ botShadowColor index 11
 controlPv "$(P)$(R)FAN:ForwardStream"
 indicatorPv "$(P)$(R)FAN:ForwardStream_RBV"
 font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 160
+w 75
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Block Size"
+}
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 105
+y 160
+w 80
+h 20
+controlPv "$(P)$(R)FAN:BlockSize"
+fgColor index 25
+fgAlarm
+bgColor index 3
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 200
+y 160
+w 80
+h 20
+controlPv "$(P)$(R)FAN:BlockSize_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
 endObjectProperties
 
