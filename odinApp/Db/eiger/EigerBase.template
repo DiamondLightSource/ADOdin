@@ -9,6 +9,9 @@
 #% macro, TIMEOUT, Timeout
 #% macro, ADDR, Asyn Port address
 
+# This associates the template with an edm screen
+# % gui, $(PORT), edmtab, EigerMain.edl, P=$(P),R=$(R)
+
 include "ADBase.template"
 
 record(ao,"$(P)$(R)AcquireTime") {
