@@ -1,0 +1,939 @@
+# Database for the records specific to the Eiger driver
+# Bruno Martins
+# June 2, 2015
+
+# Macros:
+#% macro, P, Device Prefix
+#% macro, R, Device Suffix
+#% macro, PORT, Asyn Port name
+#% macro, TIMEOUT, Timeout
+#% macro, ADDR, Asyn Port address
+
+include "ADBase.template"
+include "NDFile.template"
+
+record(ao,"$(P)$(R)AcquireTime") {
+    field(VAL, "1")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)AcquireTime_RBV") {
+}
+
+record(ao,"$(P)$(R)AcquirePeriod") {
+    field(VAL, "1")
+}
+
+# Data source for the acquisition
+record(mbbo,"$(P)$(R)DataSource") {
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))DATA_SOURCE")
+    field(DESC, "Acquisition data source")
+    field(VAL,  "1")
+    field(ZRVL, "0")
+    field(ZRST, "None")
+    field(ONVL, "1")
+    field(ONST, "FileWriter")
+    field(TWVL, "2")
+    field(TWST, "Stream")
+}
+
+record(mbbi,"$(P)$(R)DataSource_RBV") {
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))DATA_SOURCE")
+    field(DESC, "Acquisition data source")
+    field(SCAN, "I/O Intr")
+    field(ZRVL, "0")
+    field(ZRST, "None")
+    field(ONVL, "1")
+    field(ONST, "FileWriter")
+    field(TWVL, "2")
+    field(TWST, "Stream")
+}
+
+# We redefine the states for the TriggerMode records defined in ADBase.template
+record(mbbo,"$(P)$(R)TriggerMode") {
+    field(DESC,"Acquire mode")
+    field(ZRVL,"0")
+    field(ZRST,"Internal Series")
+    field(ONVL,"1")
+    field(ONST,"Internal Enable")
+    field(TWVL,"2")
+    field(TWST,"External Series")
+    field(THVL,"3")
+    field(THST,"External Enable")
+}
+
+record(mbbi,"$(P)$(R)TriggerMode_RBV") {
+    field(DESC,"Acquire mode")
+    field(ZRVL,"0")
+    field(ZRST,"Internal Series")
+    field(ONVL,"1")
+    field(ONST,"Internal Enable")
+    field(TWVL,"2")
+    field(TWST,"External Series")
+    field(THVL,"3")
+    field(THST,"External Enable")
+}
+
+# Number of Triggers
+record(longout, "$(P)$(R)NumTriggers") {
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))NUM_TRIGGERS")
+    field(DESC, "Number of triggers per acquisition")
+}
+
+record(longin, "$(P)$(R)NumTriggers_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))NUM_TRIGGERS")
+    field(DESC, "Number of triggers per acquisition")
+    field(VAL,  "1")
+    field(SCAN, "I/O Intr")
+}
+
+# Manual trigger
+record(bo,"$(P)$(R)ManualTrigger") {
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))MANUAL_TRIGGER")
+    field(DESC, "Disable auto triggering")
+    field(VAL,  "0")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+}
+
+record(bi,"$(P)$(R)ManualTrigger_RBV") {
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))MANUAL_TRIGGER")
+    field(DESC, "Disable auto triggering")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+    field(SCAN, "I/O Intr")
+}
+
+# Exposure for triggers on INTE mode
+record(ao, "$(P)$(R)TriggerExposure")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_EXPOSURE")
+    field(DESC, "Trigger Exposure for INTE mode")
+    field(EGU,  "s")
+    field(PREC, "6")
+}
+
+record(ai, "$(P)$(R)TriggerExposure_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_EXPOSURE")
+    field(DESC, "Trigger Exposure for INTE mode")
+    field(EGU,  "s")
+    field(PREC, "6")
+    field(SCAN, "I/O Intr")
+}
+
+# Trigger the detector
+record(ao, "$(P)$(R)Trigger") {
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER")
+    field(DESC, "Trigger the detector")
+}
+
+# FileWriter API enable
+record(bo,"$(P)$(R)FWEnable") {
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FW_ENABLE")
+    field(DESC, "Enable usage of FileWriter API")
+    field(VAL,  "1")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+}
+
+record(bi,"$(P)$(R)FWEnable_RBV") {
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FW_ENABLE")
+    field(DESC, "Enable usage of FileWriter API")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+    field(SCAN, "I/O Intr")
+}
+
+# FileWriter compression enabled
+record(bo,"$(P)$(R)FWCompression") {
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))COMPRESSION")
+    field(VAL,  "1")
+    field(ZNAM, "Disabled")
+    field(ONAM, "Enabled")
+}
+
+record(bi,"$(P)$(R)FWCompression_RBV") {
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))COMPRESSION")
+    field(ZNAM, "Disabled")
+    field(ONAM, "Enabled")
+    field(SCAN, "I/O Intr")
+}
+
+# FileWriter name pattern
+record(stringout, "$(P)$(R)FWNamePattern") {
+    field(PINI, "YES")
+    field(DTYP, "asynOctetWrite")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))NAME_PATTERN")
+    field(VAL,  "series_$id")
+}
+
+record(stringin, "$(P)$(R)FWNamePattern_RBV") {
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))NAME_PATTERN")
+    field(SCAN, "I/O Intr")
+}
+
+# FileWriter number of images per HDF5 file
+record(longout, "$(P)$(R)FWNImagesPerFile") {
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))NIMAGES_PER_FILE")
+    field(DESC, "Number of images per HDF5 file")
+    field(VAL,  "1000")
+}
+
+record(longin, "$(P)$(R)FWNImagesPerFile_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))NIMAGES_PER_FILE")
+    field(DESC, "Number of images per HDF5 file")
+    field(SCAN, "I/O Intr")
+}
+
+# Auto Remove files after acquisition
+record(bo,"$(P)$(R)FWAutoRemove") {
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))AUTO_REMOVE")
+    field(DESC, "Auto remove files")
+    field(VAL,  "0")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+}
+
+record(bi,"$(P)$(R)FWAutoRemove_RBV") {
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))AUTO_REMOVE")
+    field(DESC, "Auto remove files")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)SensorThickness_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_sensor_thickness")
+    field(DESC, "Sensor Thickness")
+    field(EGU,  "m")
+    field(PREC, "6")
+    field(SCAN, "I/O Intr")
+}
+
+record(stringin, "$(P)$(R)SensorMaterial_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCS_sensor_material")
+    field(DESC, "Sensor Material")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)XPixelSize_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_x_pixel_size")
+    field(DESC, "X Pixel Size")
+    field(EGU,  "m")
+    field(PREC, "6")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)YPixelSize_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_y_pixel_size")
+    field(DESC, "Y Pixel Size")
+    field(EGU,  "m")
+    field(PREC, "6")
+    field(SCAN, "I/O Intr")
+}
+
+# ROI Mode
+record(mbbo,"$(P)$(R)ROIMode") {
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ROI_MODE")
+    field(DESC, "ROI Mode")
+    field(VAL,  "0")
+    field(ZRST, "Disabled")
+    field(ZRVL, "0")
+    field(ONST, "4M")
+    field(ONVL, "1")
+}
+
+record(mbbi,"$(P)$(R)ROIMode_RBV") {
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ROI_MODE")
+    field(DESC, "ROI Mode")
+    field(VAL,  "0")
+    field(ZRST, "Disabled")
+    field(ZRVL, "0")
+    field(ONST, "4M")
+    field(ONVL, "1")
+    field(SCAN, "I/O Intr")
+}
+
+# Compression algorithm selection
+record(mbbo,"$(P)$(R)CompressionAlgo") {
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))COMPRESSION_ALGO")
+    field(DESC, "Compression Algorithm")
+    field(VAL,  "0")
+    field(ZRST, "LZ4")
+    field(ZRVL, "0")
+    field(ONST, "BS LZ4")
+    field(ONVL, "1")
+}
+
+record(mbbi,"$(P)$(R)CompressionAlgo_RBV") {
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))COMPRESSION_ALGO")
+    field(DESC, "Compression Algorithm")
+    field(VAL,  "0")
+    field(ZRST, "LZ4")
+    field(ZRVL, "0")
+    field(ONST, "BS LZ4")
+    field(ONVL, "1")
+    field(SCAN, "I/O Intr")
+}
+
+# Stream API enable
+record(bo,"$(P)$(R)StreamEnable") {
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))STREAM_ENABLE")
+    field(DESC, "Enable usage of Stream API")
+    field(VAL,  "0")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+}
+
+record(bi,"$(P)$(R)StreamEnable_RBV") {
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))STREAM_ENABLE")
+    field(DESC, "Enable usage of Stream API")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+    field(SCAN, "I/O Intr")
+}
+
+# Stream number of dropped frames
+record(longin, "$(P)$(R)StreamDropped_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))STREAM_DROPPED")
+    field(DESC, "Number of dropped frames")
+    field(SCAN, "I/O Intr")
+}
+
+# Stream State
+record(stringin, "$(P)$(R)StreamState_RBV") {
+    field(DESC, "Stream operational state")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))STREAM_STATE")
+    field(SCAN, "I/O Intr")
+}
+
+# Stream Header Detail Selection
+record(mbbo,"$(P)$(R)StreamHdrDetail") {
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_SCI_header_detail")
+    field(DESC, "Stream Header Detail")
+    field(VAL,  "0")
+    field(ZRST, "All")
+    field(ZRVL, "0")
+    field(ONST, "Basic")
+    field(ONVL, "1")
+    field(TWST, "None")
+    field(TWVL, "2")
+}
+
+record(mbbi,"$(P)$(R)StreamHdrDetail_RBV") {
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_SCI_header_detail")
+    field(DESC, "Stream Header Detail")
+    field(VAL,  "0")
+    field(ZRST, "All")
+    field(ZRVL, "0")
+    field(ONST, "Basic")
+    field(ONVL, "1")
+    field(TWST, "None")
+    field(TWVL, "2")
+    field(SCAN, "I/O Intr")
+}
+
+# Stream Header Appendix
+record(waveform, "$(P)$(R)StreamHdrAppendix")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_SCS_header_appendix")
+    field(FTVL, "CHAR")
+    field(NELM, "1024")
+    info(autosaveFields, "VAL")
+}
+
+# Stream Image Appendix
+record(waveform, "$(P)$(R)StreamImgAppendix")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_SCS_image_appendix")
+    field(FTVL, "CHAR")
+    field(NELM, "1024")
+    info(autosaveFields, "VAL")
+}
+
+# Save files locally
+record(bo,"$(P)$(R)SaveFiles") {
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SAVE_FILES")
+    field(VAL,  "0")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+}
+
+record(bi,"$(P)$(R)SaveFiles_RBV") {
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SAVE_FILES")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+    field(SCAN, "I/O Intr")
+}
+
+# Saved files owner
+record(stringout, "$(P)$(R)FileOwner") {
+    field(PINI, "YES")
+    field(DTYP, "asynOctetWrite")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_OWNER")
+    field(VAL,  "")
+}
+
+record(stringin, "$(P)$(R)FileOwner_RBV") {
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_OWNER")
+    field(SCAN, "I/O Intr")
+}
+
+# Saved files owner group
+record(stringout, "$(P)$(R)FileOwnerGrp") {
+    field(PINI, "YES")
+    field(DTYP, "asynOctetWrite")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_OWNER_GROUP")
+    field(VAL,  "")
+}
+
+record(stringin, "$(P)$(R)FileOwnerGrp_RBV") {
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_OWNER_GROUP")
+    field(SCAN, "I/O Intr")
+}
+
+# Saved files permissions
+record(ao,"$(P)$(R)FilePerms") {
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_PERMISSIONS")
+    field(VAL,  "0644")
+}
+
+# Flatfield correction applied
+record(bo,"$(P)$(R)FlatfieldApplied") {
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCI_flatfield_correction_applied")
+    field(VAL,  "1")
+    field(ZNAM, "Disabled")
+    field(ONAM, "Enabled")
+}
+
+record(bi,"$(P)$(R)FlatfieldApplied_RBV") {
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCI_flatfield_correction_applied")
+    field(ZNAM, "Disabled")
+    field(ONAM, "Enabled")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin, "$(P)$(R)SequenceId")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SEQ_ID")
+    field(DESC, "Image sequence number")
+    field(SCAN, "I/O Intr")
+}
+
+
+# Threshold energy
+record(ao, "$(P)$(R)PhotonEnergy")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))PHOTON_ENERGY")
+    field(DESC, "Photon energy")
+    field(EGU,  "eV")
+    field(PREC, "3")
+}
+
+#% archiver 1 Monitor
+record(ai, "$(P)$(R)PhotonEnergy_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))PHOTON_ENERGY")
+    field(DESC, "Photon energy")
+    field(EGU,  "eV")
+    field(PREC, "3")
+    field(SCAN, "I/O Intr")
+}
+
+# Armed flag, which indicates Eiger is ready for triggers
+record(bi, "$(P)$(R)Armed")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ARMED")
+    field(ZNAM, "Unarmed")
+    field(ONAM, "Armed")
+    field(SCAN, "I/O Intr")
+}
+
+# Threshold energy
+record(ao, "$(P)$(R)ThresholdEnergy")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))THRESHOLD")
+    field(DESC, "Energy threshold")
+    field(EGU,  "eV")
+    field(PREC, "3")
+}
+
+record(ai, "$(P)$(R)ThresholdEnergy_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))THRESHOLD")
+    field(DESC, "Energy threshold")
+    field(EGU,  "eV")
+    field(PREC, "3")
+    field(SCAN, "I/O Intr")
+}
+
+# ancillary information
+
+record(ao, "$(P)$(R)DetDist")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_detector_distance")
+    field(PREC, "3")
+    field(EGU,  "m")
+}
+
+record(ao, "$(P)$(R)BeamX")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_beam_center_x")
+    field(PREC, "3")
+    field(EGU,  "pixels")
+}
+
+record(ao, "$(P)$(R)BeamY")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_beam_center_y")
+    field(PREC, "3")
+    field(EGU,  "pixels")
+}
+
+record(ai, "$(P)$(R)DetDist_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_detector_distance")
+    field(PREC, "3")
+    field(EGU,  "m")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)BeamX_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_beam_center_x")
+    field(PREC, "3")
+    field(EGU,  "pixels")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)BeamY_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_beam_center_y")
+    field(PREC, "3")
+    field(EGU,  "pixels")
+    field(SCAN, "I/O Intr")
+}
+
+# MX Parameters
+
+record(ao, "$(P)$(R)ChiStart")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_chi_start")
+    field(PREC, "3")
+    field(EGU,  "deg")
+}
+
+record(ai, "$(P)$(R)ChiStart_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_chi_start")
+    field(PREC, "3")
+    field(EGU,  "deg")
+    field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(P)$(R)ChiIncr")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_chi_increment")
+    field(PREC, "3")
+    field(EGU,  "deg")
+}
+
+record(ai, "$(P)$(R)ChiIncr_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_chi_increment")
+    field(PREC, "3")
+    field(EGU,  "deg")
+    field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(P)$(R)KappaStart")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_kappa_start")
+    field(PREC, "3")
+    field(EGU,  "deg")
+}
+
+record(ai, "$(P)$(R)KappaStart_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_kappa_start")
+    field(PREC, "3")
+    field(EGU,  "deg")
+    field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(P)$(R)KappaIncr")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_kappa_increment")
+    field(PREC, "3")
+    field(EGU,  "deg")
+}
+
+record(ai, "$(P)$(R)KappaIncr_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_kappa_increment")
+    field(PREC, "3")
+    field(EGU,  "deg")
+    field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(P)$(R)OmegaStart")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_omega_start")
+    field(PREC, "3")
+    field(EGU,  "deg")
+}
+
+record(ai, "$(P)$(R)OmegaStart_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_omega_start")
+    field(PREC, "3")
+    field(EGU,  "deg")
+    field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(P)$(R)OmegaIncr")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_omega_increment")
+    field(PREC, "3")
+    field(EGU,  "deg")
+}
+
+record(ai, "$(P)$(R)OmegaIncr_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_omega_increment")
+    field(PREC, "3")
+    field(EGU,  "deg")
+    field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(P)$(R)PhiStart")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_phi_start")
+    field(PREC, "3")
+    field(EGU,  "deg")
+}
+
+record(ai, "$(P)$(R)PhiStart_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_phi_start")
+    field(PREC, "3")
+    field(EGU,  "deg")
+    field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(P)$(R)PhiIncr")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_phi_increment")
+    field(PREC, "3")
+    field(EGU,  "deg")
+}
+
+record(ai, "$(P)$(R)PhiIncr_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_phi_increment")
+    field(PREC, "3")
+    field(EGU,  "deg")
+    field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(P)$(R)TwoThetaStart")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_two_theta_start")
+    field(PREC, "3")
+    field(EGU,  "deg")
+}
+
+record(ai, "$(P)$(R)TwoThetaStart_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_two_theta_start")
+    field(PREC, "3")
+    field(EGU,  "deg")
+    field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(P)$(R)TwoThetaIncr")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_two_theta_increment")
+    field(PREC, "3")
+    field(EGU,  "deg")
+}
+
+record(ai, "$(P)$(R)TwoThetaIncr_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_two_theta_increment")
+    field(PREC, "3")
+    field(EGU,  "deg")
+    field(SCAN, "I/O Intr")
+}
+
+# Monitor API enable
+record(bo,"$(P)$(R)MonitorEnable") {
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))MONITOR_ENABLE")
+    field(DESC, "Enable usage of Monitor API")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+}
+
+record(bi,"$(P)$(R)MonitorEnable_RBV") {
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))MONITOR_ENABLE")
+    field(DESC, "Enable usage of Monitor API")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+    field(SCAN, "I/O Intr")
+}
+
+# Monitor API polling period
+record(ao, "$(P)$(R)MonitorTimeout")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))MONITOR_TIMEOUT")
+    field(DESC, "Timeout for Monitor API")
+    field(EGU,  "ms")
+    field(PREC, "1")
+    field(VAL,  "500")
+}
+
+record(ai, "$(P)$(R)MonitorTimeout_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))MONITOR_TIMEOUT")
+    field(DESC, "Timeout for Monitor API")
+    field(EGU,  "ms")
+    field(PREC, "1")
+    field(SCAN, "I/O Intr")
+}
+
+# Set DISA for PVs in ADBase that do not apply to Eiger
+
+record(mbbo, "$(P)$(R)DataType")
+{
+    field(DISA, "1")
+}
+record(mbbi, "$(P)$(R)DataType_RBV")
+{
+    field(DISA, "1")
+}
+record(mbbo, "$(P)$(R)ColorMode")
+{
+    field(DISA, "1")
+}
+record(mbbi, "$(P)$(R)ColorMode_RBV")
+{
+    field(DISA, "1")
+}
+record(longout, "$(P)$(R)BinX")
+{
+    field(DISA, "1")
+}
+record(longin, "$(P)$(R)BinX_RBV")
+{
+    field(DISA, "1")
+}
+record(longout, "$(P)$(R)BinY")
+{
+    field(DISA, "1")
+}
+record(longin, "$(P)$(R)BinY_RBV")
+{
+    field(DISA, "1")
+}
+record(longout, "$(P)$(R)MinX")
+{
+    field(DISA, "1")
+}
+record(longin, "$(P)$(R)MinX_RBV")
+{
+    field(DISA, "1")
+}
+record(longout, "$(P)$(R)MinY")
+{
+    field(DISA, "1")
+}
+record(longin, "$(P)$(R)MinY_RBV")
+{
+    field(DISA, "1")
+}
+record(longout, "$(P)$(R)SizeX")
+{
+    field(DISA, "1")
+}
+record(longin, "$(P)$(R)SizeX_RBV")
+{
+    field(DISA, "1")
+}
+record(longout, "$(P)$(R)SizeY")
+{
+    field(DISA, "1")
+}
+record(longin, "$(P)$(R)SizeY_RBV")
+{
+    field(DISA, "1")
+}
+record(bo, "$(P)$(R)ReverseX")
+{
+    field(DISA, "1")
+}
+record(bi, "$(P)$(R)ReverseX_RBV")
+{
+    field(DISA, "1")
+}
+record(bo, "$(P)$(R)ReverseY")
+{
+    field(DISA, "1")
+}
+record(bi, "$(P)$(R)ReverseY_RBV")
+{
+    field(DISA, "1")
+}
+
+record(busy, "$(P)$(R)Initialize") {
+   field(DTYP, "asynInt32")
+   field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))INITIALIZE")
+   field(ZNAM, "Done")
+   field(ONAM, "Initialize")
+}
+
+# Eiger State
+record(stringin, "$(P)$(R)State_RBV") {
+    field(DESC, "Operational state")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))STATE")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)Temp0_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))TH_TEMP_0")
+    field(EGU,  "C")
+    field(SCAN, "I/O Intr")
+    field(VAL,  "0")
+    field(PREC, "1")
+}
+
+record(ai, "$(P)$(R)Humid0_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))TH_HUMID_0")
+    field(EGU,  "%")
+    field(SCAN, "I/O Intr")
+    field(VAL,  "0")
+    field(PREC, "1")
+}
