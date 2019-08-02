@@ -1,6 +1,8 @@
 TOP = ../../..
 include $(TOP)/configure/CONFIG
 
-DATA += $(patsubst ../%, %, $(wildcard ../*.edl))
+DIRS += odin
+DIRS += eiger
+DIRS += excalibur
 
-include $(TOP)/configure/RULES
+include $(TOP)/configure/RULES_DIRS
