@@ -119,7 +119,7 @@ record(ao, "$(P)$(R)Trigger") {
 record(ai, "$(P)$(R)SensorThickness_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_sensor_thickness")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_status/detector/sensor_thickness")
     field(DESC, "Sensor Thickness")
     field(EGU,  "m")
     field(PREC, "6")
@@ -245,7 +245,7 @@ record(stringin, "$(P)$(R)StreamState_RBV") {
 record(mbbo,"$(P)$(R)StreamHdrDetail") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_SCI_header_detail")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_config/stream/header_detail")
     field(DESC, "Stream Header Detail")
     field(VAL,  "0")
     field(ZRST, "All")
