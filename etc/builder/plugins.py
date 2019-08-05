@@ -26,7 +26,7 @@ class _UIDAdjustmentPluginTemplate(AutoSubstitution):
 class DatasetCreationPlugin(FrameProcessorPlugin):
 
     def create_extra_config_entries(self, rank):
-        entries = []
+        entries = super(DatasetCreationPlugin, self).create_extra_config_entries(rank)
         dataset_entry = {
             FileWriterPlugin.NAME: {
                 "dataset": {
@@ -65,19 +65,10 @@ class ParameterAdjustmentPlugin(DatasetCreationPlugin):
             self.PARAMETER_PLUGIN_INSTANTIATED = True
         super(ParameterAdjustmentPlugin, self).create_template(template_args)
 
-
-class UIDAdjustmentPlugin(ParameterAdjustmentPlugin):
-
-    DATASET_NAME = "uid"
-    TEMPLATE = _UIDAdjustmentPluginTemplate
-
-    def __init__(self, source=None):
-        super(UIDAdjustmentPlugin, self).__init__(source)
-
     def create_extra_config_entries(self, rank):
-        entries = []
+        entries = super(ParameterAdjustmentPlugin, self).create_extra_config_entries(rank)
         parameter_entry = {
-            self.DATASET_NAME: {
+            self.NAME: {
                 "parameter": {
                     self.DATASET_NAME: {
                         "adjustment": 0
@@ -88,6 +79,15 @@ class UIDAdjustmentPlugin(ParameterAdjustmentPlugin):
         entries.append(create_config_entry(parameter_entry))
 
         return entries
+
+
+class UIDAdjustmentPlugin(ParameterAdjustmentPlugin):
+
+    DATASET_NAME = "uid"
+    TEMPLATE = _UIDAdjustmentPluginTemplate
+
+    def __init__(self, source=None):
+        super(UIDAdjustmentPlugin, self).__init__(source)
 
 
 class _SumPluginTemplate(AutoSubstitution):
