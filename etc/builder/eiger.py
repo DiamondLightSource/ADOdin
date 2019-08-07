@@ -195,7 +195,7 @@ class EigerPluginConfig(PluginConfig):
                 raise ValueError("Must provide Kafka servers with Kafka mode")
             eiger = EigerProcessPlugin(size_dataset=False)
             kafka = KafkaPlugin(KAFKA_SERVERS, source=eiger)
-            hdf = FileWriterPlugin(source=kafka)
+            hdf = FileWriterPlugin(source=eiger)
             plugins = [eiger, kafka, hdf]
         else:
             raise ValueError("Invalid mode for EigerPluginConfig")
