@@ -10,6 +10,6 @@ ADCORE = $(SUPPORT)/ADCore/3-4dls3
 CALC = $(SUPPORT)/calc/3-7
 RESTCLIENT = $(SUPPORT)/restClient/0-4
 
-ODINDATA = $(TOOLS)/odin-data/1-3-0dls2
-EXCALIBURDETECTOR = $(TOOLS)/excalibur-detector/0-8-0
-EIGERDETECTOR = $(TOOLS)/eiger-detector/1-5-3
+ODINDATA = $(TOOLS)/odin-data/1-3-0dls3
+EXCALIBURDETECTOR = $(TOOLS)/excalibur-detector/0-9-0
+EIGERDETECTOR = $(TOOLS)/eiger-detector/1-5-4
