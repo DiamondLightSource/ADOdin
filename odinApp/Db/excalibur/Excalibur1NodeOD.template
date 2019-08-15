@@ -32,3 +32,32 @@ record(calcout, "$(P)$(R)DetToFPBitDepth")
     field(CALC, "A=0||A=1?0:A=2?1:2")
     field(OUT, "$(P)$(R)DataType PP")
 }
+
+###################################################################
+#  Override the image width, height and chunk records             #
+#  to make sure they are disabled.                                #
+###################################################################
+record(longout, "$(P)$(R)ImageWidth")
+{
+    field(DISA, "1")
+}
+
+record(longout, "$(P)$(R)ImageHeight")
+{
+    field(DISA, "1")
+}
+
+record(longout, "$(P)$(R)NumColChunks")
+{
+    field(DISA, "1")
+}
+
+record(longout, "$(P)$(R)NumRowChunks")
+{
+    field(DISA, "1")
+}
+
+record(longout, "$(P)$(R)NumFramesChunks")
+{
+    field(DISA, "1")
+}
