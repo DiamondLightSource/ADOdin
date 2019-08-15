@@ -62,16 +62,11 @@ record(fanout, "$(P)$(R)ReconnectFan1")
     field(LNK2, "$(P)$(R)FileName.PROC PP")
     field(LNK3, "$(P)$(R)FileExtension.PROC PP")
     field(LNK4, "$(P)$(R)NumCapture.PROC PP")
-    field(LNK5, "$(P)$(R)ImageWidth.PROC PP")
-    field(LNK6, "$(P)$(R)ImageHeight.PROC PP")
     field(FLNK, "$(P)$(R)ReconnectFan2.PROC PP")
 }
 
 record(fanout, "$(P)$(R)ReconnectFan2")
 {
-    field(LNK1, "$(P)$(R)NumFramesChunks.PROC PP")
-    field(LNK2, "$(P)$(R)NumColChunks.PROC PP")
-    field(LNK3, "$(P)$(R)NumRowChunks.PROC PP")
     field(LNK4, "$(P)$(R)DataType.PROC PP")
     field(LNK5, "$(P)$(R)Compression.PROC PP")
     field(LNK6, "$(P)$(R)FrameOffset.PROC PP")
