@@ -104,10 +104,66 @@ int OdinDataRestAPI::setImageDims(const std::string& datasetName, std::vector<in
   return put(sysStr(SSFPConfigHDF), DATASET "/" + datasetName, dimsDict.str());
 }
 
+std::vector<int> OdinDataRestAPI::getImageDims(const std::string& datasetName) {
+  // Parse JSON
+  struct json_token tokens[256];
+  std::string buffer;
+  std::vector<int> imageDims;
+
+  if (!get(sysStr(SSFPConfigHDF), DATASET "/" + datasetName + "/dims", buffer, 1)) {
+    parse_json(buffer.c_str(), buffer.size(), tokens, 256);
+    std::vector<std::vector<std::string> > valueArray = parse2DArray(tokens, PARAM_VALUE);
+    if ((int) valueArray.size() > 0) {
+        std::vector<std::string> singleArray = valueArray[0];
+        if ((int) singleArray.size() == 2) {
+          int height = -1;
+          int width = -1;
+          std::stringstream sheight(singleArray[0]);
+          sheight >> height;
+          std::stringstream swidth(singleArray[1]);
+          swidth >> width;
+          imageDims.push_back(height);
+          imageDims.push_back(width);
+        }
+    }
+  }
+  return imageDims;
+}
+
 int OdinDataRestAPI::setChunkDims(const std::string& datasetName, std::vector<int>& chunkDims) {
   JsonDict dimsDict = JsonDict(DATASET_CHUNKS, chunkDims);
 
   return put(sysStr(SSFPConfigHDF), DATASET "/" + datasetName, dimsDict.str());
+}
+
+std::vector<int> OdinDataRestAPI::getChunkDims(const std::string& datasetName) {
+  // Parse JSON
+  struct json_token tokens[256];
+  std::string buffer;
+  std::vector<int> chunkDims;
+
+  if (!get(sysStr(SSFPConfigHDF), DATASET "/" + datasetName + "/chunks", buffer, 1)) {
+    parse_json(buffer.c_str(), buffer.size(), tokens, 256);
+    std::vector<std::vector<std::string> > valueArray = parse2DArray(tokens, PARAM_VALUE);
+    if ((int) valueArray.size() > 0) {
+        std::vector<std::string> singleArray = valueArray[0];
+        if ((int) singleArray.size() == 3) {
+          int depth = -1;
+          int height = -1;
+          int width = -1;
+          std::stringstream sdepth(singleArray[0]);
+          sdepth >> depth;
+          std::stringstream sheight(singleArray[1]);
+          sheight >> height;
+          std::stringstream swidth(singleArray[2]);
+          swidth >> width;
+          chunkDims.push_back(depth);
+          chunkDims.push_back(height);
+          chunkDims.push_back(width);
+        }
+    }
+  }
+  return chunkDims;
 }
 
 std::string OdinDataRestAPI::readError(int address, int error_index) {

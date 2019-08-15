@@ -26,7 +26,9 @@ class OdinDataRestAPI : public OdinRestAPI
   // OdinData Methods
   int createFile(const std::string& name, const std::string& path);
   int setImageDims(const std::string& datasetName, std::vector<int>& imageDims);
+  std::vector<int> getImageDims(const std::string& datasetName);
   int setChunkDims(const std::string& datasetName, std::vector<int>& chunkDims);
+  std::vector<int> getChunkDims(const std::string& datasetName);
   std::string readError(int address, int error_index);
   int startWrite();
   int stopWrite();
