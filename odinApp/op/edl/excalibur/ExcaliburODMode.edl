@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 553
-y 316
+y 427
 w 387
 h 56
 font "arial-medium-r-12.0"
@@ -96,7 +96,8 @@ bgColor index 3
 inconsistentColor index 0
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)Mode"
+controlPv "$(P)$(R)CompressionMode"
+indicatorPv "$(P)$(R)CompressionMode_RBV"
 font "arial-bold-r-12.0"
 endObjectProperties
 
