@@ -248,6 +248,23 @@ application_name="excalibur_odin",detector="Excalibur{}" \
                     self.fem_address_list, self.POWER_CARD_IDX, self.chip_mask
                 )
 
+    def _create_odin_data_config_entry(self):
+        fp_endpoints = []
+        fr_endpoints = []
+        for process in sorted(self.odin_data_processes, key=lambda x: x.RANK):
+            fp_endpoints.append(process.FP_ENDPOINT)
+            fr_endpoints.append(process.FR_ENDPOINT)
+
+        return "[adapter.fp]\n" \
+               "module = odin_data.fp_compression_adapter.FPCompressionAdapter\n" \
+               "endpoints = {}\n" \
+               "update_interval = 0.2\n\n" \
+               "[adapter.fr]\n" \
+               "module = odin_data.frame_receiver_adapter.FrameReceiverAdapter\n" \
+               "endpoints = {}\n" \
+               "update_interval = 0.2".format(", ".join(fp_endpoints), ", ".join(fr_endpoints))
+
+
     @property
     def fem_address_list(self):
         if self.FEMS_REVERSED:
