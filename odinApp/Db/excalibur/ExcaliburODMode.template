@@ -17,6 +17,29 @@ record(mbbo, "$(P)$(R)Mode")
     field(PINI, "1")
 }
 
+record(mbbo, "$(P)$(R)CompressionMode")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "Passive")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "off")
+    field(ONST, "on")
+    field(PINI, "1")
+    field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODE_fp/config/compression")
+}
+
+record(mbbi, "$(P)$(R)CompressionMode_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "off")
+    field(ONST, "on")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODE_fp/config/compression")
+}
+
 # Obtain the string representation of the mode
 record(scalcout, "$(P)$(R)Mode_STR")
 {
