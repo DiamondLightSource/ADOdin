@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 775
-y 136
+x 423
+y 461
 w 419
 h 659
 font "arial-bold-r-12.0"
@@ -96,24 +96,6 @@ autoSize
 border
 endObjectProperties
 
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 275
-y 75
-w 55
-h 20
-controlPv "$(P)$(R)ImageHeight"
-fgColor index 25
-fgAlarm
-bgColor index 3
-fill
-font "arial-medium-r-12.0"
-endObjectProperties
-
 # (Textupdate)
 object TextupdateClass
 beginObjectProperties
@@ -152,24 +134,6 @@ font "arial-medium-r-12.0"
 fontAlign "center"
 endObjectProperties
 
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 205
-y 120
-w 55
-h 20
-controlPv "$(P)$(R)NumFramesChunks"
-fgColor index 25
-fgAlarm
-bgColor index 3
-fill
-font "arial-medium-r-12.0"
-endObjectProperties
-
 # (Textupdate)
 object TextupdateClass
 beginObjectProperties
@@ -187,24 +151,6 @@ bgColor index 10
 fill
 font "arial-medium-r-12.0"
 fontAlign "center"
-endObjectProperties
-
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 345
-y 75
-w 55
-h 20
-controlPv "$(P)$(R)ImageWidth"
-fgColor index 25
-fgAlarm
-bgColor index 3
-fill
-font "arial-medium-r-12.0"
 endObjectProperties
 
 # (Static Text)
@@ -435,24 +381,6 @@ font "arial-medium-r-12.0"
 fontAlign "center"
 endObjectProperties
 
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 345
-y 120
-w 55
-h 20
-controlPv "$(P)$(R)NumColChunks"
-fgColor index 25
-fgAlarm
-bgColor index 3
-fill
-font "arial-medium-r-12.0"
-endObjectProperties
-
 # (Textupdate)
 object TextupdateClass
 beginObjectProperties
@@ -489,24 +417,6 @@ bgColor index 10
 fill
 font "arial-medium-r-12.0"
 fontAlign "center"
-endObjectProperties
-
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 275
-y 120
-w 55
-h 20
-controlPv "$(P)$(R)NumRowChunks"
-fgColor index 25
-fgAlarm
-bgColor index 3
-fill
-font "arial-medium-r-12.0"
 endObjectProperties
 
 # (Static Text)
@@ -1198,5 +1108,195 @@ smartRefresh
 useHexPrefix
 newPos
 objType "controls"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 275
+y 75
+w 55
+h 20
+
+beginGroup
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 275
+y 75
+w 55
+h 20
+controlPv "$(P)$(R)ImageHeight"
+fgColor index 25
+fgAlarm
+bgColor index 3
+fill
+font "arial-medium-r-12.0"
+endObjectProperties
+
+endGroup
+
+visPv "$(P)$(R)ImageHeight.DISA"
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 345
+y 75
+w 55
+h 20
+
+beginGroup
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 345
+y 75
+w 55
+h 20
+controlPv "$(P)$(R)ImageWidth"
+fgColor index 25
+fgAlarm
+bgColor index 3
+fill
+font "arial-medium-r-12.0"
+endObjectProperties
+
+endGroup
+
+visPv "$(P)$(R)ImageWidth.DISA"
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 205
+y 120
+w 55
+h 20
+
+beginGroup
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 205
+y 120
+w 55
+h 20
+controlPv "$(P)$(R)NumFramesChunks"
+fgColor index 25
+fgAlarm
+bgColor index 3
+fill
+font "arial-medium-r-12.0"
+endObjectProperties
+
+endGroup
+
+visPv "$(P)$(R)NumFramesChunks.DISA"
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 275
+y 120
+w 55
+h 20
+
+beginGroup
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 275
+y 120
+w 55
+h 20
+controlPv "$(P)$(R)NumRowChunks"
+fgColor index 25
+fgAlarm
+bgColor index 3
+fill
+font "arial-medium-r-12.0"
+endObjectProperties
+
+endGroup
+
+visPv "$(P)$(R)NumRowChunks.DISA"
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 345
+y 120
+w 55
+h 20
+
+beginGroup
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 345
+y 120
+w 55
+h 20
+controlPv "$(P)$(R)NumColChunks"
+fgColor index 25
+fgAlarm
+bgColor index 3
+fill
+font "arial-medium-r-12.0"
+endObjectProperties
+
+endGroup
+
+visPv "$(P)$(R)NumColChunks.DISA"
+visMin "0"
+visMax "1"
 endObjectProperties
 
