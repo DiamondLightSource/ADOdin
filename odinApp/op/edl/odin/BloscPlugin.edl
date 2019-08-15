@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 991
-y 245
+y 282
 w 386
 h 131
 font "arial-medium-r-12.0"
@@ -101,31 +101,13 @@ value {
 }
 endObjectProperties
 
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 110
-y 45
-w 125
-h 20
-controlPv "$(P)$(R)BLOSC:Threads"
-fgColor index 25
-fgAlarm
-bgColor index 3
-fill
-font "arial-bold-r-12.0"
-endObjectProperties
-
 # (Textupdate)
 object TextupdateClass
 beginObjectProperties
 major 10
 minor 0
 release 0
-x 250
+x 105
 y 45
 w 80
 h 20
@@ -158,31 +140,13 @@ value {
 }
 endObjectProperties
 
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 110
-y 70
-w 125
-h 20
-controlPv "$(P)$(R)BLOSC:Level"
-fgColor index 25
-fgAlarm
-bgColor index 3
-fill
-font "arial-bold-r-12.0"
-endObjectProperties
-
 # (Textupdate)
 object TextupdateClass
 beginObjectProperties
 major 10
 minor 0
 release 0
-x 250
+x 105
 y 70
 w 80
 h 20
@@ -215,43 +179,41 @@ value {
 }
 endObjectProperties
 
-# (Menu Button)
-object activeMenuButtonClass
+# (Textupdate)
+object TextupdateClass
 beginObjectProperties
-major 4
+major 10
 minor 0
 release 0
-x 110
+x 105
 y 20
-w 125
+w 150
 h 20
-fgColor index 25
-bgColor index 3
-inconsistentColor index 0
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)$(R)BLOSC:Compressor"
-indicatorPv "$(P)$(R)BLOSC:Compressor_RBV"
+controlPv "$(P)$(R)BLOSC:Compressor_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
 font "arial-bold-r-12.0"
+fontAlign "center"
 endObjectProperties
 
-# (Menu Button)
-object activeMenuButtonClass
+# (Textupdate)
+object TextupdateClass
 beginObjectProperties
-major 4
+major 10
 minor 0
 release 0
-x 110
+x 105
 y 95
-w 125
+w 150
 h 20
-fgColor index 25
-bgColor index 3
-inconsistentColor index 0
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)$(R)BLOSC:Shuffle"
-indicatorPv "$(P)$(R)BLOSC:Shuffle_RBV"
+controlPv "$(P)$(R)BLOSC:Shuffle_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
 font "arial-bold-r-12.0"
+fontAlign "center"
 endObjectProperties
 
