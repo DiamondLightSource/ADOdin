@@ -213,6 +213,15 @@ asynStatus OdinDataDriver::getStatus()
       setIntegerParam(ADStatus, ADStatusIdle);
     }
 
+    // Get image dimensions
+    std::vector<int> imageDims = mAPI.getImageDims(mDatasetName);
+    status |= (int) setIntegerParam(mImageHeight, imageDims[0]);
+    status |= (int) setIntegerParam(mImageWidth, imageDims[1]);
+
+    std::vector<int> chunkDims = mAPI.getChunkDims(mDatasetName);
+    status |= (int) setIntegerParam(mChunkDepth, chunkDims[0]);
+    status |= (int) setIntegerParam(mChunkHeight, chunkDims[1]);
+    status |= (int) setIntegerParam(mChunkWidth, chunkDims[2]);
   }
 
   std::vector<int> numCaptured(mODCount);
@@ -252,12 +261,9 @@ asynStatus OdinDataDriver::acquireStop()
   return asynSuccess;
 }
 
-int OdinDataDriver::configureImageDims()
+int OdinDataDriver::configureImageDims(std::vector<int> imageDims)
 {
   int status = 0;
-  std::vector<int> imageDims(2);
-  status |= (int) getIntegerParam(mImageHeight, &imageDims[0]);
-  status |= (int) getIntegerParam(mImageWidth, &imageDims[1]);
   asynPrint(pasynUserSelf, ASYN_TRACE_FLOW,
             "Image Dimensions: [%d, %d]\n", imageDims[0], imageDims[1]);
 
@@ -265,13 +271,9 @@ int OdinDataDriver::configureImageDims()
   return status;
 }
 
-int OdinDataDriver::configureChunkDims()
+int OdinDataDriver::configureChunkDims(std::vector<int> chunkDims)
 {
   int status = 0;
-  std::vector<int> chunkDims(3);
-  status |= (int) getIntegerParam(mChunkDepth, &chunkDims[0]);
-  status |= (int) getIntegerParam(mChunkHeight, &chunkDims[1]);
-  status |= (int) getIntegerParam(mChunkWidth, &chunkDims[2]);
   asynPrint(pasynUserSelf, ASYN_TRACE_FLOW,
             "Chunk Dimensions: [%d, %d, %d]\n", chunkDims[0], chunkDims[1], chunkDims[2]);
 
@@ -318,11 +320,38 @@ asynStatus OdinDataDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) {
   if (function == ADReadStatus) {
     status = getStatus();
   }
-  else if (function == mImageHeight || function == mImageWidth) {
-    configureImageDims();
+  else if (function == mImageHeight){
+    std::vector<int> imageDims(2);
+    imageDims[0] = value;
+    getIntegerParam(mImageWidth, &imageDims[1]);
+    configureImageDims(imageDims);
   }
-  else if (function == mChunkDepth || function == mChunkHeight || function == mChunkWidth) {
-    configureChunkDims();
+  else if (function == mImageWidth) {
+    std::vector<int> imageDims(2);
+    getIntegerParam(mImageHeight, &imageDims[0]);
+    imageDims[1] = value;
+    configureImageDims(imageDims);
+  }
+  else if (function == mChunkDepth){
+    std::vector<int> chunkDims(3);
+    chunkDims[0] = value;
+    getIntegerParam(mChunkHeight, &chunkDims[1]);
+    getIntegerParam(mChunkWidth, &chunkDims[2]);
+    configureChunkDims(chunkDims);
+  }
+  else if (function == mChunkHeight){
+    std::vector<int> chunkDims(3);
+    getIntegerParam(mChunkDepth, &chunkDims[0]);
+    chunkDims[1] = value;
+    getIntegerParam(mChunkWidth, &chunkDims[2]);
+    configureChunkDims(chunkDims);
+  }
+  else if (function == mChunkWidth) {
+    std::vector<int> chunkDims(3);
+    getIntegerParam(mChunkDepth, &chunkDims[0]);
+    getIntegerParam(mChunkHeight, &chunkDims[1]);
+    chunkDims[2] = value;
+    configureChunkDims(chunkDims);
   }
   else if (RestParam * p = this->getParamByIndex(function)) {
     if (function == mCapture->getIndex()){

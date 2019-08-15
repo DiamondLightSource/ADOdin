@@ -144,8 +144,8 @@ class OdinDataDriver : public OdinClient
   int mChunkWidth;
 
   asynStatus getStatus();
-  int configureImageDims();
-  int configureChunkDims();
+  int configureImageDims(std::vector<int> imageDims);
+  int configureChunkDims(std::vector<int> chunkDims);
 
 };
 
