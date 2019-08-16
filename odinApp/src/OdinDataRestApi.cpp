@@ -108,7 +108,7 @@ std::vector<int> OdinDataRestAPI::getImageDims(const std::string& datasetName) {
   // Parse JSON
   struct json_token tokens[256];
   std::string buffer;
-  std::vector<int> imageDims;
+  std::vector<int> imageDims(2);
 
   if (!get(sysStr(SSFPConfigHDF), DATASET "/" + datasetName + "/dims", buffer, 1)) {
     parse_json(buffer.c_str(), buffer.size(), tokens, 256);
@@ -116,14 +116,10 @@ std::vector<int> OdinDataRestAPI::getImageDims(const std::string& datasetName) {
     if ((int) valueArray.size() > 0) {
         std::vector<std::string> singleArray = valueArray[0];
         if ((int) singleArray.size() == 2) {
-          int height = -1;
-          int width = -1;
           std::stringstream sheight(singleArray[0]);
-          sheight >> height;
+          sheight >> imageDims[0];
           std::stringstream swidth(singleArray[1]);
-          swidth >> width;
-          imageDims.push_back(height);
-          imageDims.push_back(width);
+          swidth >> imageDims[1];
         }
     }
   }
@@ -140,7 +136,7 @@ std::vector<int> OdinDataRestAPI::getChunkDims(const std::string& datasetName) {
   // Parse JSON
   struct json_token tokens[256];
   std::string buffer;
-  std::vector<int> chunkDims;
+  std::vector<int> chunkDims(3);
 
   if (!get(sysStr(SSFPConfigHDF), DATASET "/" + datasetName + "/chunks", buffer, 1)) {
     parse_json(buffer.c_str(), buffer.size(), tokens, 256);
@@ -148,18 +144,12 @@ std::vector<int> OdinDataRestAPI::getChunkDims(const std::string& datasetName) {
     if ((int) valueArray.size() > 0) {
         std::vector<std::string> singleArray = valueArray[0];
         if ((int) singleArray.size() == 3) {
-          int depth = -1;
-          int height = -1;
-          int width = -1;
           std::stringstream sdepth(singleArray[0]);
-          sdepth >> depth;
+          sdepth >> chunkDims[0];
           std::stringstream sheight(singleArray[1]);
-          sheight >> height;
+          sheight >> chunkDims[1];
           std::stringstream swidth(singleArray[2]);
-          swidth >> width;
-          chunkDims.push_back(depth);
-          chunkDims.push_back(height);
-          chunkDims.push_back(width);
+          swidth >> chunkDims[2];
         }
     }
   }
