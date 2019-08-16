@@ -25,6 +25,8 @@ class _UIDAdjustmentPluginTemplate(AutoSubstitution):
 
 class DatasetCreationPlugin(FrameProcessorPlugin):
 
+    DATASET_TYPE = "uint64"
+
     def create_extra_config_entries(self, rank):
         entries = super(DatasetCreationPlugin, self).create_extra_config_entries(rank)
         dataset_entry = {
@@ -32,7 +34,7 @@ class DatasetCreationPlugin(FrameProcessorPlugin):
                 "dataset": {
                     self.DATASET_NAME: {
                         "chunks": OneLineEntry([1000]),
-                        "datatype": "uint64"
+                        "datatype": self.DATASET_TYPE
                     }
                 }
             }

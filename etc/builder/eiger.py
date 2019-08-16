@@ -23,6 +23,7 @@ class EigerProcessPlugin(DatasetCreationPlugin):
     CLASS_NAME = "EigerProcessPlugin"
     ROOT_PATH = EIGER_ROOT
     DATASET_NAME = "compressed_size"
+    DATASET_TYPE = "uint32"
 
     def __init__(self, size_dataset):
         super(EigerProcessPlugin, self).__init__(None)
