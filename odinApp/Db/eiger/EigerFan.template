@@ -135,7 +135,7 @@ record(longin, "$(P)$(R)FAN:Consumers_RBV")
 record(longout, "$(P)$(R)FAN:BlockSize")
 {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,1)_ODI1_eiger_fan/config/block_size")
+    field(OUT,  "@asyn($(PORT),0,1)_ODI1_eiger_fan/config/block_size")
 }
 
 record(longin, "$(P)$(R)FAN:BlockSize_RBV")
