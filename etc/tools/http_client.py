@@ -18,9 +18,13 @@ def print_response(response, debug=False):
         ))
     else:
         print(json.dumps(
-            json.loads(response.content),
+            parse_response(response),
             sort_keys=True, indent=4, separators=(",", ": ")
         ))
+
+
+def parse_response(response):
+    return json.loads(response.content)
 
 
 def main():
@@ -36,7 +40,19 @@ def main():
     if args.value is not None:
         response = requests.put(path, args.value)
     else:
-        response = requests.get(path)
+        if "*/" in path:
+            root, target = path.split("*/")
+            response = requests.get(root)
+            response_list = parse_response(response)["value"]
+            for instance in response_list:
+                for key, node in instance.items():
+                    if not isinstance(node, dict) or target not in node.keys():
+                        del instance[key]
+                    else:
+                        instance[key] = dict((k, v) for k, v in node.items() if k == target)
+                response._content = json.dumps(response_list)
+        else:
+            response = requests.get(path)
 
     print_response(response, args.debug)
 
