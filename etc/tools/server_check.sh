@@ -7,7 +7,7 @@ echo "  Redhat version:" $rh
 
 # Check GPFS is mounted
 gpfs="$(mount | grep gpfs | wc -l)"
-if (( $gpfs > 0 )); then
+if (( $gpfs > 1 )); then
   echo "  GPFS Mount: GPFS mounted ("$gpfs" counts)"
 else
   echo -e "\e[31m  GPFS Mount: GPFS not mounted\e[0m"
