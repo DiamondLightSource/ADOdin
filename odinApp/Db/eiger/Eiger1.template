@@ -8,9 +8,10 @@
 #% macro, PORT, Asyn Port name
 #% macro, TIMEOUT, Timeout
 #% macro, ADDR, Asyn Port address
+#% macro, API, Excalibur API version
 
 # This associates the template with an edm screen
-# % gui, $(PORT), edmtab, eigerDetector.edl, P=$(P),R=$(R)
+# % gui, $(PORT), edmtab, EigerDetector.edl, P=$(P),R=$(R)
 
 include "EigerBase.template"
 
@@ -44,7 +45,7 @@ record(stringin, "$(P)$(R)FWState_RBV") {
 record(stringin, "$(P)$(R)Description_RBV")
 {
     field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))DESCRIPTION")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_detector/api/$(API)/config/description")
     field(DESC, "Detector Description")
     field(SCAN, "I/O Intr")
 }
@@ -52,17 +53,17 @@ record(stringin, "$(P)$(R)Description_RBV")
 record(ai, "$(P)$(R)CountCutoff_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCI_countrate_correction_count_cutoff")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_detector/api/$(API)/config/ccc_cutoff")
     field(DESC, "Rate Correct Cutoff")
     field(EGU,  "count")
     field(SCAN, "I/O Intr")
 }
 
- Dead time between frames
+# Dead time between frames
 record(ai, "$(P)$(R)DeadTime_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_detector_readout_time")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/detector_readout_time")
     field(DESC, "Dead time")
     field(EGU,  "s")
     field(PREC, "6")
@@ -72,7 +73,7 @@ record(ai, "$(P)$(R)DeadTime_RBV")
 record(ao, "$(P)$(R)Wavelength")
 {
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))WAVELENGTH")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/wavelength")
     field(PREC, "4")
     field(EGU,  "Angstroms")
 }
@@ -80,7 +81,7 @@ record(ao, "$(P)$(R)Wavelength")
 record(ai, "$(P)$(R)Wavelength_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))WAVELENGTH")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/wavelength")
     field(PREC, "4")
     field(EGU,  "Angstroms")
     field(SCAN, "I/O Intr")
@@ -94,7 +95,7 @@ record(stringin, "$(P)$(R)MonitorState_RBV") {
     field(SCAN, "I/O Intr")
 }
 
- Eiger Error Parameters
+# Eiger Error Parameters
 record(stringin, "$(P)$(R)Error_RBV") {
     field(DESC, "Parameters causing error state")
     field(DTYP, "asynOctetRead")
@@ -141,7 +142,7 @@ record(bi, "$(P)$(R)Link3_RBV")
 record(ai, "$(P)$(R)DCUBufferFree_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))DCU_BUF_FREE")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/status/builder/dcu_buffer_free")
     field(EGU,  "%")
     field(SCAN, "I/O Intr")
     field(VAL,  "0")

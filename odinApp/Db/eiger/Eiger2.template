@@ -8,9 +8,10 @@
 #% macro, PORT, Asyn Port name
 #% macro, TIMEOUT, Timeout
 #% macro, ADDR, Asyn Port address
+#% macro, API, Excalibur API version
 
 # This associates the template with an edm screen
-# % gui, $(PORT), edmtab, eigerDetector.edl, P=$(P),R=$(R)
+# % gui, $(PORT), edmtab, EigerDetector.edl, P=$(P),R=$(R)
 
 include "EigerBase.template"
 

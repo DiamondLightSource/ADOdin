@@ -8,6 +8,7 @@
 #% macro, PORT, Asyn Port name
 #% macro, TIMEOUT, Timeout
 #% macro, ADDR, Asyn Port address
+#% macro, API, Excalibur API version
 
 # This associates the template with an edm screen
 # % gui, $(PORT), edmtab, EigerMain.edl, P=$(P),R=$(R)
@@ -24,6 +25,10 @@ record(ai, "$(P)$(R)AcquireTime_RBV") {
 
 record(ao,"$(P)$(R)AcquirePeriod") {
     field(VAL, "1")
+}
+
+record(stringin, "$(P)$(R)SerialNumber_RBV") {
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_detector/api/$(API)/config/detector_number")
 }
 
 # We redefine the states for the TriggerMode records defined in ADBase.template
@@ -50,6 +55,16 @@ record(mbbi,"$(P)$(R)TriggerMode_RBV") {
     field(THVL,"3")
     field(THST,"External Enable")
 }
+
+record(longin, "$(P)$(R)BitDepthImage_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_detector/api/$(API)/config/bit_depth_image")
+    field(DESC, "Image bit depth")
+    field(VAL,  "0")
+    field(SCAN, "I/O Intr")
+}
+
 
 # Number of Triggers
 record(longout, "$(P)$(R)NumTriggers") {
@@ -119,7 +134,7 @@ record(ao, "$(P)$(R)Trigger") {
 record(ai, "$(P)$(R)SensorThickness_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_status/detector/sensor_thickness")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/sensor_thickness")
     field(DESC, "Sensor Thickness")
     field(EGU,  "m")
     field(PREC, "6")
@@ -129,7 +144,7 @@ record(ai, "$(P)$(R)SensorThickness_RBV")
 record(stringin, "$(P)$(R)SensorMaterial_RBV")
 {
     field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCS_sensor_material")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_detector/api/$(API)/config/sensor_material")
     field(DESC, "Sensor Material")
     field(SCAN, "I/O Intr")
 }
@@ -137,7 +152,7 @@ record(stringin, "$(P)$(R)SensorMaterial_RBV")
 record(ai, "$(P)$(R)XPixelSize_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_x_pixel_size")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/x_pixel_size")
     field(DESC, "X Pixel Size")
     field(EGU,  "m")
     field(PREC, "6")
@@ -147,7 +162,7 @@ record(ai, "$(P)$(R)XPixelSize_RBV")
 record(ai, "$(P)$(R)YPixelSize_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_y_pixel_size")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/y_pixel_size")
     field(DESC, "Y Pixel Size")
     field(EGU,  "m")
     field(PREC, "6")
@@ -350,7 +365,7 @@ record(ao,"$(P)$(R)FilePerms") {
 record(bo,"$(P)$(R)FlatfieldApplied") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCI_flatfield_correction_applied")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_detector/api/$(API)/config/flatfield_correction_applied")
     field(VAL,  "1")
     field(ZNAM, "Disabled")
     field(ONAM, "Enabled")
@@ -358,7 +373,7 @@ record(bo,"$(P)$(R)FlatfieldApplied") {
 
 record(bi,"$(P)$(R)FlatfieldApplied_RBV") {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCI_flatfield_correction_applied")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_detector/api/$(API)/config/flatfield_correction_applied")
     field(ZNAM, "Disabled")
     field(ONAM, "Enabled")
     field(SCAN, "I/O Intr")
@@ -378,7 +393,7 @@ record(ao, "$(P)$(R)PhotonEnergy")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))PHOTON_ENERGY")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/photon_energy")
     field(DESC, "Photon energy")
     field(EGU,  "eV")
     field(PREC, "3")
@@ -388,7 +403,7 @@ record(ao, "$(P)$(R)PhotonEnergy")
 record(ai, "$(P)$(R)PhotonEnergy_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))PHOTON_ENERGY")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/photon_energy")
     field(DESC, "Photon energy")
     field(EGU,  "eV")
     field(PREC, "3")
@@ -410,7 +425,7 @@ record(ao, "$(P)$(R)ThresholdEnergy")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))THRESHOLD")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/threshold_energy")
     field(DESC, "Energy threshold")
     field(EGU,  "eV")
     field(PREC, "3")
@@ -419,7 +434,7 @@ record(ao, "$(P)$(R)ThresholdEnergy")
 record(ai, "$(P)$(R)ThresholdEnergy_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))THRESHOLD")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/threshold_energy")
     field(DESC, "Energy threshold")
     field(EGU,  "eV")
     field(PREC, "3")
@@ -432,7 +447,7 @@ record(ao, "$(P)$(R)DetDist")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_detector_distance")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/detector_distance")
     field(PREC, "3")
     field(EGU,  "m")
 }
@@ -441,7 +456,7 @@ record(ao, "$(P)$(R)BeamX")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_beam_center_x")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/beam_center_x")
     field(PREC, "3")
     field(EGU,  "pixels")
 }
@@ -450,7 +465,7 @@ record(ao, "$(P)$(R)BeamY")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_beam_center_y")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/beam_center_y")
     field(PREC, "3")
     field(EGU,  "pixels")
 }
@@ -458,7 +473,7 @@ record(ao, "$(P)$(R)BeamY")
 record(ai, "$(P)$(R)DetDist_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_detector_distance")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/detector_distance")
     field(PREC, "3")
     field(EGU,  "m")
     field(SCAN, "I/O Intr")
@@ -467,7 +482,7 @@ record(ai, "$(P)$(R)DetDist_RBV")
 record(ai, "$(P)$(R)BeamX_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_beam_center_x")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/beam_center_x")
     field(PREC, "3")
     field(EGU,  "pixels")
     field(SCAN, "I/O Intr")
@@ -476,7 +491,7 @@ record(ai, "$(P)$(R)BeamX_RBV")
 record(ai, "$(P)$(R)BeamY_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_beam_center_y")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/beam_center_y")
     field(PREC, "3")
     field(EGU,  "pixels")
     field(SCAN, "I/O Intr")
@@ -488,7 +503,7 @@ record(ao, "$(P)$(R)ChiStart")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_chi_start")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/chi_start")
     field(PREC, "3")
     field(EGU,  "deg")
 }
@@ -496,7 +511,7 @@ record(ao, "$(P)$(R)ChiStart")
 record(ai, "$(P)$(R)ChiStart_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_chi_start")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/chi_start")
     field(PREC, "3")
     field(EGU,  "deg")
     field(SCAN, "I/O Intr")
@@ -506,7 +521,7 @@ record(ao, "$(P)$(R)ChiIncr")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_chi_increment")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/chi_increment")
     field(PREC, "3")
     field(EGU,  "deg")
 }
@@ -514,7 +529,7 @@ record(ao, "$(P)$(R)ChiIncr")
 record(ai, "$(P)$(R)ChiIncr_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_chi_increment")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/chi_increment")
     field(PREC, "3")
     field(EGU,  "deg")
     field(SCAN, "I/O Intr")
@@ -524,7 +539,7 @@ record(ao, "$(P)$(R)KappaStart")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_kappa_start")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/kappa_start")
     field(PREC, "3")
     field(EGU,  "deg")
 }
@@ -532,7 +547,7 @@ record(ao, "$(P)$(R)KappaStart")
 record(ai, "$(P)$(R)KappaStart_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_kappa_start")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/kappa_start")
     field(PREC, "3")
     field(EGU,  "deg")
     field(SCAN, "I/O Intr")
@@ -542,7 +557,7 @@ record(ao, "$(P)$(R)KappaIncr")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_kappa_increment")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/kappa_increment")
     field(PREC, "3")
     field(EGU,  "deg")
 }
@@ -550,7 +565,7 @@ record(ao, "$(P)$(R)KappaIncr")
 record(ai, "$(P)$(R)KappaIncr_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_kappa_increment")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/kappa_increment")
     field(PREC, "3")
     field(EGU,  "deg")
     field(SCAN, "I/O Intr")
@@ -560,7 +575,7 @@ record(ao, "$(P)$(R)OmegaStart")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_omega_start")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/omega_start")
     field(PREC, "3")
     field(EGU,  "deg")
 }
@@ -568,7 +583,7 @@ record(ao, "$(P)$(R)OmegaStart")
 record(ai, "$(P)$(R)OmegaStart_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_omega_start")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/omega_start")
     field(PREC, "3")
     field(EGU,  "deg")
     field(SCAN, "I/O Intr")
@@ -578,7 +593,7 @@ record(ao, "$(P)$(R)OmegaIncr")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_omega_increment")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/omega_increment")
     field(PREC, "3")
     field(EGU,  "deg")
 }
@@ -586,7 +601,7 @@ record(ao, "$(P)$(R)OmegaIncr")
 record(ai, "$(P)$(R)OmegaIncr_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_omega_increment")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/omega_increment")
     field(PREC, "3")
     field(EGU,  "deg")
     field(SCAN, "I/O Intr")
@@ -596,7 +611,7 @@ record(ao, "$(P)$(R)PhiStart")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_phi_start")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/phi_start")
     field(PREC, "3")
     field(EGU,  "deg")
 }
@@ -604,7 +619,7 @@ record(ao, "$(P)$(R)PhiStart")
 record(ai, "$(P)$(R)PhiStart_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_phi_start")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/phi_start")
     field(PREC, "3")
     field(EGU,  "deg")
     field(SCAN, "I/O Intr")
@@ -614,7 +629,7 @@ record(ao, "$(P)$(R)PhiIncr")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_phi_increment")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/phi_increment")
     field(PREC, "3")
     field(EGU,  "deg")
 }
@@ -622,7 +637,7 @@ record(ao, "$(P)$(R)PhiIncr")
 record(ai, "$(P)$(R)PhiIncr_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_phi_increment")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/phi_increment")
     field(PREC, "3")
     field(EGU,  "deg")
     field(SCAN, "I/O Intr")
@@ -632,7 +647,7 @@ record(ao, "$(P)$(R)TwoThetaStart")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_two_theta_start")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/two_theta_start")
     field(PREC, "3")
     field(EGU,  "deg")
 }
@@ -640,7 +655,7 @@ record(ao, "$(P)$(R)TwoThetaStart")
 record(ai, "$(P)$(R)TwoThetaStart_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_two_theta_start")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/two_theta_start")
     field(PREC, "3")
     field(EGU,  "deg")
     field(SCAN, "I/O Intr")
@@ -650,7 +665,7 @@ record(ao, "$(P)$(R)TwoThetaIncr")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_two_theta_increment")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/two_theta_increment")
     field(PREC, "3")
     field(EGU,  "deg")
 }
@@ -658,7 +673,7 @@ record(ao, "$(P)$(R)TwoThetaIncr")
 record(ai, "$(P)$(R)TwoThetaIncr_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_two_theta_increment")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/two_theta_increment")
     field(PREC, "3")
     field(EGU,  "deg")
     field(SCAN, "I/O Intr")
