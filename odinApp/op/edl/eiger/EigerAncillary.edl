@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 1319
-y 191
+y 228
 w 399
 h 746
 font "arial-bold-r-12.0"
@@ -1047,7 +1047,7 @@ buttonLabel "Info"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "eigerInfo"
+  0 "EigerInfo"
 }
 endObjectProperties
 
@@ -1070,7 +1070,7 @@ buttonLabel "Acquisition"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "eigerAcquisition"
+  0 "EigerAcquisition"
 }
 endObjectProperties
 
