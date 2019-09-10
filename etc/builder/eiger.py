@@ -183,20 +183,20 @@ class EigerPluginConfig(PluginConfig):
     def __init__(self, MODE="Simple", KAFKA_SERVERS=None):
         if MODE == "Simple":
             eiger = EigerProcessPlugin(size_dataset=False)
-            hdf = FileWriterPlugin(source=eiger)
+            hdf = FileWriterPlugin(source=eiger, indexes=True)
             plugins = [eiger, hdf]
         elif MODE == "Malcolm":
             eiger = EigerProcessPlugin(size_dataset=True)
             offset = OffsetAdjustmentPlugin(source=eiger)
             uid = UIDAdjustmentPlugin(source=offset)
-            hdf = FileWriterPlugin(source=uid)
+            hdf = FileWriterPlugin(source=uid, indexes=True)
             plugins = [eiger, offset, uid, hdf]
         elif MODE == "Kafka":
             if KAFKA_SERVERS is None:
                 raise ValueError("Must provide Kafka servers with Kafka mode")
             eiger = EigerProcessPlugin(size_dataset=False)
             kafka = KafkaPlugin(KAFKA_SERVERS, source=eiger)
-            hdf = FileWriterPlugin(source=eiger)
+            hdf = FileWriterPlugin(source=eiger, indexes=True)
             plugins = [eiger, kafka, hdf]
         else:
             raise ValueError("Invalid mode for EigerPluginConfig")
