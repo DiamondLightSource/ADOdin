@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1944
-y 254
+x 555
+y 69
 w 395
 h 820
 font "arial-bold-r-12.0"
@@ -31,9 +31,9 @@ major 4
 minor 0
 release 0
 x 5
-y 485
+y 480
 w 380
-h 330
+h 105
 lineColor index 14
 fill
 fillColor index 3
@@ -69,176 +69,6 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 10
-y 495
-w 110
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "File path:"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 10
-y 565
-w 100
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Name Pattern:"
-}
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 115
-y 515
-w 265
-h 20
-controlPv "$(P)$(R)FilePath_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 240
-y 565
-w 140
-h 20
-controlPv "$(P)$(R)FWNamePattern_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 10
-y 615
-w 85
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Auto Remove:"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 215
-y 615
-w 75
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Auto Fetch:"
-}
-endObjectProperties
-
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 290
-y 615
-w 90
-h 20
-fgColor index 25
-bgColor index 3
-inconsistentColor index 0
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)$(R)SaveFiles"
-indicatorPv "$(P)$(R)SaveFiles_RBV"
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 115
-y 540
-w 65
-h 20
-controlPv "$(P)$(R)FilePathExists_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 10
-y 540
-w 110
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "File path exists:"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
 x 5
 y 475
 w 77
@@ -253,67 +83,15 @@ autoSize
 border
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 6
-release 0
-x 115
-y 490
-w 265
-h 20
-controlPv "$(P)$(R)FilePath"
-font "helvetica-bold-r-12.0"
-fgColor index 25
-bgColor index 3
-editable
-motifWidget
-limitsFromDb
-nullColor index 0
-useKp
-file
-useHexPrefix
-newPos
-inputFocusUpdates
-objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 6
-release 0
-x 115
-y 565
-w 115
-h 20
-controlPv "$(P)$(R)FWNamePattern"
-font "helvetica-bold-r-12.0"
-fgColor index 25
-bgColor index 3
-editable
-motifWidget
-limitsFromDb
-nullColor index 0
-useKp
-file
-useHexPrefix
-newPos
-inputFocusUpdates
-objType "controls"
-endObjectProperties
-
 # (Related Display)
 object relatedDisplayClass
 beginObjectProperties
 major 4
 minor 4
 release 0
-x 15
-y 775
-w 360
+x 10
+y 545
+w 125
 h 30
 fgColor index 43
 bgColor index 3
@@ -334,8 +112,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 364
-y 543
+x 360
+y 495
 w 15
 h 15
 controlPv "$(P)$(R)Armed"
@@ -352,8 +130,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 240
-y 540
+x 235
+y 490
 w 115
 h 20
 font "arial-bold-r-12.0"
@@ -366,46 +144,6 @@ value {
 }
 endObjectProperties
 
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 300
-y 745
-w 80
-h 20
-fgColor index 25
-bgColor index 3
-inconsistentColor index 0
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)$(R)ArrayCallbacks"
-indicatorPv "$(P)$(R)ArrayCallbacks_RBV"
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 115
-y 615
-w 90
-h 20
-fgColor index 25
-bgColor index 3
-inconsistentColor index 0
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)$(R)FWAutoRemove"
-indicatorPv "$(P)$(R)FWAutoRemove_RBV"
-font "arial-bold-r-12.0"
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -413,87 +151,7 @@ major 4
 minor 1
 release 1
 x 10
-y 640
-w 70
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Free Space:"
-}
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 115
-y 640
-w 90
-h 20
-controlPv "$(P)$(R)FWFree_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 215
-y 640
-w 165
-h 20
-fgColor index 21
-onColor index 4
-offColor index 3
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)$(R)FWClear"
-pressValue "1"
-onLabel "Remove Files on Detector"
-offLabel "Remove Files on Detector"
-3d
-useEnumNumeric
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 225
-y 745
-w 65
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Callbacks:"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 10
-y 670
+y 520
 w 65
 h 20
 font "arial-bold-r-12.0"
@@ -511,8 +169,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 80
-y 670
+x 75
+y 520
 w 55
 h 20
 fgColor index 25
@@ -531,8 +189,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 10
-y 695
+x 140
+y 520
 w 60
 h 20
 font "arial-bold-r-12.0"
@@ -550,8 +208,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 80
-y 695
+x 195
+y 520
 w 55
 h 20
 fgColor index 25
@@ -570,8 +228,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 10
-y 720
+x 260
+y 520
 w 60
 h 20
 font "arial-bold-r-12.0"
@@ -589,8 +247,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 80
-y 720
+x 320
+y 520
 w 55
 h 20
 fgColor index 25
@@ -603,59 +261,14 @@ indicatorPv "$(P)$(R)StreamEnable_RBV"
 font "arial-bold-r-12.0"
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 6
-release 0
-x 205
-y 695
-w 75
-h 20
-controlPv "$(P)$(R)MonitorTimeout"
-font "helvetica-bold-r-12.0"
-fgColor index 25
-bgColor index 3
-editable
-motifWidget
-limitsFromDb
-nullColor index 0
-useKp
-file
-useHexPrefix
-newPos
-inputFocusUpdates
-objType "controls"
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
 release 1
-x 145
-y 695
-w 55
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Timeout:"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 145
-y 720
+x 140
+y 550
 w 105
 h 20
 font "arial-bold-r-12.0"
@@ -673,8 +286,8 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 255
-y 720
+x 250
+y 550
 w 125
 h 20
 controlPv "$(P)$(R)StreamDropped_RBV"
@@ -691,89 +304,8 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 290
-y 695
-w 90
-h 20
-controlPv "$(P)$(R)MonitorTimeout_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 145
-y 670
-w 80
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Images / File:"
-}
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 6
-release 0
-x 230
-y 670
-w 50
-h 20
-controlPv "$(P)$(R)FWNImagesPerFile"
-font "helvetica-bold-r-12.0"
-fgColor index 25
-bgColor index 3
-editable
-motifWidget
-limitsFromDb
-nullColor index 0
-useKp
-file
-useHexPrefix
-newPos
-inputFocusUpdates
-objType "controls"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 290
-y 670
-w 90
-h 20
-controlPv "$(P)$(R)FWNImagesPerFile_RBV"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
 x 115
-y 590
+y 490
 w 90
 h 20
 controlPv "$(P)$(R)SequenceId"
@@ -792,7 +324,7 @@ major 4
 minor 1
 release 1
 x 10
-y 590
+y 490
 w 100
 h 20
 font "arial-bold-r-12.0"
@@ -804,42 +336,34 @@ value {
 }
 endObjectProperties
 
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 125
-y 745
-w 90
-h 20
-fgColor index 25
-bgColor index 3
-inconsistentColor index 0
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)$(R)DataSource"
-indicatorPv "$(P)$(R)DataSource_RBV"
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
+# (Embedded Window)
+object activePipClass
 beginObjectProperties
 major 4
 minor 1
-release 1
-x 10
-y 745
-w 100
-h 20
-font "arial-bold-r-12.0"
+release 0
+x 0
+y 590
+w 390
+h 225
 fgColor index 14
 bgColor index 3
-useDisplayBg
-value {
-  "Callback Source:"
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+file "EigerFan_embed"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "EigerFan_embed"
 }
+symbols {
+  0 "P=$(P),R=:OD:"
+}
+replaceSymbols {
+  0 1
+}
+noScroll
 endObjectProperties
 
