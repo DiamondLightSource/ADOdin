@@ -157,6 +157,44 @@ record(longout, "$(P)$(R)Trigger") {
     field(DESC, "Trigger the detector")
 }
 
+# FileWriter API enable
+record(bo,"$(P)$(R)FWEnable") {
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_filewriter/api/$(API)/config/mode")
+    field(DESC, "Enable usage of FileWriter API")
+    field(VAL,  "1")
+    field(ZNAM, "Yes")
+    field(ONAM, "No")
+}
+
+record(bi,"$(P)$(R)FWEnable_RBV") {
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_filewriter/api/$(API)/config/mode")
+    field(DESC, "Enable usage of FileWriter API")
+    field(ZNAM, "Yes")
+    field(ONAM, "No")
+    field(SCAN, "I/O Intr")
+}
+
+# FileWriter compression enabled
+record(bo,"$(P)$(R)FWCompression") {
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_filewriter/api/$(API)/config/compression_enabled")
+    field(VAL,  "1")
+    field(ZNAM, "Disabled")
+    field(ONAM, "Enabled")
+}
+
+record(bi,"$(P)$(R)FWCompression_RBV") {
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_filewriter/api/$(API)/config/compression_enabled")
+    field(ZNAM, "Disabled")
+    field(ONAM, "Enabled")
+    field(SCAN, "I/O Intr")
+}
+
 record(ai, "$(P)$(R)SensorThickness_RBV")
 {
     field(DTYP, "asynFloat64")
@@ -199,7 +237,7 @@ record(ai, "$(P)$(R)YPixelSize_RBV")
 record(mbbo,"$(P)$(R)ROIMode") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ROI_MODE")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_detector/api/$(API)/config/roi_mode")
     field(DESC, "ROI Mode")
     field(VAL,  "0")
     field(ZRST, "Disabled")
@@ -210,7 +248,7 @@ record(mbbo,"$(P)$(R)ROIMode") {
 
 record(mbbi,"$(P)$(R)ROIMode_RBV") {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ROI_MODE")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_detector/api/$(API)/config/roi_mode")
     field(DESC, "ROI Mode")
     field(VAL,  "0")
     field(ZRST, "Disabled")
@@ -249,19 +287,19 @@ record(mbbi,"$(P)$(R)CompressionAlgo_RBV") {
 record(bo,"$(P)$(R)StreamEnable") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))STREAM_ENABLE")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_stream/api/$(API)/config/mode")
     field(DESC, "Enable usage of Stream API")
     field(VAL,  "0")
-    field(ZNAM, "No")
-    field(ONAM, "Yes")
+    field(ZNAM, "Yes")
+    field(ONAM, "No")
 }
 
 record(bi,"$(P)$(R)StreamEnable_RBV") {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))STREAM_ENABLE")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_stream/api/$(API)/config/mode")
     field(DESC, "Enable usage of Stream API")
-    field(ZNAM, "No")
-    field(ONAM, "Yes")
+    field(ZNAM, "Yes")
+    field(ONAM, "No")
     field(SCAN, "I/O Intr")
 }
 
@@ -269,7 +307,7 @@ record(bi,"$(P)$(R)StreamEnable_RBV") {
 record(longin, "$(P)$(R)StreamDropped_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))STREAM_DROPPED")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_stream/api/$(API)/status/dropped")
     field(DESC, "Number of dropped frames")
     field(SCAN, "I/O Intr")
 }
@@ -709,16 +747,35 @@ record(ai, "$(P)$(R)TwoThetaIncr_RBV")
 record(bo,"$(P)$(R)MonitorEnable") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_monitor/api/$(API)/config/mode")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_monitor/api/$(API)/config/mode")
     field(DESC, "Enable usage of Monitor API")
-    field(ZNAM, "No")
-    field(ONAM, "Yes")
+    field(ZNAM, "Yes")
+    field(ONAM, "No")
 }
 
 record(bi,"$(P)$(R)MonitorEnable_RBV") {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_monitor/api/$(API)/config/mode")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_monitor/api/$(API)/config/mode")
     field(DESC, "Enable usage of Monitor API")
+    field(ZNAM, "Yes")
+    field(ONAM, "No")
+    field(SCAN, "I/O Intr")
+}
+
+# Monitor API enable
+record(bo,"$(P)$(R)LiveViewEnable") {
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_config/live_view")
+    field(DESC, "Enable live view updates")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+}
+
+record(bi,"$(P)$(R)LiveViewEnable_RBV") {
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_config/live_view")
+    field(DESC, "Enable live view updates")
     field(ZNAM, "No")
     field(ONAM, "Yes")
     field(SCAN, "I/O Intr")
