@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <algorithm>
 #include <frozen.h>
+#include <epicsThread.h>
 
 #include "jsonDict.h"
 
@@ -99,9 +100,39 @@ int OdinDataRestAPI::stopWrite() {
 }
 
 int OdinDataRestAPI::setImageDims(const std::string& datasetName, std::vector<int>& imageDims) {
+  std::vector<int> response;
+  int status = 0;
+  int timeout = 20;
+  bool match = false;
   JsonDict dimsDict = JsonDict(DATASET_DIMS, imageDims);
 
-  return put(sysStr(SSFPConfigHDF), DATASET "/" + datasetName, dimsDict.str());
+  // Alan Greer - 21st November 2019
+  // This is a temporary workaround whilst we wait for odin-data to fully implement
+  // asynchronous blocking callbacks.  To ensure we have set the dimensions correctly
+  // we must read them back and wait for them to be updated and agree with the demands.
+  // Only then can we return from this method.
+
+  status = put(sysStr(SSFPConfigHDF), DATASET "/" + datasetName, dimsDict.str());
+  while (timeout > 0 && !match){
+    response = getImageDims(datasetName);
+    if (response.size() == imageDims.size()){
+      match = true;
+      for (size_t index = 0; index < response.size(); index++){
+        if (response[index] != imageDims[index]){
+          match = false;
+        }
+      }
+    }
+    if (!match){
+      epicsThreadSleep(0.1);
+      timeout--;
+    }
+  }
+  if (timeout == 0){
+    status = -1;
+  }
+
+  return status;
 }
 
 std::vector<int> OdinDataRestAPI::getImageDims(const std::string& datasetName) {
