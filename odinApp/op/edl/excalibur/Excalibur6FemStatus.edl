@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 226
-y 198
+x 1263
+y 435
 w 740
 h 860
 font "arial-medium-r-18.0"
@@ -616,9 +616,9 @@ major 4
 minor 1
 release 0
 x 115
-y 440
+y 465
 w 80
-h 400
+h 375
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
@@ -644,9 +644,9 @@ major 4
 minor 1
 release 0
 x 195
-y 440
+y 465
 w 80
-h 400
+h 375
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
@@ -672,9 +672,9 @@ major 4
 minor 1
 release 0
 x 275
-y 440
+y 465
 w 80
-h 400
+h 375
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
@@ -700,9 +700,9 @@ major 4
 minor 1
 release 0
 x 355
-y 440
+y 465
 w 80
-h 400
+h 375
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
@@ -728,9 +728,9 @@ major 4
 minor 1
 release 0
 x 435
-y 440
+y 465
 w 80
-h 400
+h 375
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
@@ -756,9 +756,9 @@ major 4
 minor 1
 release 0
 x 515
-y 440
+y 465
 w 80
-h 400
+h 375
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
@@ -800,5 +800,125 @@ displayFileName {
   0 "ExcaliburPowerStatus_embed.edl"
 }
 noScroll
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 115
+y 445
+w 80
+h 20
+font "arial-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FEM 1"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 195
+y 445
+w 80
+h 20
+font "arial-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FEM 2"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 275
+y 445
+w 80
+h 20
+font "arial-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FEM 3"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 355
+y 445
+w 80
+h 20
+font "arial-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FEM 4"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 435
+y 445
+w 80
+h 20
+font "arial-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FEM 5"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 515
+y 445
+w 80
+h 20
+font "arial-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FEM 6"
+}
 endObjectProperties
 

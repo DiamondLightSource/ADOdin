@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 278
-y 173
+x 367
+y 500
 w 740
 h 820
 font "arial-medium-r-18.0"
@@ -616,9 +616,9 @@ major 4
 minor 1
 release 0
 x 115
-y 400
+y 425
 w 80
-h 400
+h 375
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
@@ -644,9 +644,9 @@ major 4
 minor 1
 release 0
 x 195
-y 400
+y 425
 w 80
-h 400
+h 375
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
@@ -688,5 +688,45 @@ displayFileName {
   0 "ExcaliburPowerStatus1M_embed.edl"
 }
 noScroll
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 115
+y 405
+w 80
+h 20
+font "arial-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FEM 1"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 195
+y 405
+w 80
+h 20
+font "arial-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FEM 2"
+}
 endObjectProperties
 
