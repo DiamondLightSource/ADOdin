@@ -283,6 +283,9 @@ class EigerOdinControlServer(_OdinControlServer):
             self._create_meta_listener_config_entry()
         ]
 
+    def create_odin_server_static_path(self):
+        return EIGER_ROOT + "/prefix/html/static"
+
     def _create_eiger_fan_config_entry(self):
         return "[adapter.eiger_fan]\n" \
                "module = eiger.eiger_fan_adapter.EigerFanAdapter\n" \

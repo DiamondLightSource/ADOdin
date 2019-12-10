@@ -363,8 +363,12 @@ class _OdinControlServer(Device):
     def create_config_file(self):
         macros = dict(PORT=self.PORT,
                       ADAPTERS=", ".join(self.ADAPTERS),
-                      ADAPTER_CONFIG="\n\n".join(self.create_odin_server_config_entries()))
+                      ADAPTER_CONFIG="\n\n".join(self.create_odin_server_config_entries()),
+                      STATIC_PATH=self.create_odin_server_static_path())
         expand_template_file("odin_server.ini", macros, "odin_server.cfg")
+
+    def create_odin_server_static_path(self):
+        return "./static"
 
     def create_odin_server_config_entries(self):
         raise NotImplementedError("Method must be implemented by child classes")
