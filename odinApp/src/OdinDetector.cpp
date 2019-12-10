@@ -73,6 +73,10 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
 int OdinDetector::createDetectorParams()
 {
   //mConnected = createRESTParam(OdinDetectorConnected, REST_P_BOOL, SSDetectorStatus, "connected");
+  mAPIVersion = createRESTParam(OdinRestAPIVersion, REST_P_STRING, SSDetector, "api");
+  // Create a parameter to store any error message from the Odin server
+  mErrorMessage = createRESTParam("ERR_MESSAGE", REST_P_STRING, SSDetector, "status/error");
+  mFirstParam = mAPIVersion->getIndex();
 
   // Create the parameter to store the Live View endpoint
   createParam(OdinDetectorLVEndpoint, asynParamOctet,   &mLiveViewEndpoint);
