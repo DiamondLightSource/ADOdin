@@ -238,6 +238,9 @@ application_name="excalibur_odin",detector="Excalibur{}" \
             self._create_odin_data_config_entry()
         ]
 
+    def create_odin_server_static_path(self):
+        return EXCALIBUR_ROOT + "/prefix/html/static"
+
     def _create_excalibur_config_entry(self):
         return "[adapter.excalibur]\n" \
                "module = excalibur.adapter.ExcaliburAdapter\n" \
