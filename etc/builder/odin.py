@@ -544,19 +544,12 @@ class _OdinDataDriver(AsynPort):
     DbdFileList = ["OdinDetectorSupport"]
 
     def Initialise(self):
-        # Configure up to 8 OdinData processes
-        print "# odinDataProcessConfig(const char * ipAddress, int readyPort, " \
-              "int releasePort, int metaPort)"
-        for process in self.ODIN_DATA_PROCESSES:
-            print "odinDataProcessConfig(\"%(IP)s\", %(READY)d, " \
-                  "%(RELEASE)d, %(META)d)" % process.__dict__
-
         print "# odinDataDriverConfig(const char * portName, const char * serverPort, " \
-              "int odinServerPort, " \
+              "int odinServerPort, int odinDataCount, " \
               "const char * datasetName, const char * detectorName, " \
               "int maxBuffers, size_t maxMemory)"
         print "odinDataDriverConfig(\"%(PORT)s\", \"%(CONTROL_SERVER_IP)s\", " \
-              "%(CONTROL_SERVER_PORT)d, " \
+              "%(CONTROL_SERVER_PORT)d, %(total_processes)d, " \
               "\"%(DATASET)s\", \"%(DETECTOR_PLUGIN)s\", " \
               "%(BUFFERS)d, %(MEMORY)d)" % self.__dict__
 

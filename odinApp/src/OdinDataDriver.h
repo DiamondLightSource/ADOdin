@@ -53,8 +53,9 @@
 class OdinDataDriver : public OdinClient
 {
  public:
-  OdinDataDriver(const char * portName, const char * serverHostname, int odinServerPort,
-                 const char * datasetName, const char * detectorName,
+  OdinDataDriver(const char* portName, const char* serverHostname,
+                 int odinServerPort, int odinDataCount,
+                 const char* datasetName, const char* detectorName,
                  int maxBuffers, size_t maxMemory, int priority, int stackSize);
 
   // These are the methods that we override from ADDriver
@@ -74,21 +75,12 @@ class OdinDataDriver : public OdinClient
                           const std::string &datasetName, int dataType);
   asynStatus acquireStop();
 
-  // IOC Init Methods
-  static void configureOdinDataProcess(const char * ipAddress, int readyPort, int releasePort,
-                                       int metaPort);
-  static void configureOdinData(const char * odinDataLibraryPath,
-                                const char * detectorName, const char * libraryPath,
-                                const char * datasetName);
-  static std::string mDatasetName;
-  static std::string mFileWriterLibraryPath;
-  static std::string mProcessPluginName;
-  static std::string mProcessPluginLibraryPath;
-  static size_t mODCount;
-
  private:
   char mHostname[512];
   OdinDataRestAPI mAPI;
+  int mODCount;
+  std::string mDatasetName;
+  std::string mProcessPluginName;
 
   int createParams();
 

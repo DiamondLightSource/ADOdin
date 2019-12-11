@@ -9,11 +9,6 @@
 
 static const char *driverName = "OdinDataDriver";
 
-// These parameters are optionally configured by ioc init commands
-size_t                       OdinDataDriver::mODCount                  =  0;
-std::string                  OdinDataDriver::mDatasetName              = "";
-std::string                  OdinDataDriver::mProcessPluginName        = "";
-
 /* Constructor for Odin driver; most parameters are simply passed to ADDriver::ADDriver.
  * After calling the base class constructor this method creates a thread to collect the detector
  * data, and sets reasonable default values for the parameters defined in this class,
@@ -31,9 +26,9 @@ std::string                  OdinDataDriver::mProcessPluginName        = "";
  * \param[in] stackSize The stack size for the asyn port driver thread if
  *            ASYN_CANBLOCK is set in asynFlags.
  */
-OdinDataDriver::OdinDataDriver(const char * portName, const char * serverHostname,
-                               int odinServerPort,
-                               const char * datasetName, const char * detectorName,
+OdinDataDriver::OdinDataDriver(const char* portName, const char* serverHostname,
+                               int odinServerPort, int odinDataCount,
+                               const char* datasetName, const char* detectorName,
                                int maxBuffers, size_t maxMemory, int priority, int stackSize)
 
     : OdinClient(portName, serverHostname, odinServerPort,
@@ -42,6 +37,7 @@ OdinDataDriver::OdinDataDriver(const char * portName, const char * serverHostnam
     mAPI(serverHostname, detectorName, odinServerPort)
 {
   mDatasetName = std::string(datasetName);
+  mODCount = odinDataCount;
 
   strncpy(mHostname, serverHostname, sizeof(mHostname));
 
@@ -50,11 +46,6 @@ OdinDataDriver::OdinDataDriver(const char * portName, const char * serverHostnam
 
   createParams();
   fetchParams();
-}
-
-void OdinDataDriver::configureOdinDataProcess(const char * ipAddress,
-                                              int readyPort, int releasePort, int metaPort) {
-  mODCount++;
 }
 
 int OdinDataDriver::createParams()
@@ -498,19 +489,14 @@ asynStatus OdinDataDriver::drvUserCreate(asynUser *pasynUser,
   return status;
 }
 
-extern "C" int odinDataDriverConfig(const char * portName, const char * serverPort,
-                                    int odinServerPort,
-                                    const char * datasetName, const char * detectorName,
+extern "C" int odinDataDriverConfig(const char* portName, const char* serverPort,
+                                    int odinServerPort, int odinDataCount,
+                                    const char* datasetName, const char* detectorName,
                                     int maxBuffers, size_t maxMemory, int priority, int stackSize) {
-  new OdinDataDriver(portName, serverPort, odinServerPort,
+  new OdinDataDriver(portName, serverPort,
+                     odinServerPort, odinDataCount,
                      datasetName, detectorName,
                      maxBuffers, maxMemory, priority, stackSize);
-  return asynSuccess;
-}
-
-extern "C" int odinDataProcessConfig(const char * ipAddress, int readyPort, int releasePort,
-                                     int metaPort) {
-  OdinDataDriver::configureOdinDataProcess(ipAddress, readyPort, releasePort, metaPort);
   return asynSuccess;
 }
 
@@ -518,26 +504,28 @@ extern "C" int odinDataProcessConfig(const char * ipAddress, int readyPort, int 
 static const iocshArg odinDataDriverConfigArg0 = {"Port name", iocshArgString};
 static const iocshArg odinDataDriverConfigArg1 = {"Server host name", iocshArgString};
 static const iocshArg odinDataDriverConfigArg2 = {"Odin server port", iocshArgInt};
-static const iocshArg odinDataDriverConfigArg3 = {"Name of dataset", iocshArgString};
-static const iocshArg odinDataDriverConfigArg4 = {"Detector name", iocshArgString};
-static const iocshArg odinDataDriverConfigArg5 = {"maxBuffers", iocshArgInt};
-static const iocshArg odinDataDriverConfigArg6 = {"maxMemory", iocshArgInt};
-static const iocshArg odinDataDriverConfigArg7 = {"priority", iocshArgInt};
-static const iocshArg odinDataDriverConfigArg8 = {"stackSize", iocshArgInt};
+static const iocshArg odinDataDriverConfigArg3 = {"Number of OdinData processes", iocshArgInt};
+static const iocshArg odinDataDriverConfigArg4 = {"Name of dataset", iocshArgString};
+static const iocshArg odinDataDriverConfigArg5 = {"Detector name", iocshArgString};
+static const iocshArg odinDataDriverConfigArg6 = {"maxBuffers", iocshArgInt};
+static const iocshArg odinDataDriverConfigArg7 = {"maxMemory", iocshArgInt};
+static const iocshArg odinDataDriverConfigArg8 = {"priority", iocshArgInt};
+static const iocshArg odinDataDriverConfigArg9 = {"stackSize", iocshArgInt};
+
 static const iocshArg *const odinDataDriverConfigArgs[] = {
     &odinDataDriverConfigArg0, &odinDataDriverConfigArg1,
     &odinDataDriverConfigArg2, &odinDataDriverConfigArg3,
     &odinDataDriverConfigArg4, &odinDataDriverConfigArg5,
     &odinDataDriverConfigArg6, &odinDataDriverConfigArg7,
-    &odinDataDriverConfigArg8};
+    &odinDataDriverConfigArg8, &odinDataDriverConfigArg9};
 
-static const iocshFuncDef configOdinDataDriver = {"odinDataDriverConfig",
-                                                  8, odinDataDriverConfigArgs};
+static const iocshFuncDef configOdinDataDriver = {"odinDataDriverConfig", 9, odinDataDriverConfigArgs};
 
 static void configOdinDataDriverCallFunc(const iocshArgBuf *args) {
-  odinDataDriverConfig(args[0].sval, args[1].sval, args[2].ival,
-                       args[3].sval, args[4].sval, args[5].ival,
-                       args[6].ival, args[7].ival, args[8].ival);
+  odinDataDriverConfig(args[0].sval, args[1].sval,
+                       args[2].ival, args[3].ival,
+                       args[4].sval, args[5].sval,
+                       args[6].ival, args[7].ival, args[8].ival, args[9].ival);
 }
 
 static void odinDataDriverRegister() {
@@ -546,27 +534,4 @@ static void odinDataDriverRegister() {
 
 extern "C" {
 epicsExportRegistrar(odinDataDriverRegister);
-}
-
-static const iocshArg odinDataProcessConfigArg0 = {"IP address", iocshArgString};
-static const iocshArg odinDataProcessConfigArg1 = {"Ready port", iocshArgInt};
-static const iocshArg odinDataProcessConfigArg2 = {"Release port", iocshArgInt};
-static const iocshArg odinDataProcessConfigArg3 = {"Meta port", iocshArgInt};
-static const iocshArg *const odinDataProcessConfigArgs[] = {
-    &odinDataProcessConfigArg0, &odinDataProcessConfigArg1, &odinDataProcessConfigArg2,
-    &odinDataProcessConfigArg3};
-
-static const iocshFuncDef configOdinDataProcess = {
-    "odinDataProcessConfig", 4, odinDataProcessConfigArgs};
-
-static void configOdinDataProcessCallFunc(const iocshArgBuf *args) {
-  odinDataProcessConfig(args[0].sval, args[1].ival, args[2].ival, args[3].ival);
-}
-
-static void odinDataProcessRegister() {
-  iocshRegister(&configOdinDataProcess, configOdinDataProcessCallFunc);
-}
-
-extern "C" {
-epicsExportRegistrar(odinDataProcessRegister);
 }
