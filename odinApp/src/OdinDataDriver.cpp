@@ -61,6 +61,11 @@ void OdinDataDriver::configureOdinDataProcess(const char * ipAddress,
 
 int OdinDataDriver::createParams()
 {
+  mAPIVersion = createRESTParam(OdinRestAPIVersion, REST_P_STRING, SSRoot, "api");
+  // Create a parameter to store any error message from the Odin server
+  mErrorMessage = createRESTParam("ERR_MESSAGE", REST_P_STRING, SSFP, "status/error");
+  mFirstParam = mAPIVersion->getIndex();
+
   // OdinServer Parameters
   mFPCount                = createRESTParam(OdinFPCount, REST_P_INT,
                                             SSFP, "count");

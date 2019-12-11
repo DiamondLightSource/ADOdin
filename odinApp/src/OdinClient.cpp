@@ -49,10 +49,6 @@ void OdinClient::registerAPI(OdinRestAPI *api)
 {
   mAPI = api;
   mParams = new RestParamSet(this, mAPI, pasynUserSelf);
-  mAPIVersion = createRESTParam(OdinRestAPIVersion, REST_P_STRING, SSDetector, "api");
-  // Create a parameter to store any error message from the Odin server
-  mErrorMessage = createRESTParam("ERR_MESSAGE", REST_P_STRING, SSDetector, "status/error");
-  mFirstParam = mAPIVersion->getIndex();
 }
 
 RestParam * OdinClient::createRESTParam(const std::string& asynName, rest_param_type_t restType,
