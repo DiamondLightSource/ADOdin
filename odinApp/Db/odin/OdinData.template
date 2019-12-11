@@ -14,7 +14,7 @@
 record(longout, "$(P)$(R)ResetStatistics")
 {
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_fr/command/reset_statistics/$(ADDR)")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC$(TOTAL)_fr/command/reset_statistics/$(ADDR)")
 }
 
 record(longout, "$(P)$(R)FPClearErrors")

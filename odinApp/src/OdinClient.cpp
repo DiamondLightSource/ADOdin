@@ -74,10 +74,9 @@ asynStatus OdinClient::dynamicParam(asynUser *pasynUser,
   // _ODE_...  => Enum parameter
   // _ODS_...  => String parameter
   // _ODD_...  => Double parameter
-  // _ODIn_... => Array size n of Integer parameter
-  // _ODEn_... => Array size n of Enum parameter
-  // _ODSn_... => Array size n of String parameter
-  // _ODDn_... => Array size n of Double parameter
+  // _ODB_...  => Boolean parameter
+  // _ODC_...  => Command parameter (Write-only integer parameter)
+  // _ODxn_... => Array size n of type x
   if (findParam(drvInfo, &index) && strlen(drvInfo) > 5 && strncmp(drvInfo, "_OD", 2) == 0 &&
       (drvInfo[4] == '_' or drvInfo[5] == '_')) {
     // Decide if the parameter is an array
@@ -155,6 +154,15 @@ asynStatus OdinClient::dynamicParam(asynUser *pasynUser,
                     driverName, functionName, drvInfo);
           generatedParam = createRESTParam(drvInfo, REST_P_BOOL, subsystem, httpRequest, arraySize);
           generatedParam->fetch();
+          // Store the parameter
+          break;
+        case 'C':
+          // Create the parameter
+          asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+                    "%s:%s: Command parameter: %s\n",
+                    driverName, functionName, drvInfo);
+          generatedParam = createRESTParam(drvInfo, REST_P_INT, subsystem, httpRequest, arraySize);
+          generatedParam->setCommand();
           // Store the parameter
           break;
         default:
