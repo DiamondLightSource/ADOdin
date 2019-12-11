@@ -9,7 +9,6 @@
 #define ODIN_CLIENT_H
 
 #include "ADDriver.h"
-#include "OdinDataConfig.h"
 #include "OdinRestApi.h"
 
 // Odin Server

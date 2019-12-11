@@ -9,8 +9,6 @@
 #include "OdinRestApi.h"
 #include "restParam.h"
 
-#include "OdinDataConfig.h"
-
 
 class OdinDataRestAPI : public OdinRestAPI
 {

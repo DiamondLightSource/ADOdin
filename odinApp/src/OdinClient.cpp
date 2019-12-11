@@ -10,14 +10,6 @@
 #include <sstream>
 #include <epicsString.h>
 
-// These parameters are optionally configured by ioc init commands
-//std::string                  OdinDetector::mOdinDataLibraryPath = "";
-//std::vector<ODConfiguration> OdinDetector::mODConfig                ;
-//size_t                       OdinDetector::mODCount             =  0;
-//std::string                  OdinDetector::mDatasetName         = "";
-//std::string                  OdinClient::mProcessPluginName   = "";
-//std::string                  OdinDetector::mDetectorLibraryPath = "";
-
 static const std::string DRIVER_VERSION("0-1");
 static const char *driverName = "OdinDetector";
 

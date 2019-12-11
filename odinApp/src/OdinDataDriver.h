@@ -2,7 +2,6 @@
 #define ODIN_DATA_DRIVER_H
 
 #include "OdinClient.h"
-#include "OdinDataConfig.h"
 #include "OdinDataRestApi.h"
 
 // Odin Server
@@ -78,7 +77,6 @@ class OdinDataDriver : public OdinClient
   // IOC Init Methods
   static void configureOdinDataProcess(const char * ipAddress, int readyPort, int releasePort,
                                        int metaPort);
-  static std::vector<ODConfiguration> mODConfig;
   static void configureOdinData(const char * odinDataLibraryPath,
                                 const char * detectorName, const char * libraryPath,
                                 const char * datasetName);
