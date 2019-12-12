@@ -71,8 +71,7 @@ class OdinDataDriver : public OdinClient
       const char **pptypeName, size_t *psize);
 
   // EPICS API
-  asynStatus acquireStart(const std::string &fileName, const std::string &filePath,
-                          const std::string &datasetName, int dataType);
+  asynStatus acquireStart();
   asynStatus acquireStop();
 
  private:
