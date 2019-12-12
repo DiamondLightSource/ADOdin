@@ -1,7 +1,7 @@
 [
   {
     "decoder_type": "Excalibur",
-    "decoder_path": "$DETECTOR_ROOT/prefix/lib",
+    "decoder_path": "$DETECTOR/prefix/lib",
     "rx_ports": "$RX_PORT_1,$RX_PORT_2,$RX_PORT_3,$RX_PORT_4,$RX_PORT_5,$RX_PORT_6",
     "decoder_config": {
       "enable_packet_logging": false,

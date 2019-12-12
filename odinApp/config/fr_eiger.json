@@ -1,7 +1,7 @@
 [
   {
     "decoder_type": "Eiger",
-    "decoder_path": "$DETECTOR_ROOT/prefix/lib",
+    "decoder_path": "$DETECTOR/prefix/lib",
     "rx_type": "zmq",
     "rx_address": "$IP",
     "rx_ports": "3160$RX_PORT_SUFFIX,",

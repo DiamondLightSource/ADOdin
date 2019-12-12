@@ -6,7 +6,7 @@ from iocbuilder.modules.ADCore import ADCore, ADBaseTemplate, makeTemplateInstan
 from iocbuilder.modules.restClient import restClient
 from iocbuilder.modules.calc import Calc
 
-from util import debug_print, find_module_path, data_file_path, expand_template_file, \
+from util import debug_print, OdinPaths, data_file_path, expand_template_file, \
     create_batch_entry, create_config_entry
 
 
@@ -14,8 +14,7 @@ from util import debug_print, find_module_path, data_file_path, expand_template_
 # OdinData #
 # ~~~~~~~~ #
 
-ODIN_DATA_MACRO, ODIN_DATA_ROOT = find_module_path("odin-data")
-debug_print("OdinData: {} = {}".format(ODIN_DATA_MACRO, ODIN_DATA_ROOT), 1)
+debug_print("OdinData: {}".format(OdinPaths.ODIN_DATA), 1)
 
 
 class _OdinDataTemplate(AutoSubstitution):
@@ -48,7 +47,7 @@ class _OdinData(Device):
 
     def create_config_file(self, prefix, template, extra_macros=None):
         macros = dict(
-            IP=self.server.IP, OD_ROOT=ODIN_DATA_ROOT,
+            IP=self.server.IP, ODIN_DATA=OdinPaths.ODIN_DATA,
             RD_PORT=self.READY, RL_PORT=self.RELEASE, META_PORT=self.META
         )
         if extra_macros is not None:
@@ -100,7 +99,7 @@ class FrameProcessorPlugin(Device):
     NAME = None
     CLASS_NAME = None
     LIBRARY_NAME = None
-    ROOT_PATH = ODIN_DATA_ROOT
+    LIBRARY_PATH = OdinPaths.ODIN_DATA
 
     TEMPLATE = None
     TEMPLATE_INSTANTIATED = False
@@ -126,7 +125,7 @@ class FrameProcessorPlugin(Device):
                 "load": {
                     "index": self.NAME,
                     "name": self.CLASS_NAME,
-                    "library": "{}/prefix/lib/lib{}.so".format(self.ROOT_PATH, library_name)
+                    "library": "{}/prefix/lib/lib{}.so".format(self.LIBRARY_PATH, library_name)
                 }
             }
         }
@@ -262,7 +261,7 @@ class _OdinDataServer(Device):
             output_file = "stFrameReceiver{}.sh".format(process.RANK + 1)
             macros = dict(
                 NUMBER=process.RANK + 1,
-                OD_ROOT=ODIN_DATA_ROOT,
+                ODIN_DATA=OdinPaths.ODIN_DATA,
                 BUFFER_IDX=idx + 1, SHARED_MEMORY=self.SHARED_MEM_SIZE,
                 CTRL_PORT=fr_port_number, IO_THREADS=self.IO_THREADS,
                 READY_PORT=ready_port_number, RELEASE_PORT=release_port_number,
@@ -273,7 +272,8 @@ class _OdinDataServer(Device):
             output_file = "stFrameProcessor{}.sh".format(process.RANK + 1)
             macros = dict(
                 NUMBER=process.RANK + 1,
-                OD_ROOT=ODIN_DATA_ROOT,
+                ODIN_DATA=OdinPaths.ODIN_DATA,
+                HDF5_FILTERS=OdinPaths.HDF5_FILTERS,
                 CTRL_PORT=fp_port_number,
                 READY_PORT=ready_port_number, RELEASE_PORT=release_port_number,
                 LOG_CONFIG=data_file_path("log4cxx.xml"),
