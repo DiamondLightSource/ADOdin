@@ -15,4 +15,5 @@
 	<EPICS_BASE.dbpf name="DataType" pv="EXCALIBUR:OD:DataType" value="UInt16"/>
 	<EPICS_BASE.dbpf name="UDPConfig" pv="EXCALIBUR:CAM:UdpConfigFile" value="$(INSTALL)/excaliburApp/data/udp_excalibur.json"/>
 	<!--<EPICS_BASE.dbpf pv="EXCALIBUR:CAM:CalFileRoot" value="/dls_sw/i13-1/epics/excalibur/V2.7"/>-->
+	<ADOdin.OdinStartAllScript driver="ODN.OD" name="StartAllScript"/>
 </components>

@@ -598,3 +598,53 @@ class OdinBatchFile(Device):
         BEAMLINE=Simple("Beamline domain name, e.g. BL14I, BL21B", str),
         ODIN_CONTROL_SERVER=Ident("Odin control server", _OdinControlServer)
     )
+
+
+class OdinStartAllScript(Device):
+
+    """Create a start-up script for this IOC"""
+
+    def __init__(self, driver):
+        self.create_start_all_script(driver.DETECTOR.upper(), driver.total_processes)
+
+    ArgInfo = makeArgInfo(__init__, driver=Ident("OdinDataDriver", _OdinDataDriver))
+
+    def create_start_all_script(self, detector_name, processes):
+        scripts = self.create_applications(processes)
+        macros = dict(DETECTOR=getattr(OdinPaths, "{}_DETECTOR".format(detector_name)),
+                      ODIN_DATA=OdinPaths.ODIN_DATA,
+                      SCRIPTS="\n".join([
+                          self.create_script_entry(name, script_name)
+                          for script in scripts for name, script_name in script.items()
+                      ]),
+                      COMMANDS="\n".join([
+                          self.create_command_entry(name)
+                          for script in scripts for name, _ in script.items()
+                      ]))
+        expand_template_file("odin_startup", macros, "startAll.sh", executable=True)
+
+    def create_applications(self, processes):
+        applications = []
+        for process_number in range(1, processes + 1):
+            applications.append(
+                {
+                    "FP{}".format(process_number): "stFrameReceiver{}.sh".format(process_number)
+                }
+            )
+            applications.append(
+                {
+                    "FR{}".format(process_number): "stFrameProcessor{}.sh".format(process_number)
+                }
+            )
+        return applications
+
+    def create_script_entry(self, name, script_name):
+        return "{name}=\"${{SCRIPT_DIR}}/{script_name}\"".format(
+            name=name, script_name=script_name
+        )
+
+    def create_command_entry(self, script):
+        return "gnome-terminal --tab --title=\"{script}\" -- bash -c \"${{{script}}}\"".format(
+            script=script
+        )
+
