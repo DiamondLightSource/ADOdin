@@ -310,12 +310,12 @@ class EigerOdinDataDriver(_OdinDataDriver):
         # Update the attributes of self from the commandline args
         self.__dict__.update(locals())
 
-        if self.total_processes not in self.OD_SCREENS:
+        if self.odin_data_processes not in self.OD_SCREENS:
             raise ValueError("Total number of OdinData processes must be {}".format(
                 self.OD_TEMPLATES))
 
         template_args = dict((key, args[key]) for key in ["P", "R", "PORT"])
-        template_args["OD_COUNT"] = self.total_processes
+        template_args["OD_COUNT"] = self.odin_data_processes
         template_args.update(self.create_gui_macros(args["PORT"]))
         makeTemplateInstance(_EigerDetectorTemplate, locals(), template_args)
 

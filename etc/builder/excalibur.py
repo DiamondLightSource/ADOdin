@@ -347,7 +347,7 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
         # Update the attributes of self from the commandline args
         self.__dict__.update(locals())
 
-        if self.total_processes not in self.FP_TEMPLATES.keys():
+        if self.odin_data_processes not in self.FP_TEMPLATES.keys():
             raise ValueError("Total number of OdinData processes must be {}".format(
                 self.FP_TEMPLATES.keys()))
         else:

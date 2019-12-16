@@ -477,7 +477,7 @@ class _OdinDataDriver(AsynPort):
         self.DETECTOR_PLUGIN = DETECTOR.lower()
         self.ODIN_DATA_PROCESSES = []
 
-        self.total_processes = 0
+        self.odin_data_processes = 0
         # Calculate the total number of FR/FP pairs
         for server_idx, server in enumerate(self.control_server.odin_data_servers):
             if server.instantiated:
@@ -485,7 +485,7 @@ class _OdinDataDriver(AsynPort):
             else:
                 server.instantiated = True
             for odin_data in server.processes:
-                self.total_processes += 1
+                self.odin_data_processes += 1
 
         plugin_config = None
         for server_idx, server in enumerate(self.control_server.odin_data_servers):
@@ -499,7 +499,7 @@ class _OdinDataDriver(AsynPort):
                 od_args["PORT"] = PORT
                 od_args["ADDR"] = odin_data.index - 1
                 od_args["R"] = odin_data.R
-                od_args["TOTAL"] = self.total_processes
+                od_args["TOTAL"] = self.odin_data_processes
                 _OdinDataTemplate(**od_args)
 
                 odin_data.create_config_files(process_idx + 1)
@@ -511,7 +511,7 @@ class _OdinDataDriver(AsynPort):
                     if not plugin.TEMPLATE_INSTANTIATED:
                         plugin_args = dict((key, args[key]) for key in ["P", "R"])
                         plugin_args["PORT"] = PORT
-                        plugin_args["TOTAL"] = self.total_processes
+                        plugin_args["TOTAL"] = self.odin_data_processes
                         plugin_args["GUI"] = \
                             self.gui_macro(PORT, "OdinData." + plugin.NAME.capitalize())
                         plugin.create_template(plugin_args)
@@ -549,7 +549,7 @@ class _OdinDataDriver(AsynPort):
               "const char * datasetName, const char * detectorName, " \
               "int maxBuffers, size_t maxMemory)"
         print "odinDataDriverConfig(\"%(PORT)s\", \"%(CONTROL_SERVER_IP)s\", " \
-              "%(CONTROL_SERVER_PORT)d, %(total_processes)d, " \
+              "%(CONTROL_SERVER_PORT)d, %(odin_data_processes)d, " \
               "\"%(DATASET)s\", \"%(DETECTOR_PLUGIN)s\", " \
               "%(BUFFERS)d, %(MEMORY)d)" % self.__dict__
 
@@ -605,7 +605,7 @@ class OdinStartAllScript(Device):
     """Create a start-up script for this IOC"""
 
     def __init__(self, driver):
-        self.create_start_all_script(driver.DETECTOR.upper(), driver.total_processes)
+        self.create_start_all_script(driver.DETECTOR.upper(), driver.odin_data_processes)
 
     ArgInfo = makeArgInfo(__init__, driver=Ident("OdinDataDriver", _OdinDataDriver))
 
@@ -640,4 +640,3 @@ class OdinStartAllScript(Device):
         return "gnome-terminal --tab --title=\"{script}\" -- bash -c \"${{{script}}}\"".format(
             script=script
         )
-
