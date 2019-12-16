@@ -26,7 +26,7 @@ class OdinPaths(object):
     def configure_paths(cls, release_path):
         paths = cls.parse_release_file(release_path)
 
-        cls.HDF5_FILTERS = os.path.join(paths["HDF5_FILTERS"], "/prefix/hdf5_1.10/h5plugin")
+        cls.HDF5_FILTERS = os.path.join(paths["HDF5_FILTERS"], "prefix/hdf5_1.10/h5plugin")
         cls.ODIN_DATA = paths["ODIN_DATA"]
 
         for detector_path in [path for module, path in paths.items()
