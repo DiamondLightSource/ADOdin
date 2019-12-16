@@ -338,16 +338,10 @@ class EigerOdinBatchFile(OdinBatchFile):
 
 class EigerOdinStartAllScript(OdinStartAllScript):
 
-    def create_applications(self, processes):
-        applications = super(EigerOdinStartAllScript, self).create_applications(processes)
-        applications.append(
-            {
-                "EigerFan": "stEigerFan.sh"
-            }
-        )
-        applications.append(
-            {
-                "MetaListener": "stEigerMetaListener.sh"
-            }
-        )
-        return applications
+    def create_scripts(self, odin_data_processes):
+        scripts = [self.create_script_entry("EigerFan", "stEigerFan.sh")]
+        scripts += super(EigerOdinStartAllScript, self).create_scripts(odin_data_processes)
+        scripts.append(self.create_script_entry(
+            "MetaListener", "stEigerMetaListener.sh", "${PYTHON_EXPORTS}"
+        ))
+        return scripts

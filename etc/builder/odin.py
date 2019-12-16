@@ -609,38 +609,31 @@ class OdinStartAllScript(Device):
 
     ArgInfo = makeArgInfo(__init__, driver=Ident("OdinDataDriver", _OdinDataDriver))
 
-    def create_start_all_script(self, detector_name, processes):
-        scripts = self.create_applications(processes)
+    def create_start_all_script(self, detector_name, odin_data_processes):
+        scripts = self.create_scripts(odin_data_processes)
         macros = dict(DETECTOR=getattr(OdinPaths, "{}_DETECTOR".format(detector_name)),
                       ODIN_DATA=OdinPaths.ODIN_DATA,
-                      SCRIPTS="\n".join([
-                          self.create_script_entry(name, script_name)
-                          for script in scripts for name, script_name in script.items()
-                      ]),
-                      COMMANDS="\n".join([
-                          self.create_command_entry(name)
-                          for script in scripts for name, _ in script.items()
-                      ]))
+                      SCRIPTS="\n".join([script for script in scripts]),
+                      COMMANDS="\n".join([self.create_command_entry(script.split("=")[0])
+                                          for script in scripts]))
         expand_template_file("odin_startup", macros, "startAll.sh", executable=True)
 
-    def create_applications(self, processes):
-        applications = []
-        for process_number in range(1, processes + 1):
-            applications.append(
-                {
-                    "FP{}".format(process_number): "stFrameReceiver{}.sh".format(process_number)
-                }
-            )
-            applications.append(
-                {
-                    "FR{}".format(process_number): "stFrameProcessor{}.sh".format(process_number)
-                }
-            )
-        return applications
+    def create_scripts(self, odin_data_processes):
+        scripts = []
+        for process_number in range(1, odin_data_processes + 1):
+            scripts.append(self.create_script_entry(
+                "FR{}".format(process_number),
+                "stFrameReceiver{}.sh".format(process_number),
+            ))
+            scripts.append(self.create_script_entry(
+                "FP{}".format(process_number),
+                "stFrameProcessor{}.sh".format(process_number),
+            ))
+        return scripts
 
-    def create_script_entry(self, name, script_name):
-        return "{name}=\"${{SCRIPT_DIR}}/{script_name}\"".format(
-            name=name, script_name=script_name
+    def create_script_entry(self, name, script_name, prefix=""):
+        return "{name}=\"{prefix}${{SCRIPT_DIR}}/{script_name}\"".format(
+            name=name, prefix=prefix, script_name=script_name
         )
 
     def create_command_entry(self, script):

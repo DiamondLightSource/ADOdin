@@ -3,13 +3,13 @@
 SCRIPT_DIR="$$( cd "$$( dirname "$$0" )" && pwd )"
 IOC_ROOT="$$SCRIPT_DIR/../.."
 IOC_NAME="$$(echo $$IOC_ROOT | sed 's/.*iocs\///g' | sed 's/\/.*//g')"
+PYTHON_EXPORTS="export PYTHONPATH=$DETECTOR/prefix/lib/python2.7/site-packages:$ODIN_DATA/prefix/lib/python2.7/site-packages && "
 
 ${SCRIPTS}
-OdinServer="export PYTHONPATH=$DETECTOR/prefix/lib/python2.7/site-packages:$ODIN_DATA/prefix/lib/python2.7/site-packages &&
-            $$SCRIPT_DIR/stOdinServer.sh"
+OdinServer="$$PYTHON_EXPORTS$$SCRIPT_DIR/stOdinServer.sh"
 IOC="$$IOC_ROOT/bin/linux-x86_64/st$$IOC_NAME.sh"
 
 ${COMMANDS}
 gnome-terminal --tab --title="OdinServer" -- bash -c "$$OdinServer"
-sleep 5
+sleep 3
 gnome-terminal --tab --title="IOC" -- bash -c "$$IOC"
