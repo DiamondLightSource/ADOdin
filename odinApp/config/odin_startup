@@ -10,6 +10,7 @@ OdinServer="$$PYTHON_EXPORTS$$SCRIPT_DIR/stOdinServer.sh"
 IOC="$$IOC_ROOT/bin/linux-x86_64/st$$IOC_NAME.sh"
 
 ${COMMANDS}
+sleep 1
 gnome-terminal --tab --title="OdinServer" -- bash -c "$$OdinServer"
-sleep 3
+sleep 1
 gnome-terminal --tab --title="IOC" -- bash -c "$$IOC"
