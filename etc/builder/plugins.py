@@ -2,35 +2,35 @@ from iocbuilder import AutoSubstitution
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident
 
 from util import OneLineEntry, create_config_entry
-from odin import FrameProcessorPlugin
+from odin import _FrameProcessorPlugin
 
 
 class _OffsetAdjustmentPluginTemplate(AutoSubstitution):
     TemplateFile = "OffsetAdjustmentPlugin.template"
 
 
-class OffsetAdjustmentPlugin(FrameProcessorPlugin):
+class _OffsetAdjustmentPlugin(_FrameProcessorPlugin):
 
     NAME = "offset"
     CLASS_NAME = "OffsetAdjustmentPlugin"
     TEMPLATE = _OffsetAdjustmentPluginTemplate
 
     def __init__(self, source=None):
-        super(OffsetAdjustmentPlugin, self).__init__(source)
+        super(_OffsetAdjustmentPlugin, self).__init__(source)
 
 
 class _UIDAdjustmentPluginTemplate(AutoSubstitution):
     TemplateFile = "UIDAdjustmentPlugin.template"
 
 
-class DatasetCreationPlugin(FrameProcessorPlugin):
+class _DatasetCreationPlugin(_FrameProcessorPlugin):
 
     DATASET_TYPE = "uint64"
 
     def create_extra_config_entries(self, rank):
-        entries = super(DatasetCreationPlugin, self).create_extra_config_entries(rank)
+        entries = super(_DatasetCreationPlugin, self).create_extra_config_entries(rank)
         dataset_entry = {
-            FileWriterPlugin.NAME: {
+            _FileWriterPlugin.NAME: {
                 "dataset": {
                     self.DATASET_NAME: {
                         "chunks": OneLineEntry([1000]),
@@ -48,7 +48,7 @@ class _ParameterAdjustmentPluginTemplate(AutoSubstitution):
     TemplateFile = "ParameterAdjustmentPlugin.template"
 
 
-class ParameterAdjustmentPlugin(DatasetCreationPlugin):
+class _ParameterAdjustmentPlugin(_DatasetCreationPlugin):
 
     NAME = "param"
     CLASS_NAME = "ParameterAdjustmentPlugin"
@@ -56,7 +56,7 @@ class ParameterAdjustmentPlugin(DatasetCreationPlugin):
     PARAMETER_PLUGIN_INSTANTIATED = False
 
     def __init__(self, source=None):
-        super(ParameterAdjustmentPlugin, self).__init__(source)
+        super(_ParameterAdjustmentPlugin, self).__init__(source)
 
     def create_template(self, template_args):
         if not self.PARAMETER_PLUGIN_INSTANTIATED:
@@ -65,10 +65,10 @@ class ParameterAdjustmentPlugin(DatasetCreationPlugin):
                              if k in ["P", "R", "PORT", "TOTAL"])
             _ParameterAdjustmentPluginTemplate(**base_args)
             self.PARAMETER_PLUGIN_INSTANTIATED = True
-        super(ParameterAdjustmentPlugin, self).create_template(template_args)
+        super(_ParameterAdjustmentPlugin, self).create_template(template_args)
 
     def create_extra_config_entries(self, rank):
-        entries = super(ParameterAdjustmentPlugin, self).create_extra_config_entries(rank)
+        entries = super(_ParameterAdjustmentPlugin, self).create_extra_config_entries(rank)
         parameter_entry = {
             self.NAME: {
                 "parameter": {
@@ -83,20 +83,20 @@ class ParameterAdjustmentPlugin(DatasetCreationPlugin):
         return entries
 
 
-class UIDAdjustmentPlugin(ParameterAdjustmentPlugin):
+class _UIDAdjustmentPlugin(_ParameterAdjustmentPlugin):
 
     DATASET_NAME = "uid"
     TEMPLATE = _UIDAdjustmentPluginTemplate
 
     def __init__(self, source=None):
-        super(UIDAdjustmentPlugin, self).__init__(source)
+        super(_UIDAdjustmentPlugin, self).__init__(source)
 
 
 class _SumPluginTemplate(AutoSubstitution):
     TemplateFile = "SumPlugin.template"
 
 
-class SumPlugin(DatasetCreationPlugin):
+class _SumPlugin(_DatasetCreationPlugin):
 
     NAME = "sum"
     CLASS_NAME = "SumPlugin"
@@ -104,21 +104,21 @@ class SumPlugin(DatasetCreationPlugin):
     TEMPLATE = _SumPluginTemplate
 
     def __init__(self, source=None):
-        super(SumPlugin, self).__init__(source)
+        super(_SumPlugin, self).__init__(source)
 
     def create_template(self, template_args):
         template_args = dict((k, v) for k, v in template_args.items()
                              if k in ["P", "R", "PORT", "TOTAL"])
-        super(SumPlugin, self).create_template(template_args)
+        super(_SumPlugin, self).create_template(template_args)
 
 
-class KafkaPlugin(FrameProcessorPlugin):
+class _KafkaPlugin(_FrameProcessorPlugin):
 
     NAME = "kafka"
     CLASS_NAME = "KafkaProducerPlugin"
 
     def __init__(self, servers, source=None):
-        super(KafkaPlugin, self).__init__(source)
+        super(_KafkaPlugin, self).__init__(source)
 
         self.servers = servers
 
@@ -135,13 +135,13 @@ class KafkaPlugin(FrameProcessorPlugin):
 
         return entries
 
-    ArgInfo = FrameProcessorPlugin.ArgInfo + makeArgInfo(__init__,
-        source=Ident("Plugin to connect to", FrameProcessorPlugin),
+    ArgInfo = _FrameProcessorPlugin.ArgInfo + makeArgInfo(__init__,
+        source=Ident("Plugin to connect to", _FrameProcessorPlugin),
         servers=Simple("Servers to connect to (comma separated)", str)
     )
 
 
-class FileWriterPlugin(FrameProcessorPlugin):
+class _FileWriterPlugin(_FrameProcessorPlugin):
 
     NAME = "hdf"
     CLASS_NAME = "FileWriterPlugin"
@@ -149,7 +149,7 @@ class FileWriterPlugin(FrameProcessorPlugin):
     DATASET_NAME = "data"
 
     def __init__(self, source=None, indexes=False):
-        super(FileWriterPlugin, self).__init__(source)
+        super(_FileWriterPlugin, self).__init__(source)
 
         self.indexes = indexes
 
@@ -180,7 +180,7 @@ class _LiveViewPluginTemplate(AutoSubstitution):
     TemplateFile = "LiveViewPlugin.template"
 
 
-class LiveViewPlugin(FrameProcessorPlugin):
+class _LiveViewPlugin(_FrameProcessorPlugin):
 
     NAME = "view"
     CLASS_NAME = "LiveViewPlugin"
@@ -188,7 +188,7 @@ class LiveViewPlugin(FrameProcessorPlugin):
     BASE_PORT = 5005
 
     def __init__(self, source=None):
-        super(LiveViewPlugin, self).__init__(source)
+        super(_LiveViewPlugin, self).__init__(source)
 
         self.endpoint = None
 
@@ -197,7 +197,7 @@ class LiveViewPlugin(FrameProcessorPlugin):
         self.endpoint = "tcp://0.0.0.0:{}".format(self.BASE_PORT + rank * 10)
         source_entry = {
             self.NAME: {
-                "dataset_name": FileWriterPlugin.DATASET_NAME,
+                "dataset_name": _FileWriterPlugin.DATASET_NAME,
                 "live_view_socket_addr": self.endpoint
             }
         }
@@ -210,11 +210,11 @@ class _BloscPluginTemplate(AutoSubstitution):
     TemplateFile = "BloscPlugin.template"
 
 
-class BloscPlugin(FrameProcessorPlugin):
+class _BloscPlugin(_FrameProcessorPlugin):
 
     NAME = "blosc"
     CLASS_NAME = "BloscPlugin"
     TEMPLATE = _BloscPluginTemplate
 
     def __init__(self, source=None):
-        super(BloscPlugin, self).__init__(source)
+        super(_BloscPlugin, self).__init__(source)

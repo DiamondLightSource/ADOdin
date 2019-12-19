@@ -94,7 +94,7 @@ class _OdinData(Device):
         return number + 1
 
 
-class FrameProcessorPlugin(Device):
+class _FrameProcessorPlugin(Device):
 
     NAME = None
     CLASS_NAME = None
@@ -159,12 +159,12 @@ class FrameProcessorPlugin(Device):
         self.TEMPLATE_INSTANTIATED = True
 
 
-FrameProcessorPlugin.ArgInfo = makeArgInfo(FrameProcessorPlugin.__init__,
-    source=Ident("Plugin to connect to", FrameProcessorPlugin)
+_FrameProcessorPlugin.ArgInfo = makeArgInfo(_FrameProcessorPlugin.__init__,
+    source=Ident("Plugin to connect to", _FrameProcessorPlugin)
 )
 
 
-class PluginConfig(Device):
+class _PluginConfig(Device):
 
     def __init__(self, PLUGIN_1=None, PLUGIN_2=None, PLUGIN_3=None, PLUGIN_4=None, PLUGIN_5=None,
                  PLUGIN_6=None, PLUGIN_7=None, PLUGIN_8=None):
@@ -175,14 +175,14 @@ class PluginConfig(Device):
         self.modes = []
 
     ArgInfo = makeArgInfo(__init__,
-        PLUGIN_1=Ident("Plugin 1", FrameProcessorPlugin),
-        PLUGIN_2=Ident("Plugin 2", FrameProcessorPlugin),
-        PLUGIN_3=Ident("Plugin 3", FrameProcessorPlugin),
-        PLUGIN_4=Ident("Plugin 4", FrameProcessorPlugin),
-        PLUGIN_5=Ident("Plugin 5", FrameProcessorPlugin),
-        PLUGIN_6=Ident("Plugin 6", FrameProcessorPlugin),
-        PLUGIN_7=Ident("Plugin 7", FrameProcessorPlugin),
-        PLUGIN_8=Ident("Plugin 8", FrameProcessorPlugin)
+        PLUGIN_1=Ident("Plugin 1", _FrameProcessorPlugin),
+        PLUGIN_2=Ident("Plugin 2", _FrameProcessorPlugin),
+        PLUGIN_3=Ident("Plugin 3", _FrameProcessorPlugin),
+        PLUGIN_4=Ident("Plugin 4", _FrameProcessorPlugin),
+        PLUGIN_5=Ident("Plugin 5", _FrameProcessorPlugin),
+        PLUGIN_6=Ident("Plugin 6", _FrameProcessorPlugin),
+        PLUGIN_7=Ident("Plugin 7", _FrameProcessorPlugin),
+        PLUGIN_8=Ident("Plugin 8", _FrameProcessorPlugin)
     )
 
     def detector_setup(self, od_args):
@@ -225,7 +225,7 @@ class _OdinDataServer(Device):
         IP=Simple("IP address of server hosting OdinData processes", str),
         PROCESSES=Simple("Number of OdinData processes on this server", int),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
-        PLUGIN_CONFIG=Ident("Define a custom set of plugins", PluginConfig),
+        PLUGIN_CONFIG=Ident("Define a custom set of plugins", _PluginConfig),
         IO_THREADS=Simple("Number of FR Ipc Channel IO threads to use", int),
         TOTAL_NUMA_NODES=Simple("Total number of numa nodes available to distribute processes over"
                                 " - Optional for performance tuning", int)
