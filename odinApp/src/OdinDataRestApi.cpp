@@ -22,9 +22,6 @@
 #define DATASET_CHUNKS              "chunks"
 
 
-const std::string OdinDataRestAPI::FILE_WRITER_PLUGIN = PLUGIN_INDEX_FILE_WRITER;
-
-
 std::vector<std::vector<std::string> > parse2DArray (struct json_token *tokens, std::string const& name)
 {
   std::vector<std::vector<std::string> > arrayValues;
@@ -77,16 +74,6 @@ OdinDataRestAPI::OdinDataRestAPI(const std::string& hostname,
   sysStr_[SSFR]                 = sysStr_[SSAdapterRoot] + FRAME_RECEIVER_ADAPTER "/";
   sysStr_[SSFRConfig]           = sysStr_[SSFR]          + "config/";
   sysStr_[SSFRStatus]           = sysStr_[SSFR]          + "status/";
-}
-
-int OdinDataRestAPI::createFile(const std::string& name, const std::string& path) {
-  std::vector<JsonDict> fileConfig;
-  fileConfig.push_back(JsonDict(FILE_NAME, name.c_str()));
-  fileConfig.push_back(JsonDict(FILE_PATH, path.c_str()));
-  JsonDict fileDict = JsonDict(fileConfig);
-  JsonDict configDict = JsonDict(FILE, fileDict);
-
-  return put(sysStr(SSFPConfig), PLUGIN_INDEX_FILE_WRITER, configDict.str());
 }
 
 int OdinDataRestAPI::startWrite() {

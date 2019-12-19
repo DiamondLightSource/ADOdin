@@ -22,6 +22,7 @@ DB += ParameterAdjustmentPlugin.template
 DB += UIDAdjustmentPlugin.template
 DB += LiveViewPlugin.template
 DB += BloscPlugin.template
+DB += OdinProcServ.template
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add

@@ -6,7 +6,7 @@ from iocbuilder.modules.ADCore import ADCore, ADBaseTemplate, makeTemplateInstan
 from iocbuilder.modules.restClient import restClient
 from iocbuilder.modules.calc import Calc
 
-from util import debug_print, find_module_path, data_file_path, expand_template_file, \
+from util import debug_print, OdinPaths, data_file_path, expand_template_file, \
     create_batch_entry, create_config_entry
 
 
@@ -14,8 +14,7 @@ from util import debug_print, find_module_path, data_file_path, expand_template_
 # OdinData #
 # ~~~~~~~~ #
 
-ODIN_DATA_MACRO, ODIN_DATA_ROOT = find_module_path("odin-data")
-debug_print("OdinData: {} = {}".format(ODIN_DATA_MACRO, ODIN_DATA_ROOT), 1)
+debug_print("OdinData: {}".format(OdinPaths.ODIN_DATA), 1)
 
 
 class _OdinDataTemplate(AutoSubstitution):
@@ -48,7 +47,7 @@ class _OdinData(Device):
 
     def create_config_file(self, prefix, template, extra_macros=None):
         macros = dict(
-            IP=self.server.IP, OD_ROOT=ODIN_DATA_ROOT,
+            IP=self.server.IP, ODIN_DATA=OdinPaths.ODIN_DATA,
             RD_PORT=self.READY, RL_PORT=self.RELEASE, META_PORT=self.META
         )
         if extra_macros is not None:
@@ -95,12 +94,12 @@ class _OdinData(Device):
         return number + 1
 
 
-class FrameProcessorPlugin(Device):
+class _FrameProcessorPlugin(Device):
 
     NAME = None
     CLASS_NAME = None
     LIBRARY_NAME = None
-    ROOT_PATH = ODIN_DATA_ROOT
+    LIBRARY_PATH = OdinPaths.ODIN_DATA
 
     TEMPLATE = None
     TEMPLATE_INSTANTIATED = False
@@ -126,7 +125,7 @@ class FrameProcessorPlugin(Device):
                 "load": {
                     "index": self.NAME,
                     "name": self.CLASS_NAME,
-                    "library": "{}/prefix/lib/lib{}.so".format(self.ROOT_PATH, library_name)
+                    "library": "{}/prefix/lib/lib{}.so".format(self.LIBRARY_PATH, library_name)
                 }
             }
         }
@@ -160,12 +159,12 @@ class FrameProcessorPlugin(Device):
         self.TEMPLATE_INSTANTIATED = True
 
 
-FrameProcessorPlugin.ArgInfo = makeArgInfo(FrameProcessorPlugin.__init__,
-    source=Ident("Plugin to connect to", FrameProcessorPlugin)
+_FrameProcessorPlugin.ArgInfo = makeArgInfo(_FrameProcessorPlugin.__init__,
+    source=Ident("Plugin to connect to", _FrameProcessorPlugin)
 )
 
 
-class PluginConfig(Device):
+class _PluginConfig(Device):
 
     def __init__(self, PLUGIN_1=None, PLUGIN_2=None, PLUGIN_3=None, PLUGIN_4=None, PLUGIN_5=None,
                  PLUGIN_6=None, PLUGIN_7=None, PLUGIN_8=None):
@@ -176,14 +175,14 @@ class PluginConfig(Device):
         self.modes = []
 
     ArgInfo = makeArgInfo(__init__,
-        PLUGIN_1=Ident("Plugin 1", FrameProcessorPlugin),
-        PLUGIN_2=Ident("Plugin 2", FrameProcessorPlugin),
-        PLUGIN_3=Ident("Plugin 3", FrameProcessorPlugin),
-        PLUGIN_4=Ident("Plugin 4", FrameProcessorPlugin),
-        PLUGIN_5=Ident("Plugin 5", FrameProcessorPlugin),
-        PLUGIN_6=Ident("Plugin 6", FrameProcessorPlugin),
-        PLUGIN_7=Ident("Plugin 7", FrameProcessorPlugin),
-        PLUGIN_8=Ident("Plugin 8", FrameProcessorPlugin)
+        PLUGIN_1=Ident("Plugin 1", _FrameProcessorPlugin),
+        PLUGIN_2=Ident("Plugin 2", _FrameProcessorPlugin),
+        PLUGIN_3=Ident("Plugin 3", _FrameProcessorPlugin),
+        PLUGIN_4=Ident("Plugin 4", _FrameProcessorPlugin),
+        PLUGIN_5=Ident("Plugin 5", _FrameProcessorPlugin),
+        PLUGIN_6=Ident("Plugin 6", _FrameProcessorPlugin),
+        PLUGIN_7=Ident("Plugin 7", _FrameProcessorPlugin),
+        PLUGIN_8=Ident("Plugin 8", _FrameProcessorPlugin)
     )
 
     def detector_setup(self, od_args):
@@ -226,7 +225,7 @@ class _OdinDataServer(Device):
         IP=Simple("IP address of server hosting OdinData processes", str),
         PROCESSES=Simple("Number of OdinData processes on this server", int),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
-        PLUGIN_CONFIG=Ident("Define a custom set of plugins", PluginConfig),
+        PLUGIN_CONFIG=Ident("Define a custom set of plugins", _PluginConfig),
         IO_THREADS=Simple("Number of FR Ipc Channel IO threads to use", int),
         TOTAL_NUMA_NODES=Simple("Total number of numa nodes available to distribute processes over"
                                 " - Optional for performance tuning", int)
@@ -262,7 +261,7 @@ class _OdinDataServer(Device):
             output_file = "stFrameReceiver{}.sh".format(process.RANK + 1)
             macros = dict(
                 NUMBER=process.RANK + 1,
-                OD_ROOT=ODIN_DATA_ROOT,
+                ODIN_DATA=OdinPaths.ODIN_DATA,
                 BUFFER_IDX=idx + 1, SHARED_MEMORY=self.SHARED_MEM_SIZE,
                 CTRL_PORT=fr_port_number, IO_THREADS=self.IO_THREADS,
                 READY_PORT=ready_port_number, RELEASE_PORT=release_port_number,
@@ -273,7 +272,8 @@ class _OdinDataServer(Device):
             output_file = "stFrameProcessor{}.sh".format(process.RANK + 1)
             macros = dict(
                 NUMBER=process.RANK + 1,
-                OD_ROOT=ODIN_DATA_ROOT,
+                ODIN_DATA=OdinPaths.ODIN_DATA,
+                HDF5_FILTERS=OdinPaths.HDF5_FILTERS,
                 CTRL_PORT=fp_port_number,
                 READY_PORT=ready_port_number, RELEASE_PORT=release_port_number,
                 LOG_CONFIG=data_file_path("log4cxx.xml"),
@@ -477,7 +477,7 @@ class _OdinDataDriver(AsynPort):
         self.DETECTOR_PLUGIN = DETECTOR.lower()
         self.ODIN_DATA_PROCESSES = []
 
-        self.total_processes = 0
+        self.odin_data_processes = 0
         # Calculate the total number of FR/FP pairs
         for server_idx, server in enumerate(self.control_server.odin_data_servers):
             if server.instantiated:
@@ -485,7 +485,7 @@ class _OdinDataDriver(AsynPort):
             else:
                 server.instantiated = True
             for odin_data in server.processes:
-                self.total_processes += 1
+                self.odin_data_processes += 1
 
         plugin_config = None
         for server_idx, server in enumerate(self.control_server.odin_data_servers):
@@ -499,7 +499,7 @@ class _OdinDataDriver(AsynPort):
                 od_args["PORT"] = PORT
                 od_args["ADDR"] = odin_data.index - 1
                 od_args["R"] = odin_data.R
-                od_args["TOTAL"] = self.total_processes
+                od_args["TOTAL"] = self.odin_data_processes
                 _OdinDataTemplate(**od_args)
 
                 odin_data.create_config_files(process_idx + 1)
@@ -511,7 +511,7 @@ class _OdinDataDriver(AsynPort):
                     if not plugin.TEMPLATE_INSTANTIATED:
                         plugin_args = dict((key, args[key]) for key in ["P", "R"])
                         plugin_args["PORT"] = PORT
-                        plugin_args["TOTAL"] = self.total_processes
+                        plugin_args["TOTAL"] = self.odin_data_processes
                         plugin_args["GUI"] = \
                             self.gui_macro(PORT, "OdinData." + plugin.NAME.capitalize())
                         plugin.create_template(plugin_args)
@@ -544,19 +544,12 @@ class _OdinDataDriver(AsynPort):
     DbdFileList = ["OdinDetectorSupport"]
 
     def Initialise(self):
-        # Configure up to 8 OdinData processes
-        print "# odinDataProcessConfig(const char * ipAddress, int readyPort, " \
-              "int releasePort, int metaPort)"
-        for process in self.ODIN_DATA_PROCESSES:
-            print "odinDataProcessConfig(\"%(IP)s\", %(READY)d, " \
-                  "%(RELEASE)d, %(META)d)" % process.__dict__
-
         print "# odinDataDriverConfig(const char * portName, const char * serverPort, " \
-              "int odinServerPort, " \
+              "int odinServerPort, int odinDataCount, " \
               "const char * datasetName, const char * detectorName, " \
               "int maxBuffers, size_t maxMemory)"
         print "odinDataDriverConfig(\"%(PORT)s\", \"%(CONTROL_SERVER_IP)s\", " \
-              "%(CONTROL_SERVER_PORT)d, " \
+              "%(CONTROL_SERVER_PORT)d, %(odin_data_processes)d, " \
               "\"%(DATASET)s\", \"%(DETECTOR_PLUGIN)s\", " \
               "%(BUFFERS)d, %(MEMORY)d)" % self.__dict__
 
@@ -605,3 +598,45 @@ class OdinBatchFile(Device):
         BEAMLINE=Simple("Beamline domain name, e.g. BL14I, BL21B", str),
         ODIN_CONTROL_SERVER=Ident("Odin control server", _OdinControlServer)
     )
+
+
+class OdinStartAllScript(Device):
+
+    """Create a start-up script for this IOC"""
+
+    def __init__(self, driver):
+        self.create_start_all_script(driver.DETECTOR.upper(), driver.odin_data_processes)
+
+    ArgInfo = makeArgInfo(__init__, driver=Ident("OdinDataDriver", _OdinDataDriver))
+
+    def create_start_all_script(self, detector_name, odin_data_processes):
+        scripts = self.create_scripts(odin_data_processes)
+        macros = dict(DETECTOR=getattr(OdinPaths, "{}_DETECTOR".format(detector_name)),
+                      ODIN_DATA=OdinPaths.ODIN_DATA,
+                      SCRIPTS="\n".join([script for script in scripts]),
+                      COMMANDS="\n".join([self.create_command_entry(script.split("=")[0])
+                                          for script in scripts]))
+        expand_template_file("odin_startup", macros, "startAll.sh", executable=True)
+
+    def create_scripts(self, odin_data_processes):
+        scripts = []
+        for process_number in range(1, odin_data_processes + 1):
+            scripts.append(self.create_script_entry(
+                "FR{}".format(process_number),
+                "stFrameReceiver{}.sh".format(process_number),
+            ))
+            scripts.append(self.create_script_entry(
+                "FP{}".format(process_number),
+                "stFrameProcessor{}.sh".format(process_number),
+            ))
+        return scripts
+
+    def create_script_entry(self, name, script_name, prefix=""):
+        return "{name}=\"{prefix}${{SCRIPT_DIR}}/{script_name}\"".format(
+            name=name, prefix=prefix, script_name=script_name
+        )
+
+    def create_command_entry(self, script):
+        return "gnome-terminal --tab --title=\"{script}\" -- bash -c \"${{{script}}}\"".format(
+            script=script
+        )

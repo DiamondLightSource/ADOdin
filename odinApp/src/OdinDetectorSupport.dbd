@@ -1,3 +1,2 @@
 registrar("odinDetectorRegister")
 registrar("odinDataDriverRegister")
-registrar("odinDataProcessRegister")

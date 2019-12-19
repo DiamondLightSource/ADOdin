@@ -4,36 +4,33 @@ from iocbuilder import Device, AutoSubstitution
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.ADCore import makeTemplateInstance
 
-from util import find_module_path, expand_template_file, create_batch_entry, debug_print
+from util import OdinPaths, expand_template_file, create_batch_entry, debug_print
 from odin import _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, OdinBatchFile, \
-    PluginConfig
-from plugins import OffsetAdjustmentPlugin, UIDAdjustmentPlugin, FileWriterPlugin, KafkaPlugin, \
-    DatasetCreationPlugin
+    _PluginConfig, OdinStartAllScript
+from plugins import _OffsetAdjustmentPlugin, _UIDAdjustmentPlugin, _FileWriterPlugin, _KafkaPlugin, \
+    _DatasetCreationPlugin
 
 
-EIGER, EIGER_ROOT = find_module_path("eiger-detector")
-debug_print("Eiger: {} = {}".format(EIGER, EIGER_ROOT), 1)
-
-ODIN_DATA_MACRO, ODIN_DATA_ROOT = find_module_path("odin-data")
+debug_print("Eiger: = {}".format(OdinPaths.EIGER_DETECTOR), 1)
 
 
-class EigerProcessPlugin(DatasetCreationPlugin):
+class _EigerProcessPlugin(_DatasetCreationPlugin):
 
     NAME = "eiger"
     CLASS_NAME = "EigerProcessPlugin"
-    ROOT_PATH = EIGER_ROOT
+    LIBRARY_PATH = OdinPaths.EIGER_DETECTOR
     DATASET_NAME = "compressed_size"
     DATASET_TYPE = "uint32"
 
     def __init__(self, size_dataset):
-        super(EigerProcessPlugin, self).__init__(None)
+        super(_EigerProcessPlugin, self).__init__(None)
 
         self.size_dataset = size_dataset
 
     def create_extra_config_entries(self, rank):
         entries = []
         if self.size_dataset:
-            entries = super(EigerProcessPlugin, self).create_extra_config_entries(rank)
+            entries = super(_EigerProcessPlugin, self).create_extra_config_entries(rank)
 
         return entries
 
@@ -58,10 +55,9 @@ class EigerFan(Device):
             numa_call = "numactl --membind={node} --cpunodebind={node} ".format(node=self.NUMA_NODE)
         else:
             numa_call = ""
-        macros = dict(EIGER_DETECTOR_PATH=EIGER_ROOT, IP=self.DETECTOR_IP,
+        macros = dict(EIGER_DETECTOR=OdinPaths.EIGER_DETECTOR, IP=self.DETECTOR_IP,
                       PROCESSES=self.PROCESSES, SOCKETS=self.SOCKETS, BLOCK_SIZE=self.BLOCK_SIZE,
-                      THREADS=self.THREADS, LOG_CONFIG=os.path.join(EIGER_ROOT, "log4cxx.xml"),
-                      NUMA=numa_call)
+                      THREADS=self.THREADS, NUMA=numa_call)
 
         expand_template_file("eiger_fan_startup", macros, "stEigerFan.sh",
                              executable=True)
@@ -123,9 +119,9 @@ class EigerMetaListener(Device):
             numa_call = "numactl --membind={node} --cpunodebind={node} ".format(node=self.NUMA_NODE)
         else:
             numa_call = ""
-        macros = dict(EIGER_DETECTOR_PATH=EIGER_ROOT,
+        macros = dict(EIGER_DETECTOR=OdinPaths.EIGER_DETECTOR,
                       IP_LIST=",".join(self.ip_list),
-                      OD_ROOT=ODIN_DATA_ROOT,
+                      ODIN_DATA=OdinPaths.ODIN_DATA,
                       SENSOR=self.sensor,
                       NUMA=numa_call)
 
@@ -160,7 +156,7 @@ class _EigerOdinData(_OdinData):
         self.sensor = SENSOR
 
     def create_config_files(self, index):
-        macros = dict(DETECTOR_ROOT=EIGER_ROOT,
+        macros = dict(DETECTOR=OdinPaths.EIGER_DETECTOR,
                       IP=self.source,
                       RX_PORT_SUFFIX=self.RANK,
                       SENSOR=self.sensor)
@@ -176,27 +172,27 @@ class _EigerOdinData(_OdinData):
             "fr", self.CONFIG_TEMPLATES["FrameReceiver"], extra_macros=macros)
 
 
-class EigerPluginConfig(PluginConfig):
+class EigerPluginConfig(_PluginConfig):
     # Device attributes
     AutoInstantiate = True
 
     def __init__(self, MODE="Simple", KAFKA_SERVERS=None):
         if MODE == "Simple":
-            eiger = EigerProcessPlugin(size_dataset=False)
-            hdf = FileWriterPlugin(source=eiger, indexes=True)
+            eiger = _EigerProcessPlugin(size_dataset=False)
+            hdf = _FileWriterPlugin(source=eiger, indexes=True)
             plugins = [eiger, hdf]
         elif MODE == "Malcolm":
-            eiger = EigerProcessPlugin(size_dataset=True)
-            offset = OffsetAdjustmentPlugin(source=eiger)
-            uid = UIDAdjustmentPlugin(source=offset)
-            hdf = FileWriterPlugin(source=uid, indexes=True)
+            eiger = _EigerProcessPlugin(size_dataset=True)
+            offset = _OffsetAdjustmentPlugin(source=eiger)
+            uid = _UIDAdjustmentPlugin(source=offset)
+            hdf = _FileWriterPlugin(source=uid, indexes=True)
             plugins = [eiger, offset, uid, hdf]
         elif MODE == "Kafka":
             if KAFKA_SERVERS is None:
                 raise ValueError("Must provide Kafka servers with Kafka mode")
-            eiger = EigerProcessPlugin(size_dataset=False)
-            kafka = KafkaPlugin(KAFKA_SERVERS, source=eiger)
-            hdf = FileWriterPlugin(source=eiger, indexes=True)
+            eiger = _EigerProcessPlugin(size_dataset=False)
+            kafka = _KafkaPlugin(KAFKA_SERVERS, source=eiger)
+            hdf = _FileWriterPlugin(source=eiger, indexes=True)
             plugins = [eiger, kafka, hdf]
         else:
             raise ValueError("Invalid mode for EigerPluginConfig")
@@ -235,7 +231,7 @@ class EigerOdinDataServer(_OdinDataServer):
         PROCESSES=Simple("Number of OdinData processes on this server", int),
         SOURCE=Ident("EigerFan instance", EigerFan),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
-        PLUGIN_CONFIG=Ident("Define a custom set of plugins", PluginConfig),
+        PLUGIN_CONFIG=Ident("Define a custom set of plugins", _PluginConfig),
         IO_THREADS=Simple("Number of FR Ipc Channel IO threads to use", int),
         TOTAL_NUMA_NODES=Simple("Total number of numa nodes available to distribute processes over"
                                 " - Optional for performance tuning", int)
@@ -249,7 +245,7 @@ class EigerOdinControlServer(_OdinControlServer):
 
     """Store configuration for an EigerOdinControlServer"""
 
-    ODIN_SERVER = os.path.join(EIGER_ROOT, "prefix/bin/eiger_odin")
+    ODIN_SERVER = os.path.join(OdinPaths.EIGER_DETECTOR, "prefix/bin/eiger_odin")
 
     def __init__(self, IP, EIGER_FAN, META_LISTENER, PORT=8888,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
@@ -284,7 +280,7 @@ class EigerOdinControlServer(_OdinControlServer):
         ]
 
     def create_odin_server_static_path(self):
-        return EIGER_ROOT + "/prefix/html/static"
+        return OdinPaths.EIGER_DETECTOR + "/prefix/html/static"
 
     def _create_eiger_fan_config_entry(self):
         return "[adapter.eiger_fan]\n" \
@@ -314,12 +310,12 @@ class EigerOdinDataDriver(_OdinDataDriver):
         # Update the attributes of self from the commandline args
         self.__dict__.update(locals())
 
-        if self.total_processes not in self.OD_SCREENS:
+        if self.odin_data_processes not in self.OD_SCREENS:
             raise ValueError("Total number of OdinData processes must be {}".format(
                 self.OD_TEMPLATES))
 
         template_args = dict((key, args[key]) for key in ["P", "R", "PORT"])
-        template_args["OD_COUNT"] = self.total_processes
+        template_args["OD_COUNT"] = self.odin_data_processes
         template_args.update(self.create_gui_macros(args["PORT"]))
         makeTemplateInstance(_EigerDetectorTemplate, locals(), template_args)
 
@@ -338,3 +334,14 @@ class EigerOdinBatchFile(OdinBatchFile):
                                                                    process_number)
 
         return process_number
+
+
+class EigerOdinStartAllScript(OdinStartAllScript):
+
+    def create_scripts(self, odin_data_processes):
+        scripts = [self.create_script_entry("EigerFan", "stEigerFan.sh")]
+        scripts += super(EigerOdinStartAllScript, self).create_scripts(odin_data_processes)
+        scripts.append(self.create_script_entry(
+            "MetaListener", "stEigerMetaListener.sh", "${PYTHON_EXPORTS}"
+        ))
+        return scripts

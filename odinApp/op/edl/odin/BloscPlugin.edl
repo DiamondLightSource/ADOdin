@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 991
-y 282
+y 566
 w 386
 h 131
 font "arial-medium-r-12.0"
@@ -107,9 +107,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 105
+x 235
 y 45
-w 80
+w 130
 h 20
 controlPv "$(P)$(R)BLOSC:Threads_RBV"
 fgColor index 16
@@ -146,9 +146,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 105
+x 235
 y 70
-w 80
+w 130
 h 20
 controlPv "$(P)$(R)BLOSC:Level_RBV"
 fgColor index 16
@@ -185,9 +185,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 105
+x 235
 y 20
-w 150
+w 130
 h 20
 controlPv "$(P)$(R)BLOSC:Compressor_RBV"
 fgColor index 16
@@ -204,9 +204,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 105
+x 235
 y 95
-w 150
+w 130
 h 20
 controlPv "$(P)$(R)BLOSC:Shuffle_RBV"
 fgColor index 16

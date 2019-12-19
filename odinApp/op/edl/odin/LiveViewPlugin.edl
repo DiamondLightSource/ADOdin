@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 989
-y 304
+x 991
+y 315
 w 386
 h 85
 font "arial-medium-r-12.0"
@@ -86,9 +86,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 110
+x 100
 y 20
-w 80
+w 130
 h 20
 controlPv "$(P):CAM:LiveViewEndpoint"
 fgColor index 25
@@ -104,9 +104,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 215
+x 235
 y 20
-w 80
+w 130
 h 20
 controlPv "$(P):CAM:LiveViewEndpoint_RBV"
 fgColor index 16
@@ -142,9 +142,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 110
+x 100
 y 45
-w 80
+w 130
 h 20
 controlPv "$(P)$(R)LVW:FrameRate"
 fgColor index 25
@@ -160,9 +160,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 215
+x 235
 y 45
-w 80
+w 130
 h 20
 controlPv "$(P)$(R)LVW:FrameRate_RBV"
 fgColor index 16

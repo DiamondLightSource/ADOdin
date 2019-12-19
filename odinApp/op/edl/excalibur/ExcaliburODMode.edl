@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 553
-y 427
+x 991
+y 533
 w 387
 h 56
 font "arial-medium-r-12.0"
@@ -69,7 +69,7 @@ minor 1
 release 1
 x 10
 y 20
-w 150
+w 80
 h 20
 font "arial-bold-r-12.0"
 fontAlign "right"
@@ -87,7 +87,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 175
+x 100
 y 20
 w 130
 h 20

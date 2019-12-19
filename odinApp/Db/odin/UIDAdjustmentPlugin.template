@@ -22,5 +22,5 @@ record(longin, "$(P)$(R)PARAM:UID:Adjustment_RBV")
 }
 
 substitute "PLUGIN_NAME=UID"
-substitute "PLUGIN_URI=uid"
+substitute "PLUGIN_URI=param"
 include "FrameProcessorPlugin.template"

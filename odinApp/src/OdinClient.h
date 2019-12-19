@@ -9,7 +9,6 @@
 #define ODIN_CLIENT_H
 
 #include "ADDriver.h"
-#include "OdinDataConfig.h"
 #include "OdinRestApi.h"
 
 // Odin Server
@@ -42,7 +41,6 @@ protected:
                           sys_t subsystem);
 
   int fetchParams();
-  int pushParams();
   RestParam *getParamByIndex(int index);
 
   int mFirstParam;

@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 796
-y 365
+x 40
+y 471
 w 81
-h 406
+h 381
 font "arial-medium-r-18.0"
 ctlFont "arial-medium-r-18.0"
 btnFont "arial-medium-r-18.0"
@@ -32,7 +32,7 @@ major 10
 minor 0
 release 0
 x 5
-y 30
+y 5
 w 70
 h 20
 controlPv "$(P)$(R)$(FEM):MOLY_TEMPERATURE"
@@ -44,26 +44,6 @@ font "arial-bold-r-12.0"
 fontAlign "center"
 endObjectProperties
 
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 5
-y 5
-w 70
-h 20
-font "arial-bold-r-12.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "FEM $(FEM)"
-}
-endObjectProperties
-
 # (Textupdate)
 object TextupdateClass
 beginObjectProperties
@@ -71,7 +51,7 @@ major 10
 minor 0
 release 0
 x 5
-y 55
+y 30
 w 70
 h 20
 controlPv "$(P)$(R)$(FEM):LOCAL_TEMP"
@@ -90,7 +70,7 @@ major 10
 minor 0
 release 0
 x 5
-y 80
+y 55
 w 70
 h 20
 controlPv "$(P)$(R)$(FEM):REMOTE_DIODE_TEMP"
@@ -109,7 +89,7 @@ major 10
 minor 0
 release 0
 x 5
-y 105
+y 80
 w 70
 h 20
 controlPv "$(P)$(R)$(FEM):MOLY_HUMIDITY"
@@ -128,7 +108,7 @@ major 4
 minor 0
 release 0
 x 5
-y 130
+y 105
 w 20
 h 20
 controlPv "$(P)$(R)$(FEM):P1V5_AVDD_1_POK"
@@ -146,7 +126,7 @@ major 4
 minor 0
 release 0
 x 5
-y 155
+y 130
 w 20
 h 20
 controlPv "$(P)$(R)$(FEM):P1V5_AVDD_2_POK"
@@ -164,7 +144,7 @@ major 4
 minor 0
 release 0
 x 5
-y 180
+y 155
 w 20
 h 20
 controlPv "$(P)$(R)$(FEM):P1V5_AVDD_3_POK"
@@ -182,7 +162,7 @@ major 4
 minor 0
 release 0
 x 5
-y 205
+y 180
 w 20
 h 20
 controlPv "$(P)$(R)$(FEM):P1V5_AVDD_4_POK"
@@ -200,7 +180,7 @@ major 4
 minor 0
 release 0
 x 5
-y 230
+y 205
 w 20
 h 20
 controlPv "$(P)$(R)$(FEM):P1V5_VDD_1_POK"
@@ -218,7 +198,7 @@ major 4
 minor 0
 release 0
 x 5
-y 255
+y 230
 w 20
 h 20
 controlPv "$(P)$(R)$(FEM):P2V5_DVDD_1_POK"
@@ -236,7 +216,7 @@ major 4
 minor 0
 release 0
 x 5
-y 305
+y 280
 w 20
 h 20
 controlPv "$(P)$(R)$(FEM):EFuseIdMatches"
@@ -254,7 +234,7 @@ major 4
 minor 0
 release 0
 x 5
-y 355
+y 330
 w 20
 h 20
 controlPv "$(P)$(R)$(FEM):FemInitOk"
@@ -272,7 +252,7 @@ major 10
 minor 0
 release 0
 x 5
-y 380
+y 355
 w 70
 h 20
 controlPv "$(P)$(R)$(FEM):FemCommsFaults"

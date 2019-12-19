@@ -10,16 +10,8 @@
 #include <sstream>
 #include <epicsString.h>
 
-// These parameters are optionally configured by ioc init commands
-//std::string                  OdinDetector::mOdinDataLibraryPath = "";
-//std::vector<ODConfiguration> OdinDetector::mODConfig                ;
-//size_t                       OdinDetector::mODCount             =  0;
-//std::string                  OdinDetector::mDatasetName         = "";
-//std::string                  OdinClient::mProcessPluginName   = "";
-//std::string                  OdinDetector::mDetectorLibraryPath = "";
-
-static const std::string DRIVER_VERSION("0-1");
-static const char *driverName = "OdinDetector";
+static const std::string DRIVER_VERSION("0-11-0");
+static const char *driverName = "OdinClient";
 
 
 OdinClient::OdinClient(const char * portName,
@@ -82,10 +74,9 @@ asynStatus OdinClient::dynamicParam(asynUser *pasynUser,
   // _ODE_...  => Enum parameter
   // _ODS_...  => String parameter
   // _ODD_...  => Double parameter
-  // _ODIn_... => Array size n of Integer parameter
-  // _ODEn_... => Array size n of Enum parameter
-  // _ODSn_... => Array size n of String parameter
-  // _ODDn_... => Array size n of Double parameter
+  // _ODB_...  => Boolean parameter
+  // _ODC_...  => Command parameter (Write-only integer parameter)
+  // _ODxn_... => Array size n of type x
   if (findParam(drvInfo, &index) && strlen(drvInfo) > 5 && strncmp(drvInfo, "_OD", 2) == 0 &&
       (drvInfo[4] == '_' or drvInfo[5] == '_')) {
     // Decide if the parameter is an array
@@ -165,6 +156,15 @@ asynStatus OdinClient::dynamicParam(asynUser *pasynUser,
           generatedParam->fetch();
           // Store the parameter
           break;
+        case 'C':
+          // Create the parameter
+          asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+                    "%s:%s: Command parameter: %s\n",
+                    driverName, functionName, drvInfo);
+          generatedParam = createRESTParam(drvInfo, REST_P_INT, subsystem, httpRequest, arraySize);
+          generatedParam->setCommand();
+          // Store the parameter
+          break;
         default:
           asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
                     "%s:%s: Expected _ODx_... where x is one of I, D or S. Got '%c'\n",
@@ -179,11 +179,6 @@ asynStatus OdinClient::dynamicParam(asynUser *pasynUser,
 int OdinClient::fetchParams()
 {
   return mParams->fetchAll();
-}
-
-int OdinClient::pushParams()
-{
-  return 0; //mParams->pushAll();
 }
 
 RestParam *OdinClient::getParamByIndex(int index)

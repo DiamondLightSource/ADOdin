@@ -205,5 +205,5 @@ record(stringin, "$(P)$(R)META:ProcessorAddresses_RBV")
 record(bo, "$(P)$(R)META:Stop")
 {
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,1)_ODI1_meta_listener/config/stop")
+    field(OUT,  "@asyn($(PORT),0,1)_ODC1_meta_listener/config/stop")
 }

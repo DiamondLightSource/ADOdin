@@ -9,8 +9,6 @@
 #include "restApi.h"
 #include "restParam.h"
 
-#include "OdinDataConfig.h"
-
 // REST Strings
 #define API_VERSION              "0.1"
 

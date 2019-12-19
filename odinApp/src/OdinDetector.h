@@ -2,7 +2,6 @@
 #define ODIN_DETECTOR_H
 
 #include "OdinClient.h"
-#include "OdinDataConfig.h"
 #include "OdinDetectorRestApi.h"
 #include "OdinLiveViewListener.h"
 

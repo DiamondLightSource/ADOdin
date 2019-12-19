@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <components arch="linux-x86_64">
-	<ADOdin.EigerFan DETECTOR_IP="127.0.0.1" IP="127.0.0.1" NUMA_NODE="0" PROCESSES="4" SENSOR="16M" SOCKETS="4" name="EigerFan"/>
-	<ADOdin.EigerOdinDataServer IO_THREADS="2" IP="127.0.0.1" PROCESSES="4" SHARED_MEM_SIZE="160000000" SOURCE="EigerFan" TOTAL_NUMA_NODES="2" name="ODServer1"/>
-	<ADOdin.EigerMetaListener IP="127.0.0.1" NUMA_NODE="1" ODIN_DATA_SERVER_1="ODServer1" name="EigerMeta"/>
+	<ADOdin.EigerFan DETECTOR_IP="127.0.0.1" IP="127.0.0.1" PROCESSES="4" SENSOR="16M" SOCKETS="4" name="EigerFan"/>
+	<ADOdin.EigerOdinDataServer IO_THREADS="2" IP="127.0.0.1" PROCESSES="4" SHARED_MEM_SIZE="160000000" SOURCE="EigerFan" name="ODServer1"/>
+	<ADOdin.EigerMetaListener IP="127.0.0.1" ODIN_DATA_SERVER_1="ODServer1" name="EigerMeta"/>
 	<ADOdin.EigerOdinControlServer EIGER_FAN="EigerFan" IP="127.0.0.1" META_LISTENER="EigerMeta" ODIN_DATA_SERVER_1="ODServer1" name="ControlServer"/>
 	<ADOdin.EigerOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" P="EIGER" PORT="ODN.OD" R=":OD:" TIMEOUT="1"/>
 	<ADOdin.OdinLogConfig BEAMLINE="iXX" DETECTOR="Eiger16M" name="LogConfig"/>
@@ -18,5 +18,5 @@
 	<EPICS_BASE.dbpf name="BlockSize" pv="EIGER:OD:BlockSize" value="1000"/>
 	<EPICS_BASE.dbpf name="BlocksPerFile" pv="EIGER:OD:BlocksPerFile" value="1"/>
 	<EPICS_BASE.dbpf name="CloseFileTimeout" pv="EIGER:OD:CloseFileTimeout" value="10000"/>
-	<EPICS_BASE.dbpf name="EarliestHDF5Version" pv="EIGER:OD:EarliestHDF5Version" value="Yes"/>
+	<ADOdin.EigerOdinStartAllScript driver="ODN.OD" name="StartAllScript"/>
 </components>

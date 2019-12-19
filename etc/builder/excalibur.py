@@ -4,16 +4,15 @@ from iocbuilder import AutoSubstitution
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
 
-from util import find_module_path, expand_template_file, debug_print, \
+from util import OdinPaths, expand_template_file, debug_print, \
                  create_config_entry, OneLineEntry
 from odin import _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, \
-                 PluginConfig, FrameProcessorPlugin
-from plugins import LiveViewPlugin, OffsetAdjustmentPlugin, UIDAdjustmentPlugin, \
-                    SumPlugin, BloscPlugin, FileWriterPlugin
+                 _PluginConfig, _FrameProcessorPlugin
+from plugins import _LiveViewPlugin, _OffsetAdjustmentPlugin, _UIDAdjustmentPlugin, \
+                    _SumPlugin, _BloscPlugin, _FileWriterPlugin
 
 
-EXCALIBUR, EXCALIBUR_ROOT = find_module_path("excalibur-detector")
-debug_print("Excalibur: {} = {}".format(EXCALIBUR, EXCALIBUR_ROOT), 1)
+debug_print("Excalibur: {}".format(OdinPaths.EXCALIBUR_DETECTOR), 1)
 
 EXCALIBUR_DIMENSIONS = {
     # Sensor: (Width, Height)
@@ -22,14 +21,14 @@ EXCALIBUR_DIMENSIONS = {
 }
 
 
-class ExcaliburProcessPlugin(FrameProcessorPlugin):
+class _ExcaliburProcessPlugin(_FrameProcessorPlugin):
 
     NAME = "excalibur"
     CLASS_NAME = "ExcaliburProcessPlugin"
-    ROOT_PATH = EXCALIBUR_ROOT
+    LIBRARY_PATH = OdinPaths.EXCALIBUR_DETECTOR
 
     def __init__(self, sensor):
-        super(ExcaliburProcessPlugin, self).__init__(None)
+        super(_ExcaliburProcessPlugin, self).__init__(None)
 
         self.sensor = sensor
 
@@ -45,7 +44,7 @@ class ExcaliburProcessPlugin(FrameProcessorPlugin):
 
         return entries
 
-    ArgInfo = FrameProcessorPlugin.ArgInfo + makeArgInfo(__init__,
+    ArgInfo = _FrameProcessorPlugin.ArgInfo + makeArgInfo(__init__,
         sensor=Choice("Sensor type", ["1M", "3M"])
     )
 
@@ -70,7 +69,7 @@ class _ExcaliburOdinData(_OdinData):
         self.base_udp_port = BASE_UDP_PORT
 
     def create_config_files(self, index):
-        macros = dict(DETECTOR_ROOT=EXCALIBUR_ROOT,
+        macros = dict(DETECTOR=OdinPaths.EXCALIBUR_DETECTOR,
                       RX_PORT_1=self.base_udp_port,
                       RX_PORT_2=self.base_udp_port + 1,
                       RX_PORT_3=self.base_udp_port + 2,  # 3 - 6 will be ignored in the 1M template
@@ -95,19 +94,19 @@ class _ExcaliburModeTemplate(AutoSubstitution):
     TemplateFile = "ExcaliburODMode.template"
 
 
-class _ExcaliburPluginConfig(PluginConfig):
+class _ExcaliburPluginConfig(_PluginConfig):
     # Device attributes
     AutoInstantiate = True
 
     def __init__(self, SENSOR):
-        excalibur = ExcaliburProcessPlugin(sensor=SENSOR)
-        offset = OffsetAdjustmentPlugin(source=excalibur)
-        uid = UIDAdjustmentPlugin(source=offset)
-        sum = SumPlugin(source=uid)
+        excalibur = _ExcaliburProcessPlugin(sensor=SENSOR)
+        offset = _OffsetAdjustmentPlugin(source=excalibur)
+        uid = _UIDAdjustmentPlugin(source=offset)
+        sum = _SumPlugin(source=uid)
         gap = _ExcaliburGapFillPlugin(source=sum, SENSOR=SENSOR, CHIP_GAP=3, MODULE_GAP=124)
-        view = LiveViewPlugin(source=gap)
-        blosc = BloscPlugin(source=gap)
-        hdf = FileWriterPlugin(source=blosc)
+        view = _LiveViewPlugin(source=gap)
+        blosc = _BloscPlugin(source=gap)
+        hdf = _FileWriterPlugin(source=blosc)
         super(_ExcaliburPluginConfig, self).__init__(PLUGIN_1=excalibur,
                                                      PLUGIN_2=offset,
                                                      PLUGIN_3=uid,
@@ -172,7 +171,7 @@ class ExcaliburOdinDataServer(_OdinDataServer):
         FEM_DEST_MAC=Simple("MAC address of node data link (destination for FEM to send to)", str),
         FEM_DEST_IP=Simple("IP address of node data link (destination for FEM to send to)", str),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
-        PLUGIN_CONFIG=Ident("Define a custom set of plugins", PluginConfig),
+        PLUGIN_CONFIG=Ident("Define a custom set of plugins", _PluginConfig),
         FEM_DEST_MAC_2=Simple("MAC address of second node data link", str),
         FEM_DEST_IP_2=Simple("IP address of second node data link", str),
         DIRECT_FEM_CONNECTION=Simple("True if data links go direct from FEM to server. "
@@ -191,7 +190,7 @@ class ExcaliburOdinControlServer(_OdinControlServer):
 
     """Store configuration for an ExcaliburOdinControlServer"""
 
-    ODIN_SERVER = os.path.join(EXCALIBUR_ROOT, "prefix/bin/excalibur_odin")
+    ODIN_SERVER = os.path.join(OdinPaths.EXCALIBUR_DETECTOR, "prefix/bin/excalibur_odin")
     CONFIG_TEMPLATES = {
         "1M": {
             "chip_mask": "0xFF, 0xFF",
@@ -239,7 +238,7 @@ application_name="excalibur_odin",detector="Excalibur{}" \
         ]
 
     def create_odin_server_static_path(self):
-        return EXCALIBUR_ROOT + "/prefix/html/static"
+        return OdinPaths.EXCALIBUR_DETECTOR + "/prefix/html/static"
 
     def _create_excalibur_config_entry(self):
         return "[adapter.excalibur]\n" \
@@ -348,7 +347,7 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
         # Update the attributes of self from the commandline args
         self.__dict__.update(locals())
 
-        if self.total_processes not in self.FP_TEMPLATES.keys():
+        if self.odin_data_processes not in self.FP_TEMPLATES.keys():
             raise ValueError("Total number of OdinData processes must be {}".format(
                 self.FP_TEMPLATES.keys()))
         else:
@@ -564,7 +563,7 @@ class ExcaliburDetector(_OdinDetector):
         return node_config
 
 
-class _ExcaliburGapFillPlugin(FrameProcessorPlugin):
+class _ExcaliburGapFillPlugin(_FrameProcessorPlugin):
 
     NAME = "gap"
     CLASS_NAME = "GapFillPlugin"
@@ -604,9 +603,9 @@ class _ExcaliburGapFillPlugin(FrameProcessorPlugin):
             EXCALIBUR_DIMENSIONS[self.sensor][0] + sum(x_gaps)
         ]
         dataset_config = {
-            FileWriterPlugin.NAME: {
+            _FileWriterPlugin.NAME: {
                 "dataset": {
-                    FileWriterPlugin.DATASET_NAME: {
+                    _FileWriterPlugin.DATASET_NAME: {
                         "dims": OneLineEntry(dimensions),
                         "chunks": OneLineEntry([1] + dimensions),
                     }

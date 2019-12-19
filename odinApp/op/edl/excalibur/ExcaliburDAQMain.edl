@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 89
-y 116
+y 190
 w 386
 h 785
 font "arial-medium-r-12.0"
@@ -122,27 +122,6 @@ major 4
 minor 1
 release 0
 x 0
-y 330
-w 395
-h 160
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 11
-displaySource "file"
-file "BloscPlugin"
-sizeOfs 5
-numDsps 0
-noScroll
-endObjectProperties
-
-# (Embedded Window)
-object activePipClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
 y 260
 w 395
 h 60
@@ -155,5 +134,27 @@ file "ExcaliburODMode"
 sizeOfs 5
 numDsps 0
 noScroll
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 75
+y 285
+w 231
+h 13
+font "arial-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+visPv "DUMMY"
+visMin "0"
+value {
+  "Excalibur OD Compression Mode Screen"
+}
+autoSize
 endObjectProperties
 

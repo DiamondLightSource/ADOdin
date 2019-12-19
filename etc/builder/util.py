@@ -1,10 +1,10 @@
 import os
+import re
 import json
 import uuid
 from string import Template
 
 from iocbuilder.iocinit import IocDataStream
-from dls_dependency_tree import dependency_tree
 
 
 def debug_print(message, level):
@@ -15,21 +15,53 @@ def debug_print(message, level):
 ADODIN_ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../.."))
 ADODIN_DATA = os.path.join(ADODIN_ROOT, "data")
 
-TREE = None
-
-
-def find_module_path(module):
-    global TREE
-    if TREE is None:
-        TREE = dependency_tree()
-        TREE.process_module(ADODIN_ROOT)
-    for macro, path in TREE.macros.items():
-        if "/{}".format(module) in path:
-            return macro, path
-
 
 def data_file_path(file_name):
     return os.path.join(ADODIN_DATA, file_name)
+
+
+class OdinPaths(object):
+
+    @classmethod
+    def configure_paths(cls, release_path):
+        paths = cls.parse_release_file(release_path)
+
+        cls.HDF5_FILTERS = os.path.join(paths["HDF5_FILTERS"], "prefix/hdf5_1.10/h5plugin")
+        cls.ODIN_DATA = paths["ODIN_DATA"]
+
+        for detector_path in [path for module, path in paths.items()
+                              if module.endswith("DETECTOR")]:
+            detector_paths = cls.parse_release_file(
+                os.path.join(detector_path, "configure/RELEASE")
+            )
+            if detector_paths["ODIN_DATA"] != cls.ODIN_DATA:
+                raise EnvironmentError("Mismatched odin-data dependency in {}".format(detector_path))
+
+        cls.EIGER_DETECTOR = paths["EIGER_DETECTOR"]
+        cls.EXCALIBUR_DETECTOR = paths["EXCALIBUR_DETECTOR"]
+
+    @classmethod
+    def parse_release_file(cls, release_path):
+        macros = {}
+        with open(release_path) as release_file:
+            for line in release_file.readlines():
+                if "=" in line:
+                    module, path = line.split("=", 1)
+                    macros[module.strip()] = path.strip()
+
+        macro_re = re.compile(r"\$\(([^\)]+)\)")
+        for macro in macros:
+            for find in macro_re.findall(macros[macro]):
+                if find in macros.keys():
+                    macros[macro] = macros[macro].replace("$({})".format(find), macros[find])
+
+        return macros
+
+
+# Read Odin paths on import
+OdinPaths.configure_paths(
+    os.path.join(ADODIN_ROOT, "configure/RELEASE.local")
+)
 
 
 def expand_template_file(template, macros, output_file, executable=False):
