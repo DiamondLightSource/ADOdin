@@ -5,12 +5,12 @@ WORK = /dls_sw/work/R3.14.12.7/support
 TOOLS = /dls_sw/prod/tools/RHEL7-x86_64
 WORK_TOOLS = /dls_sw/work/tools/RHEL7-x86_64
 
-ASYN = $(SUPPORT)/asyn/4-34
-ADCORE = $(SUPPORT)/ADCore/3-4dls3
-CALC = $(SUPPORT)/calc/3-7
-RESTCLIENT = $(SUPPORT)/restClient/0-4
+ASYN = $(SUPPORT)/asyn/4-37
+ADCORE = $(SUPPORT)/ADCore/3-8dls1
+CALC = $(SUPPORT)/calc/3-7-3
+RESTCLIENT = $(SUPPORT)/restClient/0-4-1
 
 HDF5_FILTERS = $(TOOLS)/hdf5filters/0-6-2
-ODIN_DATA = $(TOOLS)/odin-data/1-3-1dls1
-EXCALIBUR_DETECTOR = $(TOOLS)/excalibur-detector/0-10-0
-EIGER_DETECTOR = $(TOOLS)/eiger-detector/1-5-5
+ODIN_DATA = $(TOOLS)/odin-data/1-4-0dls1
+EXCALIBUR_DETECTOR = $(TOOLS)/excalibur-detector/0-10-2
+EIGER_DETECTOR = $(TOOLS)/eiger-detector/1-6-0
