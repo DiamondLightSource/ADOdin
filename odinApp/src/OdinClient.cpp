@@ -10,8 +10,8 @@
 #include <sstream>
 #include <epicsString.h>
 
-static const std::string DRIVER_VERSION("0-1");
-static const char *driverName = "OdinDetector";
+static const std::string DRIVER_VERSION("0-11-0");
+static const char *driverName = "OdinClient";
 
 
 OdinClient::OdinClient(const char * portName,
