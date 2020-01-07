@@ -15,21 +15,27 @@
 
 include "EigerBase.template"
 
-record(bo,"$(P)$(R)CountingMode") {
+record(mbbo,"$(P)$(R)CountingMode") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCI_counting_mode")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_detector/api/$(API)/config/counting_mode")
     field(VAL,  "1")
-    field(ZNAM, "Normal")
-    field(ONAM, "Retrigger")
+    field(VAL,  "0")
+    field(ZRST, "Normal")
+    field(ZRVL, "0")
+    field(ONST, "Retrigger")
+    field(ONVL, "1")
 }
 
-record(bi,"$(P)$(R)CountingMode_RBV") {
+record(mbbi,"$(P)$(R)CountingMode_RBV") {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCI_counting_mode")
-    field(ZNAM, "Normal")
-    field(ONAM, "Retrigger")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_detector/api/$(API)/config/counting_mode")   
     field(SCAN, "I/O Intr")
+    field(VAL,  "0")
+    field(ZRST, "Normal")
+    field(ZRVL, "0")
+    field(ONST, "Retrigger")
+    field(ONVL, "1")
 }
 
 # Enable Auto Summation
