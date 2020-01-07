@@ -245,6 +245,8 @@ class EigerOdinDataServer(_OdinDataServer):
 class _EigerV16DetectorTemplate(AutoSubstitution):
     TemplateFile = "Eiger1.template"
 
+class _EigerV18DetectorTemplate(AutoSubstitution):
+    TemplateFile = "Eiger2.template"
 
 class EigerDetector(_OdinDetector):
 
@@ -253,7 +255,7 @@ class EigerDetector(_OdinDetector):
     DETECTOR = "eiger"
     DETECTOR_OPTIONS = {  # (AutoSubstitution Template, API)
         "V1": (_EigerV16DetectorTemplate, "1.6.0"),
-        "V2": (_EigerV16DetectorTemplate, "1.8.0")
+        "V2": (_EigerV18DetectorTemplate, "1.8.0")
     }
 
     # This tells xmlbuilder to use PORT instead of name as the row ID
