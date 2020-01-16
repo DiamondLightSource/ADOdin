@@ -290,16 +290,16 @@ record(bo,"$(P)$(R)StreamEnable") {
     field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_stream/api/$(API)/config/mode")
     field(DESC, "Enable usage of Stream API")
     field(VAL,  "0")
-    field(ZNAM, "Yes")
-    field(ONAM, "No")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
 }
 
 record(bi,"$(P)$(R)StreamEnable_RBV") {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_stream/api/$(API)/config/mode")
     field(DESC, "Enable usage of Stream API")
-    field(ZNAM, "Yes")
-    field(ONAM, "No")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
     field(SCAN, "I/O Intr")
 }
 
