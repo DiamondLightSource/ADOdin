@@ -369,8 +369,12 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
     ArgInfo = _OdinDataDriver.ArgInfo.filtered(without=["DETECTOR", "TOTAL"])
 
 
-class _ExcaliburFemHousekeepingTemplate(AutoSubstitution):
-    TemplateFile = "ExcaliburFemHousekeeping.template"
+class _Excalibur2FemHousekeepingTemplate(AutoSubstitution):
+    TemplateFile = "Excalibur2FemHousekeeping.template"
+
+
+class _Excalibur6FemHousekeepingTemplate(AutoSubstitution):
+    TemplateFile = "Excalibur6FemHousekeeping.template"
 
 
 class _ExcaliburFemStatusTemplate(AutoSubstitution):
@@ -404,9 +408,9 @@ class ExcaliburDetector(_OdinDetector):
     """Create an Excalibur detector"""
 
     DETECTOR = "excalibur"
-    SENSOR_OPTIONS = {  # (AutoSubstitution Template, Number of FEMs)
-        "1M": (_Excalibur2FemStatusTemplate, 2),
-        "3M": (_Excalibur6FemStatusTemplate, 6)
+    SENSOR_OPTIONS = {  # (Status Template, Housekeeping Template, Number of FEMs)
+        "1M": (_Excalibur2FemStatusTemplate, _Excalibur2FemHousekeepingTemplate, 2),
+        "3M": (_Excalibur6FemStatusTemplate, _Excalibur6FemHousekeepingTemplate, 6)
     }
 
     # This tells xmlbuilder to use PORT instead of name as the row ID
@@ -429,7 +433,7 @@ class ExcaliburDetector(_OdinDetector):
         self.control_server = ODIN_CONTROL_SERVER
 
         # Add the FEM housekeeping template
-        fem_hk_template = _ExcaliburFemHousekeepingTemplate
+        fem_hk_template = self.SENSOR_OPTIONS[SENSOR][1]
         fem_hk_args = {
             "P": args["P"],
             "R": args["R"],
@@ -448,7 +452,7 @@ class ExcaliburDetector(_OdinDetector):
             "PORT": PORT,
             "NAME": gui_name,
             "TIMEOUT": args["TIMEOUT"],
-            "TOTAL": self.SENSOR_OPTIONS[SENSOR][1]
+            "TOTAL": self.SENSOR_OPTIONS[SENSOR][2]
         }
         status_template(**status_args)
 
@@ -456,7 +460,7 @@ class ExcaliburDetector(_OdinDetector):
 
     def create_udp_file(self):
         fem_dests = []
-        for offset in range(self.SENSOR_OPTIONS[self.SENSOR][1]):  # 2 for 1M or 6 for 3M
+        for offset in range(self.SENSOR_OPTIONS[self.SENSOR][2]):  # 2 for 1M or 6 for 3M
             fem_dests.append(
                 #    "fems": [
                 "        {{\n"
