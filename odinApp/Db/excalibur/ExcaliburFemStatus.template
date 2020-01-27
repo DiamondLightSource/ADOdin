@@ -13,7 +13,7 @@
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)$(ADDRESS):MOLY_TEMPERATURE")
 {
-    field(SCAN, "I/O Intr")
+    field(SCAN, "1 second")
     field(DTYP, "asynFloat64")
     field(VAL,  "0")
     field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/fems/moly_temp")
@@ -29,7 +29,7 @@ record(ai, "$(P)$(R)$(ADDRESS):MOLY_TEMPERATURE")
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)$(ADDRESS):LOCAL_TEMP")
 {
-    field(SCAN, "I/O Intr")
+    field(SCAN, "1 second")
     field(DTYP, "asynFloat64")
     field(VAL,  "0")
     field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/fems/fem_local_temp")
@@ -45,7 +45,7 @@ record(ai, "$(P)$(R)$(ADDRESS):LOCAL_TEMP")
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)$(ADDRESS):REMOTE_DIODE_TEMP")
 {
-    field(SCAN, "I/O Intr")
+    field(SCAN, "1 second")
     field(DTYP, "asynFloat64")
     field(VAL,  "0")
     field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/fems/fem_remote_temp")
@@ -61,7 +61,7 @@ record(ai, "$(P)$(R)$(ADDRESS):REMOTE_DIODE_TEMP")
 #% archiver 10 Monitor
 record(ai, "$(P)$(R)$(ADDRESS):MOLY_HUMIDITY")
 {
-    field(SCAN, "I/O Intr")
+    field(SCAN, "1 second")
     field(DTYP, "asynFloat64")
     field(VAL,  "0")
     field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/fems/moly_humidity")
