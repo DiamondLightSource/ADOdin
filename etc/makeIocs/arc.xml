@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<components arch="linux-x86_64">
+	<ADOdin.ARCOdinDataServer FEM_DEST_MAC="AA:AA:AA:AA:AA:AA" IP="127.0.0.1" PROCESSES="2" SHARED_MEM_SIZE="10485760" name="DataServer1"/>
+	<ADOdin.ARCOdinControlServer IP="127.0.0.1" ODIN_DATA_SERVER_1="DataServer1" name="ControlServer"/>
+	<ADOdin.ARCOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" P="ARC" PORT="ODN.OD" R=":CAM:" TIMEOUT="1"/>
+	<ADOdin.ARCDetector ADDR="0" ODIN_CONTROL_SERVER="ControlServer" ODIN_DATA_DRIVER="ODN.OD" P="ARC" PORT="ODN.CAM" R=":CAM:" TIMEOUT="1"/>
+	<ADOdin.OdinLogConfig BEAMLINE="iXX" DETECTOR="Arc" name="LogConfig"/>
+	<!--6 -> 1 Second-->
+	<EPICS_BASE.dbpf name="Polling" pv="ARC:OD:ReadStatus.SCAN" value="6"/>
+	<EPICS_BASE.dbpf name="ImageWidth" pv="ARC:OD:ImageWidth" value="768"/>
+	<EPICS_BASE.dbpf name="ImageHeight" pv="ARC:OD:ImageHeight" value="6144"/>
+	<EPICS_BASE.dbpf name="ChunkDepth" pv="ARC:OD:NumFramesChunks" value="1"/>
+	<EPICS_BASE.dbpf name="ChunkWidth" pv="ARC:OD:NumColChunks" value="768"/>
+	<EPICS_BASE.dbpf name="ChunkHeight" pv="ARC:OD:NumRowChunks" value="6144"/>
+	<EPICS_BASE.dbpf name="DataType" pv="ARC:OD:DataType" value="UInt16"/>
+	<EPICS_BASE.dbpf name="UDPConfig" pv="ARC:CAM:UdpConfigFile" value="$(INSTALL)/arcApp/data/udp_arc.json"/>
+	<ADOdin.OdinStartAllScript driver="ODN.OD" name="StartAllScript"/>
+</components>
