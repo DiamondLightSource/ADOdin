@@ -1,0 +1,266 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 385
+y 400
+w 81
+h 406
+font "arial-medium-r-18.0"
+ctlFont "arial-medium-r-18.0"
+btnFont "arial-medium-r-18.0"
+fgColor index 14
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 0
+ctlBgColor1 index 0
+ctlBgColor2 index 14
+topShadowColor index 0
+botShadowColor index 14
+title "FEM Status"
+showGrid
+snapToGrid
+gridSize 5
+endScreenProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 5
+y 55
+w 70
+h 20
+controlPv "$(P)$(FEM):RemoteTemp_RBV"
+displayMode "decimal"
+precision 1
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 5
+w 70
+h 20
+font "arial-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FEM $(FEM)"
+}
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 5
+y 80
+w 70
+h 20
+controlPv "$(P)$(FEM):PSUTemp_RBV"
+displayMode "decimal"
+precision 1
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 5
+y 105
+w 70
+h 20
+controlPv "$(P)$(FEM):FanTemp_RBV"
+displayMode "decimal"
+precision 1
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 5
+y 30
+w 70
+h 20
+controlPv "$(P)$(FEM):FEMTemp_RBV"
+displayMode "decimal"
+precision 1
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 5
+y 130
+w 20
+h 20
+controlPv "$(P)$(FEM):FEMPowerEnabled_RBV"
+lineColor index 14
+onColor index 15
+offColor index 20
+lineWidth 2
+numBits 1
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 5
+y 155
+w 20
+h 20
+controlPv "$(P)$(FEM):OutputAlert_RBV"
+lineColor index 14
+onColor index 20
+offColor index 15
+lineWidth 2
+numBits 1
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 5
+y 180
+w 20
+h 20
+controlPv "$(P)$(FEM):PSUTempAlert_RBV"
+lineColor index 14
+onColor index 20
+offColor index 15
+lineWidth 2
+numBits 1
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 5
+y 205
+w 20
+h 20
+controlPv "$(P)$(FEM):FanAlert_RBV"
+lineColor index 14
+onColor index 20
+offColor index 15
+lineWidth 2
+numBits 1
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 5
+y 255
+w 70
+h 20
+controlPv "$(P)$(FEM):SensorHumidity_RBV"
+displayMode "decimal"
+precision 1
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 5
+y 280
+w 70
+h 20
+controlPv "$(P)$(FEM):SensorTemp_0_RBV"
+displayMode "decimal"
+precision 1
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 5
+y 305
+w 70
+h 20
+controlPv "$(P)$(FEM):SensorTemp_1_RBV"
+displayMode "decimal"
+precision 1
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+

@@ -32,6 +32,7 @@ from plugins import (
 debug_print("Arc: {}".format(OdinPaths.ARC_DETECTOR), 1)
 
 ARC_DIMENSIONS = [768, 6144]
+ARC_FEM_COUNT = 2
 
 
 class _ArcProcessPlugin(_FrameProcessorPlugin):
@@ -85,10 +86,6 @@ class _ArcOdinData(_OdinData):
         )
 
 
-class _ArcModeTemplate(AutoSubstitution):
-    TemplateFile = "ArcODMode.template"
-
-
 class _ArcPluginConfig(_PluginConfig):
     # Device attributes
     AutoInstantiate = True
@@ -137,7 +134,9 @@ class _ArcPluginConfig(_PluginConfig):
 
     def detector_setup(self, od_args):
         # Make an instance "f our template
-        makeTemplateInstance(_ArcModeTemplate, locals(), od_args)
+        # TODO what is this for?
+        # makeTemplateInstance(_ArcModeTemplate, locals(), od_args)
+        pass
 
 
 class ArcOdinDataServer(_OdinDataServer):
@@ -151,7 +150,6 @@ class ArcOdinDataServer(_OdinDataServer):
         self,
         IP,
         PROCESSES,
-        SENSOR,
         FEM_DEST_MAC,
         FEM_DEST_IP="10.0.2.2",
         SHARED_MEM_SIZE=1048576000,
@@ -160,11 +158,10 @@ class ArcOdinDataServer(_OdinDataServer):
         FEM_DEST_IP_2=None,
         DIRECT_FEM_CONNECTION=False,
     ):
-        self.sensor = SENSOR
         if PLUGIN_CONFIG is None:
             if ArcOdinDataServer.PLUGIN_CONFIG is None:
                 # Create the standard Arc plugin config
-                ArcOdinDataServer.PLUGIN_CONFIG = _ArcPluginConfig(SENSOR)
+                ArcOdinDataServer.PLUGIN_CONFIG = _ArcPluginConfig()
 
         self.__super.__init__(
             IP, PROCESSES, SHARED_MEM_SIZE, ArcOdinDataServer.PLUGIN_CONFIG
@@ -196,7 +193,7 @@ class ArcOdinDataServer(_OdinDataServer):
 
     def create_odin_data_process(self, server, ready, release, meta, plugin_config):
         process = _ArcOdinData(
-            server, ready, release, meta, plugin_config, self.sensor, self.BASE_UDP_PORT
+            server, ready, release, meta, plugin_config, self.BASE_UDP_PORT
         )
         self.BASE_UDP_PORT += 6
         return process
@@ -207,33 +204,22 @@ class ArcOdinControlServer(_OdinControlServer):
     """Store configuration for an ArcOdinControlServer"""
 
     ODIN_SERVER = os.path.join(OdinPaths.ARC_DETECTOR, "prefix/bin/arc_odin")
-    CONFIG_TEMPLATES = {
-        "chip_mask": "0xFF, 0xFF",
-        "fem_addresses": ["192.168.0.101:6969", "192.168.0.102:6969"],
-    }
+    CONFIG_TEMPLATES = {"fem_addresses": ["192.168.0.101:6969", "192.168.0.102:6969"]}
 
     def __init__(
         self,
         IP,
-        SENSOR,
         PORT=8888,
         FEMS_REVERSED=False,
         POWER_CARD_IDX=1,
         ODIN_DATA_SERVER_1=None,
         ODIN_DATA_SERVER_2=None,
-        ODIN_DATA_SERVER_3=None,
-        ODIN_DATA_SERVER_4=None,
     ):
         self.__dict__.update(locals())
         self.ADAPTERS.append("arc")
 
         super(ArcOdinControlServer, self).__init__(
-            IP,
-            PORT,
-            ODIN_DATA_SERVER_1,
-            ODIN_DATA_SERVER_2,
-            ODIN_DATA_SERVER_3,
-            ODIN_DATA_SERVER_4,
+            IP, PORT, ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2
         )
 
     # __init__ arguments
@@ -247,16 +233,12 @@ class ArcOdinControlServer(_OdinControlServer):
         POWER_CARD_IDX=Simple("Index of the power card", int),
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
     )
 
     def get_extra_startup_macro(self):
         return '--staticlogfields beamline=${{BEAMLINE}},\
-application_name="arc_odin",detector="Arc{}" \
---logserver="graylog2.diamond.ac.uk:12210" --access_logging=ERROR'.format(
-            self.SENSOR
-        )
+application_name="arc_odin",detector="Arc" \
+--logserver="graylog2.diamond.ac.uk:12210" --access_logging=ERROR'
 
     def create_odin_server_config_entries(self):
         return [self._create_arc_config_entry(), self._create_odin_data_config_entry()]
@@ -270,10 +252,7 @@ application_name="arc_odin",detector="Arc{}" \
             "module = arc.adapter.ArcAdapter\n"
             "detector_fems = {}\n"
             "powercard_fem_idx = {}\n"
-            "chip_enable_mask = {}\n"
-            "update_interval = 0.5".format(
-                self.fem_address_list, self.POWER_CARD_IDX, self.chip_mask
-            )
+            "update_interval = 0.5".format(self.fem_address_list, self.POWER_CARD_IDX)
         )
 
     def _create_odin_data_config_entry(self):
@@ -335,23 +314,8 @@ def add_arc_fp_template(cls):
 
 
 @add_arc_fp_template
-class _Arc1NodeFPTemplate(AutoSubstitution):
-    TemplateFile = "Arc1NodeOD.template"
-
-
-@add_arc_fp_template
 class _Arc2NodeFPTemplate(AutoSubstitution):
     TemplateFile = "Arc2NodeOD.template"
-
-
-@add_arc_fp_template
-class _Arc4NodeFPTemplate(AutoSubstitution):
-    TemplateFile = "Arc4NodeOD.template"
-
-
-@add_arc_fp_template
-class _Arc8NodeFPTemplate(AutoSubstitution):
-    TemplateFile = "Arc8NodeOD.template"
 
 
 class ArcOdinDataDriver(_OdinDataDriver):
@@ -360,10 +324,7 @@ class ArcOdinDataDriver(_OdinDataDriver):
 
     FP_TEMPLATES = {
         # Number of OdinData nodes: Template
-        1: _Arc1NodeFPTemplate,
-        2: _Arc2NodeFPTemplate,
-        4: _Arc4NodeFPTemplate,
-        8: _Arc8NodeFPTemplate,
+        ARC_FEM_COUNT: _Arc2NodeFPTemplate
     }
 
     def __init__(self, **args):
@@ -380,26 +341,18 @@ class ArcOdinDataDriver(_OdinDataDriver):
                 )
             )
         else:
-            sensor = self.ODIN_DATA_PROCESSES[0].sensor
             template_args = dict(
                 P=args["P"],
                 R=":OD:",
                 DET=detector_arg,
                 PORT=args["PORT"],
                 TIMEOUT=args["TIMEOUT"],
-                OD_DET_CONFIG_GUI=self.gui_macro(args["PORT"], "OdinData.Arc"),
-                ACQ_GUI=self.gui_macro(args["PORT"], "Acquisition"),
-                **self.create_gui_macros(args["PORT"])
             )
             _ArcXNodeFPTemplate = self.FP_TEMPLATES[len(self.ODIN_DATA_PROCESSES)]
             _ArcXNodeFPTemplate(**template_args)
 
     # __init__ arguments
-    ArgInfo = _OdinDataDriver.ArgInfo.filtered(without=["DETECTOR", "TOTAL"])
-
-
-class _ArcFemHousekeepingTemplate(AutoSubstitution):
-    TemplateFile = "ArcFemHousekeeping.template"
+    ArgInfo = _OdinDataDriver.ArgInfo.filtered(without=["DETECTOR"])
 
 
 class _ArcFemStatusTemplate(AutoSubstitution):
@@ -425,18 +378,13 @@ class _Arc2FemStatusTemplate(AutoSubstitution):
     TemplateFile = "Arc2FemStatus.template"
 
 
-@add_arc_fem_status
-class _Arc6FemStatusTemplate(AutoSubstitution):
-    TemplateFile = "Arc6FemStatus.template"
-
-
 class ArcDetector(_OdinDetector):
 
     """Create an Arc detector"""
 
     DETECTOR = "arc"
     SENSOR_OPTIONS = (  # (AutoSubstitution Template, Number of FEMs)
-        Arc2FemStatusTemplate,
+        _Arc2FemStatusTemplate,
         2,
     )
 
@@ -449,14 +397,7 @@ class ArcDetector(_OdinDetector):
     # as it # defines the RANK on all the OdinData instances and we need to sort by
     #  RANK for the UDP config
     def __init__(
-        self,
-        PORT,
-        ODIN_CONTROL_SERVER,
-        ODIN_DATA_DRIVER,
-        SENSOR,
-        BUFFERS=0,
-        MEMORY=0,
-        **args
+        self, PORT, ODIN_CONTROL_SERVER, ODIN_DATA_DRIVER, BUFFERS=0, MEMORY=0, **args
     ):
         # Init the superclass (OdinDetector)
         self.__super.__init__(
@@ -470,14 +411,14 @@ class ArcDetector(_OdinDetector):
         self.control_server = ODIN_CONTROL_SERVER
 
         # Add the FEM housekeeping template
-        fem_hk_template = _ArcFemHousekeepingTemplate
-        fem_hk_args = {
-            "P": args["P"],
-            "R": args["R"],
-            "PORT": PORT,
-            "TIMEOUT": args["TIMEOUT"],
-        }
-        fem_hk_template(**fem_hk_args)
+        # fem_hk_template = _ArcFemHousekeepingTemplate
+        # fem_hk_args = {
+        #     "P": args["P"],
+        #     "R": args["R"],
+        #     "PORT": PORT,
+        #     "TIMEOUT": args["TIMEOUT"],
+        # }
+        # fem_hk_template(**fem_hk_args)
 
         # Instantiate template corresponding to SENSOR, passing through some of own args
         status_template = self.SENSOR_OPTIONS[0]
@@ -636,9 +577,8 @@ class _ArcGapFillPlugin(_FrameProcessorPlugin):
     NAME = "gap"
     CLASS_NAME = "GapFillPlugin"
 
-    def __init__(self, source=None, SENSOR="3M", CHIP_GAP=3, MODULE_GAP=124):
+    def __init__(self, source=None, CHIP_GAP=3, MODULE_GAP=124):
         super(_ArcGapFillPlugin, self).__init__(source)
-        self.sensor = SENSOR
         self.chip_gap = CHIP_GAP
         self.module_gap = MODULE_GAP
 

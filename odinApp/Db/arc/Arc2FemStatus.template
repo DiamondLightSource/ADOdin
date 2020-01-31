@@ -1,0 +1,105 @@
+# femHousekeeping.template
+# Defines the housekeeping parameters available from all FEMs.
+
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, PORT, Asyn Port name
+# % macro, TIMEOUT, Timeout
+# % macro, NAME, Name specifying builder GUI generation
+
+# This associates an edm screen with the template
+# % gui, $(NAME), edm, Arc2FemStatus.edl, P=$(P),R=$(R)
+
+################################################################################
+#
+# Include 2 FEM status templates
+#
+################################################################################
+
+substitute "ADDRESS=0"
+include "ArcFemStatus.template"
+substitute "ADDRESS=1"
+include "ArcFemStatus.template"
+
+################################################################################
+#
+# Number of FEMs is 2
+#
+################################################################################
+record(longin, "$(P)$(R)NumberFEMs_RBV")
+{
+    field(VAL,  "2")
+}
+
+################################################################################
+#
+# Records for resetting the FEMs
+#
+################################################################################
+
+# Write a 1 to this record to reset the fems
+#% archiver 10 Monitor
+record(bo, "$(P)$(R)HK:DOFEMRESET")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_command/initialise")
+    field(ZNAM, "Idle")
+    field(ONAM, "Resetting")
+}
+
+# Process this record to reset the FEMs
+record(seq, "$(P)$(R)HK:FEMRESET")
+{
+  field(SELM, "All")
+  # State to busy
+  field(DLY1, "0")
+  field(DOL1, "1")
+  field(LNK1, "$(P)$(R)HK:FEMRESETSTATE PP")
+  # Turn off the LV power
+#  field(DLY2, "0")
+#  field(DOL2, "0")
+#  field(LNK2, "$(P):CONFIG:ACQUIRE:LvControl PP")
+  # Wait 5 seconds and then send the FEM reset
+  field(DLY3, "5")
+  field(DOL3, "1")
+  field(LNK3, "$(P)$(R)HK:DOFEMRESET PP")
+  # Wait 15 seconds for completion
+  field(DLY4, "15")
+  field(DOL4, "0")
+  field(LNK4, "$(P)$(R)HK:FEMRESETSTATE PP")
+}
+
+# The reset state indication
+record(bo, "$(P)$(R)HK:FEMRESETSTATE")
+{
+  field(VAL, "0")
+  field(ZNAM, "Idle")
+  field(ONAM, "Resetting")
+}
+
+################################################################################
+#
+# distributeHkLimits.template
+# This template distributes the housekeeping limits for items that are present
+# on every FEM.  The item on FEM 1 is regarded as the master.
+#
+# Parameters:
+#   P       EPICS prefix name
+#   S       Item name
+#
+################################################################################
+record(dfanout, "$(P)$(R)HK:LOCAL_TEMP:LOW")
+{
+    field(DOL,  "$(P)$(R)0:LOCAL_TEMP.LOW CP")
+    field(OMSL, "closed_loop")
+    field(OUTA, "$(P)$(R)1:LOCAL_TEMP.LOW PP")
+}
+
+record(dfanout, "$(P)$(R)HK:LOCAL_TEMP:HIGH")
+{
+    field(DOL,  "$(P)$(R)0:LOCAL_TEMP.HIGH CP")
+    field(OMSL, "closed_loop")
+    field(OUTA, "$(P)$(R)1:LOCAL_TEMP.HIGH PP")
+}
+
