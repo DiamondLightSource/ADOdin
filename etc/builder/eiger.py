@@ -72,7 +72,7 @@ class EigerFan(Device):
         DETECTOR_IP=Simple("IP address of Eiger detector", str),
         PROCESSES=Simple("Number of processes to fan out to", int),
         SOCKETS=Simple("Number of sockets to open to Eiger detector stream", int),
-        SENSOR=Choice("Sensor type", ["4M", "16M"]),
+        SENSOR=Choice("Sensor type", ["4M", "9M", "16M"]),
         THREADS=Simple("Number of ZMQ threads to use", int),
         BLOCK_SIZE=Simple("Number of blocks per file", int),
         NUMA_NODE=Simple("Numa node to run process on - Optional for performance tuning", int)

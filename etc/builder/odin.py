@@ -303,7 +303,7 @@ class OdinLogConfig(Device):
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
         BEAMLINE=Simple("Beamline name, e.g. b21, i02-2", str),
-        DETECTOR=Choice("Detector type", ["Excalibur1M", "Excalibur3M", "Eiger4M", "Eiger16M"])
+        DETECTOR=Choice("Detector type", ["Excalibur1M", "Excalibur3M", "Eiger4M", "Eiger9M" "Eiger16M"])
     )
 
 
