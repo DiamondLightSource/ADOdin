@@ -59,7 +59,6 @@ OdinDataRestAPI::OdinDataRestAPI(const std::string& hostname,
                                  size_t numSockets) :
     OdinRestAPI(hostname, port, numSockets),
     mPluginName(pluginName),
-    mProcessPluginIndex("")
 
 {
   sysStr_[SSFP]                 = sysStr_[SSAdapterRoot] + FRAME_PROCESSOR_ADAPTER + "/";

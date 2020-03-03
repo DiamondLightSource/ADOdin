@@ -31,7 +31,6 @@ class OdinDataRestAPI : public OdinRestAPI
   int stopWrite();
 
  private:
-  std::string mProcessPluginIndex;
 };
 
 #endif
