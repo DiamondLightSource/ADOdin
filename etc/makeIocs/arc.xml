@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <components arch="linux-x86_64">
-	<ADOdin.ArcOdinDataServer FEM_DEST_MAC="AA:AA:AA:AA:AA:AA" IP="127.0.0.1" PROCESSES="2" SHARED_MEM_SIZE="10485760" name="DataServer1"/>
-	<ADOdin.ArcOdinControlServer IP="127.0.0.1" ODIN_DATA_SERVER_1="DataServer1" name="ControlServer"/>
-	<ADOdin.ArcOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" P="ARC" PORT="ODN.OD" R=":CAM:" TIMEOUT="1"/>
+	<ADOdin.ArcOdinDataServer FEM_DEST_IP="127.0.0.1" FEM_DEST_MAC="AA:AA:AA:AA:AA:AA" IP="127.0.0.1" PROCESSES="2" SHARED_MEM_SIZE="10485760" name="DataServer1"/>
+	<ADOdin.ArcOdinControlServer IP="127.0.0.1" ODIN_DATA_SERVER_1="DataServer1" PORT="8889" name="ControlServer"/>
+	<ADOdin.ArcOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" P="ARC" PORT="ODN.OD" R=":CAM:" TIMEOUT="1" TOTAL="2"/>
 	<ADOdin.ArcDetector ADDR="0" ODIN_CONTROL_SERVER="ControlServer" ODIN_DATA_DRIVER="ODN.OD" P="ARC" PORT="ODN.CAM" R=":CAM:" TIMEOUT="1"/>
 	<ADOdin.OdinLogConfig BEAMLINE="iXX" DETECTOR="Arc" name="LogConfig"/>
 	<!--6 -> 1 Second-->

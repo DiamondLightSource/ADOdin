@@ -302,9 +302,21 @@ class OdinLogConfig(Device):
         expand_template_file("log4cxx_template.xml", macros, "log4cxx.xml")
 
     # __init__ arguments
-    ArgInfo = makeArgInfo(__init__,
+    ArgInfo = makeArgInfo(
+        __init__,
         BEAMLINE=Simple("Beamline name, e.g. b21, i02-2", str),
-        DETECTOR=Choice("Detector type", ["Excalibur1M", "Excalibur3M", "Eiger4M", "Eiger9M", "Eiger16M", "Tristan1M", "Tristan10M"])
+        DETECTOR=Choice(
+            "Detector type",
+            [
+                "Excalibur1M",
+                "Excalibur3M",
+                "Eiger4M",
+                "Eiger16M",
+                "Tristan1M",
+                "Tristan10M",
+                "Arc"
+            ]
+        )
     )
 
 

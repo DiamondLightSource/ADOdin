@@ -203,15 +203,15 @@ class ArcOdinControlServer(_OdinControlServer):
 
     """Store configuration for an ArcOdinControlServer"""
 
-    ODIN_SERVER = os.path.join(OdinPaths.ARC_DETECTOR, "prefix/bin/arc_odin")
-    CONFIG_TEMPLATES = {"fem_addresses": ["192.168.0.101:6969", "192.168.0.102:6969"]}
+    ODIN_SERVER = "arc_odin"
+    CONFIG_TEMPLATES = {"fem_addresses": ["127.0.0.1:6969", "127.0.0.1:6970"]}
 
     def __init__(
         self,
         IP,
         PORT=8888,
-        FEMS_REVERSED=False,
-        POWER_CARD_IDX=1,
+        ARC_IP="127.0.0.1",
+        ARC_PORT=8001,
         ODIN_DATA_SERVER_1=None,
         ODIN_DATA_SERVER_2=None,
     ):
@@ -227,16 +227,14 @@ class ArcOdinControlServer(_OdinControlServer):
         __init__,
         IP=Simple("IP address of control server", str),
         PORT=Simple("Port of control server", int),
-        FEMS_REVERSED=Choice(
-            "Are the FEM IP addresses reversed 106..101", [True, False]
-        ),
-        POWER_CARD_IDX=Simple("Index of the power card", int),
+        ARC_IP=Simple("IP address of Arc server", str),
+        ARC_PORT=Simple("Port of Arc server", int),
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
     )
 
     def get_extra_startup_macro(self):
-        return '--staticlogfields beamline=${{BEAMLINE}},\
+        return '--staticlogfields beamline=${BEAMLINE},\
 application_name="arc_odin",detector="Arc" \
 --logserver="graylog2.diamond.ac.uk:12210" --access_logging=ERROR'
 
@@ -249,10 +247,12 @@ application_name="arc_odin",detector="Arc" \
     def _create_arc_config_entry(self):
         return (
             "[adapter.arc]\n"
-            "module = arc.adapter.ArcAdapter\n"
-            "detector_fems = {}\n"
-            "powercard_fem_idx = {}\n"
-            "update_interval = 0.5".format(self.fem_address_list, self.POWER_CARD_IDX)
+            "module = arc.arc_adapter.ArcAdapter\n"
+            "api=0.1\n"
+            "endpoint=tcp://{}:{}\n"
+            "background_task_enable = 1\n"
+            "background_task_interval = 0.5".format(
+                self.ARC_IP, self.ARC_PORT)
         )
 
     def _create_odin_data_config_entry(self):
