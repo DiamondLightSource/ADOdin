@@ -71,13 +71,13 @@ record(mbbo,"$(P)$(R)TriggerMode") {
 
 record(mbbi,"$(P)$(R)TriggerMode_RBV") {
     field(DESC,"Acquire mode")
-    field(ZRVL,"0")
+    field(ZRVL,"1")
     field(ZRST,"Internal Series")
-    field(ONVL,"2")
+    field(ONVL,"3")
     field(ONST,"Internal Enable")
-    field(TWVL,"1")
+    field(TWVL,"0")
     field(TWST,"External Series")
-    field(THVL,"3")
+    field(THVL,"2")
     field(THST,"External Enable")
     field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_detector/api/$(API)/config/trigger_mode")
 }
