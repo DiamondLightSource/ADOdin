@@ -114,13 +114,3 @@ record(mbbi,"$(P)$(R)StreamHdrDetail_RBV") {
     field(TWST, "All")
     field(TWVL, "2")
 }
-
-# Eiger Stream Image Bit Depth
-record(longin, "$(P)$(R)BitDepthImage_RBV")
-{
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))BIT_DEPTH_IMAGE")
-    field(DESC, "Image Bit Depth")
-    field(VAL,  "0")
-    field(SCAN, "I/O Intr")
-}

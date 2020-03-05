@@ -42,14 +42,6 @@ record(stringin, "$(P)$(R)FWState_RBV") {
     field(SCAN, "I/O Intr")
 }
 
-record(stringin, "$(P)$(R)Description_RBV")
-{
-    field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_detector/api/$(API)/config/description")
-    field(DESC, "Detector Description")
-    field(SCAN, "I/O Intr")
-}
-
 record(ai, "$(P)$(R)CountCutoff_RBV")
 {
     field(DTYP, "asynInt32")
@@ -70,23 +62,6 @@ record(ai, "$(P)$(R)DeadTime_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(ao, "$(P)$(R)Wavelength")
-{
-    field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/wavelength")
-    field(PREC, "4")
-    field(EGU,  "Angstroms")
-}
-
-record(ai, "$(P)$(R)Wavelength_RBV")
-{
-    field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/wavelength")
-    field(PREC, "4")
-    field(EGU,  "Angstroms")
-    field(SCAN, "I/O Intr")
-}
-
 # Monitor State
 record(stringin, "$(P)$(R)MonitorState_RBV") {
     field(DESC, "Monitor operational state")
@@ -96,12 +71,6 @@ record(stringin, "$(P)$(R)MonitorState_RBV") {
 }
 
 # Eiger Error Parameters
-record(stringin, "$(P)$(R)Error_RBV") {
-    field(DESC, "Parameters causing error state")
-    field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_detector/api/$(API)/status/error")
-    field(SCAN, "I/O Intr")
-}
 
 record(bi, "$(P)$(R)Link0_RBV")
 {
