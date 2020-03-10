@@ -58,26 +58,26 @@ record(stringin, "$(P)$(R)SerialNumber_RBV") {
 # We redefine the states for the TriggerMode records defined in ADBase.template
 record(mbbo,"$(P)$(R)TriggerMode") {
     field(DESC,"Acquire mode")
-    field(ZRVL,"1")
+    field(ZRVL,"0")
     field(ZRST,"Internal Series")
-    field(ONVL,"3")
+    field(ONVL,"2")
     field(ONST,"Internal Enable")
-    field(TWVL,"0")
+    field(TWVL,"1")
     field(TWST,"External Series")
-    field(THVL,"2")
+    field(THVL,"3")
     field(THST,"External Enable")
     field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_detector/api/$(API)/config/trigger_mode")
 }
 
 record(mbbi,"$(P)$(R)TriggerMode_RBV") {
     field(DESC,"Acquire mode")
-    field(ZRVL,"1")
+    field(ZRVL,"0")
     field(ZRST,"Internal Series")
-    field(ONVL,"3")
+    field(ONVL,"2")
     field(ONST,"Internal Enable")
-    field(TWVL,"0")
+    field(TWVL,"1")
     field(TWST,"External Series")
-    field(THVL,"2")
+    field(THVL,"3")
     field(THST,"External Enable")
     field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_detector/api/$(API)/config/trigger_mode")
 }
@@ -290,16 +290,16 @@ record(bo,"$(P)$(R)StreamEnable") {
     field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_stream/api/$(API)/config/mode")
     field(DESC, "Enable usage of Stream API")
     field(VAL,  "0")
-    field(ZNAM, "No")
-    field(ONAM, "Yes")
+    field(ZNAM, "Yes")
+    field(ONAM, "No")
 }
 
 record(bi,"$(P)$(R)StreamEnable_RBV") {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_stream/api/$(API)/config/mode")
     field(DESC, "Enable usage of Stream API")
-    field(ZNAM, "No")
-    field(ONAM, "Yes")
+    field(ZNAM, "Yes")
+    field(ONAM, "No")
     field(SCAN, "I/O Intr")
 }
 

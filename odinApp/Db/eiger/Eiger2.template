@@ -114,3 +114,37 @@ record(mbbi,"$(P)$(R)StreamHdrDetail_RBV") {
     field(TWST, "All")
     field(TWVL, "2")
 }
+
+# Stream API enable
+record(bo,"$(P)$(R)StreamEnable") {
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+}
+
+record(bi,"$(P)$(R)StreamEnable_RBV") {
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+}
+
+# We redefine the states for the TriggerMode records defined in ADBase.template
+record(mbbo,"$(P)$(R)TriggerMode") {
+    field(ZRVL,"1")
+    field(ZRST,"Internal Series")
+    field(ONVL,"3")
+    field(ONST,"Internal Enable")
+    field(TWVL,"0")
+    field(TWST,"External Series")
+    field(THVL,"2")
+    field(THST,"External Enable")
+}
+
+record(mbbi,"$(P)$(R)TriggerMode_RBV") {
+    field(ZRVL,"1")
+    field(ZRST,"Internal Series")
+    field(ONVL,"3")
+    field(ONST,"Internal Enable")
+    field(TWVL,"0")
+    field(TWST,"External Series")
+    field(THVL,"2")
+    field(THST,"External Enable")
+}
