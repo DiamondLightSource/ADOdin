@@ -34,7 +34,7 @@ OdinDataDriver::OdinDataDriver(const char* portName, const char* serverHostname,
     : OdinClient(portName, serverHostname, odinServerPort,
                  detectorName, maxBuffers,
                  maxMemory, priority, stackSize),
-    mAPI(serverHostname, detectorName, odinServerPort)
+    mAPI(serverHostname, detectorName, odinServerPort, odinDataCount)
 {
   mDatasetName = std::string(datasetName);
   mODCount = odinDataCount;
@@ -116,12 +116,8 @@ int OdinDataDriver::createParams()
   mFramesReleased         = createODRESTParam(OdinFRFramesReleased, REST_P_INT,
                                               SSFRStatus, "frames/released");
 
-  mFPClearErrors          = createODRESTParam(OdinFPClearErrors, REST_P_INT,
-                                              SSFPConfig, "clear_errors");
-
   mCapture->setCommand();
   mStartCloseTimeout->setCommand();
-  mFPClearErrors->setCommand();
 
   // Set enum values
   std::vector<std::string> dataTypeEnum;
@@ -176,8 +172,8 @@ asynStatus OdinDataDriver::getStatus()
       setIntegerParam(ADStatus, ADStatusIdle);
     }
     // Check for any errors from the odin server
-    for (int index = 0; index != (int) mODCount; ++index) {
-      std::string error_msg = mAPI.readError(index, 0);
+    for (size_t index = 0; index != mODCount; ++index) {
+      std::string error_msg = mAPI.readError(index);
       setStringParam(index, mFPErrorMessage, error_msg.c_str());
       if (error_msg != ""){
         setIntegerParam(index, mFPErrorState, 1);
@@ -340,9 +336,6 @@ asynStatus OdinDataDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) {
     }
     else {
       int address = -1;
-      if (function == mFPClearErrors->getIndex()) {
-        getAddress(pasynUser, &address);
-      }
       p->put(value, address);
     }
   }

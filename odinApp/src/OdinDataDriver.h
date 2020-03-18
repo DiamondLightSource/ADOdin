@@ -77,7 +77,7 @@ class OdinDataDriver : public OdinClient
  private:
   char mHostname[512];
   OdinDataRestAPI mAPI;
-  int mODCount;
+  size_t mODCount;
   std::string mDatasetName;
   std::string mProcessPluginName;
 

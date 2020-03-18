@@ -9,6 +9,7 @@
 #include "OdinRestApi.h"
 #include "restParam.h"
 
+#define ERROR_REFRESH_TIME 3  // Seconds
 
 class OdinDataRestAPI : public OdinRestAPI
 {
@@ -19,6 +20,7 @@ class OdinDataRestAPI : public OdinRestAPI
   OdinDataRestAPI(const std::string& hostname,
                   const std::string& pluginName,
                   int port,
+                  size_t odinDataCount,
                   size_t numSockets=5);
 
   // OdinData Methods
@@ -26,11 +28,12 @@ class OdinDataRestAPI : public OdinRestAPI
   std::vector<int> getImageDims(const std::string& datasetName);
   int setChunkDims(const std::string& datasetName, std::vector<int>& chunkDims);
   std::vector<int> getChunkDims(const std::string& datasetName);
-  std::string readError(int address, int error_index);
+  std::string readError(size_t address);
   int startWrite();
   int stopWrite();
 
  private:
+  std::vector<size_t> mErrorCycle;
 };
 
 #endif

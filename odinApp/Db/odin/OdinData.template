@@ -19,9 +19,8 @@ record(longout, "$(P)$(R)ResetStatistics")
 
 record(longout, "$(P)$(R)FPClearErrors")
 {
-     field(PINI, "NO")
      field(DTYP, "asynInt32")
-     field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FP_CLEAR_ERRORS")
+     field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC$(TOTAL)_fp/config/clear_errors/$(ADDR)")
 }
 
 #% archiver 1 monitor
@@ -131,6 +130,10 @@ record(longin, "$(P)$(R)FreeBuffers_RBV")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FR_FREE_BUFFERS")
     field(SCAN, "I/O Intr")
+    field(LOW, "10")
+    field(LOLO, "0")
+    field(LSV, "MINOR")
+    field(LLSV, "MAJOR")
 }
 
 #% archiver 1 monitor
@@ -147,6 +150,8 @@ record(longin, "$(P)$(R)FramesDropped_RBV")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FR_FRAMES_DROPPED")
     field(SCAN, "I/O Intr")
+    field(HIHI, "1")
+    field(HHSV, "MAJOR")
 }
 
 #% archiver 1 monitor
@@ -155,6 +160,8 @@ record(longin, "$(P)$(R)FramesTimedOut_RBV")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_FR_FRAMES_TIMEDOUT")
     field(SCAN, "I/O Intr")
+    field(HIHI, "1")
+    field(HHSV, "MAJOR")
 }
 
 #% archiver 1 monitor

@@ -1,6 +1,7 @@
 #include "OdinDataRestApi.h"
 
 #include <stdexcept>
+#include <iostream>
 #include <algorithm>
 #include <frozen.h>
 #include <epicsThread.h>
@@ -56,9 +57,11 @@ std::vector<std::vector<std::string> > parse2DArray (struct json_token *tokens, 
 OdinDataRestAPI::OdinDataRestAPI(const std::string& hostname,
                                  const std::string& pluginName,
                                  int port,
+                                 size_t odinDataCount,
                                  size_t numSockets) :
     OdinRestAPI(hostname, port, numSockets),
     mPluginName(pluginName),
+    mErrorCycle(0)
 
 {
   sysStr_[SSFP]                 = sysStr_[SSAdapterRoot] + FRAME_PROCESSOR_ADAPTER + "/";
@@ -73,6 +76,8 @@ OdinDataRestAPI::OdinDataRestAPI(const std::string& hostname,
   sysStr_[SSFR]                 = sysStr_[SSAdapterRoot] + FRAME_RECEIVER_ADAPTER "/";
   sysStr_[SSFRConfig]           = sysStr_[SSFR]          + "config/";
   sysStr_[SSFRStatus]           = sysStr_[SSFR]          + "status/";
+
+  mErrorCycle.reserve(odinDataCount);
 }
 
 int OdinDataRestAPI::startWrite() {
@@ -173,7 +178,7 @@ std::vector<int> OdinDataRestAPI::getChunkDims(const std::string& datasetName) {
   return chunkDims;
 }
 
-std::string OdinDataRestAPI::readError(int address, int error_index) {
+std::string OdinDataRestAPI::readError(size_t address) {
   // Parse JSON
   struct json_token tokens[256];
   std::string error;
@@ -182,15 +187,26 @@ std::string OdinDataRestAPI::readError(int address, int error_index) {
   if (get(sysStr(SSFPStatus), "client_error", buffer, 1)) {
       error = "Failed to retrieve errors - may be too many";
   } else {
-      parse_json(buffer.c_str(), buffer.size(), tokens, 256);
-      std::vector<std::vector<std::string> > valueArray = parse2DArray(tokens, PARAM_VALUE);
-      if ((int) valueArray.size() > address) {
-          std::vector<std::string> singleArray = valueArray[address];
-          if ((int) singleArray.size() > error_index) {
-              error = singleArray[error_index];
-          }
-      }
+    parse_json(buffer.c_str(), buffer.size(), tokens, 256);
+    std::vector<std::vector<std::string> > valueArray = parse2DArray(tokens, PARAM_VALUE);
+    // Read error array from given process
+    if (valueArray.size() > address) {
+        std::vector<std::string> singleArray = valueArray[address];
+        // If there are any errors, cycle through them returning each in turn
+        size_t currentErrorIndex = mErrorCycle[address] / ERROR_REFRESH_TIME;
+        if (currentErrorIndex >= singleArray.size()) {
+          mErrorCycle[address] = 0;
+          currentErrorIndex = 0;
+        }
+        if (singleArray.size() > currentErrorIndex) {
+          std::stringstream error_stream;
+          error_stream << singleArray[currentErrorIndex] << " (" << currentErrorIndex + 1 << "/" << singleArray.size() << ")";
+          error = error_stream.str();
+          mErrorCycle[address]++;
+        }
+    }
   }
+
   return error;
 }
 
