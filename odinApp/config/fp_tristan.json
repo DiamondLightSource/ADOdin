@@ -11,7 +11,7 @@
       "load": {
         "index": "hdf",
         "name": "FileWriterPlugin",
-        "library": "$OD_ROOT/prefix/lib/libHdf5Plugin.so"
+        "library": "$ODIN_DATA/prefix/lib/libHdf5Plugin.so"
       }
     }
   },

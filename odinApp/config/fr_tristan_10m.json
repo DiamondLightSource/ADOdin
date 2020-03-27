@@ -1,6 +1,6 @@
 [
   {
-    "decoder_type": "Excalibur",
+    "decoder_type": "LATRD",
     "decoder_path": "$DETECTOR_ROOT/prefix/lib",
     "rx_ports": "$RX_PORT_1,$RX_PORT_2",
     "decoder_config": {
