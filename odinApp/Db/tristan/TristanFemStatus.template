@@ -1,0 +1,121 @@
+# femHousekeeping.template
+# Defines the housekeeping parameters available from all FEMs.
+#
+# Parameters:
+#   P       - EPICS name prefix
+#   R       - EPICS plugin name
+#   PORT    - Asyn port
+#   ADDRESS - Asyn address
+#   TIMEOUT - Timeout
+
+################################################################################
+#
+# Clock status
+#
+################################################################################
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)ClockFrequency_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD_status/clock/clock_freq")
+}
+
+#% archiver 1 monitor
+record(longin, "$(P)$(R)ClockDpllHold_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODB_status/clock/dpll_hold")
+}
+
+#% archiver 1 monitor
+record(longin, "$(P)$(R)ClockDpllLol_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODB_status/clock/dpll_lol")
+}
+
+################################################################################
+#
+# Detector Description
+#
+################################################################################
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)Description_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(VAL,  "")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS_status/detector/description")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)SensorMaterial_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(VAL,  "")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS_status/detector/sensor_material")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)SensorThickness_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(VAL,  "")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS_status/detector/sensor_thickness")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)SerialNumber_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(VAL,  "")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS_status/detector/serial_number")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)SoftwareVersion_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(VAL,  "")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS_status/detector/software_version")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)XPixelSize_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(VAL,  "")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS_status/detector/x_pixel_size")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)YPixelSize_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(VAL,  "")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS_status/detector/y_pixel_size")
+}
+
+#% archiver 1 monitor
+record(longin, "$(P)$(R)TimesliceNumber_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI_status/detector/timeslice_number")
+}
+
