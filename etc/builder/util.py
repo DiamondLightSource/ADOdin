@@ -39,6 +39,7 @@ class OdinPaths(object):
 
         cls.EIGER_DETECTOR = paths["EIGER_DETECTOR"]
         cls.EXCALIBUR_DETECTOR = paths["EXCALIBUR_DETECTOR"]
+        cls.TRISTAN_DETECTOR = paths["TRISTAN_DETECTOR"]
 
     @classmethod
     def parse_release_file(cls, release_path):

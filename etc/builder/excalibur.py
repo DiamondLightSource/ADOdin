@@ -68,7 +68,7 @@ class _ExcaliburOdinData(_OdinData):
         self.sensor = SENSOR
         self.base_udp_port = BASE_UDP_PORT
 
-    def create_config_files(self, index):
+    def create_config_files(self, index, total):
         macros = dict(DETECTOR=OdinPaths.EXCALIBUR_DETECTOR,
                       RX_PORT_1=self.base_udp_port,
                       RX_PORT_2=self.base_udp_port + 1,

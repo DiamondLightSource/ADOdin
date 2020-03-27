@@ -502,7 +502,7 @@ class _OdinDataDriver(AsynPort):
                 od_args["TOTAL"] = self.odin_data_processes
                 _OdinDataTemplate(**od_args)
 
-                odin_data.create_config_files(process_idx + 1, self.total_processes)
+                odin_data.create_config_files(process_idx + 1, self.odin_data_processes)
                 process_idx += self.server_count
 
             if server.plugins is not None:

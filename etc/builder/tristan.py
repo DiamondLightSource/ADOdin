@@ -4,16 +4,14 @@ from iocbuilder import Device, AutoSubstitution
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
 
-from util import find_module_path, expand_template_file, debug_print, create_batch_entry, create_config_entry
+from util import OdinPaths, expand_template_file, debug_print, \
+                 create_config_entry, OneLineEntry
 from odin import _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, \
-                 PluginConfig, FrameProcessorPlugin
+                 _PluginConfig, _FrameProcessorPlugin
 
 
-TRISTAN, TRISTAN_PATH = find_module_path("tristan-detector")
-debug_print("Tristan: {} = {}".format(TRISTAN, TRISTAN_PATH), 1)
 
-ODIN_DATA_MACRO, ODIN_DATA_ROOT = find_module_path("odin-data")
-
+debug_print("Tristan: {}".format(OdinPaths.TRISTAN_DETECTOR), 1)
 
 TRISTAN_DIMENSIONS = {
     # Sensor: (Width, Height)
@@ -71,9 +69,9 @@ class _TristanMetaListener(Device):
             numa_call = "numactl --membind={node} --cpunodebind={node} ".format(node=self.NUMA_NODE)
         else:
             numa_call = ""
-        macros = dict(TRISTAN_DETECTOR_PATH=TRISTAN_PATH,
+        macros = dict(TRISTAN_DETECTOR_PATH=OdinPaths.TRISTAN_DETECTOR,
                       IP_LIST=",".join(self.ip_list),
-                      OD_ROOT=ODIN_DATA_ROOT,
+                      ODIN_DATA=OdinPaths.ODIN_DATA,
                       SENSOR=self.sensor,
                       NUMA=numa_call)
 
@@ -102,7 +100,7 @@ class TristanControlSimulator(Device):
     """Store configuration for an TristanOdinControlServer"""
     def __init__(self, PORT=5100, **args):
         self.__dict__.update(locals())
-        macros = dict(TRISTAN_DETECTOR_PATH=TRISTAN_PATH,
+        macros = dict(TRISTAN_DETECTOR_PATH=OdinPaths.TRISTAN_DETECTOR,
                       PORT=PORT)
 
         expand_template_file("tristan_simulator_startup", macros, "stTristanSimulator.sh", executable=True)
@@ -118,7 +116,7 @@ class TristanOdinControlServer(_OdinControlServer):
 
     """Store configuration for an TristanOdinControlServer"""
 
-    ODIN_SERVER = os.path.join(TRISTAN_PATH, "prefix/bin/tristan_odin")
+    ODIN_SERVER = os.path.join(OdinPaths.TRISTAN_DETECTOR, "prefix/bin/tristan_odin")
     CONFIG_TEMPLATES = {
         "1M": {
             "chip_mask": "0xFF, 0xFF",
@@ -165,7 +163,7 @@ class TristanOdinControlServer(_OdinControlServer):
         return config_entries
 
     def create_odin_server_static_path(self):
-        return TRISTAN_PATH + "/prefix/html/static"
+        return OdinPaths.TRISTAN_DETECTOR + "/prefix/html/static"
 
     def _create_tristan_config_entry(self):
         return "[adapter.tristan]\n" \
@@ -358,7 +356,7 @@ class _TristanOdinData(_OdinData):
         self.base_udp_port = BASE_UDP_PORT
 
     def create_config_files(self, index, total):
-        macros = dict(DETECTOR_ROOT=TRISTAN_PATH,
+        macros = dict(DETECTOR_ROOT=OdinPaths.TRISTAN_DETECTOR,
                       PROC_NUMBER=total,
                       PROC_RANK=index-1,
                       RX_PORT_1=self.base_udp_port,
@@ -399,7 +397,7 @@ class TristanOdinDataServer(_OdinDataServer):
         FEM_DEST_MAC=Simple("MAC address of node data link (destination for FEM to send to)", str),
         FEM_DEST_IP=Simple("IP address of node data link (destination for FEM to send to)", str),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
-        PLUGIN_CONFIG=Ident("Define a custom set of plugins", PluginConfig)
+        PLUGIN_CONFIG=Ident("Define a custom set of plugins", _PluginConfig)
     )
 
     def create_odin_data_process(self, server, ready, release, meta, plugin_config):
@@ -460,7 +458,7 @@ class TristanOdinDataDriver(_OdinDataDriver):
         if self.control_server.META_IP is not None:
             self._meta = _TristanMetaListener(IP=self.control_server.META_IP, ODIN_DATA_SERVERS=self.control_server.odin_data_servers)
 
-        if self.total_processes not in self.FP_TEMPLATES.keys():
+        if self.odin_data_processes not in self.FP_TEMPLATES.keys():
             raise ValueError("Total number of OdinData processes must be {}".format(
                 self.FP_TEMPLATES.keys()))
         else:
