@@ -438,6 +438,11 @@ class _Tristan8NodeFPTemplate(AutoSubstitution):
     TemplateFile = "Tristan8NodeOD.template"
 
 
+@add_tristan_fp_template
+class _Tristan16NodeFPTemplate(AutoSubstitution):
+    TemplateFile = "Tristan16NodeOD.template"
+
+
 class TristanOdinDataDriver(_OdinDataDriver):
 
     """Create a Tristan OdinData driver"""
@@ -445,7 +450,8 @@ class TristanOdinDataDriver(_OdinDataDriver):
     FP_TEMPLATES = {
         # Number of OdinData nodes: Template
         4: _Tristan4NodeFPTemplate,
-        8: _Tristan8NodeFPTemplate
+        8: _Tristan8NodeFPTemplate,
+        16: _Tristan16NodeFPTemplate
     }
 
     def __init__(self, **args):

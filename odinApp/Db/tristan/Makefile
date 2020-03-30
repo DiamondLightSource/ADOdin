@@ -19,6 +19,7 @@ DB += Tristan10MStatus.template
 DB += TristanOD.template
 DB += Tristan4NodeOD.template
 DB += Tristan8NodeOD.template
+DB += Tristan16NodeOD.template
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add
