@@ -1,4 +1,5 @@
 import os
+import json
 
 from iocbuilder import Device, AutoSubstitution
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
@@ -16,6 +17,7 @@ debug_print("Tristan: {}".format(OdinPaths.TRISTAN_DETECTOR), 1)
 TRISTAN_DIMENSIONS = {
     # Sensor: (Width, Height)
     "1M": (2048, 512),
+    "2M": (2048, 1024),
     "10M": (4096, 2560)
 }
 
@@ -242,6 +244,12 @@ class _Tristan1MStatusTemplate(AutoSubstitution):
 
 @add_tristan_status
 @add_tristan_fem_status
+class _Tristan2MStatusTemplate(AutoSubstitution):
+    TemplateFile = "Tristan2MStatus.template"
+
+
+@add_tristan_status
+@add_tristan_fem_status
 class _Tristan10MStatusTemplate(AutoSubstitution):
     TemplateFile = "Tristan10MStatus.template"
 
@@ -253,8 +261,14 @@ class TristanDetector(_OdinDetector):
     DETECTOR = "tristan"
     SENSOR_OPTIONS = {  # (AutoSubstitution Template, Number of modules)
         "1M": (_Tristan1MStatusTemplate, 1),
+        "2M": (_Tristan2MStatusTemplate, 2),
         "10M": (_Tristan10MStatusTemplate, 10)
     }
+
+    UDP_OPTIONS = [
+        "ROUNDROBIN",
+        "ONE2ONE"
+    ]
 
     # This tells xmlbuilder to use PORT instead of name as the row ID
     UniqueName = "PORT"
@@ -264,7 +278,7 @@ class TristanDetector(_OdinDetector):
     # We don't really need the OdinDataDriver, but we need to know it is instantiated as it
     # defines the RANK on all the OdinData instances and we need to sort by RANK for the UDP config
     def __init__(self, PORT, ODIN_CONTROL_SERVER, ODIN_DATA_DRIVER, SENSOR,
-                 BUFFERS=0, MEMORY=0, **args):
+                 UDP_CONFIG='ROUNDROBIN', BUFFERS=0, MEMORY=0, **args):
         # Init the superclass (OdinDetector)
         self.__super.__init__(PORT, ODIN_CONTROL_SERVER, self.DETECTOR,
                               BUFFERS, MEMORY, **args)
@@ -274,16 +288,6 @@ class TristanDetector(_OdinDetector):
         makeTemplateInstance(self._SpecificTemplate, locals(), args)
 
         self.control_server = ODIN_CONTROL_SERVER
-
-        # Add the housekeeping template
-#        hk_template = _TristanHousekeepingTemplate
-#        hk_args = {
-#            "P": args["P"],
-#            "R": args["R"],
-#            "PORT": PORT,
-#            "TIMEOUT": args["TIMEOUT"]
-#        }
-#        hk_template(**fem_hk_args)
 
         # Instantiate template corresponding to SENSOR, passing through some of own args
         status_template = self.SENSOR_OPTIONS[SENSOR][0]
@@ -299,49 +303,84 @@ class TristanDetector(_OdinDetector):
         }
         status_template(**status_args)
 
-#        self.create_udp_file()
-#
-#    def create_udp_file(self):
-#        fem_config = []
-#        for offset in range(self.SENSOR_OPTIONS[self.SENSOR][1]):  # 2 for 1M or 6 for 3M
-#            fem_config.append(
-#                #    "fems": [
-#                "        {{\n"
-#                "            \"name\": \"fem{number}\",\n"
-#                "            \"mac\": \"62:00:00:00:00:0{number}\",\n"
-#                "            \"ipaddr\": \"10.0.2.10{number}\",\n"
-#                "            \"port\": 6000{number},\n"
-#                "            \"dest_port_offset\": {offset}\n"
-#                "        }}".format(number=offset + 1, offset=offset)
-#                #    ...
-#                #    ]
-#            )
-#
-#        node_config = []
-#        for idx, process in enumerate(sorted(self.control_server.odin_data_processes,
-#                                             key=lambda x: x.RANK)):
-#            config = dict(
-#                name="dest{}".format(idx + 1), mac=process.server.FEM_DEST_MAC,
-#                ip=process.server.FEM_DEST_IP, port=process.base_udp_port
-#            )
-#            node_config.append(
-#                #    "nodes": [
-#                "        {{\n"
-#                "            \"name\": \"{name}\",\n"
-#                "            \"mac\": \"{mac}\",\n"
-#                "            \"ipaddr\": \"{ip}\",\n"
-#                "            \"port\": {port}\n"
-#                "        }}".format(**config)
-#                #    ...
-#                #    ]
-#            )
-#
-#        macros = dict(
-#            FEM_CONFIG=",\n".join(fem_config),
-#            NODE_CONFIG=",\n".join(node_config),
-#            NUM_DESTS=len(self.control_server.odin_data_processes)
-#        )
-#        expand_template_file("udp_excalibur.json", macros, "udp_excalibur.json")
+        if self.UDP_CONFIG == 'ROUNDROBIN':
+            self.create_round_robin_udp_file()
+        elif self.UDP_CONFIG == 'ONE2ONE':
+            self.create_one_to_one_udp_file()
+
+    def create_one_to_one_udp_file(self):
+        nodes = self.generate_point_to_point_config()
+        # Now verify the number of lists matches the number of nodes
+        if self.SENSOR_OPTIONS[self.SENSOR][1] != len(nodes):
+            raise ValueError("Number of FEMs does not match number of servers")
+
+        udp_config = {}
+        # Loop over the fems to create a one to one mapping
+        for index in range(self.SENSOR_OPTIONS[self.SENSOR][1]):
+            module_key = "module{:02d}".format(index+1)
+            udp_config[module_key] = {'nodes': nodes[index]}
+
+        # Generate the udp configuration file
+        macros = dict(
+            MODULE_CONFIG="{}".format(json.dumps(udp_config, indent=4, sort_keys=True))
+        )
+        expand_template_file("udp_tristan.json", macros, "udp_tristan.json")
+
+    def create_round_robin_udp_file(self):
+        nodes = self.generate_multi_server_config()
+        fems = self.SENSOR_OPTIONS[self.SENSOR][1]
+        k, m = divmod(len(nodes), fems)
+        # Split the nodes into equal parts
+        node_list = list(nodes[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in range(fems))
+
+        udp_config = {}
+        # Now loop over the modules, creating a list for each
+        for index in range(fems):
+            module_key = "module{:02d}".format(index+1)
+            module_nodes = [element for node in node_list for element in node]
+            udp_config[module_key] = {'nodes': module_nodes}
+            first_node = node_list[0]
+            node_list = node_list[1:]
+            node_list.append(first_node)
+
+        # Generate the udp configuration file
+        macros = dict(
+            MODULE_CONFIG="{}".format(json.dumps(udp_config, indent=4, sort_keys=True))
+        )
+        expand_template_file("udp_tristan.json", macros, "udp_tristan.json")
+
+    def generate_point_to_point_config(self):
+        node_config = []
+        for server in self.control_server.odin_data_servers:
+            fem_config = []
+            for idx, process in enumerate(sorted(server.processes, key=lambda x: x.RANK)):
+                config = dict(
+                    mac=process.server.FEM_DEST_MAC,
+                    name=process.server.FEM_DEST_NAME,
+                    ipaddr=process.server.FEM_DEST_IP,
+                    port=process.base_udp_port,
+                    subnet=process.server.FEM_DEST_SUBNET,
+                    links=[1,0,0,0,0,0,0,0]
+                )
+                fem_config.append(config)
+            node_config.append(fem_config)
+        return node_config
+
+    def generate_multi_server_config(self):
+        node_config = []
+        for server in self.control_server.odin_data_servers:
+            for idx, process in enumerate(sorted(server.processes, key=lambda x: x.RANK)):
+                config = dict(
+                    mac=process.server.FEM_DEST_MAC,
+                    name=process.server.FEM_DEST_NAME,
+                    ipaddr=process.server.FEM_DEST_IP,
+                    port=process.base_udp_port,
+                    subnet=process.server.FEM_DEST_SUBNET,
+                    links=[1,0,0,0,0,0,0,0]
+                )
+                node_config.append(config)
+
+        return node_config
 
     # __init__ arguments
     ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
@@ -349,6 +388,7 @@ class TristanDetector(_OdinDetector):
         ODIN_CONTROL_SERVER=Ident("Odin control server instance", _OdinControlServer),
         ODIN_DATA_DRIVER=Ident("OdinDataDriver instance", _OdinDataDriver),
         SENSOR=Choice("Sensor type", SENSOR_OPTIONS.keys()),
+        UDP_CONFIG=Choice("Type of packet distribution", UDP_OPTIONS),
         BUFFERS=Simple("Maximum number of NDArray buffers to be created for plugin callbacks", int),
         MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "
                       "attached plugins", int)
@@ -403,6 +443,7 @@ class TristanOdinDataServer(_OdinDataServer):
     BASE_UDP_PORT = 61649
 
     def __init__(self, IP, PROCESSES, SENSOR, FEM_DEST_MAC, FEM_DEST_IP="127.0.0.1",
+                 FEM_DEST_NAME="em0", FEM_DEST_SUBNET=24,
                  SHARED_MEM_SIZE=1048576000, PLUGIN_CONFIG=None):
         self.sensor = SENSOR
         self.__super.__init__(IP, PROCESSES, SHARED_MEM_SIZE, PLUGIN_CONFIG)
@@ -415,6 +456,8 @@ class TristanOdinDataServer(_OdinDataServer):
         SENSOR=Choice("Sensor type", ["1M", "10M"]),
         FEM_DEST_MAC=Simple("MAC address of node data link (destination for FEM to send to)", str),
         FEM_DEST_IP=Simple("IP address of node data link (destination for FEM to send to)", str),
+        FEM_DEST_NAME=Simple("Name of the destination netowrk interface", str),
+        FEM_DEST_SUBNET=Simple("Subnet mask node transmits on", int),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
         PLUGIN_CONFIG=Ident("Define a custom set of plugins", _PluginConfig)
     )
