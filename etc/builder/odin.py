@@ -323,7 +323,10 @@ class _OdinControlServer(Device):
 
     def __init__(self, IP, PORT=8888,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
-                 ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None):
+                 ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None,
+                 ODIN_DATA_SERVER_5=None, ODIN_DATA_SERVER_6=None,
+                 ODIN_DATA_SERVER_7=None, ODIN_DATA_SERVER_8=None,
+                 ODIN_DATA_SERVER_9=None, ODIN_DATA_SERVER_10=None):
         self.__super.__init__()
         # Update attributes with parameters
         self.__dict__.update(locals())
@@ -350,7 +353,13 @@ class _OdinControlServer(Device):
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer)
+        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_5=Ident("OdinDataServer 5 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_6=Ident("OdinDataServer 6 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_7=Ident("OdinDataServer 7 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_8=Ident("OdinDataServer 8 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_9=Ident("OdinDataServer 9 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_10=Ident("OdinDataServer 10 configuration", _OdinDataServer)
     )
 
     def get_extra_startup_macro(self):
