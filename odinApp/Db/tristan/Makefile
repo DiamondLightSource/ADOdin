@@ -15,6 +15,7 @@ DB += TristanDetector.template
 DB += TristanStatus.template
 DB += TristanFemStatus.template
 DB += Tristan1MStatus.template
+DB += Tristan2MStatus.template
 DB += Tristan10MStatus.template
 DB += TristanOD.template
 DB += Tristan4NodeOD.template
