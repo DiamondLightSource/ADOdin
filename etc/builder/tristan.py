@@ -33,17 +33,12 @@ class _TristanMetaListener(Device):
     # Device attributes
     AutoInstantiate = True
 
-    #_SpecificTemplate = _TristanMetaListenerTemplate
-
     def __init__(self, IP,
                  ODIN_DATA_SERVERS=None,
                  NUMA_NODE=-1, **args):
         self.__super.__init__()
         # Update attributes with parameters
         self.__dict__.update(locals())
-
-        # Make an instance of our template
-        #makeTemplateInstance(self._SpecificTemplate, locals(), args)
 
         self.ip_list = []
         self.sensor = None
@@ -83,16 +78,6 @@ class _TristanMetaListener(Device):
     def add_batch_entry(self, entries, beamline, number):
         entries.append(create_batch_entry(beamline, number, "TristanMetaListener"))
         return number + 1
-
-    # __init__ arguments
-    #ArgInfo = makeArgInfo(__init__,
-    #                      IP=Simple("IP address of server hosting process", str),
-    #                      ODIN_DATA_SERVERS_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
-    #                      ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
-    #                      ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
-    #                      ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
-    #                      NUMA_NODE=Simple("Numa node to run process on - Optional for performance tuning", int)
-    #                      )
 
 class TristanControlSimulator(Device):
 
@@ -400,17 +385,16 @@ class _TristanOdinData(_OdinData):
     CONFIG_TEMPLATES = {
         "1M": {
             "FrameProcessor": "fp_tristan.json",
-            "FrameReceiver": "fr_tristan_1m.json"
+            "FrameReceiver": "fr_tristan.json"
         },
         "10M": {
             "FrameProcessor": "fp_tristan.json",
-            "FrameReceiver": "fr_tristan_10m.json"
+            "FrameReceiver": "fr_tristan.json"
         }
     }
 
-    def __init__(self, server, READY, RELEASE, META, PLUGINS, SENSOR, BASE_UDP_PORT):
-        super(_TristanOdinData, self).__init__(server, READY, RELEASE, META, PLUGINS)
-        self.plugins = PLUGINS
+    def __init__(self, server, READY, RELEASE, META, SENSOR, BASE_UDP_PORT):
+        super(_TristanOdinData, self).__init__(server, READY, RELEASE, META, None)
         self.sensor = SENSOR
         self.base_udp_port = BASE_UDP_PORT
 
@@ -425,13 +409,11 @@ class _TristanOdinData(_OdinData):
                       WIDTH=TRISTAN_DIMENSIONS[self.sensor][0],
                       HEIGHT=TRISTAN_DIMENSIONS[self.sensor][1])
 
-        if self.plugins is None:
-            super(_TristanOdinData, self).create_config_file(
-                "fp", self.CONFIG_TEMPLATES[self.sensor]["FrameProcessor"], extra_macros=macros)
-        else:
-            super(_TristanOdinData, self).create_config_file(
-                "fp", "fp_custom.json", extra_macros=macros)
+        # Generate the frame processor config files
+        super(_TristanOdinData, self).create_config_file(
+            "fp", self.CONFIG_TEMPLATES[self.sensor]["FrameProcessor"], extra_macros=macros)
 
+        # Generate the frame receiver config files
         super(_TristanOdinData, self).create_config_file(
             "fr", self.CONFIG_TEMPLATES[self.sensor]["FrameReceiver"], extra_macros=macros)
 

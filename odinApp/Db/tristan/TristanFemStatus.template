@@ -1,5 +1,5 @@
-# femHousekeeping.template
-# Defines the housekeeping parameters available from all FEMs.
+# TristanFemStatus.template
+# Defines the status parameters available from all FEMs.
 #
 # Parameters:
 #   P       - EPICS name prefix
@@ -52,7 +52,6 @@ record(stringin, "$(P)$(R)Description_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynOctetRead")
-    field(VAL,  "")
     field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS_status/detector/description")
 }
 
@@ -61,7 +60,6 @@ record(stringin, "$(P)$(R)SensorMaterial_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynOctetRead")
-    field(VAL,  "")
     field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS_status/detector/sensor_material")
 }
 
@@ -70,7 +68,6 @@ record(stringin, "$(P)$(R)SensorThickness_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynOctetRead")
-    field(VAL,  "")
     field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS_status/detector/sensor_thickness")
 }
 
@@ -79,7 +76,6 @@ record(stringin, "$(P)$(R)SerialNumber_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynOctetRead")
-    field(VAL,  "")
     field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS_status/detector/serial_number")
 }
 
@@ -88,7 +84,6 @@ record(stringin, "$(P)$(R)SoftwareVersion_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynOctetRead")
-    field(VAL,  "")
     field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS_status/detector/software_version")
 }
 
@@ -97,7 +92,6 @@ record(stringin, "$(P)$(R)XPixelSize_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynOctetRead")
-    field(VAL,  "")
     field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS_status/detector/x_pixel_size")
 }
 
@@ -106,7 +100,6 @@ record(stringin, "$(P)$(R)YPixelSize_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynOctetRead")
-    field(VAL,  "")
     field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS_status/detector/y_pixel_size")
 }
 

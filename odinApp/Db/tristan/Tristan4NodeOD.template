@@ -67,5 +67,5 @@ record(waveform, "$(P)$(R)Proc:AcquisitionID")
     field(DTYP, "asynOctetWrite")
     field(FTVL, "CHAR")
     field(NELM, "256")
-    field(INP,  "@asyn($(PORT),0,1)_ODS_fp/config/latrd/acq_id")
+    field(INP,  "@asyn($(PORT),0,1)_ODS_fp/config/tristan/acq_id")
 }

@@ -18,7 +18,7 @@
   {
     "plugin": {
       "load": {
-        "index": "latrd",
+        "index": "tristan",
         "name": "LATRDProcessPlugin",
         "library": "$DETECTOR_ROOT/prefix/lib/libLATRDProcessPlugin.so"
       }
@@ -27,7 +27,7 @@
   {
     "plugin": {
       "connect": {
-        "index": "latrd",
+        "index": "tristan",
         "connection": "frame_receiver"
       }
     }
@@ -36,12 +36,12 @@
     "plugin": {
       "connect": {
         "index": "hdf",
-        "connection": "latrd"
+        "connection": "tristan"
       }
     }
   },
   {
-    "latrd": {
+    "tristan": {
       "process": {
         "number": $PROC_NUMBER,
         "rank": $PROC_RANK

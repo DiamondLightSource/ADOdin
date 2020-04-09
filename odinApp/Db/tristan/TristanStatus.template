@@ -1,5 +1,5 @@
-# femHousekeeping.template
-# Defines the housekeeping parameters available from all FEMs.
+# TristanStatus.template
+# Defines the detector level status parameters.
 #
 # Parameters:
 #   P       - EPICS name prefix
