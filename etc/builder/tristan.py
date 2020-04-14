@@ -445,7 +445,7 @@ class TristanOdinDataServer(_OdinDataServer):
     )
 
     def create_odin_data_process(self, server, ready, release, meta, plugin_config):
-        process = _TristanOdinData(server, ready, release, meta, plugin_config, self.sensor, self.BASE_UDP_PORT)
+        process = _TristanOdinData(server, ready, release, meta, self.sensor, self.BASE_UDP_PORT)
         self.BASE_UDP_PORT += 1
         return process
 
