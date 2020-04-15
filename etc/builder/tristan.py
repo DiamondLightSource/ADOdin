@@ -85,7 +85,7 @@ class TristanControlSimulator(Device):
     AutoInstantiate = True
 
     """Store configuration for an TristanOdinControlServer"""
-    def __init__(self, PORT=5100, **args):
+    def __init__(self, PORT=10100, **args):
         self.__dict__.update(locals())
         macros = dict(TRISTAN_DETECTOR_PATH=OdinPaths.TRISTAN_DETECTOR,
                       PORT=PORT)
@@ -104,19 +104,10 @@ class TristanOdinControlServer(_OdinControlServer):
     """Store configuration for an TristanOdinControlServer"""
 
     ODIN_SERVER = os.path.join(OdinPaths.TRISTAN_DETECTOR, "prefix/bin/tristan_odin")
-    CONFIG_TEMPLATES = {
-        "1M": {
-            "chip_mask": "0xFF, 0xFF",
-            "fem_addresses": ["192.168.0.101:6969", "192.168.0.102:6969"]
-        },
-        "10M": {
-            "chip_mask": "0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF",
-            "fem_addresses": ["192.168.0.101:6969", "192.168.0.102:6969", "192.168.0.103:6969",
-                              "192.168.0.104:6969", "192.168.0.105:6969", "192.168.0.106:6969"]
-        }
-    }
 
-    def __init__(self, IP, SENSOR, PORT=8888, META_IP=None,
+    def __init__(self, IP, PORT=8888,
+                 HARDWARE_ENDPOINT="tcp://127.0.0.1:10100",
+                 META_IP=None,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
                  ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None,
                  ODIN_DATA_SERVER_5=None, ODIN_DATA_SERVER_6=None,
@@ -145,7 +136,7 @@ class TristanOdinControlServer(_OdinControlServer):
     ArgInfo = makeArgInfo(__init__,
         IP=Simple("IP address of control server", str),
         PORT=Simple("Port of control server", int),
-        SENSOR=Choice("Sensor type", ["1M", "3M"]),
+        HARDWARE_ENDPOINT=Simple("Detector endpoint", str),
         META_IP=Simple("IP address of meta listener", str),
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
@@ -174,8 +165,8 @@ class TristanOdinControlServer(_OdinControlServer):
     def _create_tristan_config_entry(self):
         return "[adapter.tristan]\n" \
                "module = latrd.detector.tristan_control_adapter.TristanControlAdapter\n" \
-               "endpoint = tcp://127.0.0.1:5100\n" \
-               "firmware = 0.0.1"
+               "endpoint = {}\n" \
+               "firmware = 0.0.1".format(self.HARDWARE_ENDPOINT)
 
     def _create_meta_listener_config_entry(self):
         return "[adapter.meta_listener]\n" \
