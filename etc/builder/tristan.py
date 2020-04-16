@@ -5,12 +5,11 @@ from iocbuilder import Device, AutoSubstitution
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
 
-from util import OdinPaths, expand_template_file, debug_print, \
-                 create_config_entry, OneLineEntry
-from odin import _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, \
-                 _PluginConfig, _FrameProcessorPlugin
-
-
+from util import OdinPaths, expand_template_file, debug_print, create_batch_entry
+from odin import (
+    _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer,
+    _PluginConfig
+)
 
 debug_print("Tristan: {}".format(OdinPaths.TRISTAN_DETECTOR), 1)
 
@@ -33,9 +32,7 @@ class _TristanMetaListener(Device):
     # Device attributes
     AutoInstantiate = True
 
-    def __init__(self, IP,
-                 ODIN_DATA_SERVERS=None,
-                 NUMA_NODE=-1, **args):
+    def __init__(self, IP, ODIN_DATA_SERVERS=None, NUMA_NODE=-1, **args):
         self.__super.__init__()
         # Update attributes with parameters
         self.__dict__.update(locals())
@@ -79,6 +76,7 @@ class _TristanMetaListener(Device):
         entries.append(create_batch_entry(beamline, number, "TristanMetaListener"))
         return number + 1
 
+
 class TristanControlSimulator(Device):
 
     # Device attributes
@@ -95,8 +93,8 @@ class TristanControlSimulator(Device):
 
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
-                          PORT=Simple("Port number of the simulator", int)
-                          )
+        PORT=Simple("Port number of the simulator", int)
+    )
 
 
 class TristanOdinControlServer(_OdinControlServer):
@@ -163,17 +161,20 @@ class TristanOdinControlServer(_OdinControlServer):
         return OdinPaths.TRISTAN_DETECTOR + "/prefix/html/static"
 
     def _create_tristan_config_entry(self):
-        return "[adapter.tristan]\n" \
-               "module = latrd.detector.tristan_control_adapter.TristanControlAdapter\n" \
-               "endpoint = {}\n" \
-               "firmware = 0.0.1".format(self.HARDWARE_ENDPOINT)
+        return (
+            "[adapter.tristan]\n"
+            "module = latrd.detector.tristan_control_adapter.TristanControlAdapter\n"
+            "endpoint = {}\n"
+            "firmware = 0.0.1"
+        ).format(self.HARDWARE_ENDPOINT)
 
     def _create_meta_listener_config_entry(self):
-        return "[adapter.meta_listener]\n" \
-               "module = odin_data.meta_listener_adapter.MetaListenerAdapter\n" \
-               "endpoints = {}:5659\n" \
-               "update_interval = 0.5".format(self.META_IP)
-
+        return (
+            "[adapter.meta_listener]\n"
+            "module = odin_data.meta_listener_adapter.MetaListenerAdapter\n"
+            "endpoints = {}:5659\n"
+            "update_interval = 0.5"
+        ).format(self.META_IP)
 
 
 class _TristanDetectorTemplate(AutoSubstitution):
@@ -188,8 +189,10 @@ class _TristanStatusTemplate(AutoSubstitution):
 def add_tristan_status(cls):
     """Convenience function to add tristanStatusTemplate attributes to a class that
     includes it via an msi include statement rather than verbatim"""
-    cls.Arguments = _TristanStatusTemplate.Arguments + \
+    cls.Arguments = (
+        _TristanStatusTemplate.Arguments +
         [x for x in cls.Arguments if x not in _TristanStatusTemplate.Arguments]
+    )
     cls.ArgInfo = _TristanStatusTemplate.ArgInfo + cls.ArgInfo.filtered(
         without=_TristanStatusTemplate.ArgInfo.Names())
     cls.Defaults.update(_TristanStatusTemplate.Defaults)
@@ -204,8 +207,10 @@ class _TristanFemStatusTemplate(AutoSubstitution):
 def add_tristan_fem_status(cls):
     """Convenience function to add tristanStatusTemplate attributes to a class that
     includes it via an msi include statement rather than verbatim"""
-    cls.Arguments = _TristanFemStatusTemplate.Arguments + \
-                    [x for x in cls.Arguments if x not in _TristanFemStatusTemplate.Arguments]
+    cls.Arguments = (
+        _TristanFemStatusTemplate.Arguments +
+        [x for x in cls.Arguments if x not in _TristanFemStatusTemplate.Arguments]
+    )
     cls.ArgInfo = _TristanFemStatusTemplate.ArgInfo + cls.ArgInfo.filtered(
         without=_TristanFemStatusTemplate.ArgInfo.Names())
     cls.Defaults.update(_TristanFemStatusTemplate.Defaults)
@@ -336,7 +341,7 @@ class TristanDetector(_OdinDetector):
                     ipaddr=process.server.FEM_DEST_IP,
                     port=process.base_udp_port,
                     subnet=process.server.FEM_DEST_SUBNET,
-                    links=[1,0,0,0,0,0,0,0]
+                    links=[1, 0, 0, 0, 0, 0, 0, 0]
                 )
                 fem_config.append(config)
             node_config.append(fem_config)
@@ -352,22 +357,26 @@ class TristanDetector(_OdinDetector):
                     ipaddr=process.server.FEM_DEST_IP,
                     port=process.base_udp_port,
                     subnet=process.server.FEM_DEST_SUBNET,
-                    links=[1,0,0,0,0,0,0,0]
+                    links=[1, 0, 0, 0, 0, 0, 0, 0]
                 )
                 node_config.append(config)
 
         return node_config
 
     # __init__ arguments
-    ArgInfo = ADBaseTemplate.ArgInfo + _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
-        PORT=Simple("Port name for the detector", str),
-        ODIN_CONTROL_SERVER=Ident("Odin control server instance", _OdinControlServer),
-        ODIN_DATA_DRIVER=Ident("OdinDataDriver instance", _OdinDataDriver),
-        SENSOR=Choice("Sensor type", SENSOR_OPTIONS.keys()),
-        UDP_CONFIG=Choice("Type of packet distribution", UDP_OPTIONS),
-        BUFFERS=Simple("Maximum number of NDArray buffers to be created for plugin callbacks", int),
-        MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "
-                      "attached plugins", int)
+    ArgInfo = (
+        ADBaseTemplate.ArgInfo +
+        _SpecificTemplate.ArgInfo +
+        makeArgInfo(__init__,
+            PORT=Simple("Port name for the detector", str),
+            ODIN_CONTROL_SERVER=Ident("Odin control server instance", _OdinControlServer),
+            ODIN_DATA_DRIVER=Ident("OdinDataDriver instance", _OdinDataDriver),
+            SENSOR=Choice("Sensor type", SENSOR_OPTIONS.keys()),
+            UDP_CONFIG=Choice("Type of packet distribution", UDP_OPTIONS),
+            BUFFERS=Simple("Maximum number of NDArray buffers to be created for plugin callbacks", int),
+            MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "
+                          "attached plugins", int)
+        )
     )
 
 
@@ -402,11 +411,13 @@ class _TristanOdinData(_OdinData):
 
         # Generate the frame processor config files
         super(_TristanOdinData, self).create_config_file(
-            "fp", self.CONFIG_TEMPLATES[self.sensor]["FrameProcessor"], extra_macros=macros)
+            "fp", self.CONFIG_TEMPLATES[self.sensor]["FrameProcessor"], extra_macros=macros
+        )
 
         # Generate the frame receiver config files
         super(_TristanOdinData, self).create_config_file(
-            "fr", self.CONFIG_TEMPLATES[self.sensor]["FrameReceiver"], extra_macros=macros)
+            "fr", self.CONFIG_TEMPLATES[self.sensor]["FrameReceiver"], extra_macros=macros
+        )
 
 
 class TristanOdinDataServer(_OdinDataServer):
@@ -450,8 +461,10 @@ def add_tristan_fp_template(cls):
     includes it via an msi include statement rather than verbatim"""
     template_substitutions = ["TOTAL", "ADDRESS"]
 
-    cls.Arguments = _TristanFPTemplate.Arguments + \
-                    [x for x in cls.Arguments if x not in _TristanFPTemplate.Arguments]
+    cls.Arguments = (
+        _TristanFPTemplate.Arguments +
+        [x for x in cls.Arguments if x not in _TristanFPTemplate.Arguments]
+    )
     cls.Arguments = [entry for entry in cls.Arguments if entry not in template_substitutions]
 
     cls.ArgInfo = _TristanFPTemplate.ArgInfo + cls.ArgInfo.filtered(
@@ -497,13 +510,17 @@ class TristanOdinDataDriver(_OdinDataDriver):
         self.__dict__.update(locals())
 
         if self.control_server.META_IP is not None:
-            self._meta = _TristanMetaListener(IP=self.control_server.META_IP, ODIN_DATA_SERVERS=self.control_server.odin_data_servers)
+            self._meta = _TristanMetaListener(
+                IP=self.control_server.META_IP,
+                ODIN_DATA_SERVERS=self.control_server.odin_data_servers
+            )
 
         if self.odin_data_processes not in self.FP_TEMPLATES.keys():
-            raise ValueError("Total number of OdinData processes must be {}".format(
-                self.FP_TEMPLATES.keys()))
+            raise ValueError(
+                "Total number of OdinData processes must be {}".format(self.FP_TEMPLATES.keys())
+            )
         else:
-            sensor = self.ODIN_DATA_PROCESSES[0].sensor 
+            sensor = self.ODIN_DATA_PROCESSES[0].sensor
             gui_name = args["PORT"][:args["PORT"].find(".")] + ".OdinHDF"
             template_args = {
                 "P": args["P"],
@@ -526,4 +543,3 @@ class TristanOdinDataDriver(_OdinDataDriver):
 
     # __init__ arguments
     ArgInfo = _OdinDataDriver.ArgInfo.filtered(without=["DETECTOR"])
-
