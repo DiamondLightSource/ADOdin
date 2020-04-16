@@ -1,7 +1,5 @@
 # % macro, P, Device Prefix
 # % macro, R, Device Suffix
-# % macro, PORT, Asyn Port name
-# % macro, TIMEOUT, Timeout
 # % macro, NAME, Name specifying builder GUI generation
 
 # This associates an edm screen with the template
