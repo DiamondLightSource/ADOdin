@@ -5,7 +5,7 @@ from iocbuilder import Device, AutoSubstitution
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
 
-from util import OdinPaths, expand_template_file, debug_print, create_batch_entry
+from util import OdinPaths, expand_template_file, debug_print, create_batch_entry, create_config_entry
 from odin import (
     _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer,
     _PluginConfig
@@ -310,12 +310,15 @@ class TristanDetector(_OdinDetector):
     def create_round_robin_udp_file(self):
         nodes = self.generate_multi_server_config()
         fems = self.SENSOR_OPTIONS[self.SENSOR][1]
-        k, m = divmod(len(nodes), fems)
-        # Split the nodes into equal parts
-        node_list = list(nodes[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in range(fems))
+        div_floor, div_rem = divmod(len(nodes), fems)
+        # Split the list of all available nodes (FR applications) into equally sized lists
+        node_list = list(nodes[i * div_floor + min(i, div_rem):(i + 1) * div_floor + min(i + 1, div_rem)] for i in range(fems))
 
         udp_config = {}
-        # Now loop over the modules, creating a list for each
+        # Now loop over the modules, creating a full node list for each
+        # After each iteration, move the first block of nodes to the back of the list
+        # This creates a round robin list for each module across all nodes, with each
+        # starting node spread equally across all available nodes
         for index in range(fems):
             module_key = "module{:02d}".format(index+1)
             module_nodes = [element for node in node_list for element in node]
@@ -326,7 +329,7 @@ class TristanDetector(_OdinDetector):
 
         # Generate the udp configuration file
         macros = dict(
-            MODULE_CONFIG="{}".format(json.dumps(udp_config, indent=4, sort_keys=True))
+            MODULE_CONFIG=create_config_entry(udp_config)
         )
         expand_template_file("udp_tristan.json", macros, "udp_tristan.json")
 
