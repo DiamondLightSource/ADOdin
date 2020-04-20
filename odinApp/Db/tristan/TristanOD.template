@@ -6,14 +6,6 @@
 # % macro, TIMEOUT, Timeout
 # % macro, TOTAL, Total number of OdinData nodes
 
-# Parameters:
-#   P       - EPICS name prefix
-#   R       - EPICS plugin name
-#   DET     - Detector R value
-#   PORT    - Asyn port
-#   TOTAL   - Total number of FrameProcessors
-#   TIMEOUT - Timeout
-
 record(calcout, "$(P)$(R)$(ADDRESS)CalcReconnected")
 {
     field(INPA, "$(P)$(DET)DetectorState_RBV CP")
