@@ -185,11 +185,11 @@ record(mbbi, "$(P)$(R)TriggerStop_RBV")
 ###################################################################
 # % autosave 2
 #% archiver 10 Monitor
-record(mbbo, "$(P)$(R)TriggerTimestamp")
+record(mbbo, "$(P)$(R)TriggerTimestampFem")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp/fem")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(TWVL, "2")
@@ -201,11 +201,143 @@ record(mbbo, "$(P)$(R)TriggerTimestamp")
     field(PINI, "1")
 }
 
-record(mbbi, "$(P)$(R)TriggerTimestamp_RBV")
+record(mbbi, "$(P)$(R)TriggerTimestampFem_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp/fem")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "none")
+    field(ONST, "re")
+    field(TWST, "fe")
+    field(THST, "both")
+}
+
+# % autosave 2
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)TriggerTimestampLvds")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp/lvds")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "none")
+    field(ONST, "re")
+    field(TWST, "fe")
+    field(THST, "both")
+    field(PINI, "1")
+}
+
+record(mbbi, "$(P)$(R)TriggerTimestampLvds_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp/lvds")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "none")
+    field(ONST, "re")
+    field(TWST, "fe")
+    field(THST, "both")
+}
+
+# % autosave 2
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)TriggerTimestampSync")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp/sync")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "none")
+    field(ONST, "re")
+    field(TWST, "fe")
+    field(THST, "both")
+    field(PINI, "1")
+}
+
+record(mbbi, "$(P)$(R)TriggerTimestampSync_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp/sync")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "none")
+    field(ONST, "re")
+    field(TWST, "fe")
+    field(THST, "both")
+}
+
+# % autosave 2
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)TriggerTimestampTtl")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp/ttl")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "none")
+    field(ONST, "re")
+    field(TWST, "fe")
+    field(THST, "both")
+    field(PINI, "1")
+}
+
+record(mbbi, "$(P)$(R)TriggerTimestampTtl_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp/ttl")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "none")
+    field(ONST, "re")
+    field(TWST, "fe")
+    field(THST, "both")
+}
+
+# % autosave 2
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)TriggerTimestampTzero")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp/tzero")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "none")
+    field(ONST, "re")
+    field(TWST, "fe")
+    field(THST, "both")
+    field(PINI, "1")
+}
+
+record(mbbi, "$(P)$(R)TriggerTimestampTzero_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp/tzero")
     field(ZRVL, "0")
     field(ONVL, "1")
     field(TWVL, "2")
