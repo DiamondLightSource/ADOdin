@@ -27,10 +27,10 @@ class _EigerProcessPlugin(_DatasetCreationPlugin):
 
         self.size_dataset = size_dataset
 
-    def create_extra_config_entries(self, rank):
+    def create_extra_config_entries(self, rank, total):
         entries = []
         if self.size_dataset:
-            entries = super(_EigerProcessPlugin, self).create_extra_config_entries(rank)
+            entries = super(_EigerProcessPlugin, self).create_extra_config_entries(rank, total)
 
         return entries
 

@@ -32,7 +32,7 @@ class _ExcaliburProcessPlugin(_FrameProcessorPlugin):
 
         self.sensor = sensor
 
-    def create_extra_config_entries(self, rank):
+    def create_extra_config_entries(self, rank, total):
         entries = []
         dimensions_entry = {
             self.NAME: {
@@ -574,7 +574,7 @@ class _ExcaliburGapFillPlugin(_FrameProcessorPlugin):
         self.chip_gap = CHIP_GAP
         self.module_gap = MODULE_GAP
 
-    def create_extra_config_entries(self, rank):
+    def create_extra_config_entries(self, rank, total):
         entries = []
 
         chip_size = [256, 256]

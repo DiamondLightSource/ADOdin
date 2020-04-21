@@ -59,7 +59,7 @@ class _OdinData(Device):
             for plugin in self.plugins:
                 load_entries.append(plugin.create_config_load_entry())
                 connect_entries.append(create_config_entry(plugin.create_config_connect_entry()))
-                config_entries += plugin.create_extra_config_entries(self.RANK)
+                config_entries += plugin.create_extra_config_entries(self.RANK, self.TOTAL)
             for mode in self.plugins.modes:
                 valid_entries = False
                 mode_config_dict = {'store': {'index': mode, 'value': [{'plugin': {'disconnect': 'all'}}]}}
@@ -150,7 +150,7 @@ class _FrameProcessorPlugin(Device):
             }
         return entry
 
-    def create_extra_config_entries(self, rank):
+    def create_extra_config_entries(self, rank, total):
         return []
 
     def create_template(self, template_args):
@@ -234,10 +234,11 @@ class _OdinDataServer(Device):
     def create_odin_data_process(self, server, ready, release, meta, plugin_config):
         raise NotImplementedError("Method must be implemented by child classes")
 
-    def configure_processes(self, server_rank, total_servers):
+    def configure_processes(self, server_rank, total_servers, total_processes):
         rank = server_rank
         for idx, process in enumerate(self.processes):
             process.RANK = rank
+            process.TOTAL = total_processes
             rank += total_servers
 
     def create_od_startup_scripts(self):
@@ -498,7 +499,7 @@ class _OdinDataDriver(AsynPort):
 
         plugin_config = None
         for server_idx, server in enumerate(self.control_server.odin_data_servers):
-            server.configure_processes(server_idx, self.server_count)
+            server.configure_processes(server_idx, self.server_count, self.odin_data_processes)
 
             process_idx = server_idx
             for odin_data in server.processes:

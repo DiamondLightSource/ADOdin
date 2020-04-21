@@ -5,6 +5,7 @@ from iocbuilder import Device, AutoSubstitution
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
 
+from plugins import _DatasetCreationPlugin, _FileWriterPlugin
 from util import OdinPaths, expand_template_file, debug_print, create_batch_entry, create_config_entry
 from odin import (
     _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer,
@@ -19,6 +20,47 @@ TRISTAN_DIMENSIONS = {
     "2M": (2048, 1024),
     "10M": (4096, 2560)
 }
+
+
+class _TristanProcessPlugin(_DatasetCreationPlugin):
+
+    NAME = "tristan"
+    CLASS_NAME = "LATRDProcessPlugin"
+    LIBRARY_PATH = OdinPaths.TRISTAN_DETECTOR
+    DATASETS = [
+        dict(name="raw_data", type="uint64", chunks=[524288]),
+        dict(name="event_id", type="uint32", chunks=[524288]),
+        dict(name="event_time_offset", type="uint64", chunks=[524288]),
+        dict(name="event_energy", type="uint32", chunks=[524288]),
+        dict(name="image", type="uint16", dims=[512, 2048], chunks=[1, 512, 2048]),
+        dict(name="time_slice", type="uint32", chunks=[40])
+    ]
+
+    def __init__(self, sensor):
+        super(_TristanProcessPlugin, self).__init__(None)
+        self._sensor = sensor
+
+    def create_extra_config_entries(self, rank, total):
+        entries = []
+        entries = super(_TristanProcessPlugin, self).create_extra_config_entries(rank, total)
+        entries.append(
+            create_config_entry(
+                {
+                    self.NAME: {
+                        "process": {
+                            "number": total,
+                            "rank": rank
+                        },
+                        "sensor": {
+                            "width": TRISTAN_DIMENSIONS[self._sensor][0],
+                            "height": TRISTAN_DIMENSIONS[self._sensor][1]
+                        }
+                    }
+                }
+            )
+        )
+
+        return entries
 
 
 class _TristanMetaListenerTemplate(AutoSubstitution):
@@ -397,7 +439,15 @@ class _TristanOdinData(_OdinData):
     }
 
     def __init__(self, server, READY, RELEASE, META, SENSOR, BASE_UDP_PORT):
-        super(_TristanOdinData, self).__init__(server, READY, RELEASE, META, None)
+        # Create the Tristan plugin chain
+        tristan_plugin = _TristanProcessPlugin(SENSOR)
+        fw_plugin = _FileWriterPlugin(source=tristan_plugin)
+        plugins = _PluginConfig(
+            PLUGIN_1=tristan_plugin,
+            PLUGIN_2=fw_plugin
+        )
+
+        super(_TristanOdinData, self).__init__(server, READY, RELEASE, META, plugins)
         self.sensor = SENSOR
         self.base_udp_port = BASE_UDP_PORT
 
@@ -413,8 +463,11 @@ class _TristanOdinData(_OdinData):
                       HEIGHT=TRISTAN_DIMENSIONS[self.sensor][1])
 
         # Generate the frame processor config files
+#        super(_TristanOdinData, self).create_config_file(
+#            "fp", self.CONFIG_TEMPLATES[self.sensor]["FrameProcessor"], extra_macros=macros
+#        )
         super(_TristanOdinData, self).create_config_file(
-            "fp", self.CONFIG_TEMPLATES[self.sensor]["FrameProcessor"], extra_macros=macros
+            "fp", "fp_custom.json", extra_macros=macros
         )
 
         # Generate the frame receiver config files

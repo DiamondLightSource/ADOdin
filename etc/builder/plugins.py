@@ -25,21 +25,30 @@ class _UIDAdjustmentPluginTemplate(AutoSubstitution):
 
 class _DatasetCreationPlugin(_FrameProcessorPlugin):
 
+    DATASETS = []
     DATASET_TYPE = "uint64"
 
-    def create_extra_config_entries(self, rank):
-        entries = super(_DatasetCreationPlugin, self).create_extra_config_entries(rank)
-        dataset_entry = {
-            _FileWriterPlugin.NAME: {
-                "dataset": {
-                    self.DATASET_NAME: {
-                        "chunks": OneLineEntry([1000]),
-                        "datatype": self.DATASET_TYPE
+    def create_extra_config_entries(self, rank, total):
+        entries = super(_DatasetCreationPlugin, self).create_extra_config_entries(rank, total)
+        if self.DATASETS is not None:
+            for dset in self.DATASETS:
+                dset_desc = {}
+                if 'type' in dset:
+                    dset_desc['datatype'] = dset['type']
+                if 'dims' in dset:
+                    dset_desc['dims'] = OneLineEntry(dset['dims'])
+                if 'type' in dset:
+                    dset_desc['chunks'] = OneLineEntry(dset['chunks'])
+                else:
+                    dset_desc['chunks'] = OneLineEntry([1000])
+                dataset_entry = {
+                    _FileWriterPlugin.NAME: {
+                        "dataset": {
+                            dset['name']: dset_desc
+                        }
                     }
                 }
-            }
-        }
-        entries.append(create_config_entry(dataset_entry))
+                entries.append(create_config_entry(dataset_entry))
 
         return entries
 
@@ -67,8 +76,8 @@ class _ParameterAdjustmentPlugin(_DatasetCreationPlugin):
             self.PARAMETER_PLUGIN_INSTANTIATED = True
         super(_ParameterAdjustmentPlugin, self).create_template(template_args)
 
-    def create_extra_config_entries(self, rank):
-        entries = super(_ParameterAdjustmentPlugin, self).create_extra_config_entries(rank)
+    def create_extra_config_entries(self, rank, total):
+        entries = super(_ParameterAdjustmentPlugin, self).create_extra_config_entries(rank, total)
         parameter_entry = {
             self.NAME: {
                 "parameter": {
@@ -122,7 +131,7 @@ class _KafkaPlugin(_FrameProcessorPlugin):
 
         self.servers = servers
 
-    def create_extra_config_entries(self, rank):
+    def create_extra_config_entries(self, rank, total):
         entries = []
         source_entry = {
             self.NAME: {
@@ -153,8 +162,20 @@ class _FileWriterPlugin(_FrameProcessorPlugin):
 
         self.indexes = indexes
 
-    def create_extra_config_entries(self, rank):
+    def create_extra_config_entries(self, rank, total):
         entries = []
+        entries.append(
+            create_config_entry(
+                {
+                    self.NAME: {
+                        "process": {
+                            "number": total,
+                            "rank": rank
+                        }
+                    }
+                }
+            )
+        )
         dataset_entry = {
             self.NAME: {
                 "dataset": self.DATASET_NAME,
@@ -192,7 +213,7 @@ class _LiveViewPlugin(_FrameProcessorPlugin):
 
         self.endpoint = None
 
-    def create_extra_config_entries(self, rank):
+    def create_extra_config_entries(self, rank, total):
         entries = []
         self.endpoint = "tcp://0.0.0.0:{}".format(self.BASE_PORT + rank * 10)
         source_entry = {
