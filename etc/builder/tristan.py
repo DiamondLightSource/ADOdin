@@ -28,12 +28,12 @@ class _TristanProcessPlugin(_DatasetCreationPlugin):
     CLASS_NAME = "LATRDProcessPlugin"
     LIBRARY_PATH = OdinPaths.TRISTAN_DETECTOR
     DATASETS = [
-        dict(name="raw_data", type="uint64", chunks=[524288]),
-        dict(name="event_id", type="uint32", chunks=[524288]),
-        dict(name="event_time_offset", type="uint64", chunks=[524288]),
-        dict(name="event_energy", type="uint32", chunks=[524288]),
-        dict(name="image", type="uint16", dims=[512, 2048], chunks=[1, 512, 2048]),
-        dict(name="time_slice", type="uint32", chunks=[40])
+        dict(name="raw_data", datatype="uint64", chunks=[524288]),
+        dict(name="event_id", datatype="uint32", chunks=[524288]),
+        dict(name="event_time_offset", datatype="uint64", chunks=[524288]),
+        dict(name="event_energy", datatype="uint32", chunks=[524288]),
+        dict(name="image", datatype="uint16", dims=[512, 2048], chunks=[1, 512, 2048]),
+        dict(name="time_slice", datatype="uint32", chunks=[40])
     ]
 
     def __init__(self, sensor):
@@ -463,9 +463,6 @@ class _TristanOdinData(_OdinData):
                       HEIGHT=TRISTAN_DIMENSIONS[self.sensor][1])
 
         # Generate the frame processor config files
-#        super(_TristanOdinData, self).create_config_file(
-#            "fp", self.CONFIG_TEMPLATES[self.sensor]["FrameProcessor"], extra_macros=macros
-#        )
         super(_TristanOdinData, self).create_config_file(
             "fp", "fp_custom.json", extra_macros=macros
         )

@@ -19,8 +19,9 @@ class _EigerProcessPlugin(_DatasetCreationPlugin):
     NAME = "eiger"
     CLASS_NAME = "EigerProcessPlugin"
     LIBRARY_PATH = OdinPaths.EIGER_DETECTOR
-    DATASET_NAME = "compressed_size"
-    DATASET_TYPE = "uint32"
+    DATASETS = [
+        dict(name="compressed_size", datatype="uint32")
+    ]
 
     def __init__(self, size_dataset):
         super(_EigerProcessPlugin, self).__init__(None)
