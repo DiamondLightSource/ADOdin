@@ -94,6 +94,9 @@ class _ParameterAdjustmentPlugin(_DatasetCreationPlugin):
 class _UIDAdjustmentPlugin(_ParameterAdjustmentPlugin):
 
     DATASET_NAME = "uid"
+    DATASETS = [
+        dict(name="uid", datatype="uint64")
+    ]
     TEMPLATE = _UIDAdjustmentPluginTemplate
 
     def __init__(self, source=None):
