@@ -59,7 +59,7 @@ class _OdinData(Device):
             for plugin in self.plugins:
                 load_entries.append(plugin.create_config_load_entry())
                 connect_entries.append(create_config_entry(plugin.create_config_connect_entry()))
-                config_entries += plugin.create_extra_config_entries(self.RANK)
+                config_entries += plugin.create_extra_config_entries(self.RANK, self.TOTAL)
             for mode in self.plugins.modes:
                 valid_entries = False
                 mode_config_dict = {'store': {'index': mode, 'value': [{'plugin': {'disconnect': 'all'}}]}}
@@ -80,7 +80,7 @@ class _OdinData(Device):
 
         expand_template_file(template, macros, "{}{}.json".format(prefix, self.RANK + 1))
 
-    def create_config_files(self, index):
+    def create_config_files(self, index, total):
         raise NotImplementedError("Method must be implemented by child classes")
 
     def add_batch_entries(self, entries, beamline, number):
@@ -150,7 +150,7 @@ class _FrameProcessorPlugin(Device):
             }
         return entry
 
-    def create_extra_config_entries(self, rank):
+    def create_extra_config_entries(self, rank, total):
         return []
 
     def create_template(self, template_args):
@@ -234,10 +234,11 @@ class _OdinDataServer(Device):
     def create_odin_data_process(self, server, ready, release, meta, plugin_config):
         raise NotImplementedError("Method must be implemented by child classes")
 
-    def configure_processes(self, server_rank, total_servers):
+    def configure_processes(self, server_rank, total_servers, total_processes):
         rank = server_rank
         for idx, process in enumerate(self.processes):
             process.RANK = rank
+            process.TOTAL = total_processes
             rank += total_servers
 
     def create_od_startup_scripts(self):
@@ -323,7 +324,10 @@ class _OdinControlServer(Device):
 
     def __init__(self, IP, PORT=8888,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
-                 ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None):
+                 ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None,
+                 ODIN_DATA_SERVER_5=None, ODIN_DATA_SERVER_6=None,
+                 ODIN_DATA_SERVER_7=None, ODIN_DATA_SERVER_8=None,
+                 ODIN_DATA_SERVER_9=None, ODIN_DATA_SERVER_10=None):
         self.__super.__init__()
         # Update attributes with parameters
         self.__dict__.update(locals())
@@ -350,7 +354,13 @@ class _OdinControlServer(Device):
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer)
+        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_5=Ident("OdinDataServer 5 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_6=Ident("OdinDataServer 6 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_7=Ident("OdinDataServer 7 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_8=Ident("OdinDataServer 8 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_9=Ident("OdinDataServer 9 configuration", _OdinDataServer),
+        ODIN_DATA_SERVER_10=Ident("OdinDataServer 10 configuration", _OdinDataServer)
     )
 
     def get_extra_startup_macro(self):
@@ -489,7 +499,7 @@ class _OdinDataDriver(AsynPort):
 
         plugin_config = None
         for server_idx, server in enumerate(self.control_server.odin_data_servers):
-            server.configure_processes(server_idx, self.server_count)
+            server.configure_processes(server_idx, self.server_count, self.odin_data_processes)
 
             process_idx = server_idx
             for odin_data in server.processes:
@@ -502,7 +512,7 @@ class _OdinDataDriver(AsynPort):
                 od_args["TOTAL"] = self.odin_data_processes
                 _OdinDataTemplate(**od_args)
 
-                odin_data.create_config_files(process_idx + 1)
+                odin_data.create_config_files(process_idx + 1, self.odin_data_processes)
                 process_idx += self.server_count
 
             if server.plugins is not None:

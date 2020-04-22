@@ -1,0 +1,35 @@
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, NAME, Name specifying builder GUI generation
+
+# This associates an edm screen with the template
+# % gui, $(NAME), edm, Tristan1FemStatus.edl, P=$(P)$(R)
+
+################################################################################
+#
+# Include generic status template
+#
+################################################################################
+
+substitute "ADDRESS=0"
+include "TristanStatus.template"
+
+################################################################################
+#
+# Include 1M status template
+#
+################################################################################
+
+substitute "ADDRESS=0"
+include "TristanFemStatus.template"
+
+################################################################################
+#
+# Number of Modules is 1
+#
+################################################################################
+record(longin, "$(P)$(R)NumberModules_RBV")
+{
+    field(VAL,  "1")
+}
+

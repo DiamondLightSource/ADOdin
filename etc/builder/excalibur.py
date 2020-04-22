@@ -32,7 +32,7 @@ class _ExcaliburProcessPlugin(_FrameProcessorPlugin):
 
         self.sensor = sensor
 
-    def create_extra_config_entries(self, rank):
+    def create_extra_config_entries(self, rank, total):
         entries = []
         dimensions_entry = {
             self.NAME: {
@@ -68,7 +68,7 @@ class _ExcaliburOdinData(_OdinData):
         self.sensor = SENSOR
         self.base_udp_port = BASE_UDP_PORT
 
-    def create_config_files(self, index):
+    def create_config_files(self, index, total):
         macros = dict(DETECTOR=OdinPaths.EXCALIBUR_DETECTOR,
                       RX_PORT_1=self.base_udp_port,
                       RX_PORT_2=self.base_udp_port + 1,
@@ -574,7 +574,7 @@ class _ExcaliburGapFillPlugin(_FrameProcessorPlugin):
         self.chip_gap = CHIP_GAP
         self.module_gap = MODULE_GAP
 
-    def create_extra_config_entries(self, rank):
+    def create_extra_config_entries(self, rank, total):
         entries = []
 
         chip_size = [256, 256]

@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<components arch="linux-x86_64">
+	<ADOdin.TristanControlSimulator PORT="10100" name="TRS.SIM"/>
+	<ADOdin.TristanOdinDataServer FEM_DEST_MAC="AA:AA:AA:AA" IP="127.0.0.1" PROCESSES="4" SENSOR="1M" name="TRS.DATA1"/>
+	<ADOdin.TristanOdinControlServer IP="127.0.0.1" META_IP="127.0.0.1" ODIN_DATA_SERVER_1="TRS.DATA1" name="TRS.CTRL"/>
+	<ADOdin.TristanOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="TRS.CTRL" P="TEST-TRST-01" PORT="TRS.DATA" R=":CAM:" TIMEOUT="1" TOTAL="4"/>
+	<ADOdin.TristanDetector ADDR="0" ODIN_CONTROL_SERVER="TRS.CTRL" ODIN_DATA_DRIVER="TRS.DATA" P="TEST-TRST-01" PORT="TRS.CAM" R=":CAM:" SENSOR="1M" TIMEOUT="1" UDP_CONFIG="ONE2ONE"/>
+	<!--7 => 0.5 Second-->
+	<EPICS_BASE.dbpf name="PollingCam" pv="TEST-TRST-01:CAM:ReadStatus.SCAN" value="7"/>
+	<EPICS_BASE.dbpf name="PollingHdf" pv="TEST-TRST-01:OD:ReadStatus.SCAN" value="7"/>
+	<EPICS_BASE.dbpf name="ImageWidth" pv="TEST-TRST-01:OD:ImageWidth" value="1"/>
+	<EPICS_BASE.dbpf name="ImageHeight" pv="TEST-TRST-01:OD:ImageHeight" value="1"/>
+	<EPICS_BASE.dbpf name="ChunkDepth" pv="TEST-TRST-01:OD:NumFramesChunks" value="1"/>
+	<EPICS_BASE.dbpf name="ChunkWidth" pv="TEST-TRST-01:OD:NumColChunks" value="1"/>
+	<EPICS_BASE.dbpf name="ChunkHeight" pv="TEST-TRST-01:OD:NumRowChunks" value="1"/>
+	<EPICS_BASE.dbpf name="DataType" pv="TEST-TRST-01:OD:DataType" value="UInt16"/>
+</components>

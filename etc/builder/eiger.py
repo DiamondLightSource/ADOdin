@@ -19,18 +19,19 @@ class _EigerProcessPlugin(_DatasetCreationPlugin):
     NAME = "eiger"
     CLASS_NAME = "EigerProcessPlugin"
     LIBRARY_PATH = OdinPaths.EIGER_DETECTOR
-    DATASET_NAME = "compressed_size"
-    DATASET_TYPE = "uint32"
+    DATASETS = [
+        dict(name="compressed_size", datatype="uint32")
+    ]
 
     def __init__(self, size_dataset):
         super(_EigerProcessPlugin, self).__init__(None)
 
         self.size_dataset = size_dataset
 
-    def create_extra_config_entries(self, rank):
+    def create_extra_config_entries(self, rank, total):
         entries = []
         if self.size_dataset:
-            entries = super(_EigerProcessPlugin, self).create_extra_config_entries(rank)
+            entries = super(_EigerProcessPlugin, self).create_extra_config_entries(rank, total)
 
         return entries
 
@@ -155,7 +156,7 @@ class _EigerOdinData(_OdinData):
         self.source = SOURCE_IP
         self.sensor = SENSOR
 
-    def create_config_files(self, index):
+    def create_config_files(self, index, total):
         macros = dict(DETECTOR=OdinPaths.EIGER_DETECTOR,
                       IP=self.source,
                       RX_PORT_SUFFIX=self.RANK,
