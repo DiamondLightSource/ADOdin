@@ -26,24 +26,23 @@ class _UIDAdjustmentPluginTemplate(AutoSubstitution):
 class _DatasetCreationPlugin(_FrameProcessorPlugin):
 
     DATASETS = []
-    DATASET_TYPE = "uint64"
 
     def create_extra_config_entries(self, rank, total):
         entries = super(_DatasetCreationPlugin, self).create_extra_config_entries(rank, total)
         if self.DATASETS is not None:
             for dset in self.DATASETS:
-                dset_desc = {}
-                if 'type' in dset:
-                    dset_desc['datatype'] = dset['type']
+                dset_desc = {
+                    'datatype': dset['datatype']
+                }
                 if 'dims' in dset:
                     dset_desc['dims'] = OneLineEntry(dset['dims'])
-                if 'type' in dset:
+                if 'chunks' in dset:
                     dset_desc['chunks'] = OneLineEntry(dset['chunks'])
                 else:
                     dset_desc['chunks'] = OneLineEntry([1000])
                 dataset_entry = {
                     _FileWriterPlugin.NAME: {
-                        "dataset": {
+                        'dataset': {
                             dset['name']: dset_desc
                         }
                     }
