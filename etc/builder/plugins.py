@@ -108,7 +108,9 @@ class _SumPlugin(_DatasetCreationPlugin):
 
     NAME = "sum"
     CLASS_NAME = "SumPlugin"
-    DATASET_NAME = "sum"
+    DATASETS = [
+        dict(name="sum", datatype="uint64")
+    ]
     TEMPLATE = _SumPluginTemplate
 
     def __init__(self, source=None):
