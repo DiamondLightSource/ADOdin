@@ -78,18 +78,27 @@ asynStatus OdinClient::dynamicParam(asynUser *pasynUser,
   // _ODC_...  => Command parameter (Write-only integer parameter)
   // _ODxn_... => Array size n of type x
   if (findParam(drvInfo, &index) && strlen(drvInfo) > 5 && strncmp(drvInfo, "_OD", 2) == 0 &&
-      (drvInfo[4] == '_' or drvInfo[5] == '_')) {
+      (drvInfo[4] == '_' or drvInfo[5] == '_' or drvInfo[6] == '_')) {
     // Decide if the parameter is an array
     if (drvInfo[5] == '_'){
       // drvInfo[4] contains the array size for this parameter
       arraySize = drvInfo[4] - '0';
     }
-
+    if (drvInfo[6] == '_'){
+      // This is an array with greater than 9 elements
+      int tens = drvInfo[4] - '0';
+      int units = drvInfo[5] - '0';
+      arraySize = (tens * 10) + units;
+    }
     // Retrieve the name of the variable
     if (arraySize == 0){
       httpRequest = epicsStrDup(drvInfo + 5);
     } else {
-      httpRequest = epicsStrDup(drvInfo + 6);
+      if (arraySize < 10){
+        httpRequest = epicsStrDup(drvInfo + 6);
+      } else {
+        httpRequest = epicsStrDup(drvInfo + 7);
+      }
     }
 
     std::stringstream temp;
