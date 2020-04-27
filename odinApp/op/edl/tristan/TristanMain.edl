@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1186
-y 110
+x 837
+y 102
 w 390
 h 820
 font "arial-bold-r-12.0"
@@ -45,9 +45,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 5
+x 200
 y 550
-w 380
+w 185
 h 265
 lineColor index 14
 fill
@@ -60,8 +60,8 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 80
-y 595
+x 275
+y 600
 w 105
 h 25
 controlPv "$(P)$(R)CounterDepth"
@@ -79,8 +79,8 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 80
-y 565
+x 275
+y 570
 w 105
 h 25
 controlPv "$(P)$(R)OperationMode"
@@ -101,7 +101,7 @@ release 0
 x 5
 y 230
 w 185
-h 310
+h 585
 lineColor index 14
 fill
 fillColor index 3
@@ -113,8 +113,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 10
-y 565
+x 205
+y 570
 w 65
 h 25
 font "arial-bold-r-12.0"
@@ -154,7 +154,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 5
+x 200
 y 545
 w 88
 h 13
@@ -1244,8 +1244,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 10
-y 595
+x 205
+y 600
 w 65
 h 25
 font "arial-bold-r-12.0"
@@ -1342,8 +1342,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 80
-y 595
+x 275
+y 600
 w 105
 h 25
 fgColor index 25
@@ -1362,8 +1362,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 80
-y 565
+x 275
+y 570
 w 105
 h 25
 fgColor index 25
@@ -1471,7 +1471,7 @@ major 4
 minor 0
 release 0
 x 80
-y 310
+y 335
 w 105
 h 25
 fgColor index 25
@@ -1479,8 +1479,8 @@ bgColor index 3
 inconsistentColor index 0
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)TriggerTimestamp"
-indicatorPv "$(P)$(R)TriggerTimestamp_RBV"
+controlPv "$(P)$(R)TriggerTimestampFem"
+indicatorPv "$(P)$(R)TriggerTimestampFem_RBV"
 font "arial-bold-r-12.0"
 endObjectProperties
 
@@ -1491,7 +1491,7 @@ major 4
 minor 0
 release 0
 x 80
-y 340
+y 510
 w 105
 h 25
 fgColor index 25
@@ -1511,7 +1511,7 @@ major 4
 minor 0
 release 0
 x 80
-y 370
+y 540
 w 105
 h 25
 fgColor index 25
@@ -1531,7 +1531,7 @@ major 4
 minor 0
 release 0
 x 80
-y 400
+y 570
 w 105
 h 25
 fgColor index 25
@@ -1551,7 +1551,7 @@ major 4
 minor 0
 release 0
 x 80
-y 430
+y 600
 w 105
 h 25
 fgColor index 25
@@ -1571,7 +1571,7 @@ major 4
 minor 0
 release 0
 x 80
-y 460
+y 630
 w 105
 h 25
 fgColor index 25
@@ -1591,7 +1591,7 @@ major 4
 minor 0
 release 0
 x 80
-y 490
+y 660
 w 105
 h 25
 fgColor index 25
@@ -1671,7 +1671,7 @@ major 4
 minor 1
 release 1
 x 10
-y 340
+y 510
 w 65
 h 25
 font "arial-bold-r-12.0"
@@ -1691,7 +1691,7 @@ major 4
 minor 1
 release 1
 x 10
-y 370
+y 540
 w 65
 h 25
 font "arial-bold-r-12.0"
@@ -1711,7 +1711,7 @@ major 4
 minor 1
 release 1
 x 10
-y 400
+y 570
 w 65
 h 25
 font "arial-bold-r-12.0"
@@ -1732,7 +1732,7 @@ major 4
 minor 1
 release 1
 x 10
-y 430
+y 600
 w 65
 h 25
 font "arial-bold-r-12.0"
@@ -1752,7 +1752,7 @@ major 4
 minor 1
 release 1
 x 10
-y 460
+y 630
 w 65
 h 25
 font "arial-bold-r-12.0"
@@ -1772,7 +1772,7 @@ major 4
 minor 1
 release 1
 x 10
-y 490
+y 660
 w 65
 h 25
 font "arial-bold-r-12.0"
@@ -1783,5 +1783,185 @@ useDisplayBg
 value {
   "LVDS Out"
 }
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 335
+w 65
+h 25
+font "arial-bold-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FEM"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 365
+w 65
+h 25
+font "arial-bold-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "LVDS"
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 80
+y 365
+w 105
+h 25
+fgColor index 25
+bgColor index 3
+inconsistentColor index 0
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)TriggerTimestampLvds"
+indicatorPv "$(P)$(R)TriggerTimestampLvds_RBV"
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 395
+w 65
+h 25
+font "arial-bold-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Sync"
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 80
+y 395
+w 105
+h 25
+fgColor index 25
+bgColor index 3
+inconsistentColor index 0
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)TriggerTimestampSync"
+indicatorPv "$(P)$(R)TriggerTimestampSync_RBV"
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 425
+w 65
+h 25
+font "arial-bold-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "TTL"
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 80
+y 425
+w 105
+h 25
+fgColor index 25
+bgColor index 3
+inconsistentColor index 0
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)TriggerTimestampTtl"
+indicatorPv "$(P)$(R)TriggerTimestampTtl_RBV"
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 455
+w 65
+h 25
+font "arial-bold-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "T Zero"
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 80
+y 455
+w 105
+h 25
+fgColor index 25
+bgColor index 3
+inconsistentColor index 0
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)TriggerTimestampTzero"
+indicatorPv "$(P)$(R)TriggerTimestampTzero_RBV"
+font "arial-bold-r-12.0"
 endObjectProperties
 

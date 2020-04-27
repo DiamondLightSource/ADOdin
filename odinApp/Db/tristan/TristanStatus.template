@@ -82,29 +82,182 @@ record(ai, "$(P)$(R)$(ADDRESS):FanTemp_RBV")
 }
 
 #% archiver 1 monitor
-record(ai, "$(P)$(R)$(ADDRESS):SensorHumidity_RBV")
+record(ai, "$(P)$(R)$(ADDRESS):SensorHumidity0_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynFloat64")
     field(VAL,  "0.0")
-    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/humidity")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/humidity_0")
 }
 
 #% archiver 1 monitor
-record(ai, "$(P)$(R)$(ADDRESS):SensorTemp_0_RBV")
+record(ai, "$(P)$(R)$(ADDRESS):SensorHumidity1_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynFloat64")
     field(VAL,  "0.0")
-    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/humidity_1")
 }
 
 #% archiver 1 monitor
-record(ai, "$(P)$(R)$(ADDRESS):SensorTemp_1_RBV")
+record(ai, "$(P)$(R)$(ADDRESS):SensorTempAsics0_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynFloat64")
     field(VAL,  "0.0")
-    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_1")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_asics_0")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorTempAsics1_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_asics_1")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorTempAsics2_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_asics_2")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorTempAsics3_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_asics_3")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorTempAsics4_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_asics_4")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorTempAsics5_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_asics_5")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorTempAsics6_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_asics_6")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorTempAsics7_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_asics_7")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorTempAsics8_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_asics_8")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorTempAsics9_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_asics_9")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorTempAsics10_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_asics_10")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorTempAsics11_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_asics_11")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorTempAsics12_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_asics_12")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorTempAsics13_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_asics_13")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorTempAsics14_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_asics_14")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorTempAsics15_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_asics_15")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorTempPcb0_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_pcb_0")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorTempPcb1_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_pcb_1")
 }
 

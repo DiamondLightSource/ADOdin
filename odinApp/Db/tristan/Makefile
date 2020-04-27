@@ -13,7 +13,6 @@ include $(TOP)/configure/CONFIG
 
 DB += TristanDetector.template
 DB += TristanStatus.template
-DB += TristanFemStatus.template
 DB += Tristan1MStatus.template
 DB += Tristan2MStatus.template
 DB += Tristan10MStatus.template

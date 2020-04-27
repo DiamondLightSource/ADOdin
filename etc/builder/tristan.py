@@ -241,38 +241,17 @@ def add_tristan_status(cls):
     return cls
 
 
-class _TristanFemStatusTemplate(AutoSubstitution):
-    WarnMacros = False
-    TemplateFile = "TristanFemStatus.template"
-
-
-def add_tristan_fem_status(cls):
-    """Convenience function to add tristanStatusTemplate attributes to a class that
-    includes it via an msi include statement rather than verbatim"""
-    cls.Arguments = (
-        _TristanFemStatusTemplate.Arguments +
-        [x for x in cls.Arguments if x not in _TristanFemStatusTemplate.Arguments]
-    )
-    cls.ArgInfo = _TristanFemStatusTemplate.ArgInfo + cls.ArgInfo.filtered(
-        without=_TristanFemStatusTemplate.ArgInfo.Names())
-    cls.Defaults.update(_TristanFemStatusTemplate.Defaults)
-    return cls
-
-
 @add_tristan_status
-@add_tristan_fem_status
 class _Tristan1MStatusTemplate(AutoSubstitution):
     TemplateFile = "Tristan1MStatus.template"
 
 
 @add_tristan_status
-@add_tristan_fem_status
 class _Tristan2MStatusTemplate(AutoSubstitution):
     TemplateFile = "Tristan2MStatus.template"
 
 
 @add_tristan_status
-@add_tristan_fem_status
 class _Tristan10MStatusTemplate(AutoSubstitution):
     TemplateFile = "Tristan10MStatus.template"
 
@@ -432,6 +411,10 @@ class _TristanOdinData(_OdinData):
             "FrameProcessor": "fp_tristan.json",
             "FrameReceiver": "fr_tristan.json"
         },
+        "2M": {
+            "FrameProcessor": "fp_tristan.json",
+            "FrameReceiver": "fr_tristan.json"
+        },
         "10M": {
             "FrameProcessor": "fp_tristan.json",
             "FrameReceiver": "fr_tristan.json"
@@ -490,7 +473,7 @@ class TristanOdinDataServer(_OdinDataServer):
     ArgInfo = makeArgInfo(__init__,
         IP=Simple("IP address of server hosting OdinData processes", str),
         PROCESSES=Simple("Number of OdinData processes on this server", int),
-        SENSOR=Choice("Sensor type", ["1M", "10M"]),
+        SENSOR=Choice("Sensor type", ["1M", "2M", "10M"]),
         FEM_DEST_MAC=Simple("MAC address of node data link (destination for FEM to send to)", str),
         FEM_DEST_IP=Simple("IP address of node data link (destination for FEM to send to)", str),
         FEM_DEST_NAME=Simple("Name of the destination netowrk interface", str),

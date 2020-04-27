@@ -18,17 +18,6 @@ include "TristanStatus.template"
 
 ################################################################################
 #
-# Include 2M status template
-#
-################################################################################
-
-substitute "ADDRESS=0"
-include "TristanFemStatus.template"
-substitute "ADDRESS=1"
-include "TristanFemStatus.template"
-
-################################################################################
-#
 # Number of Modules is 2
 #
 ################################################################################

@@ -360,7 +360,7 @@ record(mbbo, "$(P)$(R)TriggerTTLInTerm")
     field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/ttl_in_term")
     field(ZRVL, "0")
     field(ONVL, "1")
-    field(ZRST, "term_50_ohm")
+    field(ZRST, "term_50ohm")
     field(ONST, "hi_z")
     field(PINI, "1")
 }
@@ -372,7 +372,7 @@ record(mbbi, "$(P)$(R)TriggerTTLInTerm_RBV")
     field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/ttl_in_term")
     field(ZRVL, "0")
     field(ONVL, "1")
-    field(ZRST, "term_50_ohm")
+    field(ZRST, "term_50ohm")
     field(ONST, "hi_z")
 }
 
@@ -385,7 +385,7 @@ record(mbbo, "$(P)$(R)TriggerTTLOutTerm")
     field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/ttl_out_term")
     field(ZRVL, "0")
     field(ONVL, "1")
-    field(ZRST, "term_50_ohm")
+    field(ZRST, "term_50ohm")
     field(ONST, "lo_z")
     field(PINI, "1")
 }
@@ -397,7 +397,7 @@ record(mbbi, "$(P)$(R)TriggerTTLOutTerm_RBV")
     field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/ttl_out_term")
     field(ZRVL, "0")
     field(ONVL, "1")
-    field(ZRST, "term_50_ohm")
+    field(ZRST, "term_50ohm")
     field(ONST, "lo_z")
 }
 
@@ -572,6 +572,111 @@ record(mbbi, "$(P)$(R)TriggerLVDSOut_RBV")
     field(SVST, "lvds")
     field(EIST, "ttl")
 }
+
+################################################################################
+#
+# Clock status
+#
+################################################################################
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)ClockFrequency_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_status/clock/clock_freq")
+}
+
+#% archiver 1 monitor
+record(longin, "$(P)$(R)ClockDpllHold_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/clock/dpll_hold")
+}
+
+#% archiver 1 monitor
+record(longin, "$(P)$(R)ClockDpllLol_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/clock/dpll_lol")
+}
+
+################################################################################
+#
+# Detector Description
+#
+################################################################################
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)Description_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/description")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)SensorMaterial_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/sensor_material")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)SensorThickness_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/sensor_thickness")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)SerialNumber_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/serial_number")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)SoftwareVersion_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/software_version")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)XPixelSize_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/x_pixel_size")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)YPixelSize_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/y_pixel_size")
+}
+
+#% archiver 1 monitor
+record(longin, "$(P)$(R)TimesliceNumber_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_status/detector/timeslice_number")
+}
+
 
 ###################################################################
 #  Set the Live View Endpoint                                     #
