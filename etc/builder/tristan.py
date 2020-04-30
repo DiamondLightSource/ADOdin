@@ -21,7 +21,6 @@ TRISTAN_DIMENSIONS = {
     "10M": (4096, 2560)
 }
 
-
 class _TristanProcessPlugin(_DatasetCreationPlugin):
 
     NAME = "tristan"
@@ -125,18 +124,20 @@ class TristanControlSimulator(Device):
     AutoInstantiate = True
 
     """Store configuration for an TristanOdinControlServer"""
-    def __init__(self, PORT=10100, **args):
+    def __init__(self, PORT=10100, SENSOR="1M", **args):
         self.__dict__.update(locals())
         macros = dict(TRISTAN_DETECTOR_PATH=OdinPaths.TRISTAN_DETECTOR,
-                      PORT=PORT)
+                      PORT=PORT,
+                      SENSOR=SENSOR)
 
         expand_template_file("tristan_simulator_startup", macros, "stTristanSimulator.sh", executable=True)
         super(TristanControlSimulator, self).__init__()
 
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
-        PORT=Simple("Port number of the simulator", int)
-    )
+        PORT=Simple("Port number of the simulator", int),
+        SENSOR=Choice("Sensor type", TRISTAN_DIMENSIONS.keys())
+   )
 
 
 class TristanOdinControlServer(_OdinControlServer):
