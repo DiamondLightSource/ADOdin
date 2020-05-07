@@ -70,7 +70,7 @@ class _OdinData(Device):
                         mode_config_dict['store']['value'].append(entry)
                 if valid_entries:
                     connect_entries.append(create_config_entry(mode_config_dict))
-            
+
             custom_plugin_config_macros = dict(
                 LOAD_ENTRIES=",\n  ".join(load_entries),
                 CONNECT_ENTRIES=",\n  ".join(connect_entries),
@@ -478,7 +478,7 @@ class _OdinDataDriver(AsynPort):
         self.server_count = len(self.control_server.odin_data_servers)
 
         # Make an instance of our template
-        args["TOTAL"] = self.server_count
+        args["TOTAL"] = self.control_server.odin_data_processes
         makeTemplateInstance(_OdinDataDriverTemplate, locals(), args)
 
         # Define Macros for Initialise substitutions
@@ -487,18 +487,13 @@ class _OdinDataDriver(AsynPort):
         self.DETECTOR_PLUGIN = DETECTOR.lower()
         self.ODIN_DATA_PROCESSES = []
 
-        self.odin_data_processes = 0
-        # Calculate the total number of FR/FP pairs
+        plugin_config = None
         for server_idx, server in enumerate(self.control_server.odin_data_servers):
             if server.instantiated:
                 raise ValueError("Same OdinDataServer object given twice")
             else:
                 server.instantiated = True
-            for odin_data in server.processes:
-                self.odin_data_processes += 1
 
-        plugin_config = None
-        for server_idx, server in enumerate(self.control_server.odin_data_servers):
             server.configure_processes(server_idx, self.server_count, self.odin_data_processes)
 
             process_idx = server_idx
