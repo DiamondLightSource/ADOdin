@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <components arch="linux-x86_64">
-	<ADOdin.TristanControlSimulator PORT="27654" name="TRS.SIM"/>
-	<ADOdin.TristanOdinDataServer FEM_DEST_MAC="AA:AA:AA:AA" IP="127.0.0.1" PROCESSES="4" SENSOR="10M" name="TRS.DATA1"/>
+	<ADOdin.TristanControlSimulator PORT="27654" SENSOR="10M" name="TRS.SIM"/>
+	<ADOdin.TristanOdinDataServer FEM_DEST_MAC="AA:AA:AA:AA" IP="127.0.0.1" PROCESSES="8" SENSOR="10M" name="TRS.DATA1"/>
 	<ADOdin.TristanOdinControlServer HARDWARE_ENDPOINT="tcp://127.0.0.1:27654" IP="127.0.0.1" META_IP="127.0.0.1" ODIN_DATA_SERVER_1="TRS.DATA1" name="TRS.CTRL"/>
-	<ADOdin.TristanOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="TRS.CTRL" P="TEST-TRST-01" PORT="TRS.DATA" R=":CAM:" TIMEOUT="1" TOTAL="4"/>
+	<ADOdin.TristanOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="TRS.CTRL" P="TEST-TRST-01" PORT="TRS.DATA" R=":CAM:" TIMEOUT="1" TOTAL="8"/>
 	<ADOdin.TristanDetector ADDR="0" ODIN_CONTROL_SERVER="TRS.CTRL" ODIN_DATA_DRIVER="TRS.DATA" P="TEST-TRST-01" PORT="TRS.CAM" R=":CAM:" SENSOR="10M" TIMEOUT="1" UDP_CONFIG="ROUNDROBIN"/>
 	<!--7 => 0.5 Second-->
 	<EPICS_BASE.dbpf name="PollingCam" pv="TEST-TRST-01:CAM:ReadStatus.SCAN" value="7"/>
@@ -14,4 +14,5 @@
 	<EPICS_BASE.dbpf name="ChunkWidth" pv="TEST-TRST-01:OD:NumColChunks" value="1"/>
 	<EPICS_BASE.dbpf name="ChunkHeight" pv="TEST-TRST-01:OD:NumRowChunks" value="1"/>
 	<EPICS_BASE.dbpf name="DataType" pv="TEST-TRST-01:OD:DataType" value="UInt16"/>
+	<ADOdin.OdinStartAllScript driver="TRS.DATA" name="StartAllScript"/>
 </components>
