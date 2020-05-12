@@ -478,7 +478,8 @@ class _OdinDataDriver(AsynPort):
         self.server_count = len(self.control_server.odin_data_servers)
 
         # Make an instance of our template
-        args["TOTAL"] = self.control_server.odin_data_processes
+        self.odin_data_processes = len(self.control_server.odin_data_processes)
+        args["TOTAL"] = self.odin_data_processes
         makeTemplateInstance(_OdinDataDriverTemplate, locals(), args)
 
         # Define Macros for Initialise substitutions
