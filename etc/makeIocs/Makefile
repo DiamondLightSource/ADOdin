@@ -19,7 +19,7 @@ include $(TOP)/configure/RULES
 
 # General rule for building a Standard IOC from an XML file
 ../../makeIocs/O.Common/%: ../%.xml
-	$(RMDIR) ../O.Common/tmp $@     
+	$(RMDIR) ../O.Common/tmp $@
 	$(XMLBUILDER) $(DEBUG) -e -o ../O.Common/tmp $<
 	$(MV) ../O.Common/tmp/$(*F) $@
 
@@ -40,6 +40,12 @@ include $(TOP)/configure/RULES
 	$(RMDIR) ../O.Common/tmp $@
 	./$< $(DEBUG) --sim=linux-x86 -e -o ../O.Common/tmp $*
 	$(MV) ../O.Common/tmp/$(*F)_sim $@
+
+# Install custom ioc from O.Common
+$(CUSTOM_DIRS): $(TOP)/iocs/%: ../../makeIocs/O.Common/%
+	$(RMDIR) $@
+	$(CP) -rf $< $@
+	../prepareCustom.sh $@ $(*F)
 
 # Install ioc from O.Common
 $(TOP)/iocs/%: ../../makeIocs/O.Common/%

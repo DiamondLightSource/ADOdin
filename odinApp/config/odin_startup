@@ -7,7 +7,7 @@ PYTHON_EXPORTS="export PYTHONPATH=$DETECTOR/prefix/lib/python2.7/site-packages:$
 
 ${SCRIPTS}
 OdinServer="$$PYTHON_EXPORTS$$SCRIPT_DIR/stOdinServer.sh"
-IOC="$$IOC_ROOT/bin/linux-x86_64/st$$IOC_NAME.sh"
+IOC="$$IOC_ROOT/bin/linux-x86_64/st$$IOC_NAME.sh 6064"
 
 ${COMMANDS}
 sleep 1
