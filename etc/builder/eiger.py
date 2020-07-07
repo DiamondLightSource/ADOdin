@@ -250,7 +250,7 @@ class _EigerV18DetectorTemplate(AutoSubstitution):
 
 class EigerDetector(_OdinDetector):
 
-    """Create an Excalibur detector"""
+    """Create an Eiger detector"""
 
     DETECTOR = "eiger"
     DETECTOR_OPTIONS = {  # (AutoSubstitution Template, API)
