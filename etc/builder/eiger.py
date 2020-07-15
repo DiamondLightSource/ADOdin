@@ -304,9 +304,6 @@ class EigerOdinControlServer(_OdinControlServer):
 
     ODIN_SERVER = os.path.join(OdinPaths.EIGER_DETECTOR, "prefix/bin/eiger_odin")
 
-#    # This tells xmlbuilder to use PORT instead of name as the row ID
-#    UniqueName = "PORT"
-#
     def __init__(self, ENDPOINT, API, IP, EIGER_FAN, META_LISTENER, CTRL_PORT=8888,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
                  ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None):
@@ -320,22 +317,7 @@ class EigerOdinControlServer(_OdinControlServer):
             IP, CTRL_PORT, ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4
         )
 
-#        template_args = {
-#            "P": P,
-#            "R": R,
-#            "PORT": PORT,
-#            "ADDR": ADDRESS,
-#            "TIMEOUT": "1.0"
-#        }
-#        makeTemplateInstance(_EigerV16DetectorTemplate, locals(), template_args)
-
-
-    # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
-#        P=Simple("Record prefix", str),
-#        R=Simple("Record suffix", str),
-#        PORT=Simple("Port name for the detector", str),
-#        ADDRESS=Simple("Port address for the detector", int),
         ENDPOINT=Simple("Detector endpoint", str),
         API=Choice("API version", ["1.6.0", "1.8.0"]),
         IP=Simple("IP address of control server", str),
