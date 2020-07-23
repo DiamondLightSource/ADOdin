@@ -1,6 +1,10 @@
 #!/bin/bash
 # Checks the local machine for odin-data processing setup. Checks for GPFS mount and for shared memory setup
 
+# Check beamline macro
+bl="$(echo $BEAMLINE)"
+echo "  Beamline: $bl"
+
 # Check RHEL version
 rh="$(cat /etc/redhat-release)"
 echo "  Redhat version:" $rh
