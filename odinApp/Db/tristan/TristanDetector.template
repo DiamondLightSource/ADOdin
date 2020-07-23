@@ -20,6 +20,21 @@ record(longin, "$(P)$(R)ArrayCounter_RBV")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_status/detector/frames_acquired")
 }
 
+# Number of UDP packets that the detector has sent in current acquisition.
+#% archiver 1 monitor
+record(longin, "$(P)$(R)UdpSent_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_status/detector/udp_packets_sent")
+}
+
+# Number of UDP packets that the FRs have received.
+#% archiver 1 monitor
+record(longin, "$(P)$(R)UdpReceived_RBV")
+{
+}
+
 # Operation mode.
 # % autosave 2
 #% archiver 10 Monitor

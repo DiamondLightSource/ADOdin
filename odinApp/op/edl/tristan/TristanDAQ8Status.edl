@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 740
-y 148
+y 185
 w 891
 h 581
 font "arial-medium-r-12.0"
@@ -182,5 +182,47 @@ botShadowColor index 11
 label "EXIT"
 font "arial-bold-r-12.0"
 3d
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 175
+y 305
+w 40
+h 20
+fgColor index 25
+onColor index 3
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):OD:ResetAllFR.PROC"
+pressValue "1"
+onLabel "Reset"
+offLabel "Reset"
+3d
+font "arial-bold-r-10.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 15
+y 305
+w 155
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Reset all FR applications"
+}
 endObjectProperties
 

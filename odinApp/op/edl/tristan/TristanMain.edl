@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 837
-y 102
+x 834
+y 131
 w 390
 h 820
 font "arial-bold-r-12.0"
@@ -31,7 +31,7 @@ major 4
 minor 0
 release 0
 x 0
-y 10
+y 0
 w 390
 h 820
 lineColor index 5
@@ -46,9 +46,9 @@ major 4
 minor 0
 release 0
 x 200
-y 550
+y 565
 w 185
-h 265
+h 85
 lineColor index 14
 fill
 fillColor index 3
@@ -61,7 +61,7 @@ major 10
 minor 0
 release 0
 x 275
-y 600
+y 615
 w 105
 h 25
 controlPv "$(P)$(R)CounterDepth"
@@ -80,7 +80,7 @@ major 10
 minor 0
 release 0
 x 275
-y 570
+y 585
 w 105
 h 25
 controlPv "$(P)$(R)OperationMode"
@@ -114,7 +114,7 @@ major 4
 minor 1
 release 1
 x 205
-y 570
+y 585
 w 65
 h 25
 font "arial-bold-r-12.0"
@@ -155,7 +155,7 @@ major 4
 minor 1
 release 1
 x 200
-y 545
+y 560
 w 88
 h 13
 font "arial-medium-r-12.0"
@@ -586,7 +586,7 @@ release 0
 x 200
 y 315
 w 185
-h 125
+h 240
 lineColor index 14
 fill
 fillColor index 3
@@ -899,25 +899,6 @@ font "arial-bold-r-12.0"
 fontAlign "center"
 endObjectProperties
 
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 205
-y 355
-w 115
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Array Rate (fps)"
-}
-endObjectProperties
-
 # (Textupdate)
 object TextupdateClass
 beginObjectProperties
@@ -1203,41 +1184,6 @@ font "arial-bold-r-12.0"
 fontAlign "center"
 endObjectProperties
 
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 200
-y 450
-w 185
-h 90
-lineColor index 14
-fill
-fillColor index 3
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 200
-y 445
-w 106
-h 13
-font "arial-medium-r-12.0"
-fgColor index 14
-bgColor index 5
-value {
-  "   Power Supplies   "
-}
-autoSize
-border
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -1245,7 +1191,7 @@ major 4
 minor 1
 release 1
 x 205
-y 600
+y 615
 w 65
 h 25
 font "arial-bold-r-12.0"
@@ -1258,84 +1204,6 @@ value {
 }
 endObjectProperties
 
-# (Byte)
-object ByteClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 290
-y 470
-w 20
-h 20
-controlPv "$(P)$(R)CONFIG:ACQUIRE:LvControl_RBV"
-lineColor index 14
-onColor index 15
-offColor index 20
-lineWidth 2
-endian "little"
-numBits 1
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 210
-y 470
-w 75
-h 20
-font "arial-bold-r-12.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Low Voltage"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 210
-y 495
-w 75
-h 20
-font "arial-bold-r-12.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "High Voltage"
-}
-endObjectProperties
-
-# (Byte)
-object ByteClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 290
-y 495
-w 20
-h 20
-controlPv "$(P)$(R)BIAS_ON_OFF_RBV"
-lineColor index 14
-onColor index 15
-offColor index 20
-lineWidth 2
-endian "little"
-numBits 1
-endObjectProperties
-
 # (Menu Button)
 object activeMenuButtonClass
 beginObjectProperties
@@ -1343,7 +1211,7 @@ major 4
 minor 0
 release 0
 x 275
-y 600
+y 615
 w 105
 h 25
 fgColor index 25
@@ -1363,7 +1231,7 @@ major 4
 minor 0
 release 0
 x 275
-y 570
+y 585
 w 105
 h 25
 fgColor index 25
@@ -1962,6 +1830,222 @@ topShadowColor index 1
 botShadowColor index 11
 controlPv "$(P)$(R)TriggerTimestampTzero"
 indicatorPv "$(P)$(R)TriggerTimestampTzero_RBV"
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 205
+y 355
+w 115
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Array Rate (fps)"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 205
+y 480
+w 65
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Sent"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 205
+y 455
+w 115
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "UDP Packets"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 205
+y 505
+w 65
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Received"
+}
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 265
+y 480
+w 115
+h 20
+controlPv "$(P)$(R)UdpSent_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 265
+y 505
+w 115
+h 20
+controlPv "$(P)$(R)UdpReceived_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 340
+y 530
+w 40
+h 20
+fgColor index 25
+onColor index 3
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):OD:ResetAllFR.PROC"
+pressValue "1"
+onLabel "Reset"
+offLabel "Reset"
+3d
+font "arial-bold-r-10.0"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 660
+w 185
+h 60
+lineColor index 14
+fill
+fillColor index 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 200
+y 680
+w 65
+h 25
+font "arial-bold-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Time"
+  "Zero"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 200
+y 655
+w 51
+h 13
+font "arial-medium-r-12.0"
+fgColor index 14
+bgColor index 5
+value {
+  "  Timing  "
+}
+autoSize
+border
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 275
+y 680
+w 105
+h 25
+fgColor index 25
+onColor index 3
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)CommandTimeZero.PROC"
+pressValue "1"
+onLabel "time_zero"
+offLabel "time_zero"
+3d
 font "arial-bold-r-12.0"
 endObjectProperties
 

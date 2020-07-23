@@ -26,3 +26,10 @@ record(stringout, "$(P)$(R)$(ADDRESS)FPOperationMode")
     field(DTYP, "asynOctetWrite")
     field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS$(TOTAL)_fp/config/tristan/mode")
 }
+
+record(longin, "$(P)$(R)$(ADDRESS)FRPacketsReceived_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_fr/status/decoder/packets")
+}
