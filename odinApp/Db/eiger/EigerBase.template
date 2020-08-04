@@ -905,6 +905,16 @@ record(stringin, "$(P)$(R)State_RBV") {
     field(SCAN, "I/O Intr")
 }
 
+# Bit depth state
+record(bi, "$(P)$(R)StaleBitDepth_RBV") {
+    field(DESC, "Bit depth update status")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_detector/api/$(API)/status/stale_bit_depth")
+    field(ZNAM, "True")
+    field(ONAM, "Stale")
+    field(SCAN, "I/O Intr")
+}
+
 record(ai, "$(P)$(R)Temp0_RBV")
 {
     field(DTYP, "asynFloat64")
@@ -912,7 +922,7 @@ record(ai, "$(P)$(R)Temp0_RBV")
     field(EGU,  "C")
     field(SCAN, "I/O Intr")
     field(VAL,  "0")
-    field(PREC, "1")
+    field(PREC, "1")/
 }
 
 record(ai, "$(P)$(R)Humid0_RBV")
