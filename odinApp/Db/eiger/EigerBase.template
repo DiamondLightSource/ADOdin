@@ -304,6 +304,7 @@ record(bi,"$(P)$(R)StreamEnable_RBV") {
 }
 
 # Stream number of dropped frames
+#% archiver 1 Monitor
 record(longin, "$(P)$(R)StreamDropped_RBV")
 {
     field(DTYP, "asynInt32")
