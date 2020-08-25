@@ -922,7 +922,7 @@ record(ai, "$(P)$(R)Temp0_RBV")
     field(EGU,  "C")
     field(SCAN, "I/O Intr")
     field(VAL,  "0")
-    field(PREC, "1")/
+    field(PREC, "1")
 }
 
 record(ai, "$(P)$(R)Humid0_RBV")
