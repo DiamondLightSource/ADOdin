@@ -60,26 +60,26 @@ record(mbbo,"$(P)$(R)TriggerMode") {
     field(DESC,"Acquire mode")
     field(ZRVL,"0")
     field(ZRST,"Internal Series")
-    field(ONVL,"2")
+    field(ONVL,"1")
     field(ONST,"Internal Enable")
-    field(TWVL,"1")
+    field(TWVL,"2")
     field(TWST,"External Series")
     field(THVL,"3")
     field(THST,"External Enable")
-    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_detector/api/$(API)/config/trigger_mode")
+    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_detector/api/$(API)/config/trigger_mode")
 }
 
 record(mbbi,"$(P)$(R)TriggerMode_RBV") {
     field(DESC,"Acquire mode")
     field(ZRVL,"0")
     field(ZRST,"Internal Series")
-    field(ONVL,"2")
+    field(ONVL,"1")
     field(ONST,"Internal Enable")
-    field(TWVL,"1")
+    field(TWVL,"2")
     field(TWST,"External Series")
     field(THVL,"3")
     field(THST,"External Enable")
-    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_detector/api/$(API)/config/trigger_mode")
+    field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_detector/api/$(API)/config/trigger_mode")
 }
 
 record(longin, "$(P)$(R)BitDepthImage_RBV")
@@ -910,7 +910,7 @@ record(bi, "$(P)$(R)StaleBitDepth_RBV") {
     field(DESC, "Bit depth update status")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_detector/api/$(API)/status/stale_bit_depth")
-    field(ZNAM, "True")
+    field(ZNAM, "Valid")
     field(ONAM, "Stale")
     field(SCAN, "I/O Intr")
 }
