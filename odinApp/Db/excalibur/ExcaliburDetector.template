@@ -106,10 +106,12 @@ record(mbbo, "$(P)$(R)CounterDepth")
     field(ONVL, "1")
     field(TWVL, "2")
     field(THVL, "3")
+    field(FRVL, "4")
     field(ZRST, "1 bit")
     field(ONST, "6 bit")
     field(TWST, "12 bit")
     field(THST, "24 bit")
+    field(FRST, "dual 12 bit")
     field(PINI, "1")
 }
 
@@ -124,10 +126,12 @@ record(mbbi, "$(P)$(R)CounterDepth_RBV")
     field(ONVL, "1")
     field(TWVL, "2")
     field(THVL, "3")
+    field(FRVL, "4")
     field(ZRST, "1 bit")
     field(ONST, "6 bit")
     field(TWST, "12 bit")
     field(THST, "24 bit")
+    field(FRST, "dual 12 bit")
 }
 
 # Counter Select.

@@ -9,7 +9,7 @@ from util import OdinPaths, expand_template_file, debug_print, \
 from odin import _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, \
                  _PluginConfig, _FrameProcessorPlugin
 from plugins import _LiveViewPlugin, _OffsetAdjustmentPlugin, _UIDAdjustmentPlugin, \
-                    _SumPlugin, _BloscPlugin, _FileWriterPlugin
+                    _SumPlugin, _BloscPlugin, _FileWriterPlugin, _DatasetCreationPlugin
 
 
 debug_print("Excalibur: {}".format(OdinPaths.EXCALIBUR_DETECTOR), 1)
@@ -21,13 +21,20 @@ EXCALIBUR_DIMENSIONS = {
 }
 
 
-class _ExcaliburProcessPlugin(_FrameProcessorPlugin):
+class _ExcaliburProcessPlugin(_DatasetCreationPlugin):
 
     NAME = "excalibur"
     CLASS_NAME = "ExcaliburProcessPlugin"
     LIBRARY_PATH = OdinPaths.EXCALIBUR_DETECTOR
 
     def __init__(self, sensor):
+        ddims = [EXCALIBUR_DIMENSIONS[sensor][1], EXCALIBUR_DIMENSIONS[sensor][0]]
+        dchunks = [1, EXCALIBUR_DIMENSIONS[sensor][1], EXCALIBUR_DIMENSIONS[sensor][0]]
+
+        DATASETS = [
+            dict(name="data", datatype="uint16", dims=ddims, chunks=dchunks),
+            dict(name="data2", datatype="uint16", dims=ddims, chunks=dchunks)
+        ]
         super(_ExcaliburProcessPlugin, self).__init__(None)
 
         self.sensor = sensor
@@ -610,6 +617,18 @@ class _ExcaliburGapFillPlugin(_FrameProcessorPlugin):
             _FileWriterPlugin.NAME: {
                 "dataset": {
                     _FileWriterPlugin.DATASET_NAME: {
+                        "dims": OneLineEntry(dimensions),
+                        "chunks": OneLineEntry([1] + dimensions),
+                    }
+                }
+            }
+        }
+        entries.append(create_config_entry(dataset_config))
+        dataset_config = {
+            _FileWriterPlugin.NAME: {
+                "dataset": {
+                    "data2": {
+                        "datatype": "uint16",
                         "dims": OneLineEntry(dimensions),
                         "chunks": OneLineEntry([1] + dimensions),
                     }

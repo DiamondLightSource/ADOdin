@@ -43,6 +43,7 @@ record(dfanout, "$(P)$(R)$(ADDRESS)FPBitDepthFan")
     field(OUTB,  "$(P)$(R)$(ADDRESS)FPBitDepth6.PROC PP")
     field(OUTC,  "$(P)$(R)$(ADDRESS)FPBitDepth12.PROC PP")
     field(OUTD,  "$(P)$(R)$(ADDRESS)FPBitDepth24.PROC PP")
+    field(OUTE,  "$(P)$(R)$(ADDRESS)FPBitDepthDual12.PROC PP")
     field(SELM, "Specified")
 
 }
@@ -104,6 +105,21 @@ record(stringout, "$(P)$(R)$(ADDRESS)FRBitDepth24")
 {
     field(DTYP, "asynOctetWrite")
     field(VAL,  "24-bit")
+    field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS$(TOTAL)_fr/config/decoder_config/bitdepth")
+}
+
+record(stringout, "$(P)$(R)$(ADDRESS)FPBitDepthDual12")
+{
+    field(DTYP, "asynOctetWrite")
+    field(VAL,  "dual12-bit")
+    field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS$(TOTAL)_fp/config/excalibur/bitdepth")
+    field(FLNK, "$(P)$(R)$(ADDRESS)FRBitDepthDual12")
+}
+
+record(stringout, "$(P)$(R)$(ADDRESS)FRBitDepthDual12")
+{
+    field(DTYP, "asynOctetWrite")
+    field(VAL,  "dual12-bit")
     field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS$(TOTAL)_fr/config/decoder_config/bitdepth")
 }
 
