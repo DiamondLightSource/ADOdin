@@ -348,7 +348,7 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
     }
 
     def __init__(self, **args):
-        detector_arg = args["R"]
+        detector_arg = ":CAM:"
         args["R"] = ":OD:"
         self.__super.__init__(DETECTOR="excalibur", **args)
         # Update the attributes of self from the commandline args
@@ -373,7 +373,7 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
             _ExcaliburXNodeFPTemplate(**template_args)
 
     # __init__ arguments
-    ArgInfo = _OdinDataDriver.ArgInfo.filtered(without=["DETECTOR", "TOTAL"])
+    ArgInfo = _OdinDataDriver.ArgInfo.filtered(without=["DETECTOR", "TOTAL", "R"])
 
 
 class _Excalibur2FemHousekeepingTemplate(AutoSubstitution):
@@ -429,6 +429,7 @@ class ExcaliburDetector(_OdinDetector):
     # defines the RANK on all the OdinData instances and we need to sort by RANK for the UDP config
     def __init__(self, PORT, ODIN_CONTROL_SERVER, ODIN_DATA_DRIVER, SENSOR,
                  BUFFERS=0, MEMORY=0, **args):
+        args["R"] = ":CAM:"
         # Init the superclass (OdinDetector)
         self.__super.__init__(PORT, ODIN_CONTROL_SERVER, self.DETECTOR,
                               BUFFERS, MEMORY, **args)
@@ -533,6 +534,7 @@ class ExcaliburDetector(_OdinDetector):
         MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "
                       "attached plugins", int)
     )
+    ArgInfo = ArgInfo.filtered(without=["R"])
 
     def generate_simple_node_config(self):
         fem_config = []
