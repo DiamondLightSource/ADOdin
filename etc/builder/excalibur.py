@@ -267,7 +267,8 @@ application_name="excalibur_odin",detector="Excalibur{}" \
         return "[adapter.fp]\n" \
                "module = odin_data.fp_compression_adapter.FPCompressionAdapter\n" \
                "endpoints = {}\n" \
-               "update_interval = 0.2\n\n" \
+               "update_interval = 0.2\n" \
+               "datasets = data,data2\n\n" \
                "[adapter.fr]\n" \
                "module = odin_data.frame_receiver_adapter.FrameReceiverAdapter\n" \
                "endpoints = {}\n" \
