@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 365
-y 125
+x 401
+y 85
 w 390
 h 820
 font "arial-bold-r-12.0"
@@ -61,10 +61,10 @@ major 10
 minor 0
 release 0
 x 90
-y 755
+y 725
 w 85
 h 20
-controlPv "$(P)$(R)EnergyThreshold"
+controlPv "$(P)$(R)EnergyThreshold0"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -80,7 +80,7 @@ major 10
 minor 0
 release 0
 x 90
-y 690
+y 660
 w 85
 h 20
 controlPv "$(P)$(R)NumTestPulses"
@@ -99,7 +99,7 @@ major 10
 minor 0
 release 0
 x 80
-y 655
+y 625
 w 55
 h 25
 controlPv "$(P)$(R)TestPulseEnable"
@@ -1530,7 +1530,7 @@ major 4
 minor 1
 release 1
 x 10
-y 690
+y 660
 w 75
 h 25
 font "arial-bold-r-12.0"
@@ -1897,7 +1897,7 @@ major 4
 minor 1
 release 1
 x 10
-y 655
+y 625
 w 65
 h 25
 font "arial-bold-r-12.0"
@@ -1917,9 +1917,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 20
-y 755
-w 50
+x 5
+y 725
+w 65
 h 25
 font "arial-bold-r-12.0"
 fontAlign "right"
@@ -1927,7 +1927,7 @@ fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Energy"
+  "Energy 0"
   "Threshold"
 }
 endObjectProperties
@@ -2418,7 +2418,7 @@ major 4
 minor 4
 release 0
 x 140
-y 655
+y 625
 w 45
 h 25
 fgColor index 43
@@ -2522,7 +2522,7 @@ major 4
 minor 1
 release 1
 x 10
-y 725
+y 695
 w 75
 h 25
 font "arial-bold-r-12.0"
@@ -2633,7 +2633,7 @@ major 4
 minor 1
 release 1
 x 80
-y 720
+y 690
 w 105
 h 25
 font "arial-bold-r-12.0"
@@ -2649,6 +2649,46 @@ value {
 border
 endObjectProperties
 
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 90
+y 755
+w 85
+h 20
+controlPv "$(P)$(R)EnergyThreshold1"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 755
+w 65
+h 25
+font "arial-bold-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Energy 1"
+  "Threshold"
+}
+endObjectProperties
+
 # (Group)
 object activeGroupClass
 beginObjectProperties
@@ -2657,7 +2697,7 @@ minor 0
 release 0
 x 80
 y 565
-w 300
+w 305
 h 240
 
 beginGroup
@@ -2825,10 +2865,10 @@ major 10
 minor 0
 release 0
 x 90
-y 755
+y 725
 w 85
 h 20
-controlPv "$(P)$(R)EnergyThreshold"
+controlPv "$(P)$(R)EnergyThreshold0"
 displayMode "decimal"
 precision 4
 fgColor index 25
@@ -2843,8 +2883,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 90
-y 720
+x 95
+y 690
 w 75
 h 25
 fgColor index 19
@@ -2868,7 +2908,7 @@ major 10
 minor 0
 release 0
 x 90
-y 690
+y 660
 w 85
 h 20
 controlPv "$(P)$(R)NumTestPulses"
@@ -2885,7 +2925,7 @@ major 4
 minor 0
 release 0
 x 80
-y 655
+y 625
 w 55
 h 25
 fgColor index 25
@@ -2932,6 +2972,25 @@ inconsistentColor index 0
 topShadowColor index 1
 botShadowColor index 11
 controlPv "$(P)$(R)OperationMode"
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 90
+y 755
+w 85
+h 20
+controlPv "$(P)$(R)EnergyThreshold1"
+displayMode "decimal"
+precision 4
+fgColor index 25
+bgColor index 3
+fill
 font "arial-bold-r-12.0"
 endObjectProperties
 
