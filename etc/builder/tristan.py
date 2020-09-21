@@ -484,6 +484,12 @@ class TristanOdinDataServer(_OdinDataServer):
         self.BASE_UDP_PORT += 1
         return process
 
+    def configure_processes(self, server_rank, total_servers, total_processes):
+        rank = server_rank * len(self.processes)
+        for idx, process in enumerate(self.processes):
+            process.RANK = rank
+            process.TOTAL = total_processes
+            rank += 1
 
 class _TristanFPTemplate(AutoSubstitution):
     TemplateFile = "TristanOD.template"
