@@ -197,7 +197,7 @@ class _PluginConfig(Device):
 class _OdinDataServer(Device):
 
     """Store configuration for an OdinDataServer"""
-    PORT_BASE = 5000
+    PORT_BASE = 10000
     PROCESS_COUNT = 0
 
     # Device attributes
@@ -243,10 +243,10 @@ class _OdinDataServer(Device):
 
     def create_od_startup_scripts(self):
         for idx, process in enumerate(self.processes):
-            fp_port_number = 5004 + (10 * idx)
-            fr_port_number = 5000 + (10 * idx)
-            ready_port_number = 5001 + (10 * idx)
-            release_port_number = 5002 + (10 * idx)
+            fp_port_number = 10004 + (10 * idx)
+            fr_port_number = 10000 + (10 * idx)
+            ready_port_number = 10001 + (10 * idx)
+            release_port_number = 10002 + (10 * idx)
 
             # If TOTAL_NUMA_NODES was set, we enable the NUMA call macro instantitation
             if self.TOTAL_NUMA_NODES > 0:
