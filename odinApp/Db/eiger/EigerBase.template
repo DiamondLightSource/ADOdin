@@ -262,7 +262,7 @@ record(mbbi,"$(P)$(R)ROIMode_RBV") {
 record(mbbo,"$(P)$(R)CompressionAlgo") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_detector/api/$(API)/config/compression")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_detector/api/$(API)/config/compression")
     field(DESC, "Compression Algorithm")
     field(VAL,  "0")
     field(ZRST, "lz4")
@@ -273,7 +273,7 @@ record(mbbo,"$(P)$(R)CompressionAlgo") {
 
 record(mbbi,"$(P)$(R)CompressionAlgo_RBV") {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_detector/api/$(API)/config/compression")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_detector/api/$(API)/config/compression")
     field(DESC, "Compression Algorithm")
     field(VAL,  "0")
     field(ZRST, "lz4")
@@ -325,7 +325,7 @@ record(stringin, "$(P)$(R)StreamState_RBV") {
 record(mbbo,"$(P)$(R)StreamHdrDetail") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_stream/api/$(API)/config/header_detail")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_stream/api/$(API)/config/header_detail")
     field(DESC, "Stream Header Detail")
     field(VAL,  "0")
     field(ZRST, "All")
@@ -338,7 +338,7 @@ record(mbbo,"$(P)$(R)StreamHdrDetail") {
 
 record(mbbi,"$(P)$(R)StreamHdrDetail_RBV") {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_stream/api/$(API)/config/header_detail")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_stream/api/$(API)/config/header_detail")
     field(DESC, "Stream Header Detail")
     field(VAL,  "0")
     field(ZRST, "All")
