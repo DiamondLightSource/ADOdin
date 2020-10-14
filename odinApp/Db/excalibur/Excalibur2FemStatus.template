@@ -145,4 +145,3 @@ record(dfanout, "$(P)$(R)HK:MOLY_HUMIDITY:HIGH")
     field(OMSL, "closed_loop")
     field(OUTA, "$(P)$(R)1:MOLY_HUMIDITY.HIGH PP")
 }
-

@@ -1,0 +1,81 @@
+# Excalibur2FemHousekeeping.template
+# Defines the housekeeping parameters for a 2 FEM Excalibur Detector
+
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, PORT, Asyn Port name
+# % macro, TIMEOUT, Timeout
+
+include "ExcaliburBaseFemHousekeeping.template"
+
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)P5V_FEMO0_IMON")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_p5v_fem00_imon")
+    field(EGU,  "A")
+    field(LOW,  "0.0")
+    field(HIGH, "2.0")
+    field(PREC, "2")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)P5V_FEMO1_IMON")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_p5v_fem01_imon")
+    field(EGU,  "A")
+    field(LOW,  "0.0")
+    field(HIGH, "2.0")
+    field(PREC, "2")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+# Process this PV to reset the FEM comms fault counters of all the nodes
+record(seq, "$(P)$(R)RESET_FEM_COMMS_FAULTS")
+{
+    field(SELM, "All")
+    field(DOL1, "1")
+    field(LNK1, "$(P):1:HK:ResetFemCommsFaults PP")
+    field(DOL2, "1")
+    field(LNK2, "$(P):2:HK:ResetFemCommsFaults PP")
+}
+
+# FEM-count-specific device statuses
+record(calc, "$(P)$(R)DEVSTA_P5V")
+{
+    field(INPA, "$(P)$(R)P5V_FEMO0_IMON MS CP")
+    field(INPB, "$(P)$(R)P5V_FEMO1_IMON MS CP")
+    field(ACKT, "NO")
+}
+record(calc, "$(P)$(R)DEVSTA_HK")
+{
+    field(INPA, "$(P):1:HK:DEVSTA10 MS CP")
+    field(INPB, "$(P):2:HK:DEVSTA10 MS CP")
+    field(ACKT, "NO")
+}
+
+# Report the temperature and humidity status of each FEM
+record(calc, "$(P)$(R)HvLvSoftTripTemp")
+{
+    field(INPA, "$(P)$(R)0:MOLY_TEMPERATURE.SEVR CP")
+    field(INPB, "$(P)$(R)1:MOLY_TEMPERATURE.SEVR CP")
+    field(CALC, "(A=2)|(B=2)")
+    field(FLNK, "$(P)$(R)HvLvSoftTrip_CALC")
+}
+record(calc, "$(P)$(R)HvLvSoftTripHumidity")
+{
+    field(INPA, "$(P)$(R)0:MOLY_HUMIDITY.SEVR CP")
+    field(INPB, "$(P)$(R)1:MOLY_HUMIDITY.SEVR CP")
+    field(CALC, "(A=2)|(B=2)")
+    field(FLNK, "$(P)$(R)HvLvSoftTrip_CALC")
+}

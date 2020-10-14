@@ -12,7 +12,9 @@ include $(TOP)/configure/CONFIG
 # databases, templates, substitutions like this
 
 DB += ExcaliburDetector.template
-DB += ExcaliburFemHousekeeping.template
+DB += ExcaliburBaseFemHousekeeping.template
+DB += Excalibur2FemHousekeeping.template
+DB += Excalibur6FemHousekeeping.template
 DB += Excalibur2FemStatus.template
 DB += Excalibur6FemStatus.template
 DB += ExcaliburFemStatus.template

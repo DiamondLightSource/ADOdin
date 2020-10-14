@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1263
-y 435
+x 1056
+y 263
 w 740
 h 860
 font "arial-medium-r-18.0"
@@ -21,7 +21,6 @@ topShadowColor index 0
 botShadowColor index 14
 title "EXCALIBUR Housekeeping"
 showGrid
-snapToGrid
 gridSize 5
 endScreenProperties
 
@@ -164,80 +163,6 @@ value {
 }
 endObjectProperties
 
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 600
-y 470
-w 65
-h 20
-controlPv "$(P)$(R)0:MOLY_TEMPERATURE.HIGH"
-fgColor index 25
-bgColor index 3
-fill
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 670
-y 470
-w 65
-h 20
-controlPv "$(P)$(R)0:MOLY_TEMPERATURE.LOW"
-fgColor index 25
-bgColor index 3
-fill
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 600
-y 445
-w 65
-h 20
-font "arial-bold-r-12.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "High Alarm"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 670
-y 445
-w 65
-h 20
-font "arial-bold-r-12.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Low Alarm"
-}
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -255,40 +180,6 @@ useDisplayBg
 value {
   "LOCAL TEMP"
 }
-endObjectProperties
-
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 600
-y 495
-w 65
-h 20
-controlPv "$(P)$(R)0:LOCAL_TEMP.HIGH"
-fgColor index 25
-bgColor index 3
-fill
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 670
-y 495
-w 65
-h 20
-controlPv "$(P)$(R)0:LOCAL_TEMP.LOW"
-fgColor index 25
-bgColor index 3
-fill
-font "arial-bold-r-12.0"
 endObjectProperties
 
 # (Static Text)
@@ -310,40 +201,6 @@ value {
 }
 endObjectProperties
 
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 600
-y 520
-w 65
-h 20
-controlPv "$(P)$(R)0:REMOTE_DIODE_TEMP.HIGH"
-fgColor index 25
-bgColor index 3
-fill
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 670
-y 520
-w 65
-h 20
-controlPv "$(P)$(R)0:REMOTE_DIODE_TEMP.LOW"
-fgColor index 25
-bgColor index 3
-fill
-font "arial-bold-r-12.0"
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -361,40 +218,6 @@ useDisplayBg
 value {
   "MOLY HUMIDITY"
 }
-endObjectProperties
-
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 600
-y 545
-w 65
-h 20
-controlPv "$(P)$(R)0:MOLY_HUMIDITY.HIGH"
-fgColor index 25
-bgColor index 3
-fill
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Textentry)
-object TextentryClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 670
-y 545
-w 65
-h 20
-controlPv "$(P)$(R)0:MOLY_HUMIDITY.LOW"
-fgColor index 25
-bgColor index 3
-fill
-font "arial-bold-r-12.0"
 endObjectProperties
 
 # (Static Text)
@@ -920,5 +743,181 @@ useDisplayBg
 value {
   "FEM 6"
 }
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 600
+y 545
+w 65
+h 20
+controlPv "$(P)$(R)HK:MOLY_HUMIDITY:LOW"
+fgColor index 25
+bgColor index 3
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 670
+y 545
+w 65
+h 20
+controlPv "$(P)$(R)HK:MOLY_HUMIDITY:HIGH"
+fgColor index 25
+bgColor index 3
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 600
+y 520
+w 65
+h 20
+controlPv "$(P)$(R)HK:REMOTE_DIODE_TEMP:LOW"
+fgColor index 25
+bgColor index 3
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 670
+y 520
+w 65
+h 20
+controlPv "$(P)$(R)HK:REMOTE_DIODE_TEMP:HIGH"
+fgColor index 25
+bgColor index 3
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 600
+y 495
+w 65
+h 20
+controlPv "$(P)$(R)HK:LOCAL_TEMP:LOW"
+fgColor index 25
+bgColor index 3
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 670
+y 495
+w 65
+h 20
+controlPv "$(P)$(R)HK:LOCAL_TEMP:HIGH"
+fgColor index 25
+bgColor index 3
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 668
+y 445
+w 70
+h 20
+font "arial-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "High Alarm"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 595
+y 445
+w 70
+h 20
+font "arial-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Low Alarm"
+}
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 600
+y 470
+w 65
+h 20
+controlPv "$(P)$(R)HK:MOLY_TEMPERATURE:LOW"
+fgColor index 25
+bgColor index 3
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 670
+y 470
+w 65
+h 20
+controlPv "$(P)$(R)HK:MOLY_TEMPERATURE:HIGH"
+fgColor index 25
+bgColor index 3
+fill
+font "arial-bold-r-12.0"
 endObjectProperties
 

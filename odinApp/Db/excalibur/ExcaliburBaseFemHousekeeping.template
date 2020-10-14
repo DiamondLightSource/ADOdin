@@ -1,10 +1,16 @@
-# masterFemHousekeeping.template
+# ExcaliburBaseFemHousekeeping.template
 # Defines the housekeeping parameters only available from the master FEM.
 
 # % macro, P, Device Prefix
 # % macro, R, Device Suffix
 # % macro, PORT, Asyn Port name
 # % macro, TIMEOUT, Timeout
+
+# To be included in a template that defines the following:
+#   * $(P)$(R)DEVSTA_P5V
+#   * $(P)$(R)DEVSTA_HK
+#   * $(P)$(R)HvLvSoftTripTemp
+#   * $(P)$(R)HvLvSoftTripHumidity
 
 # % autosave 2 LOW HIGH
 #% archiver 10 Monitor
@@ -33,102 +39,6 @@ record(ai, "$(P)$(R)P5V_B_VMON")
     field(EGU,  "V")
     field(LOW,  "4.8")
     field(HIGH, "5.2")
-    field(PREC, "2")
-    field(HSV,  "MAJOR")
-    field(LSV,  "MAJOR")
-}
-
-# % autosave 2 LOW HIGH
-#% archiver 10 Monitor
-record(ai, "$(P)$(R)P5V_FEMO0_IMON")
-{
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynFloat64")
-    field(VAL,  "0")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_p5v_fem00_imon")
-    field(EGU,  "A")
-    field(LOW,  "0.0")
-    field(HIGH, "2.0")
-    field(PREC, "2")
-    field(HSV,  "MAJOR")
-    field(LSV,  "MAJOR")
-}
-
-# % autosave 2 LOW HIGH
-#% archiver 10 Monitor
-record(ai, "$(P)$(R)P5V_FEMO1_IMON")
-{
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynFloat64")
-    field(VAL,  "0")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_p5v_fem01_imon")
-    field(EGU,  "A")
-    field(LOW,  "0.0")
-    field(HIGH, "2.0")
-    field(PREC, "2")
-    field(HSV,  "MAJOR")
-    field(LSV,  "MAJOR")
-}
-
-# % autosave 2 LOW HIGH
-#% archiver 10 Monitor
-record(ai, "$(P)$(R)P5V_FEMO2_IMON")
-{
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynFloat64")
-    field(VAL,  "0")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_p5v_fem02_imon")
-    field(EGU,  "A")
-    field(LOW,  "0.0")
-    field(HIGH, "2.0")
-    field(PREC, "2")
-    field(HSV,  "MAJOR")
-    field(LSV,  "MAJOR")
-}
-
-# % autosave 2 LOW HIGH
-#% archiver 10 Monitor
-record(ai, "$(P)$(R)P5V_FEMO3_IMON")
-{
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynFloat64")
-    field(VAL,  "0")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_p5v_fem03_imon")
-    field(EGU,  "A")
-    field(LOW,  "0.0")
-    field(HIGH, "2.0")
-    field(PREC, "2")
-    field(HSV,  "MAJOR")
-    field(LSV,  "MAJOR")
-}
-
-# % autosave 2 LOW HIGH
-#% archiver 10 Monitor
-record(ai, "$(P)$(R)P5V_FEMO4_IMON")
-{
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynFloat64")
-    field(VAL,  "0")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_p5v_fem04_imon")
-    field(EGU,  "A")
-    field(LOW,  "0.0")
-    field(HIGH, "2.0")
-    field(PREC, "2")
-    field(HSV,  "MAJOR")
-    field(LSV,  "MAJOR")
-}
-
-# % autosave 2 LOW HIGH
-#% archiver 10 Monitor
-record(ai, "$(P)$(R)P5V_FEMO5_IMON")
-{
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynFloat64")
-    field(VAL,  "0")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_p5v_fem05_imon")
-    field(EGU,  "A")
-    field(LOW,  "0.0")
-    field(HIGH, "2.0")
     field(PREC, "2")
     field(HSV,  "MAJOR")
     field(LSV,  "MAJOR")
@@ -509,55 +419,16 @@ record(seq, "$(P)$(R)BIAS_VMON:PROC")
     field(LNK1, "$(P)$(R)BIAS_VMON.PROC")
 }
 
-# Process this PV to reset the FEM comms fault counters of all the nodes
-record(seq, "$(P)$(R)RESET_FEM_COMMS_FAULTS")
-{
-    field(SELM, "All")
-    field(DOL1, "1")
-    field(LNK1, "$(P):1:HK:ResetFemCommsFaults PP")
-    field(DOL2, "1")
-    field(LNK2, "$(P):2:HK:ResetFemCommsFaults PP")
-    field(DOL3, "1")
-    field(LNK3, "$(P):3:HK:ResetFemCommsFaults PP")
-    field(DOL4, "1")
-    field(LNK4, "$(P):4:HK:ResetFemCommsFaults PP")
-    field(DOL5, "1")
-    field(LNK5, "$(P):5:HK:ResetFemCommsFaults PP")
-    field(DOL6, "1")
-    field(LNK6, "$(P):6:HK:ResetFemCommsFaults PP")
-}
-
 # Overall housekeeping alarm state
 record(calc, "$(P)$(R)DEVSTA")
 {
-    field(INPA, "$(P)$(R)DEVSTA2 MS CP")
-    field(INPB, "$(P)$(R)DEVSTA3 MS CP")
-    field(INPC, "$(P)$(R)DEVSTA4 MS CP")
-    field(INPD, "$(P):1:HK:DEVSTA10 MS CP")
-    field(INPE, "$(P):2:HK:DEVSTA10 MS CP")
-    field(INPF, "$(P):3:HK:DEVSTA10 MS CP")
-    field(INPG, "$(P):4:HK:DEVSTA10 MS CP")
-    field(INPH, "$(P):5:HK:DEVSTA10 MS CP")
-    field(INPI, "$(P):6:HK:DEVSTA10 MS CP")
+    field(INPA, "$(P)$(R)DEVSTA1 MS CP")
+    field(INPB, "$(P)$(R)DEVSTA2 MS CP")
+    field(INPC, "$(P)$(R)DEVSTA_P5V MS CP")  # Implemented in XFemHousekeeping
+    field(INPD, "$(P)$(R)DEVSTA_HK MS CP")  # Implemented in XFemHousekeeping
     field(ACKT, "NO")
 }
-record(calc, "$(P)$(R)DEVSTA2")
-{
-    field(INPA, "$(P)$(R)P5V_A_VMON MS CP")
-    field(INPB, "$(P)$(R)P5V_B_VMON MS CP")
-    field(INPC, "$(P)$(R)P5V_FEMO0_IMON MS CP")
-    field(INPD, "$(P)$(R)P5V_FEMO1_IMON MS CP")
-    field(INPE, "$(P)$(R)P5V_FEMO2_IMON MS CP")
-    field(INPF, "$(P)$(R)P5V_FEMO3_IMON MS CP")
-    field(INPG, "$(P)$(R)P5V_FEMO4_IMON MS CP")
-    field(INPH, "$(P)$(R)P5V_FEMO5_IMON MS CP")
-    field(INPI, "$(P)$(R)P48V_VMON MS CP")
-    field(INPJ, "$(P)$(R)P48V_IMON MS CP")
-    field(INPK, "$(P)$(R)P5VSUP_VMON MS CP")
-    field(INPL, "$(P)$(R)P5VSUP_IMON MS CP")
-    field(ACKT, "NO")
-}
-record(calc, "$(P)$(R)DEVSTA3")
+record(calc, "$(P)$(R)DEVSTA1")
 {
     field(INPA, "$(P)$(R)HUMIDITY_MON MS CP")
     field(INPB, "$(P)$(R)AIR_TEMP_MON MS CP")
@@ -573,51 +444,35 @@ record(calc, "$(P)$(R)DEVSTA3")
     field(INPL, "$(P)$(R)P1V8_VMON_B MS CP")
     field(ACKT, "NO")
 }
-record(calc, "$(P)$(R)DEVSTA4")
+record(calc, "$(P)$(R)DEVSTA2")
 {
-    field(INPA, "$(P)$(R)COOLANT_TEMP_STATUS MS CP")
-    field(INPB, "$(P)$(R)HUMIDITY_STATUS MS CP")
-    field(INPC, "$(P)$(R)COOLANT_FLOW_STATUS MS CP")
-    field(INPD, "$(P)$(R)AIR_TEMP_STATUS MS CP")
-    field(INPE, "$(P)$(R)FAN_FAULT MS CP")
+    field(INPA, "$(P)$(R)P5V_A_VMON MS CP")
+    field(INPB, "$(P)$(R)P5V_B_VMON MS CP")
+    field(INPC, "$(P)$(R)P5VSUP_VMON MS CP")
+    field(INPD, "$(P)$(R)P5VSUP_IMON MS CP")
+    field(INPE, "$(P)$(R)P48V_VMON MS CP")
+    field(INPF, "$(P)$(R)P48V_IMON MS CP")
+    field(INPG, "$(P)$(R)COOLANT_TEMP_STATUS MS CP")
+    field(INPH, "$(P)$(R)HUMIDITY_STATUS MS CP")
+    field(INPI, "$(P)$(R)COOLANT_FLOW_STATUS MS CP")
+    field(INPJ, "$(P)$(R)AIR_TEMP_STATUS MS CP")
+    field(INPK, "$(P)$(R)FAN_FAULT MS CP")
     field(ACKT, "NO")
 }
 
 # Monitor the alarm state of the FEM moly temperatures and humidities.  If any
 # go into alarm, switch off the HV supply and then the LV supply.
-record(calc, "$(P)$(R)HvLvSoftTrip1")
+record(calc, "$(P)$(R)HvLvSoftTrip_CALC")
 {
-    field(INPA, "$(P)$(R)0:MOLY_TEMPERATURE.SEVR CP")
-    field(INPB, "$(P)$(R)1:MOLY_TEMPERATURE.SEVR CP")
-    field(INPC, "$(P)$(R)2:MOLY_TEMPERATURE.SEVR CP")
-    field(INPD, "$(P)$(R)3:MOLY_TEMPERATURE.SEVR CP")
-    field(INPE, "$(P)$(R)4:MOLY_TEMPERATURE.SEVR CP")
-    field(INPF, "$(P)$(R)5:MOLY_TEMPERATURE.SEVR CP")
-    field(INPG, "$(P)$(R)HvLvSoftTrip2") 
-    field(CALC, "(A=2)|(B=2)|(C=2)|(D=2)|(E=2)|(F=2)|G")
-    field(FLNK, "$(P)$(R)HvLvSoftTrip3")
-}
-record(calc, "$(P)$(R)HvLvSoftTrip2")
-{
-    field(INPA, "$(P)$(R)0:MOLY_HUMIDITY.SEVR CP")
-    field(INPB, "$(P)$(R)1:MOLY_HUMIDITY.SEVR CP")
-    field(INPC, "$(P)$(R)2:MOLY_HUMIDITY.SEVR CP")
-    field(INPD, "$(P)$(R)3:MOLY_HUMIDITY.SEVR CP")
-    field(INPE, "$(P)$(R)4:MOLY_HUMIDITY.SEVR CP")
-    field(INPF, "$(P)$(R)5:MOLY_HUMIDITY.SEVR CP")
-    field(CALC, "(A=2)|(B=2)|(C=2)|(D=2)|(E=2)|(F=2)")
-    field(FLNK, "$(P)$(R)HvLvSoftTrip1")
-}
-record(calc, "$(P)$(R)HvLvSoftTrip3")
-{
-    field(INPA, "$(P)$(R)HvLvSoftTrip1")
-    field(B,    "0")   # The forced initial state
-    field(CALC, "A|B")
+    field(INPA, "$(P)$(R)HvLvSoftTripTemp")  # Implemented in XFemHousekeeping
+    field(INPB, "$(P)$(R)HvLvSoftTripHumidity")  # Implemented in XFemHousekeeping
+    field(C,    "0")  # The forced initial state
+    field(CALC, "A|B|C")
     field(FLNK, "$(P)$(R)HvLvSoftTrip")
 }
 record(bo, "$(P)$(R)HvLvSoftTrip")
 {
-    field(DOL,  "$(P)$(R)HvLvSoftTrip3")
+    field(DOL,  "$(P)$(R)HvLvSoftTrip_CALC")
     field(OMSL, "closed_loop")
     field(ZNAM, "Normal")
     field(ONAM, "Active")
