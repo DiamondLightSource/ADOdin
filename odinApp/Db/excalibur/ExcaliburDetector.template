@@ -165,6 +165,27 @@ record(mbbi, "$(P)$(R)CounterSelect_RBV")
     field(TWST, "A and B")
 }
 
+# Energy threshold delta.
+# % autosave 2 
+#% archiver 10 Monitor
+record(ao, "$(P)$(R)EnergyDelta")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_config/energy_delta")
+    field(EGU,  "keV")
+    field(PINI, "1")
+}
+
+# Energy threshold delta read back.
+record(ai, "$(P)$(R)EnergyDelta_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_config/energy_delta")
+    field(EGU,  "keV")
+}
+
 # Energy threshold 0.
 # % autosave 2 
 #% archiver 10 Monitor
@@ -871,6 +892,7 @@ record(fanout, "$(P)$(R)ReconnectFan4")
 record(fanout, "$(P)$(R)ReconnectFan5")
 {
     field(LNK1, "$(P)$(R)ReadWriteMode.PROC PP")
+    field(LNK2, "$(P)$(R)EnergyDelta.PROC PP")
 }
 
 ###################################################################

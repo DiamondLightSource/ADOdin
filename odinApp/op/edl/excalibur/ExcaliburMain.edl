@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 401
-y 85
+y 122
 w 390
 h 820
 font "arial-bold-r-12.0"
@@ -52,25 +52,6 @@ h 265
 lineColor index 14
 fill
 fillColor index 3
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 90
-y 725
-w 85
-h 20
-controlPv "$(P)$(R)EnergyThreshold0"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
 endObjectProperties
 
 # (Textupdate)
@@ -2649,25 +2630,6 @@ value {
 border
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 90
-y 755
-w 85
-h 20
-controlPv "$(P)$(R)EnergyThreshold1"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -2695,9 +2657,68 @@ beginObjectProperties
 major 4
 minor 0
 release 0
+x 90
+y 725
+w 85
+h 50
+
+beginGroup
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 90
+y 755
+w 85
+h 20
+controlPv "$(P)$(R)EnergyThreshold1_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 90
+y 725
+w 85
+h 20
+controlPv "$(P)$(R)EnergyThreshold0_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+endGroup
+
+visPv "$(P)$(R)Acquire"
+visInvert
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
 x 80
 y 565
-w 305
+w 300
 h 240
 
 beginGroup
@@ -2709,7 +2730,7 @@ major 4
 minor 0
 release 0
 x 275
-y 565
+y 566
 w 105
 h 25
 fgColor index 25
@@ -2728,7 +2749,7 @@ major 4
 minor 0
 release 0
 x 275
-y 595
+y 596
 w 105
 h 25
 fgColor index 25
@@ -2747,7 +2768,7 @@ major 4
 minor 0
 release 0
 x 275
-y 625
+y 626
 w 105
 h 25
 fgColor index 25
@@ -2766,7 +2787,7 @@ major 4
 minor 0
 release 0
 x 275
-y 655
+y 656
 w 105
 h 25
 fgColor index 25
@@ -2785,7 +2806,7 @@ major 4
 minor 0
 release 0
 x 275
-y 685
+y 686
 w 105
 h 25
 fgColor index 25
@@ -2804,7 +2825,7 @@ major 4
 minor 0
 release 0
 x 275
-y 715
+y 716
 w 105
 h 25
 fgColor index 25
@@ -2823,7 +2844,7 @@ major 4
 minor 0
 release 0
 x 275
-y 745
+y 746
 w 105
 h 25
 fgColor index 25
@@ -2842,7 +2863,7 @@ major 4
 minor 6
 release 0
 x 80
-y 785
+y 786
 w 300
 h 20
 controlPv "$(P)$(R)CalFileRoot"
@@ -2864,13 +2885,13 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 90
+x 80
 y 725
-w 85
+w 55
 h 20
 controlPv "$(P)$(R)EnergyThreshold0"
 displayMode "decimal"
-precision 4
+precision 2
 fgColor index 25
 bgColor index 3
 fill
@@ -2884,7 +2905,7 @@ major 4
 minor 1
 release 0
 x 95
-y 690
+y 691
 w 75
 h 25
 fgColor index 19
@@ -2908,7 +2929,7 @@ major 10
 minor 0
 release 0
 x 90
-y 660
+y 661
 w 85
 h 20
 controlPv "$(P)$(R)NumTestPulses"
@@ -2925,7 +2946,7 @@ major 4
 minor 0
 release 0
 x 80
-y 625
+y 626
 w 55
 h 25
 fgColor index 25
@@ -2944,7 +2965,7 @@ major 4
 minor 0
 release 0
 x 80
-y 595
+y 596
 w 105
 h 25
 fgColor index 25
@@ -2963,7 +2984,7 @@ major 4
 minor 0
 release 0
 x 80
-y 565
+y 566
 w 105
 h 25
 fgColor index 25
@@ -2981,17 +3002,59 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 90
+x 80
 y 755
-w 85
+w 55
 h 20
 controlPv "$(P)$(R)EnergyThreshold1"
 displayMode "decimal"
-precision 4
+precision 2
 fgColor index 25
 bgColor index 3
 fill
 font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 140
+y 725
+w 50
+h 20
+controlPv "$(P)$(R)EnergyThreshold0_RBV"
+displayMode "decimal"
+precision 2
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 140
+y 755
+w 50
+h 20
+controlPv "$(P)$(R)EnergyThreshold1_RBV"
+displayMode "decimal"
+precision 2
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
 endObjectProperties
 
 endGroup
