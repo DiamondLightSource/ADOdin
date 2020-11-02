@@ -24,7 +24,7 @@
         <param name="Threshold" value="INFO"/>
         <layout class="org.apache.log4j.PatternLayout">
             <!-- syslog standard RFC 5424 formatting. Unfortunately the log4cxx SyslogAppender does not do this automatically -->
-            <param name="ConversionPattern" value="1 %d{yyyy-MM-ddTHH:mm:ss.SSS} %X{host} %X{app} %X{pid} - [dlsdaq@32121 logger_name=&quot;%c&quot; log_level=&quot;%p&quot; thread=&quot;%X{thread}&quot; user=&quot;%X{user}&quot; file_line=&quot;%F:%L&quot; beamline=&quot;$BEAMLINE&quot; detector=&quot;$DETECTOR&quot;] %m%n" />
+            <param name="ConversionPattern" value="1 %d{yyyy-MM-ddTHH:mm:ss.SSS} %X{host} %X{app} %X{pid} - [dlsdaq@32121 logger_name=&quot;%c&quot; log_level=&quot;%p&quot; thread=&quot;%X{thread}&quot; username=&quot;%X{user}&quot; file_line=&quot;%F:%L&quot; beamline=&quot;$BEAMLINE&quot; detector=&quot;$DETECTOR&quot;] %m%n" />
         </layout>
     </appender>
 
