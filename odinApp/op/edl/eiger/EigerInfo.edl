@@ -507,7 +507,7 @@ x 280
 y 245
 w 25
 h 20
-controlPv "$(P)$(R)StaleBitDepth_RBV"
+controlPv "$(P)$(R)StaleParameters_RBV"
 lineColor index 14
 onColor index 20
 offColor index 15
