@@ -13,5 +13,5 @@ RESTCLIENT = $(SUPPORT)/restClient/0-4-1
 HDF5_FILTERS = $(TOOLS)/hdf5filters/0-6-2
 ODIN_DATA = $(TOOLS)/odin-data/1-4-0dls3
 EXCALIBUR_DETECTOR = $(TOOLS)/excalibur-detector/0-10-5
-EIGER_DETECTOR = $(TOOLS)/eiger-detector/1-8-0
+EIGER_DETECTOR = $(TOOLS)/eiger-detector/1-8-1
 TRISTAN_DETECTOR = $(TOOLS)/tristan-detector/0-4-1

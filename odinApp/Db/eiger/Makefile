@@ -11,6 +11,9 @@ include $(TOP)/configure/CONFIG
 # Create and install (or just install)
 # databases, templates, substitutions like this
 
+DB += Eiger1.template
+DB += Eiger2.template
+DB += EigerBase.template
 DB += EigerDetector.template
 DB += EigerFan.template
 

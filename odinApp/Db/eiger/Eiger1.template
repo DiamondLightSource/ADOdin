@@ -8,9 +8,10 @@
 #% macro, PORT, Asyn Port name
 #% macro, TIMEOUT, Timeout
 #% macro, ADDR, Asyn Port address
+#% macro, API, Eiger API version
 
 # This associates the template with an edm screen
-# % gui, $(PORT), edmtab, eigerDetector.edl, P=$(P),R=$(R)
+# % gui, $(PORT), edmtab, EigerDetector.edl, P=$(P),R=$(R)
 
 include "EigerBase.template"
 
@@ -41,48 +42,23 @@ record(stringin, "$(P)$(R)FWState_RBV") {
     field(SCAN, "I/O Intr")
 }
 
-record(stringin, "$(P)$(R)Description_RBV")
-{
-    field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))DESCRIPTION")
-    field(DESC, "Detector Description")
-    field(SCAN, "I/O Intr")
-}
-
 record(ai, "$(P)$(R)CountCutoff_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCI_countrate_correction_count_cutoff")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_detector/api/$(API)/config/ccc_cutoff")
     field(DESC, "Rate Correct Cutoff")
     field(EGU,  "count")
     field(SCAN, "I/O Intr")
 }
 
- Dead time between frames
+# Dead time between frames
 record(ai, "$(P)$(R)DeadTime_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCD_detector_readout_time")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/detector_readout_time")
     field(DESC, "Dead time")
     field(EGU,  "s")
     field(PREC, "6")
-    field(SCAN, "I/O Intr")
-}
-
-record(ao, "$(P)$(R)Wavelength")
-{
-    field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))WAVELENGTH")
-    field(PREC, "4")
-    field(EGU,  "Angstroms")
-}
-
-record(ai, "$(P)$(R)Wavelength_RBV")
-{
-    field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))WAVELENGTH")
-    field(PREC, "4")
-    field(EGU,  "Angstroms")
     field(SCAN, "I/O Intr")
 }
 
@@ -94,54 +70,48 @@ record(stringin, "$(P)$(R)MonitorState_RBV") {
     field(SCAN, "I/O Intr")
 }
 
- Eiger Error Parameters
-record(stringin, "$(P)$(R)Error_RBV") {
-    field(DESC, "Parameters causing error state")
-    field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ERROR")
-    field(SCAN, "I/O Intr")
-}
+# Eiger Error Parameters
 
 record(bi, "$(P)$(R)Link0_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))LINK_0")
-    field(ZNAM, "Down")
-    field(ONAM, "Up")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_detector/api/$(API)/status/link_0")
+    field(ZNAM, "down")
+    field(ONAM, "up")
     field(SCAN, "I/O Intr")
 }
 
 record(bi, "$(P)$(R)Link1_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))LINK_1")
-    field(ZNAM, "Down")
-    field(ONAM, "Up")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_detector/api/$(API)/status/link_1")
+    field(ZNAM, "down")
+    field(ONAM, "up")
     field(SCAN, "I/O Intr")
 }
 
 record(bi, "$(P)$(R)Link2_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))LINK_2")
-    field(ZNAM, "Down")
-    field(ONAM, "Up")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_detector/api/$(API)/status/link_2")
+    field(ZNAM, "down")
+    field(ONAM, "up")
     field(SCAN, "I/O Intr")
 }
 
 record(bi, "$(P)$(R)Link3_RBV")
 {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))LINK_3")
-    field(ZNAM, "Down")
-    field(ONAM, "Up")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_detector/api/$(API)/status/link_3")
+    field(ZNAM, "down")
+    field(ONAM, "up")
     field(SCAN, "I/O Intr")
 }
 
 record(ai, "$(P)$(R)DCUBufferFree_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))DCU_BUF_FREE")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/status/builder/dcu_buffer_free")
     field(EGU,  "%")
     field(SCAN, "I/O Intr")
     field(VAL,  "0")

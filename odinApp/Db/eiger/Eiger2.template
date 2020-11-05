@@ -8,27 +8,34 @@
 #% macro, PORT, Asyn Port name
 #% macro, TIMEOUT, Timeout
 #% macro, ADDR, Asyn Port address
+#% macro, API, Eiger API version
 
 # This associates the template with an edm screen
-# % gui, $(PORT), edmtab, eigerDetector.edl, P=$(P),R=$(R)
+# % gui, $(PORT), edmtab, EigerDetector.edl, P=$(P),R=$(R)
 
 include "EigerBase.template"
 
-record(bo,"$(P)$(R)CountingMode") {
+record(mbbo,"$(P)$(R)CountingMode") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCI_counting_mode")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_detector/api/$(API)/config/counting_mode")
     field(VAL,  "1")
-    field(ZNAM, "Normal")
-    field(ONAM, "Retrigger")
+    field(VAL,  "0")
+    field(ZRST, "Normal")
+    field(ZRVL, "0")
+    field(ONST, "Retrigger")
+    field(ONVL, "1")
 }
 
-record(bi,"$(P)$(R)CountingMode_RBV") {
+record(mbbi,"$(P)$(R)CountingMode_RBV") {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))EIG_DCI_counting_mode")
-    field(ZNAM, "Normal")
-    field(ONAM, "Retrigger")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_detector/api/$(API)/config/counting_mode")
     field(SCAN, "I/O Intr")
+    field(VAL,  "0")
+    field(ZRST, "Normal")
+    field(ZRVL, "0")
+    field(ONST, "Retrigger")
+    field(ONVL, "1")
 }
 
 # Enable Auto Summation
@@ -70,50 +77,13 @@ record(ai, "$(P)$(R)TriggerStartDelay_RBV")
     field(SCAN, "I/O Intr")
 }
 
-# Compression algorithm selection
-record(mbbo,"$(P)$(R)CompressionAlgo") {
-    field(ZRST, "BSLZ4")
-    field(ZRVL, "0")
-    field(ONST, "LZ4")
-    field(ONVL, "1")
-    field(TWST, "None")
-    field(TWVL, "2")
+# Stream API enable
+record(bo,"$(P)$(R)StreamEnable") {
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
 }
 
-record(mbbi,"$(P)$(R)CompressionAlgo_RBV") {
-    field(ZRST, "BSLZ4")
-    field(ZRVL, "0")
-    field(ONST, "LZ4")
-    field(ONVL, "1")
-    field(TWST, "None")
-    field(TWVL, "2")
-}
-
-# Stream Header Detail Selection
-record(mbbo,"$(P)$(R)StreamHdrDetail") {
-    field(ZRST, "None")
-    field(ZRVL, "0")
-    field(ONST, "Basic")
-    field(ONVL, "1")
-    field(TWST, "All")
-    field(TWVL, "2")
-}
-
-record(mbbi,"$(P)$(R)StreamHdrDetail_RBV") {
-    field(ZRST, "None")
-    field(ZRVL, "0")
-    field(ONST, "Basic")
-    field(ONVL, "1")
-    field(TWST, "All")
-    field(TWVL, "2")
-}
-
-# Eiger Stream Image Bit Depth
-record(longin, "$(P)$(R)BitDepthImage_RBV")
-{
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))BIT_DEPTH_IMAGE")
-    field(DESC, "Image Bit Depth")
-    field(VAL,  "0")
-    field(SCAN, "I/O Intr")
+record(bi,"$(P)$(R)StreamEnable_RBV") {
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
 }

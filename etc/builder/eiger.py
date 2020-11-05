@@ -2,10 +2,10 @@ import os
 
 from iocbuilder import Device, AutoSubstitution
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
-from iocbuilder.modules.ADCore import makeTemplateInstance
+from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
 
 from util import OdinPaths, expand_template_file, create_batch_entry, debug_print
-from odin import _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, OdinBatchFile, \
+from odin import _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, OdinBatchFile, \
     _PluginConfig, OdinStartAllScript
 from plugins import _OffsetAdjustmentPlugin, _UIDAdjustmentPlugin, _FileWriterPlugin, _KafkaPlugin, \
     _DatasetCreationPlugin
@@ -242,29 +242,86 @@ class EigerOdinDataServer(_OdinDataServer):
         return _EigerOdinData(server, ready, release, meta, plugin_config, self.source, self.sensor)
 
 
+class _EigerV16DetectorTemplate(AutoSubstitution):
+    TemplateFile = "Eiger1.template"
+
+class _EigerV18DetectorTemplate(AutoSubstitution):
+    TemplateFile = "Eiger2.template"
+
+class EigerDetector(_OdinDetector):
+
+    """Create an Eiger detector"""
+
+    DETECTOR = "eiger"
+    DETECTOR_OPTIONS = {  # (AutoSubstitution Template, API)
+        "V1": (_EigerV16DetectorTemplate, "1.6.0"),
+        "V2": (_EigerV18DetectorTemplate, "1.8.0")
+    }
+
+    # This tells xmlbuilder to use PORT instead of name as the row ID
+    UniqueName = "PORT"
+
+    # We don't really need the OdinDataDriver, but we need to know it is instantiated as it
+    # defines the RANK on all the OdinData instances and we need to sort by RANK for the UDP config
+    def __init__(self, PORT, ODIN_CONTROL_SERVER, ODIN_DATA_DRIVER, DETECTOR_VERSION,
+                 BUFFERS=0, MEMORY=0, **args):
+        # Init the superclass (OdinDetector)
+        self.__super.__init__(PORT, ODIN_CONTROL_SERVER, self.DETECTOR,
+                              BUFFERS, MEMORY, **args)
+        # Update the attributes of self from the commandline args
+        self.__dict__.update(locals())
+
+        self.control_server = ODIN_CONTROL_SERVER
+
+        print("{}".format(args))
+        # Instantiate template corresponding to SENSOR, passing through some of own args
+        detector_template = self.DETECTOR_OPTIONS[DETECTOR_VERSION][0]
+        detector_args = {
+            "P": args["P"],
+            "R": args["R"],
+            "ADDR": args["ADDR"],
+            "PORT": PORT,
+            "TIMEOUT": args["TIMEOUT"],
+            "API": self.DETECTOR_OPTIONS[DETECTOR_VERSION][1]
+        }
+        detector_template(**detector_args)
+
+    # __init__ arguments
+    ArgInfo = ADBaseTemplate.ArgInfo + makeArgInfo(__init__,
+        PORT=Simple("Port name for the detector", str),
+        ODIN_CONTROL_SERVER=Ident("Odin control server instance", _OdinControlServer),
+        ODIN_DATA_DRIVER=Ident("OdinDataDriver instance", _OdinDataDriver),
+        DETECTOR_VERSION=Choice("Eiger detector version (1 or 2)", DETECTOR_OPTIONS.keys()),
+        BUFFERS=Simple("Maximum number of NDArray buffers to be created for plugin callbacks", int),
+        MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "
+                      "attached plugins", int)
+    )
+
+
 class EigerOdinControlServer(_OdinControlServer):
 
     """Store configuration for an EigerOdinControlServer"""
 
     ODIN_SERVER = os.path.join(OdinPaths.EIGER_DETECTOR, "prefix/bin/eiger_odin")
 
-    def __init__(self, IP, EIGER_FAN, META_LISTENER, PORT=8888,
+    def __init__(self, ENDPOINT, API, IP, EIGER_FAN, META_LISTENER, CTRL_PORT=8888,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
                  ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None):
         self.__dict__.update(locals())
-        self.ADAPTERS.extend(["eiger_fan", "meta_listener"])
+        self.ADAPTERS.extend(["eiger", "eiger_fan", "meta_listener"])
 
         self.eiger_fan = EIGER_FAN
         self.meta_listener = META_LISTENER
 
         super(EigerOdinControlServer, self).__init__(
-            IP, PORT, ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4
+            IP, CTRL_PORT, ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4
         )
 
-    # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
+        ENDPOINT=Simple("Detector endpoint", str),
+        API=Choice("API version", ["1.6.0", "1.8.0"]),
         IP=Simple("IP address of control server", str),
-        PORT=Simple("Port of control server", int),
+        CTRL_PORT=Simple("Port of control server", int),
         EIGER_FAN=Ident("EigerFan configuration", EigerFan),
         META_LISTENER=Ident("MetaListener configuration", EigerMetaListener),
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
@@ -275,13 +332,17 @@ class EigerOdinControlServer(_OdinControlServer):
 
     def create_odin_server_config_entries(self):
         return [
+            self._create_control_config_entry(),
             self._create_odin_data_config_entry(),
             self._create_eiger_fan_config_entry(),
             self._create_meta_listener_config_entry()
         ]
 
-    def create_odin_server_static_path(self):
-        return OdinPaths.EIGER_DETECTOR + "/prefix/html/static"
+    def _create_control_config_entry(self):
+        return "[adapter.eiger]\n" \
+               "module = eiger.eiger_adapter.EigerAdapter\n" \
+               "endpoint = {}\n" \
+               "api = {}".format(self.ENDPOINT, self.API)
 
     def _create_eiger_fan_config_entry(self):
         return "[adapter.eiger_fan]\n" \
@@ -294,6 +355,9 @@ class EigerOdinControlServer(_OdinControlServer):
                "module = odin_data.meta_listener_adapter.MetaListenerAdapter\n" \
                "endpoints = {}:5659\n" \
                "update_interval = 0.5".format(self.meta_listener.IP)
+
+    def create_odin_server_static_path(self):
+        return OdinPaths.EIGER_DETECTOR + "/prefix/html/static"
 
 
 class _EigerDetectorTemplate(AutoSubstitution):
