@@ -29,7 +29,7 @@ include "ExcaliburOD.template"
 record(calcout, "$(P)$(R)DetToFPBitDepth")
 {
     field(INPA, "$(P)$(DET)CounterDepth CP")
-    field(CALC, "A=0||A=1?0:A=2?1:2")
+    field(CALC, "A=0||A=1?0:A=2?1:A=3?2:1")
     field(OUT, "$(P)$(R)DataType PP")
 }
 

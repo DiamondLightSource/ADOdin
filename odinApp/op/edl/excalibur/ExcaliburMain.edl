@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 365
-y 88
+x 401
+y 122
 w 390
 h 820
 font "arial-bold-r-12.0"
@@ -61,26 +61,7 @@ major 10
 minor 0
 release 0
 x 90
-y 755
-w 85
-h 20
-controlPv "$(P)$(R)EnergyThreshold"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 90
-y 690
+y 660
 w 85
 h 20
 controlPv "$(P)$(R)NumTestPulses"
@@ -99,29 +80,10 @@ major 10
 minor 0
 release 0
 x 80
-y 655
+y 625
 w 55
 h 25
 controlPv "$(P)$(R)TestPulseEnable"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 80
-y 625
-w 105
-h 25
-controlPv "$(P)$(R)CounterSelect"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -1549,28 +1511,7 @@ major 4
 minor 1
 release 1
 x 10
-y 625
-w 65
-h 25
-font "arial-bold-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Counter"
-  "Select"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 10
-y 690
+y 660
 w 75
 h 25
 font "arial-bold-r-12.0"
@@ -1937,7 +1878,7 @@ major 4
 minor 1
 release 1
 x 10
-y 655
+y 625
 w 65
 h 25
 font "arial-bold-r-12.0"
@@ -1957,9 +1898,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 20
-y 755
-w 50
+x 5
+y 725
+w 65
 h 25
 font "arial-bold-r-12.0"
 fontAlign "right"
@@ -1967,7 +1908,7 @@ fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Energy"
+  "Energy 0"
   "Threshold"
 }
 endObjectProperties
@@ -2458,7 +2399,7 @@ major 4
 minor 4
 release 0
 x 140
-y 655
+y 625
 w 45
 h 25
 fgColor index 43
@@ -2562,7 +2503,7 @@ major 4
 minor 1
 release 1
 x 10
-y 725
+y 695
 w 75
 h 25
 font "arial-bold-r-12.0"
@@ -2666,6 +2607,109 @@ visMin "0"
 visMax "1"
 endObjectProperties
 
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 80
+y 690
+w 105
+h 25
+font "arial-bold-r-12.0"
+fontAlign "center"
+fgColor index 20
+bgColor index 3
+visPv "$(P)$(R)Acquire"
+visMin "1"
+visMax "2"
+value {
+  "Acquiring..."
+}
+border
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 755
+w 65
+h 25
+font "arial-bold-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Energy 1"
+  "Threshold"
+}
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 90
+y 725
+w 85
+h 50
+
+beginGroup
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 90
+y 755
+w 85
+h 20
+controlPv "$(P)$(R)EnergyThreshold1_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 90
+y 725
+w 85
+h 20
+controlPv "$(P)$(R)EnergyThreshold0_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+endGroup
+
+visPv "$(P)$(R)Acquire"
+visInvert
+visMin "0"
+visMax "1"
+endObjectProperties
+
 # (Group)
 object activeGroupClass
 beginObjectProperties
@@ -2686,7 +2730,7 @@ major 4
 minor 0
 release 0
 x 275
-y 565
+y 566
 w 105
 h 25
 fgColor index 25
@@ -2705,7 +2749,7 @@ major 4
 minor 0
 release 0
 x 275
-y 595
+y 596
 w 105
 h 25
 fgColor index 25
@@ -2724,7 +2768,7 @@ major 4
 minor 0
 release 0
 x 275
-y 625
+y 626
 w 105
 h 25
 fgColor index 25
@@ -2743,7 +2787,7 @@ major 4
 minor 0
 release 0
 x 275
-y 655
+y 656
 w 105
 h 25
 fgColor index 25
@@ -2762,7 +2806,7 @@ major 4
 minor 0
 release 0
 x 275
-y 685
+y 686
 w 105
 h 25
 fgColor index 25
@@ -2781,7 +2825,7 @@ major 4
 minor 0
 release 0
 x 275
-y 715
+y 716
 w 105
 h 25
 fgColor index 25
@@ -2800,7 +2844,7 @@ major 4
 minor 0
 release 0
 x 275
-y 745
+y 746
 w 105
 h 25
 fgColor index 25
@@ -2819,7 +2863,7 @@ major 4
 minor 6
 release 0
 x 80
-y 785
+y 786
 w 300
 h 20
 controlPv "$(P)$(R)CalFileRoot"
@@ -2841,13 +2885,13 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 90
-y 755
-w 85
+x 80
+y 725
+w 55
 h 20
-controlPv "$(P)$(R)EnergyThreshold"
+controlPv "$(P)$(R)EnergyThreshold0"
 displayMode "decimal"
-precision 4
+precision 2
 fgColor index 25
 bgColor index 3
 fill
@@ -2860,8 +2904,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 90
-y 720
+x 95
+y 691
 w 75
 h 25
 fgColor index 19
@@ -2885,7 +2929,7 @@ major 10
 minor 0
 release 0
 x 90
-y 690
+y 661
 w 85
 h 20
 controlPv "$(P)$(R)NumTestPulses"
@@ -2902,7 +2946,7 @@ major 4
 minor 0
 release 0
 x 80
-y 655
+y 626
 w 55
 h 25
 fgColor index 25
@@ -2921,26 +2965,7 @@ major 4
 minor 0
 release 0
 x 80
-y 625
-w 105
-h 25
-fgColor index 25
-bgColor index 3
-inconsistentColor index 0
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)$(R)CounterSelect"
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 80
-y 595
+y 596
 w 105
 h 25
 fgColor index 25
@@ -2959,7 +2984,7 @@ major 4
 minor 0
 release 0
 x 80
-y 565
+y 566
 w 105
 h 25
 fgColor index 25
@@ -2971,33 +2996,71 @@ controlPv "$(P)$(R)OperationMode"
 font "arial-bold-r-12.0"
 endObjectProperties
 
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 80
+y 755
+w 55
+h 20
+controlPv "$(P)$(R)EnergyThreshold1"
+displayMode "decimal"
+precision 2
+fgColor index 25
+bgColor index 3
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 140
+y 725
+w 50
+h 20
+controlPv "$(P)$(R)EnergyThreshold0_RBV"
+displayMode "decimal"
+precision 2
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 140
+y 755
+w 50
+h 20
+controlPv "$(P)$(R)EnergyThreshold1_RBV"
+displayMode "decimal"
+precision 2
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
 endGroup
 
 visPv "$(P)$(R)Acquire"
 visMin "0"
 visMax "1"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 80
-y 720
-w 105
-h 25
-font "arial-bold-r-12.0"
-fontAlign "center"
-fgColor index 20
-bgColor index 3
-visPv "$(P)$(R)Acquire"
-visMin "1"
-visMax "2"
-value {
-  "Acquiring..."
-}
-border
 endObjectProperties
 
