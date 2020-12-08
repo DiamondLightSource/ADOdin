@@ -339,7 +339,16 @@ class _OdinControlServer(Device):
 
         self.odin_data_servers = [
             server for server in [
-                ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4
+                ODIN_DATA_SERVER_1,
+                ODIN_DATA_SERVER_2,
+                ODIN_DATA_SERVER_3,
+                ODIN_DATA_SERVER_4,
+                ODIN_DATA_SERVER_5,
+                ODIN_DATA_SERVER_6,
+                ODIN_DATA_SERVER_7,
+                ODIN_DATA_SERVER_8,
+                ODIN_DATA_SERVER_9,
+                ODIN_DATA_SERVER_10
             ] if server is not None
         ]
 

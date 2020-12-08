@@ -515,19 +515,24 @@ def add_tristan_fp_template(cls):
     return cls
 
 
-@add_tristan_fp_template
+#@add_tristan_fp_template
 class _Tristan4NodeFPTemplate(AutoSubstitution):
     TemplateFile = "Tristan4NodeOD.template"
 
 
-@add_tristan_fp_template
+#@add_tristan_fp_template
 class _Tristan8NodeFPTemplate(AutoSubstitution):
     TemplateFile = "Tristan8NodeOD.template"
 
 
-@add_tristan_fp_template
+#@add_tristan_fp_template
 class _Tristan16NodeFPTemplate(AutoSubstitution):
     TemplateFile = "Tristan16NodeOD.template"
+
+
+#@add_tristan_fp_template
+class _Tristan100NodeFPTemplate(AutoSubstitution):
+    TemplateFile = "Tristan100NodeOD.template"
 
 
 class TristanOdinDataDriver(_OdinDataDriver):
@@ -538,7 +543,8 @@ class TristanOdinDataDriver(_OdinDataDriver):
         # Number of OdinData nodes: Template
         4: _Tristan4NodeFPTemplate,
         8: _Tristan8NodeFPTemplate,
-        16: _Tristan16NodeFPTemplate
+        16: _Tristan16NodeFPTemplate,
+        100: _Tristan100NodeFPTemplate
     }
     META_WRITER_CLASS = TristanMetaWriter
 
@@ -551,7 +557,7 @@ class TristanOdinDataDriver(_OdinDataDriver):
 
         if self.odin_data_processes not in self.FP_TEMPLATES.keys():
             raise ValueError(
-                "Total number of OdinData processes must be {}".format(self.FP_TEMPLATES.keys())
+                "Total number of OdinData processes must be {}, requested {}".format(self.FP_TEMPLATES.keys(), self.odin_data_processes)
             )
         else:
             sensor = self.ODIN_DATA_PROCESSES[0].sensor

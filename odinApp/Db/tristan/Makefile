@@ -20,6 +20,8 @@ DB += TristanOD.template
 DB += Tristan4NodeOD.template
 DB += Tristan8NodeOD.template
 DB += Tristan16NodeOD.template
+DB += Tristan100NodeOD.template
+DB += TristanServer10NodeOD.template
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add

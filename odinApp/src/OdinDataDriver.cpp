@@ -33,7 +33,8 @@ OdinDataDriver::OdinDataDriver(const char* portName, const char* serverHostname,
 
     : OdinClient(portName, serverHostname, odinServerPort,
                  detectorName, maxBuffers,
-                 maxMemory, priority, stackSize),
+                 maxMemory, priority, stackSize,
+                 odinDataCount+1), // Number of FPs plus 1
     mAPI(serverHostname, detectorName, odinServerPort, odinDataCount)
 {
   mDatasetName = std::string(datasetName);

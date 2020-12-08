@@ -1,0 +1,668 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 479
+y 547
+w 1201
+h 401
+font "arial-medium-r-12.0"
+ctlFont "arial-medium-r-12.0"
+btnFont "arial-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 25
+ctlFgColor2 index 25
+ctlBgColor1 index 3
+ctlBgColor2 index 3
+topShadowColor index 1
+botShadowColor index 11
+title "Tristan Server $(SVR) Details"
+showGrid
+snapToGrid
+gridSize 5
+endScreenProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 125
+y 30
+w 101
+h 351
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanFPStatus_embed"
+}
+symbols {
+  0 "RANK=$(R1)"
+}
+noScroll
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 125
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FP $(R1)"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 230
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FP $(R2)"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 335
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FP $(R3)"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 440
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FP $(R4)"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 545
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FP $(R5)"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 650
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FP $(R6)"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 755
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FP $(R7)"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 860
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FP $(R8)"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 965
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FP $(R9)"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1070
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FP $(R10)"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 35
+w 100
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FR Connected"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 55
+w 100
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FP Connected"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 75
+w 100
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FP Health"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 95
+w 100
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Writing"
+}
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 230
+y 30
+w 101
+h 351
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanFPStatus_embed"
+}
+symbols {
+  0 "RANK=$(R2)"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 335
+y 30
+w 101
+h 351
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanFPStatus_embed"
+}
+symbols {
+  0 "RANK=$(R3)"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 440
+y 30
+w 101
+h 351
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanFPStatus_embed"
+}
+symbols {
+  0 "RANK=$(R4)"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 545
+y 30
+w 101
+h 351
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanFPStatus_embed"
+}
+symbols {
+  0 "RANK=$(R5)"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 650
+y 30
+w 101
+h 351
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanFPStatus_embed"
+}
+symbols {
+  0 "RANK=$(R6)"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 755
+y 30
+w 101
+h 351
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanFPStatus_embed"
+}
+symbols {
+  0 "RANK=$(R7)"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 860
+y 30
+w 101
+h 351
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanFPStatus_embed"
+}
+symbols {
+  0 "RANK=$(R8)"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 965
+y 30
+w 101
+h 351
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanFPStatus_embed"
+}
+symbols {
+  0 "RANK=$(R9)"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 1070
+y 30
+w 101
+h 351
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanFPStatus_embed"
+}
+symbols {
+  0 "RANK=$(R10)"
+}
+noScroll
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 120
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Packets Recv"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 145
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Free Buffers"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 185
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Dropped Packets"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 210
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Invalid Packets"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 235
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Time Mismatches"
+}
+endObjectProperties
+

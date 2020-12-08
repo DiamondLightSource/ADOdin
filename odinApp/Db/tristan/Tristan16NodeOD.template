@@ -5,11 +5,18 @@
 # % macro, R, Device Suffix
 # % macro, DET, Detector Suffix
 # % macro, PORT, Asyn Port name
+# % macro, TIMEOUT, Timeout for Asyn driver requests
 # % macro, name, Name specifying builder GUI generation
 
 # This associates the template with an edm screen
 # % gui, $(name), edm, TristanDAQ16Status.edl, P=$(P),R=$(R)
 # % gui, $(PORT), edmtab, TristanDAQMain.edl, P=$(P),R=$(R)
+
+# Timeout record required for macro substitution in builder
+record(ao, "$(P)$(R)TimeoutSetting")
+{
+    field(VAL, "$(TIMEOUT)")
+}
 
 ################################################################################
 #
