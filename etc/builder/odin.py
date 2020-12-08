@@ -594,7 +594,7 @@ class OdinBatchFile(Device):
         self.odin_control_server.add_batch_entry(entries, self.beamline, process_number)
 
         stream = IocDataStream("configure_odin")
-        stream.write("\n".join(entries))
+        stream.write("\n".join(entries) + "\n")
 
     def add_extra_entries(self, entries, process_number):
         return process_number
