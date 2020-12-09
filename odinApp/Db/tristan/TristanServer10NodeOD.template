@@ -255,3 +255,33 @@ record(calcout, "$(P)$(R)SVR$(SERVER):Writing_RBV")
     field(CALC, "A&B&C&D&E&F&G&H&I&J")
 }
 
+record(calcout, "$(P)$(R)SVR$(SERVER):LowBufferWarning_RBV")
+{
+    field(INPA, "$(P):OD$(N1):LowBufferWarning_RBV CP")
+    field(INPB, "$(P):OD$(N2):LowBufferWarning_RBV CP")
+    field(INPC, "$(P):OD$(N3):LowBufferWarning_RBV CP")
+    field(INPD, "$(P):OD$(N4):LowBufferWarning_RBV CP")
+    field(INPE, "$(P):OD$(N5):LowBufferWarning_RBV CP")
+    field(INPF, "$(P):OD$(N6):LowBufferWarning_RBV CP")
+    field(INPG, "$(P):OD$(N7):LowBufferWarning_RBV CP")
+    field(INPH, "$(P):OD$(N8):LowBufferWarning_RBV CP")
+    field(INPI, "$(P):OD$(N9):LowBufferWarning_RBV CP")
+    field(INPJ, "$(P):OD$(N10):LowBufferWarning_RBV CP")
+    field(CALC, "A|B|C|D|E|F|G|H|I|J")
+}
+
+record(calcout, "$(P)$(R)SVR$(SERVER):LowBufferError_RBV")
+{
+    field(INPA, "$(P):OD$(N1):LowBufferError_RBV CP")
+    field(INPB, "$(P):OD$(N2):LowBufferError_RBV CP")
+    field(INPC, "$(P):OD$(N3):LowBufferError_RBV CP")
+    field(INPD, "$(P):OD$(N4):LowBufferError_RBV CP")
+    field(INPE, "$(P):OD$(N5):LowBufferError_RBV CP")
+    field(INPF, "$(P):OD$(N6):LowBufferError_RBV CP")
+    field(INPG, "$(P):OD$(N7):LowBufferError_RBV CP")
+    field(INPH, "$(P):OD$(N8):LowBufferError_RBV CP")
+    field(INPI, "$(P):OD$(N9):LowBufferError_RBV CP")
+    field(INPJ, "$(P):OD$(N10):LowBufferError_RBV CP")
+    field(CALC, "A|B|C|D|E|F|G|H|I|J")
+}
+

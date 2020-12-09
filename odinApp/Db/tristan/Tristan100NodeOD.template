@@ -81,6 +81,63 @@ record(calcout, "$(P)$(R)SumUdpPackets")
 
 
 ###################################################################
+#  This checks FR connected status across all servers             #
+###################################################################
+record(calcout, "$(P)$(R)FRConnected_RBV")
+{
+    field(INPA, "$(P)$(R)SVR01:FRConnected_RBV CP")
+    field(INPB, "$(P)$(R)SVR02:FRConnected_RBV CP")
+    field(INPC, "$(P)$(R)SVR03:FRConnected_RBV CP")
+    field(INPD, "$(P)$(R)SVR04:FRConnected_RBV CP")
+    field(INPE, "$(P)$(R)SVR05:FRConnected_RBV CP")
+    field(INPF, "$(P)$(R)SVR06:FRConnected_RBV CP")
+    field(INPG, "$(P)$(R)SVR07:FRConnected_RBV CP")
+    field(INPH, "$(P)$(R)SVR08:FRConnected_RBV CP")
+    field(INPI, "$(P)$(R)SVR09:FRConnected_RBV CP")
+    field(INPJ, "$(P)$(R)SVR10:FRConnected_RBV CP")
+    field(CALC, "A&B&C&D&E&F&G&H&I&J")
+}
+
+
+###################################################################
+#  This checks FP connected status across all servers             #
+###################################################################
+record(calcout, "$(P)$(R)FPConnected_RBV")
+{
+    field(INPA, "$(P)$(R)SVR01:FPConnected_RBV CP")
+    field(INPB, "$(P)$(R)SVR02:FPConnected_RBV CP")
+    field(INPC, "$(P)$(R)SVR03:FPConnected_RBV CP")
+    field(INPD, "$(P)$(R)SVR04:FPConnected_RBV CP")
+    field(INPE, "$(P)$(R)SVR05:FPConnected_RBV CP")
+    field(INPF, "$(P)$(R)SVR06:FPConnected_RBV CP")
+    field(INPG, "$(P)$(R)SVR07:FPConnected_RBV CP")
+    field(INPH, "$(P)$(R)SVR08:FPConnected_RBV CP")
+    field(INPI, "$(P)$(R)SVR09:FPConnected_RBV CP")
+    field(INPJ, "$(P)$(R)SVR10:FPConnected_RBV CP")
+    field(CALC, "A&B&C&D&E&F&G&H&I&J")
+}
+
+
+###################################################################
+#  This checks FP error status across all servers                 #
+###################################################################
+record(calcout, "$(P)$(R)FPError_RBV")
+{
+    field(INPA, "$(P)$(R)SVR01:FPErrorState_RBV CP")
+    field(INPB, "$(P)$(R)SVR02:FPErrorState_RBV CP")
+    field(INPC, "$(P)$(R)SVR03:FPErrorState_RBV CP")
+    field(INPD, "$(P)$(R)SVR04:FPErrorState_RBV CP")
+    field(INPE, "$(P)$(R)SVR05:FPErrorState_RBV CP")
+    field(INPF, "$(P)$(R)SVR06:FPErrorState_RBV CP")
+    field(INPG, "$(P)$(R)SVR07:FPErrorState_RBV CP")
+    field(INPH, "$(P)$(R)SVR08:FPErrorState_RBV CP")
+    field(INPI, "$(P)$(R)SVR09:FPErrorState_RBV CP")
+    field(INPJ, "$(P)$(R)SVR10:FPErrorState_RBV CP")
+    field(CALC, "A&B&C&D&E&F&G&H&I&J")
+}
+
+
+###################################################################
 #  This resets all FRs                                            #
 ###################################################################
 record(seq, "$(P)$(R)ResetAllFR")

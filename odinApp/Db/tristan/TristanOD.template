@@ -54,3 +54,15 @@ record(longin, "$(P):OD$(NUM):FPDroppedPackets_RBV")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_fp/status/tristan/dropped_packets")
 }
+
+record(calcout, "$(P):OD$(NUM):LowBufferWarning_RBV")
+{
+    field(INPA, "$(P):OD$(NUM):FreeBuffers_RBV CP")
+    field(CALC, "A<5000?1:0")
+}
+
+record(calcout, "$(P):OD$(NUM):LowBufferError_RBV")
+{
+    field(INPA, "$(P):OD$(NUM):FreeBuffers_RBV CP")
+    field(CALC, "A<10?1:0")
+}

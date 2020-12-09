@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 458
-y 137
+y 174
 w 1201
 h 401
 font "arial-medium-r-12.0"
@@ -616,26 +616,7 @@ major 4
 minor 1
 release 1
 x 10
-y 185
-w 115
-h 20
-font "arial-medium-r-14.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Dropped Packets"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 10
-y 210
+y 240
 w 115
 h 20
 font "arial-medium-r-14.0"
@@ -654,7 +635,7 @@ major 4
 minor 1
 release 1
 x 10
-y 235
+y 265
 w 115
 h 20
 font "arial-medium-r-14.0"
@@ -663,6 +644,63 @@ bgColor index 3
 useDisplayBg
 value {
   "Time Mismatches"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 215
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Dropped Packets"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 170
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Memory Warning"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 190
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Out of Memory"
 }
 endObjectProperties
 

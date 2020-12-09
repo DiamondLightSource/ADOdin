@@ -46,7 +46,7 @@ major 4
 minor 0
 release 0
 x 200
-y 565
+y 660
 w 185
 h 85
 lineColor index 14
@@ -61,7 +61,7 @@ major 10
 minor 0
 release 0
 x 275
-y 615
+y 710
 w 105
 h 25
 controlPv "$(P)$(R)CounterDepth"
@@ -80,7 +80,7 @@ major 10
 minor 0
 release 0
 x 275
-y 585
+y 680
 w 105
 h 25
 controlPv "$(P)$(R)OperationMode"
@@ -114,7 +114,7 @@ major 4
 minor 1
 release 1
 x 205
-y 585
+y 680
 w 65
 h 25
 font "arial-bold-r-12.0"
@@ -155,7 +155,7 @@ major 4
 minor 1
 release 1
 x 200
-y 560
+y 655
 w 88
 h 13
 font "arial-medium-r-12.0"
@@ -586,7 +586,7 @@ release 0
 x 200
 y 315
 w 185
-h 240
+h 335
 lineColor index 14
 fill
 fillColor index 3
@@ -1191,7 +1191,7 @@ major 4
 minor 1
 release 1
 x 205
-y 615
+y 710
 w 65
 h 25
 font "arial-bold-r-12.0"
@@ -1211,7 +1211,7 @@ major 4
 minor 0
 release 0
 x 275
-y 615
+y 710
 w 105
 h 25
 fgColor index 25
@@ -1231,7 +1231,7 @@ major 4
 minor 0
 release 0
 x 275
-y 585
+y 680
 w 105
 h 25
 fgColor index 25
@@ -1954,7 +1954,7 @@ major 4
 minor 1
 release 0
 x 340
-y 530
+y 455
 w 40
 h 20
 fgColor index 25
@@ -1977,7 +1977,7 @@ major 4
 minor 0
 release 0
 x 200
-y 660
+y 755
 w 185
 h 60
 lineColor index 14
@@ -1992,7 +1992,7 @@ major 4
 minor 1
 release 1
 x 200
-y 680
+y 775
 w 65
 h 25
 font "arial-bold-r-12.0"
@@ -2013,7 +2013,7 @@ major 4
 minor 1
 release 1
 x 200
-y 655
+y 750
 w 51
 h 13
 font "arial-medium-r-12.0"
@@ -2033,7 +2033,7 @@ major 4
 minor 1
 release 0
 x 275
-y 680
+y 775
 w 105
 h 25
 fgColor index 25
@@ -2047,5 +2047,116 @@ onLabel "time_zero"
 offLabel "time_zero"
 3d
 font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 315
+y 555
+w 20
+h 20
+controlPv "$(P):OD:FPConnected_RBV"
+lineColor index 14
+onColor index 15
+offColor index 20
+lineWidth 2
+numBits 1
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 315
+y 530
+w 20
+h 20
+controlPv "$(P):OD:FRConnected_RBV"
+lineColor index 14
+onColor index 15
+offColor index 20
+lineWidth 2
+numBits 1
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 315
+y 580
+w 20
+h 20
+controlPv "$(P):OD:FPError_RBV"
+lineColor index 14
+onColor index 20
+offColor index 15
+lineWidth 2
+numBits 1
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 205
+y 530
+w 95
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FR Connected"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 205
+y 555
+w 95
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FP Connected"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 205
+y 580
+w 95
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FP Status"
+}
 endObjectProperties
 

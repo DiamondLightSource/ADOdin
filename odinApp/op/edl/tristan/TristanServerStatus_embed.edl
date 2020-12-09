@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 1173
-y 495
+y 569
 w 91
 h 344
 font "arial-medium-r-12.0"
@@ -98,7 +98,7 @@ h 20
 controlPv "$(P):OD:SVR$(SVR):FPConnected_RBV"
 lineColor index 14
 onColor index 15
-offColor index 24
+offColor index 20
 lineWidth 2
 numBits 1
 endObjectProperties
@@ -116,7 +116,7 @@ h 20
 controlPv "$(P):OD:SVR$(SVR):FRConnected_RBV"
 lineColor index 14
 onColor index 15
-offColor index 24
+offColor index 20
 lineWidth 2
 numBits 1
 endObjectProperties
@@ -146,7 +146,7 @@ major 10
 minor 0
 release 0
 x 5
-y 155
+y 185
 w 80
 h 20
 controlPv "$(P):OD:SVR$(SVR):FPDroppedPackets_RBV"
@@ -184,7 +184,7 @@ major 10
 minor 0
 release 0
 x 5
-y 180
+y 210
 w 80
 h 20
 controlPv "$(P):OD:SVR$(SVR):FPInvalidPackets_RBV"
@@ -203,7 +203,7 @@ major 10
 minor 0
 release 0
 x 5
-y 205
+y 235
 w 80
 h 20
 controlPv "$(P):OD:SVR$(SVR):FPTimestampMismatches_RBV"
@@ -213,5 +213,41 @@ bgColor index 10
 fill
 font "arial-bold-r-12.0"
 fontAlign "center"
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 35
+y 140
+w 20
+h 20
+controlPv "$(P):OD:SVR$(SVR):LowBufferWarning_RBV"
+lineColor index 14
+onColor index 35
+offColor index 15
+lineWidth 2
+numBits 1
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 35
+y 160
+w 20
+h 20
+controlPv "$(P):OD:SVR$(SVR):LowBufferError_RBV"
+lineColor index 14
+onColor index 20
+offColor index 15
+lineWidth 2
+numBits 1
 endObjectProperties
 
