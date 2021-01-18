@@ -62,6 +62,7 @@ class _ParameterAdjustmentPlugin(_DatasetCreationPlugin):
     CLASS_NAME = "ParameterAdjustmentPlugin"
     DATASET_NAME = None
     PARAMETER_PLUGIN_INSTANTIATED = False
+    DEFAULT = 0
 
     def __init__(self, source=None):
         super(_ParameterAdjustmentPlugin, self).__init__(source)
@@ -81,7 +82,7 @@ class _ParameterAdjustmentPlugin(_DatasetCreationPlugin):
             self.NAME: {
                 "parameter": {
                     self.DATASET_NAME: {
-                        "adjustment": 0
+                        "adjustment": self.DEFAULT
                     }
                 }
             }
@@ -98,6 +99,7 @@ class _UIDAdjustmentPlugin(_ParameterAdjustmentPlugin):
         dict(name="uid", datatype="uint64")
     ]
     TEMPLATE = _UIDAdjustmentPluginTemplate
+    DEFAULT = 1
 
     def __init__(self, source=None):
         super(_UIDAdjustmentPlugin, self).__init__(source)
