@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 178
-y 257
+x 36
+y 368
 w 1436
 h 481
 font "arial-medium-r-18.0"
@@ -304,7 +304,7 @@ major 4
 minor 1
 release 1
 x 520
-y 315
+y 290
 w 110
 h 20
 font "arial-bold-r-12.0"
@@ -323,7 +323,7 @@ major 4
 minor 1
 release 1
 x 520
-y 290
+y 265
 w 110
 h 20
 font "arial-bold-r-12.0"
@@ -638,5 +638,81 @@ symbols {
   0 "FEM=9"
 }
 noScroll
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 520
+y 365
+w 110
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Max X"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 520
+y 340
+w 110
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Min X"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 520
+y 415
+w 110
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Max Y"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 520
+y 390
+w 110
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Min Y"
+}
 endObjectProperties
 

@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 385
-y 400
+x 580
+y 216
 w 81
 h 406
 font "arial-medium-r-18.0"
@@ -208,7 +208,7 @@ major 10
 minor 0
 release 0
 x 5
-y 255
+y 230
 w 70
 h 20
 controlPv "$(P)$(FEM):SensorHumidity_RBV"
@@ -229,7 +229,7 @@ major 10
 minor 0
 release 0
 x 5
-y 280
+y 255
 w 70
 h 20
 controlPv "$(P)$(FEM):SensorTemp_0_RBV"
@@ -250,12 +250,88 @@ major 10
 minor 0
 release 0
 x 5
-y 305
+y 280
 w 70
 h 20
 controlPv "$(P)$(FEM):SensorTemp_1_RBV"
 displayMode "decimal"
 precision 1
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 5
+y 305
+w 70
+h 20
+controlPv "$(P)$(FEM):FEMMinX_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 5
+y 330
+w 70
+h 20
+controlPv "$(P)$(FEM):FEMMaxX_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 5
+y 355
+w 70
+h 20
+controlPv "$(P)$(FEM):FEMMinY_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 5
+y 380
+w 70
+h 20
+controlPv "$(P)$(FEM):FEMMaxY_RBV"
 fgColor index 16
 fgAlarm
 bgColor index 10

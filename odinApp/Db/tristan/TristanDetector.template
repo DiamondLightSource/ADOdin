@@ -11,6 +11,17 @@
 
 include "ADBase.template"
 
+
+# Is the hardware connected
+#% archiver 1 monitor
+record(bi, "$(P)$(R)DetectorConnected_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/connected")
+}
+
 # Number of frames taken in current acquisition.
 #% archiver 1 monitor
 record(longin, "$(P)$(R)ArrayCounter_RBV")
@@ -643,6 +654,22 @@ record(stringin, "$(P)$(R)Description_RBV")
 }
 
 #% archiver 1 monitor
+record(stringin, "$(P)$(R)DetectorType_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/detector_type")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)DetectorVariant_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/detector_variant")
+}
+
+#% archiver 1 monitor
 record(stringin, "$(P)$(R)SensorMaterial_RBV")
 {
     field(SCAN, "I/O Intr")
@@ -675,6 +702,14 @@ record(stringin, "$(P)$(R)SoftwareVersion_RBV")
 }
 
 #% archiver 1 monitor
+record(stringin, "$(P)$(R)SoftwareBuild_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/software_build")
+}
+
+#% archiver 1 monitor
 record(stringin, "$(P)$(R)XPixelSize_RBV")
 {
     field(SCAN, "I/O Intr")
@@ -691,6 +726,28 @@ record(stringin, "$(P)$(R)YPixelSize_RBV")
 }
 
 #% archiver 1 monitor
+record(ai, "$(P)$(R)TickPicoSeconds_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(PREC,  "1")
+    field(EGU,  "ps")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_status/detector/tick_ps")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)TickHertz_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(PREC,  "1")
+    field(EGU,  "Hz")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_status/detector/tick_hz")
+}
+
+#% archiver 1 monitor
 record(longin, "$(P)$(R)TimesliceNumber_RBV")
 {
     field(SCAN, "I/O Intr")
@@ -699,6 +756,59 @@ record(longin, "$(P)$(R)TimesliceNumber_RBV")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_status/detector/timeslice_number")
 }
 
+#% archiver 1 monitor
+record(bi, "$(P)$(R)ShutterOpen_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/detector/shutteropen")
+}
+
+#% archiver 1 monitor
+record(bi, "$(P)$(R)AcquisitionBusy_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/detector/acquisition_busy")
+}
+
+#% archiver 1 monitor
+record(bi, "$(P)$(R)ShutterBusy_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/detector/shutterbusy")
+}
+
+#% archiver 1 monitor
+record(bi, "$(P)$(R)FPGABusy_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/detector/fpga_busy")
+}
+
+#% archiver 1 monitor
+record(longin, "$(P)$(R)LoopAction_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_status/detector/loopaction")
+}
+
+#% archiver 1 monitor
+record(bi, "$(P)$(R)CRW_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/detector/crw")
+}
 
 ###################################################################
 #  Set the Live View Endpoint                                     #

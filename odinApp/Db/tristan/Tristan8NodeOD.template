@@ -18,6 +18,7 @@ record(ao, "$(P)$(R)TimeoutSetting")
     field(VAL, "$(TIMEOUT)")
 }
 
+
 ################################################################################
 #
 # Include 8 FP templates
@@ -25,39 +26,51 @@ record(ao, "$(P)$(R)TimeoutSetting")
 ################################################################################
 
 substitute "TOTAL=8"
-substitute "ADDRESS=0"
-include "TristanOD.template"
-substitute "ADDRESS=1"
-include "TristanOD.template"
-substitute "ADDRESS=2"
-include "TristanOD.template"
-substitute "ADDRESS=3"
-include "TristanOD.template"
-substitute "ADDRESS=4"
-include "TristanOD.template"
-substitute "ADDRESS=5"
-include "TristanOD.template"
-substitute "ADDRESS=6"
-include "TristanOD.template"
-substitute "ADDRESS=7"
-include "TristanOD.template"
+
+substitute "SERVER=01,N1=1,N2=2,N3=3,N4=4,N5=5,N6=6,N7=7,N8=8,A1=0,A2=1,A3=2,A4=3,A5=4,A6=5,A7=6,A8=7"
+include "TristanServer8NodeOD.template"
+
 
 ###################################################################
-#  This sums all packets received.                                #
+#  This sums all UDP packets across all servers                   #
 ###################################################################
 record(calcout, "$(P)$(R)SumUdpPackets")
 {
-    field(INPA, "$(P)$(R)0FRPacketsReceived_RBV CP")
-    field(INPB, "$(P)$(R)1FRPacketsReceived_RBV CP")
-    field(INPC, "$(P)$(R)2FRPacketsReceived_RBV CP")
-    field(INPD, "$(P)$(R)3FRPacketsReceived_RBV CP")
-    field(INPE, "$(P)$(R)4FRPacketsReceived_RBV CP")
-    field(INPF, "$(P)$(R)5FRPacketsReceived_RBV CP")
-    field(INPG, "$(P)$(R)6FRPacketsReceived_RBV CP")
-    field(INPH, "$(P)$(R)7FRPacketsReceived_RBV CP")
-    field(CALC, "A+B+C+D+E+F+G+H")
+    field(INPA, "$(P)$(R)SVR01:SumUdpPackets CP")
+    field(CALC, "A")
     field(OUT, "$(P)$(DET)UdpReceived_RBV PP")
 }
+
+
+###################################################################
+#  This checks FR connected status across all servers             #
+###################################################################
+record(calcout, "$(P)$(R)FRConnected_RBV")
+{
+    field(INPA, "$(P)$(R)SVR01:FRConnected_RBV CP")
+    field(CALC, "A")
+}
+
+
+###################################################################
+#  This checks FP connected status across all servers             #
+###################################################################
+record(calcout, "$(P)$(R)FPConnected_RBV")
+{
+    field(INPA, "$(P)$(R)SVR01:FPConnected_RBV CP")
+    field(CALC, "A")
+}
+
+
+###################################################################
+#  This checks FP error status across all servers                 #
+###################################################################
+record(calcout, "$(P)$(R)FPError_RBV")
+{
+    field(INPA, "$(P)$(R)SVR01:FPErrorState_RBV CP")
+    field(CALC, "A")
+}
+
 
 ###################################################################
 #  This resets all FRs                                            #
@@ -65,29 +78,8 @@ record(calcout, "$(P)$(R)SumUdpPackets")
 record(seq, "$(P)$(R)ResetAllFR")
 {
     field(DOL1, "1")
-    field(LNK1, "$(P):OD1:ResetStatistics.PROC PP")
+    field(LNK1, "$(P)$(R)SVR01:ResetStats.PROC PP")
     field(DLY1, "0.0")
-    field(DOL2, "1")
-    field(LNK2, "$(P):OD2:ResetStatistics.PROC PP")
-    field(DLY2, "0.0")
-    field(DOL3, "1")
-    field(LNK3, "$(P):OD3:ResetStatistics.PROC PP")
-    field(DLY3, "0.0")
-    field(DOL4, "1")
-    field(LNK4, "$(P):OD4:ResetStatistics.PROC PP")
-    field(DLY4, "0.0")
-    field(DOL5, "1")
-    field(LNK5, "$(P):OD5:ResetStatistics.PROC PP")
-    field(DLY5, "0.0")
-    field(DOL6, "1")
-    field(LNK6, "$(P):OD6:ResetStatistics.PROC PP")
-    field(DLY6, "0.0")
-    field(DOL7, "1")
-    field(LNK7, "$(P):OD7:ResetStatistics.PROC PP")
-    field(DLY7, "0.0")
-    field(DOL8, "1")
-    field(LNK8, "$(P):OD8:ResetStatistics.PROC PP")
-    field(DLY8, "0.0")
 }
 
 ###################################################################
