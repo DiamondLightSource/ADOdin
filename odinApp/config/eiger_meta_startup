@@ -1,3 +1,0 @@
-#!/bin/bash
-
-${NUMA}${EIGER_DETECTOR}/prefix/bin/eiger_meta_writer -w metalistener.eiger_meta_writer.EigerMetaWriter -i ${IP_LIST} --staticlogfields beamline=$${BEAMLINE},detector="Eiger${SENSOR}" --logserver "graylog2.diamond.ac.uk:12210"

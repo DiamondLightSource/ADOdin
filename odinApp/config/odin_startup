@@ -3,10 +3,9 @@
 SCRIPT_DIR="$$( cd "$$( dirname "$$0" )" && pwd )"
 IOC_ROOT="$$SCRIPT_DIR/../.."
 IOC_NAME="$$(echo $$IOC_ROOT | sed 's/.*iocs\///g' | sed 's/\/.*//g')"
-PYTHON_EXPORTS="export PYTHONPATH=$DETECTOR/prefix/lib/python2.7/site-packages:$ODIN_DATA/prefix/lib/python2.7/site-packages && "
 
 ${SCRIPTS}
-OdinServer="$$PYTHON_EXPORTS$$SCRIPT_DIR/stOdinServer.sh"
+OdinServer="$$SCRIPT_DIR/stOdinServer.sh"
 IOC="$$IOC_ROOT/bin/linux-x86_64/st$$IOC_NAME.sh 6064"
 
 ${COMMANDS}

@@ -317,12 +317,15 @@ class _OdinControlServer(Device):
     """Store configuration for an OdinControlServer"""
 
     ODIN_SERVER = None
-    ADAPTERS = ["fp", "fr"]
+    ADAPTERS = ["fp", "fr", "meta_listener"]
+    PYTHON_MODULES = dict(
+        odin_data=OdinPaths.ODIN_DATA
+    )
 
     # Device attributes
     AutoInstantiate = True
 
-    def __init__(self, IP, PORT=8888,
+    def __init__(self, IP, PORT=8888, META_WRITER_IP=None,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
                  ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None,
                  ODIN_DATA_SERVER_5=None, ODIN_DATA_SERVER_6=None,
@@ -331,6 +334,8 @@ class _OdinControlServer(Device):
         self.__super.__init__()
         # Update attributes with parameters
         self.__dict__.update(locals())
+
+        self.meta_writer_ip = META_WRITER_IP or ODIN_DATA_SERVER_1.IP
 
         self.odin_data_servers = [
             server for server in [
@@ -346,11 +351,13 @@ class _OdinControlServer(Device):
             if server is not None:
                 self.odin_data_processes += server.processes
 
+        self._add_python_modules()
         self.create_startup_script()
 
     ArgInfo = makeArgInfo(__init__,
         IP=Simple("IP address of control server", str),
         PORT=Simple("Port of control server", int),
+        META_WRITER_IP=Simple("IP address of MetaWriter (None -> first OdinDataServer)", str),
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
@@ -367,8 +374,16 @@ class _OdinControlServer(Device):
         return ""
 
     def create_startup_script(self):
-        macros = dict(ODIN_SERVER=self.ODIN_SERVER, CONFIG="odin_server.cfg", EXTRA_PARAMS=self.get_extra_startup_macro())
+        macros = dict(
+            PYTHON_MODULES=self.PYTHON_MODULES,
+            ODIN_SERVER=self.ODIN_SERVER,
+            CONFIG="odin_server.cfg",
+            EXTRA_PARAMS=self.get_extra_startup_macro()
+        )
         expand_template_file("odin_server_startup", macros, "stOdinServer.sh", executable=True)
+
+    def _add_python_modules(self):
+        pass
 
     def create_config_file(self):
         macros = dict(PORT=self.PORT,
@@ -381,7 +396,21 @@ class _OdinControlServer(Device):
         return "./static"
 
     def create_odin_server_config_entries(self):
-        raise NotImplementedError("Method must be implemented by child classes")
+        config_entries = [
+            self._create_odin_data_config_entry(),
+            self._create_meta_writer_config_entry()
+        ]
+        config_entries.extend(self.create_extra_config_entries())
+
+        return config_entries
+
+    def _create_meta_writer_config_entry(self):
+        return (
+            "[adapter.meta_listener]\n"
+            "module = odin_data.meta_listener_adapter.MetaListenerAdapter\n"
+            "endpoints = {}:5659\n"
+            "update_interval = 0.5"
+        ).format(self.meta_writer_ip)
 
     def _create_odin_data_config_entry(self):
         fp_endpoints = []
@@ -404,9 +433,63 @@ class _OdinControlServer(Device):
         return number + 1
 
 
+class _MetaWriterTemplate(AutoSubstitution):
+    TemplateFile = "MetaListener.template"
+
+
+class _MetaWriter(object):
+
+    APP_PATH = OdinPaths.ODIN_DATA
+    WRITER_CLASS = None
+    PYTHON_MODULES = dict(
+        odin_data=OdinPaths.ODIN_DATA
+    )
+    DETECTOR = ""
+    TEMPLATE = _MetaWriterTemplate
+
+    def __init__(self, odin_data_servers):
+        self.sensor = odin_data_servers[0].sensor
+
+        self.data_endpoints = []
+        for server in odin_data_servers:
+            if server is not None:
+                base_port = 5000
+                for odin_data in server.processes:
+                    port = base_port + 8
+                    self.data_endpoints.append("tcp://{}:{}".format(odin_data.IP, port))
+                    base_port += 10
+
+        self._add_python_modules()
+        self.create_startup_script()
+
+    def create_startup_script(self):
+        if self.WRITER_CLASS is not None:
+            writer = "-w {}".format(self.WRITER_CLASS)
+        else:
+            writer = ""
+
+        macros = dict(
+            PYTHON_MODULES=self.PYTHON_MODULES,
+            APP_PATH=self.APP_PATH,
+            WRITER=writer,
+            DATA_ENDPOINTS=",".join(self.data_endpoints),
+            DETECTOR_MODEL="{}{}".format(self.DETECTOR, self.sensor),
+        )
+
+        expand_template_file("meta_startup", macros, "stMetaWriter.sh", executable=True)
+
+    def _add_python_modules(self):
+        pass
+
+    def add_batch_entry(self, entries, beamline, number):
+        entries.append(create_batch_entry(beamline, number, "MetaWriter"))
+        return number + 1
+
+
 # ~~~~~~~~~~~~ #
 # AreaDetector #
 # ~~~~~~~~~~~~ #
+
 
 class _OdinDetectorTemplate(AutoSubstitution):
     TemplateFile = "OdinDetector.template"
@@ -466,6 +549,8 @@ class _OdinDataDriver(AsynPort):
 
     # This tells xmlbuilder to use PORT instead of name as the row ID
     UniqueName = "PORT"
+
+    META_WRITER_CLASS = _MetaWriter
 
     def __init__(self, PORT, ODIN_CONTROL_SERVER, DETECTOR=None, DATASET="data",
                  BUFFERS=0, MEMORY=0, **args):
@@ -531,18 +616,30 @@ class _OdinDataDriver(AsynPort):
             od_args["R"] = ":OD:"
             plugin_config.detector_setup(od_args)
 
+        self.meta_writer = self.META_WRITER_CLASS(self.control_server.odin_data_servers)
+        template_args = {
+            "P": args["P"],
+            "R": ":OD:",
+            "PORT": PORT
+        }
+        self.meta_writer.TEMPLATE(**template_args)
+
         # Now OdinData instances are configured, OdinControlServer can generate its config from them
         self.control_server.create_config_file()
 
     # __init__ arguments
-    ArgInfo = ADBaseTemplate.ArgInfo + _OdinDataDriverTemplate.ArgInfo + makeArgInfo(__init__,
-        PORT=Simple("Port name for the detector", str),
-        BUFFERS=Simple("Maximum number of NDArray buffers to be created for plugin callbacks", int),
-        MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "
-                      "attached plugins", int),
-        ODIN_CONTROL_SERVER=Ident("Odin control server", _OdinControlServer),
-        DATASET=Simple("Name of Dataset", str),
-        DETECTOR=Simple("Detector type", str)
+    ArgInfo = (
+        ADBaseTemplate.ArgInfo
+        + _OdinDataDriverTemplate.ArgInfo
+        + makeArgInfo(
+            __init__,
+            PORT=Simple("Port name for the detector", str),
+            BUFFERS=Simple("Maximum number of NDArray buffers", int,),
+            MEMORY=Simple("Max memory to allocate", int),
+            ODIN_CONTROL_SERVER=Ident("Odin control server", _OdinControlServer),
+            DATASET=Simple("Name of Dataset", str),
+            DETECTOR=Simple("Detector type", str),
+        )
     )
 
     # Device attributes
@@ -635,11 +732,16 @@ class OdinStartAllScript(Device):
                 "FP{}".format(process_number),
                 "stFrameProcessor{}.sh".format(process_number),
             ))
+
+        scripts.append(self.create_script_entry(
+            "MetaWriter", "stMetaWriter.sh",
+        ))
+
         return scripts
 
-    def create_script_entry(self, name, script_name, prefix=""):
-        return "{name}=\"{prefix}${{SCRIPT_DIR}}/{script_name}\"".format(
-            name=name, prefix=prefix, script_name=script_name
+    def create_script_entry(self, name, script_name):
+        return "{name}=\"${{SCRIPT_DIR}}/{script_name}\"".format(
+            name=name, script_name=script_name
         )
 
     def create_command_entry(self, script):
