@@ -9,7 +9,7 @@ from util import OdinPaths, expand_template_file, debug_print, \
 from odin import _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, \
                  _PluginConfig, _FrameProcessorPlugin
 from plugins import _LiveViewPlugin, _OffsetAdjustmentPlugin, _UIDAdjustmentPlugin, \
-                    _SumPlugin, _BloscPlugin, _FileWriterPlugin
+                    _SumPlugin, _BloscPlugin, _FileWriterPlugin, _DatasetCreationPlugin
 
 
 debug_print("Excalibur: {}".format(OdinPaths.EXCALIBUR_DETECTOR), 1)
@@ -21,13 +21,20 @@ EXCALIBUR_DIMENSIONS = {
 }
 
 
-class _ExcaliburProcessPlugin(_FrameProcessorPlugin):
+class _ExcaliburProcessPlugin(_DatasetCreationPlugin):
 
     NAME = "excalibur"
     CLASS_NAME = "ExcaliburProcessPlugin"
     LIBRARY_PATH = OdinPaths.EXCALIBUR_DETECTOR
 
     def __init__(self, sensor):
+        ddims = [EXCALIBUR_DIMENSIONS[sensor][1], EXCALIBUR_DIMENSIONS[sensor][0]]
+        dchunks = [1, EXCALIBUR_DIMENSIONS[sensor][1], EXCALIBUR_DIMENSIONS[sensor][0]]
+
+        DATASETS = [
+            dict(name="data", datatype="uint16", dims=ddims, chunks=dchunks),
+            dict(name="data2", datatype="uint16", dims=ddims, chunks=dchunks)
+        ]
         super(_ExcaliburProcessPlugin, self).__init__(None)
 
         self.sensor = sensor
@@ -260,7 +267,8 @@ application_name="excalibur_odin",detector="Excalibur{}" \
         return "[adapter.fp]\n" \
                "module = odin_data.fp_compression_adapter.FPCompressionAdapter\n" \
                "endpoints = {}\n" \
-               "update_interval = 0.2\n\n" \
+               "update_interval = 0.2\n" \
+               "datasets = data,data2\n\n" \
                "[adapter.fr]\n" \
                "module = odin_data.frame_receiver_adapter.FrameReceiverAdapter\n" \
                "endpoints = {}\n" \
@@ -341,7 +349,7 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
     }
 
     def __init__(self, **args):
-        detector_arg = args["R"]
+        detector_arg = ":CAM:"
         args["R"] = ":OD:"
         self.__super.__init__(DETECTOR="excalibur", **args)
         # Update the attributes of self from the commandline args
@@ -366,7 +374,7 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
             _ExcaliburXNodeFPTemplate(**template_args)
 
     # __init__ arguments
-    ArgInfo = _OdinDataDriver.ArgInfo.filtered(without=["DETECTOR", "TOTAL"])
+    ArgInfo = _OdinDataDriver.ArgInfo.filtered(without=["DETECTOR", "TOTAL", "R"])
 
 
 class _Excalibur2FemHousekeepingTemplate(AutoSubstitution):
@@ -422,6 +430,7 @@ class ExcaliburDetector(_OdinDetector):
     # defines the RANK on all the OdinData instances and we need to sort by RANK for the UDP config
     def __init__(self, PORT, ODIN_CONTROL_SERVER, ODIN_DATA_DRIVER, SENSOR,
                  BUFFERS=0, MEMORY=0, **args):
+        args["R"] = ":CAM:"
         # Init the superclass (OdinDetector)
         self.__super.__init__(PORT, ODIN_CONTROL_SERVER, self.DETECTOR,
                               BUFFERS, MEMORY, **args)
@@ -526,6 +535,7 @@ class ExcaliburDetector(_OdinDetector):
         MEMORY=Simple("Max memory to allocate, should be maxw*maxh*nbuffer for driver and all "
                       "attached plugins", int)
     )
+    ArgInfo = ArgInfo.filtered(without=["R"])
 
     def generate_simple_node_config(self):
         fem_config = []
@@ -610,6 +620,18 @@ class _ExcaliburGapFillPlugin(_FrameProcessorPlugin):
             _FileWriterPlugin.NAME: {
                 "dataset": {
                     _FileWriterPlugin.DATASET_NAME: {
+                        "dims": OneLineEntry(dimensions),
+                        "chunks": OneLineEntry([1] + dimensions),
+                    }
+                }
+            }
+        }
+        entries.append(create_config_entry(dataset_config))
+        dataset_config = {
+            _FileWriterPlugin.NAME: {
+                "dataset": {
+                    "data2": {
+                        "datatype": "uint16",
                         "dims": OneLineEntry(dimensions),
                         "chunks": OneLineEntry([1] + dimensions),
                     }

@@ -106,10 +106,12 @@ record(mbbo, "$(P)$(R)CounterDepth")
     field(ONVL, "1")
     field(TWVL, "2")
     field(THVL, "3")
+    field(FRVL, "4")
     field(ZRST, "1 bit")
     field(ONST, "6 bit")
     field(TWST, "12 bit")
     field(THST, "24 bit")
+    field(FRST, "dual 12 bit")
     field(PINI, "1")
 }
 
@@ -124,10 +126,12 @@ record(mbbi, "$(P)$(R)CounterDepth_RBV")
     field(ONVL, "1")
     field(TWVL, "2")
     field(THVL, "3")
+    field(FRVL, "4")
     field(ZRST, "1 bit")
     field(ONST, "6 bit")
     field(TWST, "12 bit")
     field(THST, "24 bit")
+    field(FRST, "dual 12 bit")
 }
 
 # Counter Select.
@@ -161,24 +165,66 @@ record(mbbi, "$(P)$(R)CounterSelect_RBV")
     field(TWST, "A and B")
 }
 
-# Energy threshold.
+# Energy threshold delta.
 # % autosave 2 
 #% archiver 10 Monitor
-record(ao, "$(P)$(R)EnergyThreshold")
+record(ao, "$(P)$(R)EnergyDelta")
 {
     field(SCAN, "Passive")
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_config/energy_threshold")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_config/energy_delta")
     field(EGU,  "keV")
     field(PINI, "1")
 }
 
-# Energy threshold read back.
-record(ai, "$(P)$(R)EnergyThreshold_RBV")
+# Energy threshold delta read back.
+record(ai, "$(P)$(R)EnergyDelta_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_config/energy_threshold")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_config/energy_delta")
+    field(EGU,  "keV")
+}
+
+# Energy threshold 0.
+# % autosave 2 
+#% archiver 10 Monitor
+record(ao, "$(P)$(R)EnergyThreshold0")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_config/energy_threshold_0")
+    field(EGU,  "keV")
+    field(PINI, "1")
+}
+
+# Energy threshold 0 read back.
+record(ai, "$(P)$(R)EnergyThreshold0_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_config/energy_threshold_0")
+    field(EGU,  "keV")
+}
+
+# Energy threshold 1.
+# % autosave 2 
+#% archiver 10 Monitor
+record(ao, "$(P)$(R)EnergyThreshold1")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_config/energy_threshold_1")
+    field(EGU,  "keV")
+    field(PINI, "1")
+}
+
+# Energy threshold 1 read back.
+record(ai, "$(P)$(R)EnergyThreshold1_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_config/energy_threshold_1")
     field(EGU,  "keV")
 }
 
@@ -816,8 +862,8 @@ record(fanout, "$(P)$(R)ReconnectFan2")
     field(LNK2, "$(P)$(R)CounterDepth.PROC PP")
     field(LNK3, "$(P)$(R)CounterSelect.PROC PP")
     field(LNK4, "$(P)$(R)NumTestPulses.PROC PP")
-    field(LNK5, "$(P)$(R)EnergyThreshold.PROC PP")
-    field(LNK6, "$(P)$(R)ReadWriteMode.PROC PP")
+    field(LNK5, "$(P)$(R)EnergyThreshold0.PROC PP")
+    field(LNK6, "$(P)$(R)EnergyThreshold1.PROC PP")
     field(FLNK, "$(P)$(R)ReconnectFan3.PROC PP")
 }
 
@@ -840,6 +886,13 @@ record(fanout, "$(P)$(R)ReconnectFan4")
     field(LNK4, "$(P)$(R)TestMaskConfigFile.PROC PP")
     field(LNK5, "$(P)$(R)TestPulseEnable.PROC PP")
     field(LNK6, "$(P)$(R)BIAS_LEVEL.PROC PP")
+    field(FLNK, "$(P)$(R)ReconnectFan5.PROC PP")
+}
+
+record(fanout, "$(P)$(R)ReconnectFan5")
+{
+    field(LNK1, "$(P)$(R)ReadWriteMode.PROC PP")
+    field(LNK2, "$(P)$(R)EnergyDelta.PROC PP")
 }
 
 ###################################################################
