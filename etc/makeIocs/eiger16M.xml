@@ -19,4 +19,5 @@
 	<EPICS_BASE.dbpf name="BlocksPerFile" pv="$(hostname)-EIGER:OD:BlocksPerFile" value="1"/>
 	<EPICS_BASE.dbpf name="CloseFileTimeout" pv="$(hostname)-EIGER:OD:CloseFileTimeout" value="10000"/>
 	<ADOdin.EigerOdinStartAllScript driver="ODN.OD" name="StartAllScript"/>
+	<ADOdin.auto_OdinProcServ ADODIN="TS-EA-IOC-01" ADODIN_DELAY="5" CONTROL_SERVER="TS-EA-ODN-11" P="$(hostname)-EIGER" PROCESS1="TS-EA-ODN-01" PROCESS10="TS-EA-ODN-10" PROCESS2="TS-EA-ODN-02" PROCESS3="TS-EA-ODN-03" PROCESS4="TS-EA-ODN-04" PROCESS5="TS-EA-ODN-05" PROCESS6="TS-EA-ODN-06" PROCESS7="TS-EA-ODN-07" PROCESS8="TS-EA-ODN-08" PROCESS9="TS-EA-ODN-09"/>
 </components>

@@ -4,7 +4,9 @@
 
 #% macro, P, Device Prefix
 #% macro, ADODIN, Process name for ADOdin IOC
+#% macro, ADODIN_DELAY, Delay before starting ADOdin IOC
 #% macro, CONTROL_SERVER, Process name for Odin Control Server
+#% macro, CONTROL_SERVER_DELAY, Delay before starting Odin Control Server
 #% macro, PROCESS1, Process name for additional process 1
 
 record(seq, "$(P):RESTART")
@@ -129,10 +131,10 @@ record(seq, "$(P):START")
   field(LNK3, "$(P):START:3 PP")
   field(DOL3, "1")
   field(LNK3, "$(P):START:4 PP")
-  field(DLY7, "3")
+  field(DLY7, "$(CONTROL_SERVER_DELAY=3)")
   field(DOL7, "1")
   field(LNK7, "$(CONTROL_SERVER):START PP")
-  field(DLY8, "3")
+  field(DLY8, "$(ADODIN_DELAY=3)")
   field(DOL8, "1")
   field(LNK8, "$(ADODIN):START PP")
 }
