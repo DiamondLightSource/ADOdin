@@ -287,6 +287,9 @@ asynStatus OdinDetector::writeInt32(asynUser *pasynUser, epicsInt32 value) {
     p->put(value);
   }
 
+  // Fetch to update stale parameters flag
+  fetchParams();
+
   if(function < mFirstParam) {
     status = ADDriver::writeInt32(pasynUser, value);
   }
@@ -332,6 +335,9 @@ asynStatus OdinDetector::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
               driverName, functionName, status, function, value);
   }
 
+  // Fetch to update stale parameters flag
+  fetchParams();
+
   if(function < mFirstParam) {
     status |= ADDriver::writeFloat64(pasynUser, value);
   }
@@ -368,6 +374,9 @@ asynStatus OdinDetector::writeOctet(asynUser *pasynUser, const char *value,
   if (RestParam * p = this->getParamByIndex(function)) {
     status |= p->put(value);
   }
+
+  // Fetch to update stale parameters flag
+  fetchParams();
 
   if (function == mLiveViewEndpoint) {
       setStringParam(mLiveViewEndpoint, value);
