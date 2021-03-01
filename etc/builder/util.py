@@ -94,7 +94,7 @@ def find_python_egg(module, path):
     eggs_dir = os.path.join(path, "prefix/lib/python2.7/site-packages")
     for entry in os.listdir(eggs_dir):
         if module in entry:
-            return eggs_dir
+            return os.path.join(eggs_dir, entry)
 
     raise IOError("Could not find module {} in {}" .format(module, eggs_dir))
 
