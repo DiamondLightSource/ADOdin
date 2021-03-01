@@ -673,9 +673,9 @@ class OdinBatchFile(Device):
     # Device attributes
     AutoInstantiate = True
 
-    def __init__(self, BEAMLINE, ODIN_CONTROL_SERVER):
+    def __init__(self, BEAMLINE, ODIN_DATA_DRIVER):
         self.__super.__init__()
-        self.odin_control_server = ODIN_CONTROL_SERVER
+        self.odin_data_driver = ODIN_DATA_DRIVER
         self.beamline = BEAMLINE
 
         self.create_batch_file()
@@ -684,11 +684,17 @@ class OdinBatchFile(Device):
         entries = []
         process_number = 1
         process_number = self.add_extra_entries(entries, process_number)
-        for odin_data_server in self.odin_control_server.odin_data_servers:
+        process_number = self.odin_data_driver.meta_writer.add_batch_entry(
+            entries, self.beamline, process_number
+        )
+        for odin_data_server in self.odin_data_driver.control_server.odin_data_servers:
             for odin_data_process in odin_data_server.processes:
-                process_number = \
-                    odin_data_process.add_batch_entries(entries, self.beamline, process_number)
-        self.odin_control_server.add_batch_entry(entries, self.beamline, process_number)
+                process_number = odin_data_process.add_batch_entries(
+                    entries, self.beamline, process_number
+                )
+        self.odin_data_driver.control_server.add_batch_entry(
+            entries, self.beamline, process_number
+        )
 
         stream = IocDataStream("configure_odin")
         stream.write("\n".join(entries) + "\n")
@@ -699,7 +705,7 @@ class OdinBatchFile(Device):
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
         BEAMLINE=Simple("Beamline domain name, e.g. BL14I, BL21B", str),
-        ODIN_CONTROL_SERVER=Ident("Odin control server", _OdinControlServer)
+        ODIN_DATA_DRIVER=Ident("OdinDataDriver", _OdinDataDriver)
     )
 
 

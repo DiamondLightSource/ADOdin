@@ -345,12 +345,9 @@ class EigerOdinDataDriver(_OdinDataDriver):
 class EigerOdinBatchFile(OdinBatchFile):
 
     def add_extra_entries(self, entries, process_number):
-        process_number = \
-            self.odin_control_server.eiger_fan.add_batch_entry(entries, self.beamline,
-                                                               process_number)
-        process_number = \
-            self.odin_control_server.meta_listener.add_batch_entry(entries, self.beamline,
-                                                                   process_number)
+        process_number = self.odin_data_driver.control_server.eiger_fan.add_batch_entry(
+            entries, self.beamline, process_number
+        )
 
         return process_number
 
