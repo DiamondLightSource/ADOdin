@@ -4,12 +4,32 @@ from iocbuilder import AutoSubstitution
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
 
-from util import OdinPaths, expand_template_file, debug_print, \
-                 create_config_entry, OneLineEntry
-from odin import _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, \
-                 _PluginConfig, _FrameProcessorPlugin
-from plugins import _LiveViewPlugin, _OffsetAdjustmentPlugin, _UIDAdjustmentPlugin, \
-                    _SumPlugin, _BloscPlugin, _FileWriterPlugin, _DatasetCreationPlugin
+from util import (
+    OdinPaths,
+    expand_template_file,
+    debug_print,
+    create_config_entry,
+    OneLineEntry,
+)
+from odin import (
+    _OdinDetector,
+    _OdinData,
+    _OdinDataDriver,
+    _OdinDataServer,
+    _OdinControlServer,
+    _MetaWriter,
+    _PluginConfig,
+    _FrameProcessorPlugin,
+)
+from plugins import (
+    _LiveViewPlugin,
+    _OffsetAdjustmentPlugin,
+    _UIDAdjustmentPlugin,
+    _SumPlugin,
+    _BloscPlugin,
+    _FileWriterPlugin,
+    _DatasetCreationPlugin,
+)
 
 
 debug_print("Excalibur: {}".format(OdinPaths.EXCALIBUR_DETECTOR), 1)
@@ -122,10 +142,10 @@ class _ExcaliburPluginConfig(_PluginConfig):
                                                      PLUGIN_6=view,
                                                      PLUGIN_7=blosc,
                                                      PLUGIN_8=hdf)
-        
+
         # Set the modes
         self.modes = ['compression', 'no_compression']
-        
+
         # Now we need to create the standard mode chain (with compression)
         excalibur.add_mode('compression')
         offset.add_mode('compression', source=excalibur)
@@ -210,21 +230,24 @@ class ExcaliburOdinControlServer(_OdinControlServer):
         }
     }
 
-    def __init__(self, IP, SENSOR, PORT=8888, FEMS_REVERSED=False, POWER_CARD_IDX=1,
+    def __init__(self, IP, SENSOR, PORT=8888, META_WRITER_IP=None,
+                 FEMS_REVERSED=False, POWER_CARD_IDX=1,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
                  ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None):
         self.__dict__.update(locals())
         self.ADAPTERS.append("excalibur")
 
         super(ExcaliburOdinControlServer, self).__init__(
-            IP, PORT, ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4
+            IP, PORT, META_WRITER_IP,
+            ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4
         )
 
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
         IP=Simple("IP address of control server", str),
-        PORT=Simple("Port of control server", int),
         SENSOR=Choice("Sensor type", ["1M", "3M"]),
+        PORT=Simple("Port of control server", int),
+        META_WRITER_IP=Simple("IP address of MetaWriter (None -> first OdinDataServer)", str),
         FEMS_REVERSED=Choice("Are the FEM IP addresses reversed 106..101", [True, False]),
         POWER_CARD_IDX=Simple("Index of the power card", int),
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
@@ -233,15 +256,17 @@ class ExcaliburOdinControlServer(_OdinControlServer):
         ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer)
     )
 
+    def _add_python_modules(self):
+        self.PYTHON_MODULES.update(dict(excalibur_detector=OdinPaths.EXCALIBUR_DETECTOR))
+
     def get_extra_startup_macro(self):
         return '--staticlogfields beamline=${{BEAMLINE}},\
 application_name="excalibur_odin",detector="Excalibur{}" \
 --logserver="graylog2.diamond.ac.uk:12210" --access_logging=ERROR'.format(self.SENSOR)
 
-    def create_odin_server_config_entries(self):
+    def create_extra_config_entries(self):
         return [
-            self._create_excalibur_config_entry(),
-            self._create_odin_data_config_entry()
+            self._create_excalibur_config_entry()
         ]
 
     def create_odin_server_static_path(self):
@@ -288,6 +313,15 @@ application_name="excalibur_odin",detector="Excalibur{}" \
             return "0xFF, 0xFF"
         if self.SENSOR == "3M":
             return "0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF"
+
+
+class ExcaliburMetaWriter(_MetaWriter):
+    DETECTOR = "Excalibur"
+
+
+# ~~~~~~~~~~~~ #
+# AreaDetector #
+# ~~~~~~~~~~~~ #
 
 
 class _ExcaliburDetectorTemplate(AutoSubstitution):
@@ -347,6 +381,7 @@ class ExcaliburOdinDataDriver(_OdinDataDriver):
         4: _Excalibur4NodeFPTemplate,
         8: _Excalibur8NodeFPTemplate
     }
+    META_WRITER_CLASS = ExcaliburMetaWriter
 
     def __init__(self, **args):
         detector_arg = ":CAM:"

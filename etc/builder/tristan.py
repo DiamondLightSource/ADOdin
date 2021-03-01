@@ -8,7 +8,12 @@ from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
 from plugins import _DatasetCreationPlugin, _FileWriterPlugin
 from util import OdinPaths, expand_template_file, debug_print, create_batch_entry, create_config_entry
 from odin import (
-    _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer,
+    _OdinData,
+    _OdinDataServer,
+    _MetaWriter,
+    _OdinControlServer,
+    _OdinDataDriver,
+    _OdinDetector,
     _PluginConfig
 )
 
@@ -65,60 +70,12 @@ class _TristanProcessPlugin(_DatasetCreationPlugin):
         return entries
 
 
-class _TristanMetaListenerTemplate(AutoSubstitution):
-    TemplateFile = "MetaListener.template"
+class TristanMetaWriter(_MetaWriter):
+    DETECTOR = "Tristan"
+    WRITER_CLASS = "TristanMetaWriter"
 
-
-class _TristanMetaListener(Device):
-
-    """Create startup file for a TristanMetaListener process"""
-
-    # Device attributes
-    AutoInstantiate = True
-
-    def __init__(self, IP, ODIN_DATA_SERVERS=None, NUMA_NODE=-1, **args):
-        self.__super.__init__()
-        # Update attributes with parameters
-        self.__dict__.update(locals())
-
-        self.ip_list = []
-        self.sensor = None
-        if ODIN_DATA_SERVERS is not None:
-            for server in ODIN_DATA_SERVERS:
-                if server is not None:
-                    base_port = 5000
-                    for odin_data in server.processes:
-                        port = base_port + 8
-                        self.ip_list.append("tcp://{}:{}".format(odin_data.IP, port))
-                        base_port += 10
-                        self.set_sensor(odin_data.sensor)
-
-        self.create_startup_file()
-
-    def set_sensor(self, sensor):
-        if self.sensor is None:
-            self.sensor = sensor
-        else:
-            if self.sensor != sensor:
-                raise ValueError("Inconsistent sensor sizes given on OdinData processes")
-
-    def create_startup_file(self):
-        if self.NUMA_NODE >= 0:
-            numa_call = "numactl --membind={node} --cpunodebind={node} ".format(node=self.NUMA_NODE)
-        else:
-            numa_call = ""
-        macros = dict(TRISTAN_DETECTOR_PATH=OdinPaths.TRISTAN_DETECTOR,
-                      IP_LIST=",".join(self.ip_list),
-                      ODIN_DATA=OdinPaths.ODIN_DATA,
-                      SENSOR=self.sensor,
-                      NUMA=numa_call)
-
-        expand_template_file("tristan_meta_startup", macros, "stTristanMetaListener.sh",
-                             executable=True)
-
-    def add_batch_entry(self, entries, beamline, number):
-        entries.append(create_batch_entry(beamline, number, "TristanMetaListener"))
-        return number + 1
+    def _add_python_modules(self):
+        self.PYTHON_MODULES.update(dict(tristan_detector=OdinPaths.TRISTAN_DETECTOR))
 
 
 class TristanControlSimulator(Device):
@@ -149,9 +106,8 @@ class TristanOdinControlServer(_OdinControlServer):
 
     ODIN_SERVER = os.path.join(OdinPaths.TRISTAN_DETECTOR, "prefix/bin/tristan_odin")
 
-    def __init__(self, IP, PORT=8888,
+    def __init__(self, IP, PORT=8888, META_WRITER_IP=None,
                  HARDWARE_ENDPOINT="tcp://127.0.0.1:10100",
-                 META_IP=None,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
                  ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None,
                  ODIN_DATA_SERVER_5=None, ODIN_DATA_SERVER_6=None,
@@ -159,11 +115,9 @@ class TristanOdinControlServer(_OdinControlServer):
                  ODIN_DATA_SERVER_9=None, ODIN_DATA_SERVER_10=None):
         self.__dict__.update(locals())
         self.ADAPTERS.append("tristan")
-        if self.META_IP is not None:
-            self.ADAPTERS.append("meta_listener")
 
         super(TristanOdinControlServer, self).__init__(
-            IP, PORT,
+            IP, PORT, META_WRITER_IP,
             ODIN_DATA_SERVER_1,
             ODIN_DATA_SERVER_2,
             ODIN_DATA_SERVER_3,
@@ -181,7 +135,7 @@ class TristanOdinControlServer(_OdinControlServer):
         IP=Simple("IP address of control server", str),
         PORT=Simple("Port of control server", int),
         HARDWARE_ENDPOINT=Simple("Detector endpoint", str),
-        META_IP=Simple("IP address of meta listener", str),
+        META_WRITER_IP=Simple("IP address of MetaWriter (None -> first OdinDataServer)", str),
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
@@ -194,14 +148,10 @@ class TristanOdinControlServer(_OdinControlServer):
         ODIN_DATA_SERVER_10=Ident("OdinDataServer 10 configuration", _OdinDataServer)
     )
 
-    def create_odin_server_config_entries(self):
-        config_entries = [
-            self._create_tristan_config_entry(),
-            self._create_odin_data_config_entry()
-            ]
-        if self.META_IP is not None:
-            config_entries.append(self._create_meta_listener_config_entry())
-        return config_entries
+    def create_extra_config_entries(self):
+        return [
+            self._create_tristan_config_entry()
+        ]
 
     def create_odin_server_static_path(self):
         return OdinPaths.TRISTAN_DETECTOR + "/prefix/html/static"
@@ -213,14 +163,6 @@ class TristanOdinControlServer(_OdinControlServer):
             "endpoint = {}\n"
             "firmware = 0.0.1"
         ).format(self.HARDWARE_ENDPOINT)
-
-    def _create_meta_listener_config_entry(self):
-        return (
-            "[adapter.meta_listener]\n"
-            "module = odin_data.meta_listener_adapter.MetaListenerAdapter\n"
-            "endpoints = {}:5659\n"
-            "update_interval = 0.5"
-        ).format(self.META_IP)
 
 
 class _TristanDetectorTemplate(AutoSubstitution):
@@ -541,6 +483,7 @@ class TristanOdinDataDriver(_OdinDataDriver):
         8: _Tristan8NodeFPTemplate,
         16: _Tristan16NodeFPTemplate
     }
+    META_WRITER_CLASS = TristanMetaWriter
 
     def __init__(self, **args):
         detector_arg = args["R"]
@@ -548,12 +491,6 @@ class TristanOdinDataDriver(_OdinDataDriver):
         self.__super.__init__(DETECTOR="tristan", **args)
         # Update the attributes of self from the commandline args
         self.__dict__.update(locals())
-
-        if self.control_server.META_IP is not None:
-            self._meta = _TristanMetaListener(
-                IP=self.control_server.META_IP,
-                ODIN_DATA_SERVERS=self.control_server.odin_data_servers
-            )
 
         if self.odin_data_processes not in self.FP_TEMPLATES.keys():
             raise ValueError(
@@ -572,14 +509,6 @@ class TristanOdinDataDriver(_OdinDataDriver):
             }
             _TristanXNodeFPTemplate = self.FP_TEMPLATES[len(self.ODIN_DATA_PROCESSES)]
             _TristanXNodeFPTemplate(**template_args)
-
-            if self.control_server.META_IP is not None:
-                template_args = {
-                    "P": args["P"],
-                    "R": ":OD:",
-                    "PORT": args["PORT"]
-                }
-                _TristanMetaListenerTemplate(**template_args)
 
     # __init__ arguments
     ArgInfo = _OdinDataDriver.ArgInfo.filtered(without=["DETECTOR"])

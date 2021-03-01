@@ -3,8 +3,7 @@
 	<ADOdin.EigerFan DETECTOR_IP="127.0.0.1" IP="127.0.0.1" PROCESSES="2" SENSOR="4M" SOCKETS="4" name="EigerFan"/>
 	<ADOdin.EigerPluginConfig MODE="Malcolm" name="Plugins"/>
 	<ADOdin.EigerOdinDataServer IO_THREADS="2" IP="127.0.0.1" PLUGIN_CONFIG="Plugins" PROCESSES="2" SHARED_MEM_SIZE="160000000" SOURCE="EigerFan" name="ODServer1"/>
-	<ADOdin.EigerMetaListener IP="127.0.0.1" ODIN_DATA_SERVER_1="ODServer1" name="EigerMeta"/>
-	<ADOdin.EigerOdinControlServer API="1.6.0" EIGER_FAN="EigerFan" ENDPOINT="127.0.0.1:8080" IP="127.0.0.1" META_LISTENER="EigerMeta" ODIN_DATA_SERVER_1="ODServer1" name="ControlServer"/>
+	<ADOdin.EigerOdinControlServer API="1.6.0" EIGER_FAN="EigerFan" ENDPOINT="127.0.0.1:8080" IP="127.0.0.1" META_WRITER_IP="127.0.0.1" ODIN_DATA_SERVER_1="ODServer1" name="ControlServer"/>
 	<ADOdin.EigerOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" P="$(hostname)-EIGER" PORT="ODN.OD" R=":OD:" TIMEOUT="1" TOTAL="2"/>
 	<ADOdin.EigerDetector ADDR="0" DETECTOR_VERSION="V1" ODIN_CONTROL_SERVER="ControlServer" ODIN_DATA_DRIVER="ODN.OD" P="$(hostname)-EIGER" PORT="ODN.CAM" R=":CAM:" TIMEOUT="1"/>
 	<ADOdin.OdinLogConfig BEAMLINE="iXX" DETECTOR="Eiger4M" name="LogConfig"/>
