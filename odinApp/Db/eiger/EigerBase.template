@@ -161,17 +161,17 @@ record(bo,"$(P)$(R)FWEnable") {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_filewriter/api/$(API)/config/mode")
     field(DESC, "Enable usage of FileWriter API")
-    field(VAL,  "1")
-    field(ZNAM, "Yes")
-    field(ONAM, "No")
+    field(VAL,  "0")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
 }
 
 record(bi,"$(P)$(R)FWEnable_RBV") {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_filewriter/api/$(API)/config/mode")
     field(DESC, "Enable usage of FileWriter API")
-    field(ZNAM, "Yes")
-    field(ONAM, "No")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
     field(SCAN, "I/O Intr")
 }
 
@@ -766,16 +766,16 @@ record(bo,"$(P)$(R)MonitorEnable") {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_monitor/api/$(API)/config/mode")
     field(DESC, "Enable usage of Monitor API")
-    field(ZNAM, "Yes")
-    field(ONAM, "No")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
 }
 
 record(bi,"$(P)$(R)MonitorEnable_RBV") {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODE_monitor/api/$(API)/config/mode")
     field(DESC, "Enable usage of Monitor API")
-    field(ZNAM, "Yes")
-    field(ONAM, "No")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
     field(SCAN, "I/O Intr")
 }
 
