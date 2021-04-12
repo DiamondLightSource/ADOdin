@@ -44,12 +44,12 @@ class EigerTestDetector:
         def timeout_wait_on_pv_to_val(param, desired_value):
             current_value = caget(f"{self.pv_stem}:{param}")
             if current_value != desired_value:
+                done = Event()
 
                 def check_equals_desired(value):
                     if value == desired_value:
                         done.Signal()
 
-                done = Event()
                 logging.debug(
                     f"Waiting for {self.pv_stem}:{param} to be {desired_value}"
                 )
