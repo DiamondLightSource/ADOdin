@@ -147,8 +147,6 @@ class EigerTestDetector:
     def prepare_and_run_acquisition(
         self, filename, filepath, acquire_period=0.05, num_images=1
     ):
-        arg_dict = locals()
-        del arg_dict["self"]
         now = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
         success = False
 
@@ -177,13 +175,14 @@ class EigerTestDetector:
             raise
         finally:
             acquisition_parameters = {
-                **{
-                    "ID": self.acquisition_id,
-                    "time": now,
-                    "success": success,
-                    "fp_errors": self.get_fp_errors(),
-                },
-                **arg_dict,
+                "ID": self.acquisition_id,
+                "time": now,
+                "success": success,
+                "fp_errors": self.get_fp_errors(),
+                "filename": filename,
+                "filepath": filepath,
+                "acquire_period": acquire_period,
+                "num_images": num_images,
             }
             self.acquisition_log.append(acquisition_parameters)
             self.acquisition_id += 1
@@ -217,7 +216,9 @@ def make_parser():
         + "acquisitions)",
     )
     parser.add_argument(
-        "log_file_directory", type=Path, help="Directory to write log file",
+        "log_file_directory",
+        type=Path,
+        help="Directory to write log file",
     )
     parser.add_argument(
         "--log_file_name",
