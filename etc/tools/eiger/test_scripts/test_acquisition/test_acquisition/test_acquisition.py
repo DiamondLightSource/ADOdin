@@ -247,9 +247,11 @@ def main():
     )
 
     detector = EigerTestDetector(args.pv_stem)
-    for id, parameters in enumerate(args.parameter_list):
+    for id, (acquire_period, num_images) in enumerate(args.parameter_list):
         filename = f"{args.filename}_{id}"
-        detector.prepare_and_run_acquisition(filename, args.filepath, *parameters)
+        detector.prepare_and_run_acquisition(
+            filename, args.filepath, acquire_period, num_images
+        )
 
 
 if __name__ == "__main__":
