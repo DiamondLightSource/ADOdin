@@ -40,8 +40,8 @@ usage: eiger_acquisition [-h] [--log_file_name LOG_FILE_NAME]
 Run one or more test eiger + odin acquisitions
 
 positional arguments:
-  pv_stem               The Eiger pv stem e.g. BL04I-EA-EIGER-01
-  parameter_list        Comma separated pairs of acquistion period and number
+  pv_stem               The Eiger PV stem e.g. BL04I-EA-EIGER-01
+  parameter_list        Comma separated pairs of acquisition period and number
                         of images. Separate pairs with whitespace e.g.
                         0.005,100 0.02,10
   filepath              Path to data directory

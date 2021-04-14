@@ -170,7 +170,7 @@ class EigerTestDetector:
             raise
         except Exception:
             logging.error(
-                "Acquistion failed due to error other than wait for PV timeout"
+                "Acquisition failed due to error other than wait for PV timeout"
             )
             raise
         finally:
@@ -199,13 +199,13 @@ def make_parser():
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
-        "pv_stem", type=str, help="The Eiger pv stem e.g. BL04I-EA-EIGER-01"
+        "pv_stem", type=str, help="The Eiger PV stem e.g. BL04I-EA-EIGER-01"
     )
     parser.add_argument(
         "parameter_list",
         type=parameter_pair,
         nargs="+",
-        help="Comma separated pairs of acquistion period and number of images. "
+        help="Comma separated pairs of acquisition period and number of images. "
         + "Separate pairs with whitespace e.g. 0.005,100 0.02,10",
     )
     parser.add_argument("filepath", type=Path, help="Path to data directory")
