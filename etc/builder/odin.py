@@ -462,7 +462,7 @@ class _MetaWriter(object):
         self.data_endpoints = []
         for server in odin_data_servers:
             if server is not None:
-                base_port = 5000
+                base_port = 10000
                 for odin_data in server.processes:
                     port = base_port + 8
                     self.data_endpoints.append("tcp://{}:{}".format(odin_data.IP, port))
