@@ -23,7 +23,7 @@ TRISTAN_DIMENSIONS = {
     # Sensor: (Width, Height)
     "1M": (2048, 512),
     "2M": (2048, 1024),
-    "10M": (4096, 2560)
+    "10M": (4213, 3043)
 }
 
 class _TristanProcessPlugin(_DatasetCreationPlugin):
@@ -37,7 +37,7 @@ class _TristanProcessPlugin(_DatasetCreationPlugin):
         dict(name="event_id", datatype="uint32", chunks=[524288]),
         dict(name="event_time_offset", datatype="uint64", chunks=[524288]),
         dict(name="event_energy", datatype="uint32", chunks=[524288]),
-        dict(name="image", datatype="uint16", dims=[512, 2048], chunks=[1, 512, 2048]),
+        dict(name="image", datatype="uint16", dims=[3043, 4213], chunks=[1, 3043, 4213]),
         dict(name="cue_timestamp_zero", datatype="uint64", chunks=[524288]),
         dict(name="cue_id", datatype="uint16", chunks=[524288]),
         dict(name="time_slice", datatype="uint32", chunks=[40])
@@ -72,7 +72,7 @@ class _TristanProcessPlugin(_DatasetCreationPlugin):
 
 class TristanMetaWriter(_MetaWriter):
     DETECTOR = "Tristan"
-    WRITER_CLASS = "TristanMetaWriter"
+    WRITER_CLASS = "latrd.meta.tristan_meta_writer.TristanMetaWriter"
 
     def _add_python_modules(self):
         self.PYTHON_MODULES.update(dict(tristan_detector=OdinPaths.TRISTAN_DETECTOR))
