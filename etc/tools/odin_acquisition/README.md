@@ -1,16 +1,16 @@
-# Eiger test acquisition script
+# Odin detector test acquisitions
 
-test_acquisition is a command line tool for running a test odin-eiger acquisition.
+odin_acquisition is a package containing scripts for running test odin detector acquisitions.
 
-The test acquisition is intended as a tool to verify an odin-eiger deployment is functioning correctly at the basic level.
+The test acquisition scripts are intended as tools to verify an odin detector deployment is functioning correctly at the basic level.
 
-It is generalised for use across multiple beamlines and therefore does not test any beamline specific funcionality or modes of operation.
+They are generalised for use across multiple beamlines and therefore do not test any beamline specific functionality or modes of operation.
 
-However, the script may be used as a [template for more advanced debugging.](#using-as-a-template-for-further-debugging)
+However, the scripts may be used as [templates for more advanced debugging.](#using-as-a-template-for-further-debugging)
 
 ## Installation
 
-This script can be used with python 3 available at DLS as dls-python3.
+The scripts can be used with python 3 available at DLS as dls-python3.
 
 ### Python 3 installation
 
@@ -19,18 +19,20 @@ To install, first create a virtual environment, then activate the environment an
 At DLS:
 
 ```
-dls-python3 -m venv /scratch/<fedID>/virtualenvs/test_eiger_venv
-source /scratch/<fedID>/virtualenvs/test_eiger_venv/bin/activate
-pip3 install <path-to-ADOdin>/ADOdin/etc/tools/eiger/test_scripts/test_acquisition
+dls-python3 -m venv /scratch/<fedID>/virtualenvs/test_detector_venv
+source /scratch/<fedID>/virtualenvs/test_detector_venv/bin/activate
+pip3 install <path-to-ADOdin>/ADOdin/etc/tools/odin_acquisition
 ```
 
-## Usage
+## Eiger
+
+### Usage
 
 With virtual environment active:
 
 ```
-==> test_acquisition -h
-usage: test_acquisition.py [-h] [--log_file_name LOG_FILE_NAME]
+==> eiger_acquisition -h
+usage: eiger_acquisition [-h] [--log_file_name LOG_FILE_NAME]
                            [--log_level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
                            pv_stem parameter_list [parameter_list ...]
                            filepath filename log_file_directory
@@ -57,22 +59,22 @@ optional arguments:
 
 For example:
 ```
-test_acquisition BL***-EA-EIGER-** 0.005,3600 0.02,600 <data_filepath> <data_filename_stem> /home/fedID
+eiger_acquisition BL***-EA-EIGER-** 0.005,3600 0.02,600 <data_filepath> <data_filename_stem> /home/fedID
 ```
 This will run two acquisitions. The first has acquire time 0.005 s and collects 3600 frames. The second has acquire time 0.02 s and collects 600 frames. The data files for both acquisitions will be written to <data_filepath>. The log file for the test acquisition is written to /home/fedID/eiger_test.log.
 
 
-## Extending for debugging
+### Extending for debugging
 
-### Running a series of acquisitions
+#### Running a series of acquisitions
 
-Rather than running from the command line, a series of acquisitions can be run by creating an `EigerTestDetector` instance and calling `prepare_and_run_acquisition()` once for each acquisition as in the example below. This allows many acquisitions to be run sequentially and allows custom filename and paths for each acquisition.
+Rather than running from the command line, a series of acquisitions can be run by creating an `EigerTestDetector` instance and calling `prepare_and_run_acquisition()` once for each acquisition as in the example below. This allows many acquisitions to be run sequentially and allows custom filename and path for each acquisition.
 
 ```python
 import logging
 from pathlib import Path
 
-from test_acquisition import EigerTestDetector
+from odin_acquisition import EigerTestDetector
 
 
 def main():
@@ -113,7 +115,7 @@ if __name__ == "__main__":
     main()
 ```
 
-### Using as a template for further debugging
+#### Using as a template for further debugging
 
 This script covers a very simple use case but can also be used as a template for more advanced debugging by taking a copy of the code and modifying, for example, the PV settings.
 
