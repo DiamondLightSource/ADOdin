@@ -11,8 +11,9 @@
 
 include "ADBase.template"
 
-
-# Is the hardware connected
+###################################################################
+#  Connection                                                     #
+###################################################################
 #% archiver 1 monitor
 record(bi, "$(P)$(R)DetectorConnected_RBV")
 {
@@ -20,8 +21,25 @@ record(bi, "$(P)$(R)DetectorConnected_RBV")
     field(DTYP, "asynInt32")
     field(VAL,  "0")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/connected")
+    field(ZNAM, "Disconnected")
+    field(ONAM, "Connected")
 }
 
+#% archiver 1 monitor
+record(bi, "$(P)$(R)DetectorVersionCheck_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/detector/version_check")
+    field(ZNAM, "Mismatch")
+    field(ONAM, "OK")
+}
+
+
+###################################################################
+#  Status                                                         #
+###################################################################
 # Number of frames taken in current acquisition.
 #% archiver 1 monitor
 record(longin, "$(P)$(R)ArrayCounter_RBV")
