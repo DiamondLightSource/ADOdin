@@ -1,3 +1,3 @@
-from .test_acquisition import EigerTestDetector
+from .eiger_acquisition import EigerTestDetector
 
 __all__ = ['EigerTestDetector']
