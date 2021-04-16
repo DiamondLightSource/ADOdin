@@ -23,7 +23,7 @@ TRISTAN_DIMENSIONS = {
     # Sensor: (Width, Height)
     "1M": (2048, 512),
     "2M": (2048, 1024),
-    "10M": (4213, 3043)
+    "10M": (4183, 3043)
 }
 
 class _TristanProcessPlugin(_DatasetCreationPlugin):
@@ -37,7 +37,7 @@ class _TristanProcessPlugin(_DatasetCreationPlugin):
         dict(name="event_id", datatype="uint32", chunks=[524288]),
         dict(name="event_time_offset", datatype="uint64", chunks=[524288]),
         dict(name="event_energy", datatype="uint32", chunks=[524288]),
-        dict(name="image", datatype="uint16", dims=[3043, 4213], chunks=[1, 3043, 4213]),
+        dict(name="image", datatype="uint16", dims=[3043, 4183], chunks=[1, 3043, 4183]),
         dict(name="cue_timestamp_zero", datatype="uint64", chunks=[524288]),
         dict(name="cue_id", datatype="uint16", chunks=[524288]),
         dict(name="time_slice", datatype="uint32", chunks=[40])
