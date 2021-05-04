@@ -80,68 +80,86 @@ record(bo, "$(P)$(R)HK:FEMRESETSTATE")
 
 ################################################################################
 #
-# distributeHkLimits.template
-# This template distributes the housekeeping limits for items that are present
-# on every FEM.  The item on FEM 1 is regarded as the master.
-#
-# Parameters:
-#   P       EPICS prefix name
-#   S       Item name
+# Records for controlling the alarm levels of various sensor readbacks
 #
 ################################################################################
 
+#% autosave 2 VAL
 record(dfanout, "$(P)$(R)HK:MOLY_TEMPERATURE:LOW")
 {
-    field(DOL,  "$(P)$(R)0:MOLY_TEMPERATURE.LOW CP")
-    field(OMSL, "closed_loop")
-    field(OUTA, "$(P)$(R)1:MOLY_TEMPERATURE.LOW PP")
+    field(OMSL, "supervisory")
+    field(OUTA, "$(P)$(R)0:MOLY_TEMPERATURE.LOW PP")
+    field(OUTB, "$(P)$(R)1:MOLY_TEMPERATURE.LOW PP")
+    field(VAL, "0")
+    field(EGU, "C")
 }
 
+#% autosave 2 VAL
 record(dfanout, "$(P)$(R)HK:MOLY_TEMPERATURE:HIGH")
 {
-    field(DOL,  "$(P)$(R)0:MOLY_TEMPERATURE.HIGH CP")
-    field(OMSL, "closed_loop")
-    field(OUTA, "$(P)$(R)1:MOLY_TEMPERATURE.HIGH PP")
+    field(OMSL, "supervisory")
+    field(OUTA, "$(P)$(R)0:MOLY_TEMPERATURE.HIGH PP")
+    field(OUTB, "$(P)$(R)1:MOLY_TEMPERATURE.HIGH PP")
+    field(VAL, "45.0")
+    field(EGU, "C")
 }
 
+#% autosave 2 VAL
 record(dfanout, "$(P)$(R)HK:LOCAL_TEMP:LOW")
 {
-    field(DOL,  "$(P)$(R)0:LOCAL_TEMP.LOW CP")
-    field(OMSL, "closed_loop")
-    field(OUTA, "$(P)$(R)1:LOCAL_TEMP.LOW PP")
+    field(OMSL, "supervisory")
+    field(OUTA, "$(P)$(R)0:LOCAL_TEMP.LOW PP")
+    field(OUTB, "$(P)$(R)1:LOCAL_TEMP.LOW PP")
+    field(VAL, "0")
+    field(EGU, "C")
 }
 
+#% autosave 2 VAL
 record(dfanout, "$(P)$(R)HK:LOCAL_TEMP:HIGH")
 {
-    field(DOL,  "$(P)$(R)0:LOCAL_TEMP.HIGH CP")
-    field(OMSL, "closed_loop")
-    field(OUTA, "$(P)$(R)1:LOCAL_TEMP.HIGH PP")
+    field(OMSL, "supervisory")
+    field(OUTA, "$(P)$(R)0:LOCAL_TEMP.HIGH PP")
+    field(OUTB, "$(P)$(R)1:LOCAL_TEMP.HIGH PP")
+    field(VAL, "35.0")
+    field(EGU, "C")
 }
 
+#% autosave 2 VAL
 record(dfanout, "$(P)$(R)HK:REMOTE_DIODE_TEMP:LOW")
 {
-    field(DOL,  "$(P)$(R)0:REMOTE_DIODE_TEMP.LOW CP")
-    field(OMSL, "closed_loop")
-    field(OUTA, "$(P)$(R)1:REMOTE_DIODE_TEMP.LOW PP")
+    field(OMSL, "supervisory")
+    field(OUTA, "$(P)$(R)0:REMOTE_DIODE_TEMP.LOW PP")
+    field(OUTB, "$(P)$(R)1:REMOTE_DIODE_TEMP.LOW PP")
+    field(VAL, "0")
+    field(EGU, "C")
 }
 
+#% autosave 2 VAL
 record(dfanout, "$(P)$(R)HK:REMOTE_DIODE_TEMP:HIGH")
 {
-    field(DOL,  "$(P)$(R)0:REMOTE_DIODE_TEMP.HIGH CP")
-    field(OMSL, "closed_loop")
-    field(OUTA, "$(P)$(R)1:REMOTE_DIODE_TEMP.HIGH PP")
+    field(OMSL, "supervisory")
+    field(OUTA, "$(P)$(R)0:REMOTE_DIODE_TEMP.HIGH PP")
+    field(OUTB, "$(P)$(R)1:REMOTE_DIODE_TEMP.HIGH PP")
+    field(VAL, "35.0")
+    field(EGU, "C")
 }
 
+#% autosave 2 VAL
 record(dfanout, "$(P)$(R)HK:MOLY_HUMIDITY:LOW")
 {
-    field(DOL,  "$(P)$(R)0:MOLY_HUMIDITY.LOW CP")
-    field(OMSL, "closed_loop")
-    field(OUTA, "$(P)$(R)1:MOLY_HUMIDITY.LOW PP")
+    field(OMSL, "supervisory")
+    field(OUTA, "$(P)$(R)0:MOLY_HUMIDITY.LOW PP")
+    field(OUTB, "$(P)$(R)1:MOLY_HUMIDITY.LOW PP")
+    field(VAL, "0")
+    field(EGU, "%RH")
 }
 
+#% autosave 2 VAL
 record(dfanout, "$(P)$(R)HK:MOLY_HUMIDITY:HIGH")
 {
-    field(DOL,  "$(P)$(R)0:MOLY_HUMIDITY.HIGH CP")
-    field(OMSL, "closed_loop")
-    field(OUTA, "$(P)$(R)1:MOLY_HUMIDITY.HIGH PP")
+    field(OMSL, "supervisory")
+    field(OUTA, "$(P)$(R)0:MOLY_HUMIDITY.HIGH PP")
+    field(OUTB, "$(P)$(R)1:MOLY_HUMIDITY.HIGH PP")
+    field(VAL, "70.0")
+    field(EGU, "%RH")
 }
