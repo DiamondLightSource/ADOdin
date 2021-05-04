@@ -95,8 +95,8 @@ class EigerTestDetector:
         self.wait_on_pv_to_val("CAM:StaleParameters_RBV", 0)
 
         # Get the data type
-        odin_data_type = self.get("CAM:BitDepthImage_RBV")
-        self.put("OD:DataType", "UInt" + str(odin_data_type))
+        eiger_bit_depth = self.get("CAM:BitDepthImage_RBV")
+        self.put("OD:DataType", "UInt" + str(eiger_bit_depth)) # 8, 16 or 32
         self.put("OD:Capture", 1, wait=False)
 
         # Wait for data file writing and meta file writing to be ready
