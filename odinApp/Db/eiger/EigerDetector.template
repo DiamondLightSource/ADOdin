@@ -9,4 +9,3 @@
 # % gui, $(OD_HDF_STATUS_GUI), edm, OdinDataStatus$(OD_COUNT).edl, P=$(P),R=$(R)
 
 include "EigerFan.template"
-include "MetaListener.template"
