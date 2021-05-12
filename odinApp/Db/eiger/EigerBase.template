@@ -904,6 +904,7 @@ record(stringin, "$(P)$(R)State_RBV") {
 }
 
 # Bit depth state
+#% archiver 1 monitor
 record(bi, "$(P)$(R)StaleParameters_RBV") {
     field(DESC, "Parameter status")
     field(DTYP, "asynInt32")
@@ -913,6 +914,7 @@ record(bi, "$(P)$(R)StaleParameters_RBV") {
     field(SCAN, "I/O Intr")
 }
 
+#% archiver 1 monitor
 record(ai, "$(P)$(R)Temp0_RBV")
 {
     field(DTYP, "asynFloat64")
@@ -923,6 +925,7 @@ record(ai, "$(P)$(R)Temp0_RBV")
     field(PREC, "1")
 }
 
+#% archiver 1 monitor
 record(ai, "$(P)$(R)Humid0_RBV")
 {
     field(DTYP, "asynFloat64")
