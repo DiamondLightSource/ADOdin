@@ -26,6 +26,7 @@ class OdinPaths(object):
     def configure_paths(cls, release_path):
         paths = cls.parse_release_file(release_path)
 
+        cls.ODIN_PROC_SERV = paths["ODIN_PROC_SERV"]
         cls.HDF5_FILTERS = os.path.join(paths["HDF5_FILTERS"], "prefix/hdf5_1.10/h5plugin")
         cls.ODIN_DATA = paths["ODIN_DATA"]
 
@@ -99,11 +100,9 @@ def find_python_egg(module, path):
     raise IOError("Could not find module {} in {}" .format(module, eggs_dir))
 
 
-def create_batch_entry(beamline, number, name):
-    return "{beamline}-EA-ODN-{number:02d} st{name}.sh".format(
-        beamline=beamline, number=number, name=name
-    )
-
+def write_batch_file(batch_entries):
+    stream = IocDataStream("configure_odin")
+    stream.write("\n".join(batch_entries) + "\n")
 
 class OneLineEntry(object):
 

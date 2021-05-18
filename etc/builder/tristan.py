@@ -6,7 +6,7 @@ from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
 
 from plugins import _DatasetCreationPlugin, _FileWriterPlugin
-from util import OdinPaths, expand_template_file, debug_print, create_batch_entry, create_config_entry
+from util import OdinPaths, expand_template_file, debug_print, create_config_entry
 from odin import (
     _OdinData,
     _OdinDataServer,

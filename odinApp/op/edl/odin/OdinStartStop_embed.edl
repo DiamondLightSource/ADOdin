@@ -1,0 +1,95 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 1367
+y 368
+w 200
+h 25
+font "arial-medium-r-12.0"
+ctlFont "arial-medium-r-12.0"
+btnFont "arial-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 25
+ctlFgColor2 index 25
+ctlBgColor1 index 3
+ctlBgColor2 index 3
+topShadowColor index 1
+botShadowColor index 11
+title "Odin Start/Stop Embed"
+showGrid
+gridSize 5
+endScreenProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y -2
+w 55
+h 25
+fgColor index 19
+onColor index 4
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(PREFIX):START"
+pressValue "1"
+onLabel "Start"
+offLabel "Start"
+3d
+font "arial-bold-r-14.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 65
+y -2
+w 50
+h 25
+fgColor index 24
+onColor index 4
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(PREFIX):STOP"
+pressValue "1"
+onLabel "Stop"
+offLabel "Stop"
+3d
+font "arial-bold-r-14.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 125
+y -2
+w 70
+h 25
+fgColor index 24
+onColor index 4
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(PREFIX):RESTART"
+pressValue "1"
+onLabel "Restart"
+offLabel "Restart"
+3d
+font "arial-bold-r-14.0"
+endObjectProperties
+
