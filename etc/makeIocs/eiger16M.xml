@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <components arch="linux-x86_64">
 	<ADOdin.EigerFan DETECTOR_IP="127.0.0.1" IP="127.0.0.1" PROCESSES="4" SENSOR="16M" SOCKETS="4" name="EigerFan"/>
-	<ADOdin.EigerOdinDataServer IO_THREADS="2" IP="127.0.0.1" PROCESSES="4" SHARED_MEM_SIZE="160000000" SOURCE="EigerFan" name="ODServer1"/>
-	<ADOdin.EigerMetaListener IP="127.0.0.1" ODIN_DATA_SERVER_1="ODServer1" name="EigerMeta"/>
-	<ADOdin.EigerOdinControlServer API="1.8.0" EIGER_FAN="EigerFan" ENDPOINT="127.0.0.1:8080" IP="127.0.0.1" META_LISTENER="EigerMeta" ODIN_DATA_SERVER_1="ODServer1" name="ControlServer"/>
+	<ADOdin.EigerPluginConfig MODE="Malcolm" name="PluginConfig"/>
+	<ADOdin.EigerOdinDataServer IO_THREADS="2" IP="127.0.0.1" PLUGIN_CONFIG="PluginConfig" PROCESSES="4" SHARED_MEM_SIZE="1600000000" SOURCE="EigerFan" name="ODServer1"/>
+	<ADOdin.EigerOdinControlServer API="1.8.0" EIGER_FAN="EigerFan" ENDPOINT="127.0.0.1:8080" IP="127.0.0.1" META_WRITER_IP="127.0.0.1" ODIN_DATA_SERVER_1="ODServer1" name="ControlServer"/>
 	<ADOdin.EigerOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" P="$(hostname)-EIGER" PORT="ODN.OD" R=":OD:" TIMEOUT="1"/>
 	<ADOdin.OdinLogConfig BEAMLINE="iXX" DETECTOR="Eiger16M" name="LogConfig"/>
 	<!--6 -> 1 Second-->
@@ -20,4 +20,5 @@
 	<EPICS_BASE.dbpf name="CloseFileTimeout" pv="$(hostname)-EIGER:OD:CloseFileTimeout" value="10000"/>
 	<ADOdin.EigerOdinStartAllScript driver="ODN.OD" name="StartAllScript"/>
 	<ADOdin.auto_OdinProcServ ADODIN="TS-EA-IOC-01" ADODIN_DELAY="5" CONTROL_SERVER="TS-EA-ODN-11" P="$(hostname)-EIGER" PROCESS1="TS-EA-ODN-01" PROCESS10="TS-EA-ODN-10" PROCESS2="TS-EA-ODN-02" PROCESS3="TS-EA-ODN-03" PROCESS4="TS-EA-ODN-04" PROCESS5="TS-EA-ODN-05" PROCESS6="TS-EA-ODN-06" PROCESS7="TS-EA-ODN-07" PROCESS8="TS-EA-ODN-08" PROCESS9="TS-EA-ODN-09"/>
+	<ADOdin.EigerOdinBatchFile BEAMLINE="iXX" ODIN_DATA_DRIVER="ODN.OD" name="BatchFile"/>
 </components>

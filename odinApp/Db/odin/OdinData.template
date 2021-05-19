@@ -11,10 +11,25 @@
 ###################################################################
 #  Reset the FrameReceiver statistics                             #
 ###################################################################
-record(longout, "$(P)$(R)ResetStatistics")
+record(sseq, "$(P)$(R)ResetStatistics")
+{
+  field(SELM, "All")
+  field(LNK1, "$(P)$(R)FRResetStatistics.PROC CA")
+  field(LNK2, "$(P)$(R)FPResetStatistics.PROC CA")
+  field(DOL1, "1")
+  field(DOL2, "1")
+}
+
+record(longout, "$(P)$(R)FRResetStatistics")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC$(TOTAL)_fr/command/reset_statistics/$(ADDR)")
+}
+
+record(longout, "$(P)$(R)FPResetStatistics")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC$(TOTAL)_fp/command/reset_statistics/$(ADDR)")
 }
 
 record(longout, "$(P)$(R)FPClearErrors")

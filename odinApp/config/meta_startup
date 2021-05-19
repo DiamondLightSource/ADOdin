@@ -1,0 +1,5 @@
+#!/bin/bash
+
+${PYTHONPATH}
+
+numactl --membind=0 --cpunodebind=0 ${APP_PATH}/prefix/bin/meta_writer ${WRITER} --data-endpoints ${DATA_ENDPOINTS} --static-log-fields beamline=$${BEAMLINE},detector="${DETECTOR_MODEL}" --log-server "graylog2.diamond.ac.uk:12210"

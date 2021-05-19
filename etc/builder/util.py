@@ -67,9 +67,16 @@ OdinPaths.configure_paths(
 
 def expand_template_file(template, macros, output_file, executable=False):
     if executable:
-        mode = 0755
+        mode = 0o755
     else:
         mode = None
+
+    if "PYTHON_MODULES" in macros:
+        paths = [
+            find_python_egg(module, path)
+            for module, path in macros["PYTHON_MODULES"].items()
+        ]
+        macros["PYTHONPATH"] = "export PYTHONPATH={}".format(":".join(paths))
 
     with open(os.path.join(ADODIN_DATA, template)) as template_file:
         template_config = Template(template_file.read())
@@ -81,6 +88,15 @@ def expand_template_file(template, macros, output_file, executable=False):
 
     stream = IocDataStream(output_file, mode)
     stream.write(output)
+
+
+def find_python_egg(module, path):
+    eggs_dir = os.path.join(path, "prefix/lib/python2.7/site-packages")
+    for entry in os.listdir(eggs_dir):
+        if module in entry:
+            return os.path.join(eggs_dir, entry)
+
+    raise IOError("Could not find module {} in {}" .format(module, eggs_dir))
 
 
 def create_batch_entry(beamline, number, name):

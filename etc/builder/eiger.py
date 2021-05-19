@@ -5,10 +5,24 @@ from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
 
 from util import OdinPaths, expand_template_file, create_batch_entry, debug_print
-from odin import _OdinDetector, _OdinData, _OdinDataDriver, _OdinDataServer, _OdinControlServer, OdinBatchFile, \
-    _PluginConfig, OdinStartAllScript
-from plugins import _OffsetAdjustmentPlugin, _UIDAdjustmentPlugin, _FileWriterPlugin, _KafkaPlugin, \
+from odin import (
+    _OdinDetector,
+    _OdinData,
+    _OdinDataDriver,
+    _OdinDataServer,
+    _OdinControlServer,
+    _MetaWriter,
+    _PluginConfig,
+    OdinBatchFile,
+    OdinStartAllScript
+)
+from plugins import (
+    _OffsetAdjustmentPlugin,
+    _UIDAdjustmentPlugin,
+    _FileWriterPlugin,
+    _KafkaPlugin,
     _DatasetCreationPlugin
+)
 
 
 debug_print("Eiger: = {}".format(OdinPaths.EIGER_DETECTOR), 1)
@@ -80,68 +94,12 @@ class EigerFan(Device):
     )
 
 
-class EigerMetaListener(Device):
+class EigerMetaWriter(_MetaWriter):
+    DETECTOR = "Eiger"
+    WRITER_CLASS = "metalistener.EigerMetaWriter"
 
-    """Create startup file for an EigerMetaListener process"""
-
-    # Device attributes
-    AutoInstantiate = True
-
-    def __init__(self, IP,
-                 ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
-                 ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None,
-                 NUMA_NODE=-1):
-        self.__super.__init__()
-        # Update attributes with parameters
-        self.__dict__.update(locals())
-
-        self.ip_list = []
-        self.sensor = None
-        for server in [ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4]:
-            if server is not None:
-                base_port = 5000
-                for odin_data in server.processes:
-                    port = base_port + 8
-                    self.ip_list.append("tcp://{}:{}".format(odin_data.IP, port))
-                    base_port += 10
-                    self.set_sensor(odin_data.sensor)
-
-        self.create_startup_file()
-
-    def set_sensor(self, sensor):
-        if self.sensor is None:
-            self.sensor = sensor
-        else:
-            if self.sensor != sensor:
-                raise ValueError("Inconsistent sensor sizes given on OdinData processes")
-
-    def create_startup_file(self):
-        if self.NUMA_NODE >= 0:
-            numa_call = "numactl --membind={node} --cpunodebind={node} ".format(node=self.NUMA_NODE)
-        else:
-            numa_call = ""
-        macros = dict(EIGER_DETECTOR=OdinPaths.EIGER_DETECTOR,
-                      IP_LIST=",".join(self.ip_list),
-                      ODIN_DATA=OdinPaths.ODIN_DATA,
-                      SENSOR=self.sensor,
-                      NUMA=numa_call)
-
-        expand_template_file("eiger_meta_startup", macros, "stEigerMetaListener.sh",
-                             executable=True)
-
-    def add_batch_entry(self, entries, beamline, number):
-        entries.append(create_batch_entry(beamline, number, "EigerMetaListener"))
-        return number + 1
-
-    # __init__ arguments
-    ArgInfo = makeArgInfo(__init__,
-        IP=Simple("IP address of server hosting process", str),
-        ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
-        NUMA_NODE=Simple("Numa node to run process on - Optional for performance tuning", int)
-    )
+    def _add_python_modules(self):
+        self.PYTHON_MODULES.update(dict(eiger_data=OdinPaths.EIGER_DETECTOR))
 
 
 class _EigerOdinData(_OdinData):
@@ -304,17 +262,17 @@ class EigerOdinControlServer(_OdinControlServer):
 
     ODIN_SERVER = os.path.join(OdinPaths.EIGER_DETECTOR, "prefix/bin/eiger_odin")
 
-    def __init__(self, ENDPOINT, API, IP, EIGER_FAN, META_LISTENER, CTRL_PORT=8888,
+    def __init__(self, ENDPOINT, API, IP, EIGER_FAN, CTRL_PORT=8888, META_WRITER_IP=None,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
                  ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None):
         self.__dict__.update(locals())
-        self.ADAPTERS.extend(["eiger", "eiger_fan", "meta_listener"])
+        self.ADAPTERS.extend(["eiger", "eiger_fan"])
 
         self.eiger_fan = EIGER_FAN
-        self.meta_listener = META_LISTENER
 
         super(EigerOdinControlServer, self).__init__(
-            IP, CTRL_PORT, ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4
+            IP, CTRL_PORT, META_WRITER_IP,
+            ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4
         )
 
     ArgInfo = makeArgInfo(__init__,
@@ -323,19 +281,20 @@ class EigerOdinControlServer(_OdinControlServer):
         IP=Simple("IP address of control server", str),
         CTRL_PORT=Simple("Port of control server", int),
         EIGER_FAN=Ident("EigerFan configuration", EigerFan),
-        META_LISTENER=Ident("MetaListener configuration", EigerMetaListener),
+        META_WRITER_IP=Simple("IP address of MetaWriter (None -> first OdinDataServer)", str),
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer)
     )
 
-    def create_odin_server_config_entries(self):
+    def _add_python_modules(self):
+        self.PYTHON_MODULES.update(dict(eiger_control=OdinPaths.EIGER_DETECTOR))
+
+    def create_extra_config_entries(self):
         return [
             self._create_control_config_entry(),
-            self._create_odin_data_config_entry(),
-            self._create_eiger_fan_config_entry(),
-            self._create_meta_listener_config_entry()
+            self._create_eiger_fan_config_entry()
         ]
 
     def _create_control_config_entry(self):
@@ -350,12 +309,6 @@ class EigerOdinControlServer(_OdinControlServer):
                "endpoints = {}:5559\n" \
                "update_interval = 0.5".format(self.eiger_fan.IP)
 
-    def _create_meta_listener_config_entry(self):
-        return "[adapter.meta_listener]\n" \
-               "module = odin_data.meta_listener_adapter.MetaListenerAdapter\n" \
-               "endpoints = {}:5659\n" \
-               "update_interval = 0.5".format(self.meta_listener.IP)
-
     def create_odin_server_static_path(self):
         return OdinPaths.EIGER_DETECTOR + "/prefix/html/static"
 
@@ -369,6 +322,7 @@ class EigerOdinDataDriver(_OdinDataDriver):
     """Create an Eiger OdinData driver"""
 
     OD_SCREENS = [1, 2, 4, 8]
+    META_WRITER_CLASS = EigerMetaWriter
 
     def __init__(self, **args):
         self.__super.__init__(DETECTOR="eiger", **args)
@@ -391,12 +345,9 @@ class EigerOdinDataDriver(_OdinDataDriver):
 class EigerOdinBatchFile(OdinBatchFile):
 
     def add_extra_entries(self, entries, process_number):
-        process_number = \
-            self.odin_control_server.eiger_fan.add_batch_entry(entries, self.beamline,
-                                                               process_number)
-        process_number = \
-            self.odin_control_server.meta_listener.add_batch_entry(entries, self.beamline,
-                                                                   process_number)
+        process_number = self.odin_data_driver.control_server.eiger_fan.add_batch_entry(
+            entries, self.beamline, process_number
+        )
 
         return process_number
 
@@ -406,7 +357,4 @@ class EigerOdinStartAllScript(OdinStartAllScript):
     def create_scripts(self, odin_data_processes):
         scripts = [self.create_script_entry("EigerFan", "stEigerFan.sh")]
         scripts += super(EigerOdinStartAllScript, self).create_scripts(odin_data_processes)
-        scripts.append(self.create_script_entry(
-            "MetaListener", "stEigerMetaListener.sh", "${PYTHON_EXPORTS}"
-        ))
         return scripts
