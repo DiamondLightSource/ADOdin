@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 709
-y 94
+y 131
 w 390
 h 820
 font "arial-bold-r-12.0"
@@ -46,7 +46,7 @@ major 4
 minor 0
 release 0
 x 200
-y 660
+y 555
 w 185
 h 85
 lineColor index 14
@@ -61,7 +61,7 @@ major 10
 minor 0
 release 0
 x 275
-y 710
+y 605
 w 105
 h 25
 controlPv "$(P)$(R)CounterDepth"
@@ -80,7 +80,7 @@ major 10
 minor 0
 release 0
 x 275
-y 680
+y 575
 w 105
 h 25
 controlPv "$(P)$(R)OperationMode"
@@ -101,7 +101,7 @@ release 0
 x 5
 y 230
 w 185
-h 585
+h 480
 lineColor index 14
 fill
 fillColor index 3
@@ -114,7 +114,7 @@ major 4
 minor 1
 release 1
 x 205
-y 680
+y 575
 w 65
 h 25
 font "arial-bold-r-12.0"
@@ -155,7 +155,7 @@ major 4
 minor 1
 release 1
 x 200
-y 655
+y 550
 w 88
 h 13
 font "arial-medium-r-12.0"
@@ -586,7 +586,7 @@ release 0
 x 200
 y 315
 w 185
-h 335
+h 230
 lineColor index 14
 fill
 fillColor index 3
@@ -998,7 +998,7 @@ major 4
 minor 1
 release 1
 x 205
-y 710
+y 605
 w 65
 h 25
 font "arial-bold-r-12.0"
@@ -1018,7 +1018,7 @@ major 4
 minor 0
 release 0
 x 275
-y 710
+y 605
 w 105
 h 25
 fgColor index 25
@@ -1038,7 +1038,7 @@ major 4
 minor 0
 release 0
 x 275
-y 680
+y 575
 w 105
 h 25
 fgColor index 25
@@ -1765,7 +1765,7 @@ major 4
 minor 0
 release 0
 x 200
-y 755
+y 650
 w 185
 h 60
 lineColor index 14
@@ -1780,7 +1780,7 @@ major 4
 minor 1
 release 1
 x 200
-y 775
+y 670
 w 65
 h 25
 font "arial-bold-r-12.0"
@@ -1801,7 +1801,7 @@ major 4
 minor 1
 release 1
 x 200
-y 750
+y 645
 w 51
 h 13
 font "arial-medium-r-12.0"
@@ -1821,7 +1821,7 @@ major 4
 minor 1
 release 0
 x 275
-y 775
+y 670
 w 105
 h 25
 fgColor index 25
@@ -2019,6 +2019,85 @@ bgColor index 3
 useDisplayBg
 value {
   "Meta Writer Connected"
+}
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 5
+y 725
+w 380
+h 50
+lineColor index 14
+fill
+fillColor index 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 720
+w 74
+h 13
+font "arial-medium-r-12.0"
+fgColor index 14
+bgColor index 5
+value {
+  "  Calibration  "
+}
+autoSize
+border
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 6
+release 0
+x 80
+y 745
+w 300
+h 20
+controlPv "$(P)$(R)CalFileRoot"
+font "helvetica-medium-r-10.0"
+fgColor index 25
+bgColor index 3
+editable
+motifWidget
+limitsFromDb
+nullColor index 25
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 740
+w 70
+h 25
+font "arial-bold-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Calibration"
+  "Files Root"
 }
 endObjectProperties
 
