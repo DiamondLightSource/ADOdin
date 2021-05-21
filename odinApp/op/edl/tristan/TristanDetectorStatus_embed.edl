@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 1081
-y 202
+y 239
 w 501
 h 401
 font "arial-medium-r-18.0"
@@ -469,5 +469,64 @@ useDisplayBg
 value {
   "Detector Variant"
 }
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 280
+w 105
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Threshold"
+}
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 175
+y 280
+w 50
+h 20
+controlPv "$(P)Threshold_RBV"
+displayMode "decimal"
+precision 1
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 120
+y 280
+w 45
+h 20
+controlPv "$(P)Threshold"
+displayMode "decimal"
+precision 1
+fgColor index 25
+fgAlarm
+bgColor index 3
+fill
+font "arial-bold-r-12.0"
 endObjectProperties
 

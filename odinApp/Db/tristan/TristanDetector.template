@@ -829,6 +829,27 @@ record(bi, "$(P)$(R)CRW_RBV")
 }
 
 ###################################################################
+#  Threshold setting                                              #
+###################################################################
+# % autosave 2
+#% archiver 10 Monitor
+record(ao, "$(P)$(R)Threshold")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_config/threshold")
+    field(DRVH, "60.0")
+    field(DRVL, "3.0")
+}
+
+record(ai, "$(P)$(R)Threshold_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_config/threshold")
+}
+
+###################################################################
 #  Set the Live View Endpoint                                     #
 ###################################################################
 record(stringout, "$(P)$(R)LiveViewEndpoint")
