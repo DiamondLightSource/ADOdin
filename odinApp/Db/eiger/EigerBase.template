@@ -370,60 +370,6 @@ record(waveform, "$(P)$(R)StreamImgAppendix")
     info(autosaveFields, "VAL")
 }
 
-# Save files locally
-record(bo,"$(P)$(R)SaveFiles") {
-    field(PINI, "YES")
-    field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SAVE_FILES")
-    field(VAL,  "0")
-    field(ZNAM, "No")
-    field(ONAM, "Yes")
-}
-
-record(bi,"$(P)$(R)SaveFiles_RBV") {
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SAVE_FILES")
-    field(ZNAM, "No")
-    field(ONAM, "Yes")
-    field(SCAN, "I/O Intr")
-}
-
-# Saved files owner
-record(stringout, "$(P)$(R)FileOwner") {
-    field(PINI, "YES")
-    field(DTYP, "asynOctetWrite")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_OWNER")
-    field(VAL,  "")
-}
-
-record(stringin, "$(P)$(R)FileOwner_RBV") {
-    field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_OWNER")
-    field(SCAN, "I/O Intr")
-}
-
-# Saved files owner group
-record(stringout, "$(P)$(R)FileOwnerGrp") {
-    field(PINI, "YES")
-    field(DTYP, "asynOctetWrite")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_OWNER_GROUP")
-    field(VAL,  "")
-}
-
-record(stringin, "$(P)$(R)FileOwnerGrp_RBV") {
-    field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_OWNER_GROUP")
-    field(SCAN, "I/O Intr")
-}
-
-# Saved files permissions
-record(ao,"$(P)$(R)FilePerms") {
-    field(PINI, "YES")
-    field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FILE_PERMISSIONS")
-    field(VAL,  "0644")
-}
-
 # Flatfield correction applied
 record(bo,"$(P)$(R)FlatfieldApplied") {
     field(PINI, "YES")
