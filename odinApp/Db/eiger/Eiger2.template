@@ -42,7 +42,7 @@ record(mbbi,"$(P)$(R)CountingMode_RBV") {
 record(bo,"$(P)$(R)AutoSummation") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))AUTO_SUMMATION")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_detector/api/$(API)/config/auto_summation")
     field(VAL,  "1")
     field(ZNAM, "Disabled")
     field(ONAM, "Enabled")
@@ -50,7 +50,7 @@ record(bo,"$(P)$(R)AutoSummation") {
 
 record(bi,"$(P)$(R)AutoSummation_RBV") {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))AUTO_SUMMATION")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_detector/api/$(API)/config/auto_summation")
     field(ZNAM, "Disabled")
     field(ONAM, "Enabled")
     field(SCAN, "I/O Intr")
@@ -61,7 +61,7 @@ record(ao, "$(P)$(R)TriggerStartDelay")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_START_DELAY")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/trigger_start_delay")
     field(DESC, "Trigger start delay")
     field(EGU,  "s")
     field(PREC, "9")
@@ -70,7 +70,7 @@ record(ao, "$(P)$(R)TriggerStartDelay")
 record(ai, "$(P)$(R)TriggerStartDelay_RBV")
 {
     field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_START_DELAY")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_detector/api/$(API)/config/trigger_start_delay")
     field(DESC, "Trigger start delay")
     field(EGU,  "s")
     field(PREC, "9")
