@@ -33,14 +33,13 @@ class _TristanProcessPlugin(_DatasetCreationPlugin):
     LIBRARY_PATH = OdinPaths.TRISTAN_DETECTOR
     DATASETS = [
         dict(name="data", datatype="uint32", chunks=[1]),
-        dict(name="raw_data", datatype="uint64", chunks=[524288]),
-        dict(name="event_id", datatype="uint32", chunks=[524288]),
-        dict(name="event_time_offset", datatype="uint64", chunks=[524288]),
-        dict(name="event_energy", datatype="uint32", chunks=[524288]),
+        dict(name="raw_data", datatype="uint64", chunks=[2097152]),
+        dict(name="event_id", datatype="uint32", chunks=[2097152]),
+        dict(name="event_time_offset", datatype="uint64", chunks=[2097152]),
+        dict(name="event_energy", datatype="uint32", chunks=[2097152]),
         dict(name="image", datatype="uint16", dims=[3043, 4183], chunks=[1, 3043, 4183]),
-        dict(name="cue_timestamp_zero", datatype="uint64", chunks=[524288]),
-        dict(name="cue_id", datatype="uint16", chunks=[524288]),
-        dict(name="time_slice", datatype="uint32", chunks=[40])
+        dict(name="cue_timestamp_zero", datatype="uint64", chunks=[2097152]),
+        dict(name="cue_id", datatype="uint16", chunks=[2097152])
     ]
 
     def __init__(self, sensor):
