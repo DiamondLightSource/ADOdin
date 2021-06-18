@@ -361,7 +361,7 @@ class TristanDetector(_OdinDetector):
                     ipaddr=process.server.FEM_DEST_IP,
                     port=process.base_udp_port,
                     subnet=process.server.FEM_DEST_SUBNET,
-                    links=[1, 0, 0, 0, 0, 0, 0, 0]
+                    links=[1, 1, 1, 1, 0, 0, 0, 0]
                 )
                 fem_config.append(config)
             node_config.append(fem_config)
@@ -377,7 +377,7 @@ class TristanDetector(_OdinDetector):
                     ipaddr=process.server.FEM_DEST_IP,
                     port=process.base_udp_port,
                     subnet=process.server.FEM_DEST_SUBNET,
-                    links=[1, 0, 0, 0, 0, 0, 0, 0]
+                    links=[1, 1, 1, 1, 0, 0, 0, 0]
                 )
                 node_config.append(config)
 
