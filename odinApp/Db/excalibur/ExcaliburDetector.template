@@ -54,6 +54,28 @@ record(bo, "$(P)$(R)ReadStatus")
     field(SCAN, ".1 second")
 }
 
+record(bo, "$(P)$(R)PausePolling")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,1)_ODC1_command/pause_polling")
+}
+
+record(bo, "$(P)$(R)ContinuePolling")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,1)_ODC_command/continue_polling")
+}
+
+#% archiver 10 Monitor
+record(bi, "$(P)$(R)PollingActive")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,1)_ODB_status/poll_active")
+    field(ZNAM, "Paused")
+    field(ONAM, "Active")
+}
+
 # Operation mode.
 # % autosave 2
 #% archiver 10 Monitor
