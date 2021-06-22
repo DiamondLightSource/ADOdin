@@ -454,6 +454,7 @@ class _MetaWriter(object):
         odin_data=OdinPaths.ODIN_DATA
     )
     DETECTOR = ""
+    SENSOR_SHAPE = None
     TEMPLATE = _MetaWriterTemplate
 
     def __init__(self, odin_data_servers):
@@ -477,10 +478,16 @@ class _MetaWriter(object):
         else:
             writer = ""
 
+        if self.SENSOR_SHAPE is not None:
+            sensor_shape = "--sensor-shape {} {}".format(*self.SENSOR_SHAPE)
+        else:
+            sensor_shape = ""
+
         macros = dict(
             PYTHON_MODULES=self.PYTHON_MODULES,
             APP_PATH=self.APP_PATH,
             WRITER=writer,
+            SENSOR_SHAPE=sensor_shape,
             DATA_ENDPOINTS=",".join(self.data_endpoints),
             DETECTOR_MODEL="{}{}".format(self.DETECTOR, self.sensor),
         )
