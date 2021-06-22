@@ -50,6 +50,7 @@
     <!-- Detector-specific plugins -->
     <logger name="FP.EigerProcessPlugin"></logger>
     <logger name="FP.ExcaliburProcessPlugin"></logger>
+    <logger name="FP.LATRDProcessPlugin"></logger>
 
     <!-- The FrameReceiver applications logger hierarchy -->
     <logger name="FR">
@@ -60,6 +61,7 @@
     <!-- Detector-specific plugins -->
     <logger name="FR.EigerFrameDecoder"></logger>
     <logger name="FR.ExcaliburFrameDecoder"></logger>
+    <logger name="FR.LATRDDecoderPlugin"></logger>
 
     <!-- The Eiger Detector applications logger hierarchy -->
     <logger name="ED">

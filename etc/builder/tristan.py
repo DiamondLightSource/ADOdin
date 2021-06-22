@@ -76,57 +76,6 @@ class TristanMetaWriter(_MetaWriter):
     def _add_python_modules(self):
         self.PYTHON_MODULES.update(dict(tristan_detector=OdinPaths.TRISTAN_DETECTOR))
 
-class _TristanMetaListener(Device):
-
-    """Create startup file for a TristanMetaListener process"""
-
-    # Device attributes
-    AutoInstantiate = True
-
-    def __init__(self, IP, ODIN_DATA_SERVERS=None, NUMA_NODE=-1, **args):
-        self.__super.__init__()
-        # Update attributes with parameters
-        self.__dict__.update(locals())
-
-        self.ip_list = []
-        self.sensor = None
-        if ODIN_DATA_SERVERS is not None:
-            for server in ODIN_DATA_SERVERS:
-                if server is not None:
-                    base_port = 10000
-                    for odin_data in server.processes:
-                        port = base_port + 8
-                        self.ip_list.append("tcp://{}:{}".format(odin_data.IP, port))
-                        base_port += 10
-                        self.set_sensor(odin_data.sensor)
-
-        self.create_startup_file()
-
-    def set_sensor(self, sensor):
-        if self.sensor is None:
-            self.sensor = sensor
-        else:
-            if self.sensor != sensor:
-                raise ValueError("Inconsistent sensor sizes given on OdinData processes")
-
-    def create_startup_file(self):
-        if self.NUMA_NODE >= 0:
-            numa_call = "numactl --membind={node} --cpunodebind={node} ".format(node=self.NUMA_NODE)
-        else:
-            numa_call = ""
-        macros = dict(TRISTAN_DETECTOR_PATH=OdinPaths.TRISTAN_DETECTOR,
-                      IP_LIST=",".join(self.ip_list),
-                      ODIN_DATA=OdinPaths.ODIN_DATA,
-                      SENSOR=self.sensor,
-                      NUMA=numa_call)
-
-        expand_template_file("tristan_meta_startup", macros, "stTristanMetaListener.sh",
-                             executable=True)
-
-    def add_batch_entry(self, entries, beamline, number):
-        entries.append(create_batch_entry(beamline, number, "TristanMetaListener"))
-        return number + 1
-
 
 class TristanControlSimulator(Device):
 
