@@ -15,6 +15,10 @@ static const char *driverName = "OdinDataDriver";
  * asynNDArrayDriver, and ADDriver.
  * \param[in] portName The name of the asyn port driver to be created.
  * \param[in] serverHostname The IP or url of the detector webserver.
+ * \param[in] odinServerPort The port number of the detector webserver.
+ * \param[in] odinDataCount The number of data application (FR/FP) pairs.
+ * \param[in] datasetName The name of the main dataset.
+ * \param[in] detectorName The name of the detector.
  * \param[in] maxBuffers The maximum number of NDArray buffers that the
  *            NDArrayPool for this driver is allowed to allocate. Set this to
  *            -1 to allow an unlimited number of buffers.
@@ -34,7 +38,7 @@ OdinDataDriver::OdinDataDriver(const char* portName, const char* serverHostname,
     : OdinClient(portName, serverHostname, odinServerPort,
                  detectorName, maxBuffers,
                  maxMemory, priority, stackSize,
-                 odinDataCount+1), // Number of FPs plus 1
+                 odinDataCount),
     mAPI(serverHostname, detectorName, odinServerPort, odinDataCount)
 {
   mDatasetName = std::string(datasetName);
