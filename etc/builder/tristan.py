@@ -463,22 +463,18 @@ def add_tristan_fp_template(cls):
     return cls
 
 
-#@add_tristan_fp_template
 class _Tristan4NodeFPTemplate(AutoSubstitution):
     TemplateFile = "Tristan4NodeOD.template"
 
 
-#@add_tristan_fp_template
 class _Tristan8NodeFPTemplate(AutoSubstitution):
     TemplateFile = "Tristan8NodeOD.template"
 
 
-#@add_tristan_fp_template
 class _Tristan16NodeFPTemplate(AutoSubstitution):
     TemplateFile = "Tristan16NodeOD.template"
 
 
-#@add_tristan_fp_template
 class _Tristan100NodeFPTemplate(AutoSubstitution):
     TemplateFile = "Tristan100NodeOD.template"
 
