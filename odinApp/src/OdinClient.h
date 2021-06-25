@@ -24,7 +24,8 @@ public:
              int maxBuffers,
              size_t maxMemory,
              int priority,
-             int stackSize);
+             int stackSize,
+             int maxAddresses);
 
   void registerAPI(OdinRestAPI *api);
 

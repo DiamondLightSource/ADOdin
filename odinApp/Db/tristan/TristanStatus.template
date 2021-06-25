@@ -10,6 +10,42 @@
 #   TIMEOUT - Timeout
 
 #% archiver 1 monitor
+record(longin, "$(P)$(R)$(ADDRESS):FEMMinX_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/detector/module_dimensions/x_min")
+}
+
+#% archiver 1 monitor
+record(longin, "$(P)$(R)$(ADDRESS):FEMMaxX_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/detector/module_dimensions/x_max")
+}
+
+#% archiver 1 monitor
+record(longin, "$(P)$(R)$(ADDRESS):FEMMinY_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/detector/module_dimensions/y_min")
+}
+
+#% archiver 1 monitor
+record(longin, "$(P)$(R)$(ADDRESS):FEMMaxY_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/detector/module_dimensions/y_max")
+}
+
+#% archiver 1 monitor
 record(longin, "$(P)$(R)$(ADDRESS):FEMPowerEnabled_RBV")
 {
     field(SCAN, "I/O Intr")

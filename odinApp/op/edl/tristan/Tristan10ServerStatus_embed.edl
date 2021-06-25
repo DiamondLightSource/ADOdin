@@ -1,0 +1,706 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 458
+y 174
+w 1201
+h 401
+font "arial-medium-r-12.0"
+ctlFont "arial-medium-r-12.0"
+btnFont "arial-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 25
+ctlFgColor2 index 25
+ctlBgColor1 index 3
+ctlBgColor2 index 3
+topShadowColor index 1
+botShadowColor index 11
+title "Tristan Server Overview"
+showGrid
+snapToGrid
+gridSize 5
+endScreenProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 125
+y 30
+w 101
+h 351
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanServerStatus_embed"
+}
+symbols {
+  0 "SVR=01,R1=1,R2=2,R3=3,R4=4,R5=5,R6=6,R7=7,R8=8,R9=9,R10=10"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 230
+y 30
+w 101
+h 351
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanServerStatus_embed"
+}
+symbols {
+  0 "SVR=02,R1=11,R2=12,R3=13,R4=14,R5=15,R6=16,R7=17,R8=18,R9=19,R10=20"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 335
+y 30
+w 101
+h 351
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanServerStatus_embed"
+}
+symbols {
+  0 "SVR=03,R1=21,R2=22,R3=23,R4=24,R5=25,R6=26,R7=27,R8=28,R9=29,R10=30"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 440
+y 30
+w 101
+h 351
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanServerStatus_embed"
+}
+symbols {
+  0 "SVR=04,R1=31,R2=32,R3=33,R4=34,R5=35,R6=36,R7=37,R8=38,R9=39,R10=40"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 545
+y 30
+w 101
+h 351
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanServerStatus_embed"
+}
+symbols {
+  0 "SVR=05,R1=41,R2=42,R3=43,R4=44,R5=45,R6=46,R7=47,R8=48,R9=49,R10=50"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 650
+y 30
+w 101
+h 351
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanServerStatus_embed"
+}
+symbols {
+  0 "SVR=06,R1=51,R2=52,R3=53,R4=54,R5=55,R6=56,R7=57,R8=58,R9=59,R10=60"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 755
+y 30
+w 101
+h 351
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanServerStatus_embed"
+}
+symbols {
+  0 "SVR=07,R1=61,R2=62,R3=63,R4=64,R5=65,R6=66,R7=67,R8=68,R9=69,R10=70"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 860
+y 30
+w 101
+h 351
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanServerStatus_embed"
+}
+symbols {
+  0 "SVR=08,R1=71,R2=72,R3=73,R4=74,R5=75,R6=76,R7=77,R8=78,R9=79,R10=80"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 965
+y 30
+w 101
+h 351
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanServerStatus_embed"
+}
+symbols {
+  0 "SVR=09,R1=81,R2=82,R3=83,R4=84,R5=85,R6=86,R7=87,R8=88,R9=89,R10=90"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 1070
+y 30
+w 101
+h 351
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanServerStatus_embed"
+}
+symbols {
+  0 "SVR=10,R1=91,R2=92,R3=93,R4=94,R5=95,R6=96,R7=97,R8=98,R9=99,R10=100"
+}
+noScroll
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 125
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Server 01"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 230
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Server 02"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 335
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Server 03"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 440
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Server 04"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 545
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Server 05"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 650
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Server 06"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 755
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Server 07"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 860
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Server 08"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 965
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Server 09"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1070
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Server 10"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 35
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FR Connected"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 55
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FP Connected"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 75
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FP Health"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 95
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Writing"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 120
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Packets Recv"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 145
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Free Buffers"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 240
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Invalid Packets"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 265
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Time Mismatches"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 215
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Dropped Packets"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 170
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Memory Warning"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 10
+y 190
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Out of Memory"
+}
+endObjectProperties
+

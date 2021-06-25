@@ -1,28 +1,68 @@
 # % macro, P, Device Prefix
-# % macro, R, Device Suffix
 # % macro, DET, Detector Suffix
 # % macro, PORT, Asyn Port name
+# % macro, NUM, FR/FP Number
 # % macro, ADDRESS, Asyn Port address
 # % macro, TIMEOUT, Timeout
 # % macro, TOTAL, Total number of OdinData nodes
 
-record(calcout, "$(P)$(R)$(ADDRESS)CalcReconnected")
+record(calcout, "$(P):OD$(NUM):CalcReconnected")
 {
     field(INPA, "$(P)$(DET)DetectorState_RBV CP")
     field(CALC, "A=9?0:1")
-    field(OUT,  "$(P)$(R)$(ADDRESS):ReconnectFan.PROC PP")
+    field(OUT,  "$(P):OD$(NUM):ReconnectFan.PROC PP")
     field(OOPT, "Transition To Non-zero")
 }
 
-record(fanout, "$(P)$(R)$(ADDRESS)ReconnectFan")
+record(fanout, "$(P):OD$(NUM):ReconnectFan")
 {
-    field(LNK1, "$(P)$(R)$(ADDRESS)FPOperationMode.PROC PP")
+    field(LNK1, "$(P):OD$(NUM):FPOperationMode.PROC PP")
 }
 
-record(stringout, "$(P)$(R)$(ADDRESS)FPOperationMode")
+record(stringout, "$(P):OD$(NUM):FPOperationMode")
 {
     field(OMSL, "closed_loop")
     field(DOL,  "$(P)$(DET)OperationMode_STR.SVAL CP")
     field(DTYP, "asynOctetWrite")
     field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS$(TOTAL)_fp/config/tristan/mode")
+}
+
+record(longin, "$(P):OD$(NUM):FRPacketsReceived_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_fr/status/decoder/packets")
+}
+
+record(longin, "$(P):OD$(NUM):FPTimestampMismatches_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_fp/status/tristan/timestamp_mismatches")
+}
+
+record(longin, "$(P):OD$(NUM):FPInvalidPackets_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_fp/status/tristan/invalid_packets")
+}
+
+record(longin, "$(P):OD$(NUM):FPDroppedPackets_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_fp/status/tristan/dropped_packets")
+}
+
+record(calcout, "$(P):OD$(NUM):LowBufferWarning_RBV")
+{
+    field(INPA, "$(P):OD$(NUM):FreeBuffers_RBV CP")
+    field(CALC, "A<5000?1:0")
+}
+
+record(calcout, "$(P):OD$(NUM):LowBufferError_RBV")
+{
+    field(INPA, "$(P):OD$(NUM):FreeBuffers_RBV CP")
+    field(CALC, "A<10?1:0")
 }

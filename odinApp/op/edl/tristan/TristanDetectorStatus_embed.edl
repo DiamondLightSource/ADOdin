@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1052
-y 289
+x 1081
+y 239
 w 501
 h 401
 font "arial-medium-r-18.0"
@@ -31,8 +31,8 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 10
-y 25
+x 120
+y 55
 w 370
 h 20
 controlPv "$(P)Description_RBV"
@@ -49,8 +49,8 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 10
-y 65
+x 120
+y 80
 w 370
 h 20
 controlPv "$(P)SensorMaterial_RBV"
@@ -67,7 +67,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 10
+x 120
 y 105
 w 370
 h 20
@@ -85,8 +85,8 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 10
-y 145
+x 120
+y 130
 w 370
 h 20
 controlPv "$(P)SerialNumber_RBV"
@@ -103,8 +103,8 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 10
-y 185
+x 120
+y 155
 w 370
 h 20
 controlPv "$(P)SoftwareVersion_RBV"
@@ -121,8 +121,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 10
-y 5
+x 5
+y 55
 w 75
 h 20
 font "arial-bold-r-12.0"
@@ -140,8 +140,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 10
-y 45
+x 5
+y 80
 w 105
 h 20
 font "arial-bold-r-12.0"
@@ -159,8 +159,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 10
-y 85
+x 5
+y 105
 w 105
 h 20
 font "arial-bold-r-12.0"
@@ -178,8 +178,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 10
-y 125
+x 5
+y 130
 w 105
 h 20
 font "arial-bold-r-12.0"
@@ -197,8 +197,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 10
-y 165
+x 5
+y 155
 w 105
 h 20
 font "arial-bold-r-12.0"
@@ -216,7 +216,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 10
+x 5
 y 205
 w 105
 h 20
@@ -235,8 +235,8 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 10
-y 225
+x 120
+y 205
 w 105
 h 20
 controlPv "$(P)XPixelSize_RBV"
@@ -253,8 +253,8 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 140
-y 225
+x 250
+y 205
 w 105
 h 20
 controlPv "$(P)YPixelSize_RBV"
@@ -271,8 +271,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 115
-y 225
+x 225
+y 205
 w 25
 h 20
 font "arial-bold-r-12.0"
@@ -283,5 +283,250 @@ useDisplayBg
 value {
   "x"
 }
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 120
+y 230
+w 105
+h 20
+controlPv "$(P)TickPicoSeconds_RBV"
+precision 1
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 120
+y 255
+w 105
+h 20
+controlPv "$(P)TickHertz_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 230
+w 105
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Tick Interval"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 255
+w 105
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Tick Frequency"
+}
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 120
+y 180
+w 370
+h 20
+controlPv "$(P)SoftwareBuild_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 180
+w 105
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Software Build"
+}
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 120
+y 5
+w 370
+h 20
+controlPv "$(P)DetectorType_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 5
+w 105
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Detector Type"
+}
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 120
+y 30
+w 370
+h 20
+controlPv "$(P)DetectorVariant_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 30
+w 110
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Detector Variant"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 280
+w 105
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Threshold"
+}
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 175
+y 280
+w 50
+h 20
+controlPv "$(P)Threshold_RBV"
+displayMode "decimal"
+precision 1
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 120
+y 280
+w 45
+h 20
+controlPv "$(P)Threshold"
+displayMode "decimal"
+precision 1
+fgColor index 25
+fgAlarm
+bgColor index 3
+fill
+font "arial-bold-r-12.0"
 endObjectProperties
 

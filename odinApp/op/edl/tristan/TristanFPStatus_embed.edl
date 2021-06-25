@@ -1,0 +1,230 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 1082
+y 569
+w 91
+h 344
+font "arial-medium-r-12.0"
+ctlFont "arial-medium-r-12.0"
+btnFont "arial-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 25
+ctlFgColor2 index 25
+ctlBgColor1 index 3
+ctlBgColor2 index 3
+topShadowColor index 1
+botShadowColor index 11
+title "OdinData Status"
+showGrid
+snapToGrid
+gridSize 5
+endScreenProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 5
+y 115
+w 80
+h 20
+controlPv "$(P):OD$(RANK):FreeBuffers_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 35
+y 65
+w 20
+h 20
+controlPv "$(P):OD$(RANK):Writing_RBV"
+lineColor index 14
+onColor index 15
+offColor index 19
+lineWidth 2
+numBits 1
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 35
+y 25
+w 20
+h 20
+controlPv "$(P):OD$(RANK):FPProcessConnected_RBV"
+lineColor index 14
+onColor index 15
+offColor index 20
+lineWidth 2
+numBits 1
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 35
+y 5
+w 20
+h 20
+controlPv "$(P):OD$(RANK):FRProcessConnected_RBV"
+lineColor index 14
+onColor index 15
+offColor index 20
+lineWidth 2
+numBits 1
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 35
+y 45
+w 20
+h 20
+controlPv "$(P):OD$(RANK):FPErrorState_RBV"
+lineColor index 14
+onColor index 20
+offColor index 15
+lineWidth 2
+numBits 1
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 5
+y 185
+w 80
+h 20
+controlPv "$(P):OD$(RANK):FPDroppedPackets_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 5
+y 90
+w 80
+h 20
+controlPv "$(P):OD$(RANK):FRPacketsReceived_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 5
+y 210
+w 80
+h 20
+controlPv "$(P):OD$(RANK):FPInvalidPackets_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 5
+y 235
+w 80
+h 20
+controlPv "$(P):OD$(RANK):FPTimestampMismatches_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 10
+fill
+font "arial-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 35
+y 140
+w 20
+h 20
+controlPv "$(P):OD$(RANK):LowBufferWarning_RBV"
+lineColor index 14
+onColor index 35
+offColor index 15
+lineWidth 2
+numBits 1
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 35
+y 160
+w 20
+h 20
+controlPv "$(P):OD$(RANK):LowBufferError_RBV"
+lineColor index 14
+onColor index 20
+offColor index 15
+lineWidth 2
+numBits 1
+endObjectProperties
+

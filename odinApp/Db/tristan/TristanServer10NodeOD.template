@@ -1,0 +1,287 @@
+# TristanServer10NodeOD.template
+# This template supports a single server running 10 FR/FP pairs of applications
+# The server template provides totals for packet counts and buffers.
+
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, DET, Detector Suffix
+# % macro, TOTAL, The total number of FR/FPs in the Tristan Detector system
+# % macro, SERVER, This server number
+# % macro, N1, The number of the first rank FR/FP pair
+# % macro, N2, The number of the second rank FR/FP pair
+# % macro, N3, The number of the third rank FR/FP pair
+# % macro, N4, The number of the fourth rank FR/FP pair
+# % macro, N5, The number of the fifth rank FR/FP pair
+# % macro, N6, The number of the sixth rank FR/FP pair
+# % macro, N7, The number of the seventh rank FR/FP pair
+# % macro, N8, The number of the eighth rank FR/FP pair
+# % macro, N9, The number of the ninth rank FR/FP pair
+# % macro, N10, The number of the tenth rank FR/FP pair
+# % macro, A1, The address of the first rank FR/FP pair
+# % macro, A2, The address of the second rank FR/FP pair
+# % macro, A3, The address of the third rank FR/FP pair
+# % macro, A4, The address of the fourth rank FR/FP pair
+# % macro, A5, The address of the fifth rank FR/FP pair
+# % macro, A6, The address of the sixth rank FR/FP pair
+# % macro, A7, The address of the seventh rank FR/FP pair
+# % macro, A8, The address of the eighth rank FR/FP pair
+# % macro, A9, The address of the ninth rank FR/FP pair
+# % macro, A10, The address of the tenth rank FR/FP pair
+# % macro, PORT, Asyn Port name
+# % macro, name, Name specifying builder GUI generation
+
+################################################################################
+#
+# Include 10 FP templates
+#
+################################################################################
+substitute "NUM=$(N1),ADDRESS=$(A1)"
+include "TristanOD.template"
+substitute "NUM=$(N2),ADDRESS=$(A2)"
+include "TristanOD.template"
+substitute "NUM=$(N3),ADDRESS=$(A3)"
+include "TristanOD.template"
+substitute "NUM=$(N4),ADDRESS=$(A4)"
+include "TristanOD.template"
+substitute "NUM=$(N5),ADDRESS=$(A5)"
+include "TristanOD.template"
+substitute "NUM=$(N6),ADDRESS=$(A6)"
+include "TristanOD.template"
+substitute "NUM=$(N7),ADDRESS=$(A7)"
+include "TristanOD.template"
+substitute "NUM=$(N8),ADDRESS=$(A8)"
+include "TristanOD.template"
+substitute "NUM=$(N9),ADDRESS=$(A9)"
+include "TristanOD.template"
+substitute "NUM=$(N10),ADDRESS=$(A10)"
+include "TristanOD.template"
+
+
+################################################################################
+#
+# Reset FR statistics
+#
+################################################################################
+record(seq, "$(P)$(R)SVR$(SERVER):ResetStats")
+{
+    field(DOL1, "1")
+    field(LNK1, "$(P):OD$(N1):ResetStatistics.PROC PP")
+    field(DLY1, "0.0")
+    field(DOL2, "1")
+    field(LNK2, "$(P):OD$(N2):ResetStatistics.PROC PP")
+    field(DLY2, "0.0")
+    field(DOL3, "1")
+    field(LNK3, "$(P):OD$(N3):ResetStatistics.PROC PP")
+    field(DLY3, "0.0")
+    field(DOL4, "1")
+    field(LNK4, "$(P):OD$(N4):ResetStatistics.PROC PP")
+    field(DLY4, "0.0")
+    field(DOL5, "1")
+    field(LNK5, "$(P):OD$(N5):ResetStatistics.PROC PP")
+    field(DLY5, "0.0")
+    field(DOL6, "1")
+    field(LNK6, "$(P):OD$(N6):ResetStatistics.PROC PP")
+    field(DLY6, "0.0")
+    field(DOL7, "1")
+    field(LNK7, "$(P):OD$(N7):ResetStatistics.PROC PP")
+    field(DLY7, "0.0")
+    field(DOL8, "1")
+    field(LNK8, "$(P):OD$(N8):ResetStatistics.PROC PP")
+    field(DLY8, "0.0")
+    field(DOL9, "1")
+    field(LNK9, "$(P):OD$(N9):ResetStatistics.PROC PP")
+    field(DLY9, "0.0")
+    field(DOLA, "1")
+    field(LNKA, "$(P):OD$(N10):ResetStatistics.PROC PP")
+    field(DLYA, "0.0")
+}
+
+################################################################################
+#
+# Server totals
+#
+################################################################################
+
+###################################################################
+#  This sums all packets received.                                #
+###################################################################
+record(calcout, "$(P)$(R)SVR$(SERVER):SumUdpPackets")
+{
+    field(INPA, "$(P):OD$(N1):FRPacketsReceived_RBV CP")
+    field(INPB, "$(P):OD$(N2):FRPacketsReceived_RBV CP")
+    field(INPC, "$(P):OD$(N3):FRPacketsReceived_RBV CP")
+    field(INPD, "$(P):OD$(N4):FRPacketsReceived_RBV CP")
+    field(INPE, "$(P):OD$(N5):FRPacketsReceived_RBV CP")
+    field(INPF, "$(P):OD$(N6):FRPacketsReceived_RBV CP")
+    field(INPG, "$(P):OD$(N7):FRPacketsReceived_RBV CP")
+    field(INPH, "$(P):OD$(N8):FRPacketsReceived_RBV CP")
+    field(INPI, "$(P):OD$(N9):FRPacketsReceived_RBV CP")
+    field(INPJ, "$(P):OD$(N10):FRPacketsReceived_RBV CP")
+    field(CALC, "A+B+C+D+E+F+G+H+I+J")
+}
+
+###################################################################
+#  This sums free buffers in the applications                     #
+###################################################################
+record(calcout, "$(P)$(R)SVR$(SERVER):FreeBuffers_RBV")
+{
+    field(INPA, "$(P):OD$(N1):FreeBuffers_RBV CP")
+    field(INPB, "$(P):OD$(N2):FreeBuffers_RBV CP")
+    field(INPC, "$(P):OD$(N3):FreeBuffers_RBV CP")
+    field(INPD, "$(P):OD$(N4):FreeBuffers_RBV CP")
+    field(INPE, "$(P):OD$(N5):FreeBuffers_RBV CP")
+    field(INPF, "$(P):OD$(N6):FreeBuffers_RBV CP")
+    field(INPG, "$(P):OD$(N7):FreeBuffers_RBV CP")
+    field(INPH, "$(P):OD$(N8):FreeBuffers_RBV CP")
+    field(INPI, "$(P):OD$(N9):FreeBuffers_RBV CP")
+    field(INPJ, "$(P):OD$(N10):FreeBuffers_RBV CP")
+    field(CALC, "A+B+C+D+E+F+G+H+I+J")
+}
+
+###################################################################
+#  This sums timestamp mismatches in the applications             #
+###################################################################
+record(calcout, "$(P)$(R)SVR$(SERVER):FPTimestampMismatches_RBV")
+{
+    field(INPA, "$(P):OD$(N1):FPTimestampMismatches_RBV CP")
+    field(INPB, "$(P):OD$(N2):FPTimestampMismatches_RBV CP")
+    field(INPC, "$(P):OD$(N3):FPTimestampMismatches_RBV CP")
+    field(INPD, "$(P):OD$(N4):FPTimestampMismatches_RBV CP")
+    field(INPE, "$(P):OD$(N5):FPTimestampMismatches_RBV CP")
+    field(INPF, "$(P):OD$(N6):FPTimestampMismatches_RBV CP")
+    field(INPG, "$(P):OD$(N7):FPTimestampMismatches_RBV CP")
+    field(INPH, "$(P):OD$(N8):FPTimestampMismatches_RBV CP")
+    field(INPI, "$(P):OD$(N9):FPTimestampMismatches_RBV CP")
+    field(INPJ, "$(P):OD$(N10):FPTimestampMismatches_RBV CP")
+    field(CALC, "A+B+C+D+E+F+G+H+I+J")
+}
+
+###################################################################
+#  This sums invalid packets in the applications                  #
+###################################################################
+record(calcout, "$(P)$(R)SVR$(SERVER):FPInvalidPackets_RBV")
+{
+    field(INPA, "$(P):OD$(N1):FPInvalidPackets_RBV CP")
+    field(INPB, "$(P):OD$(N2):FPInvalidPackets_RBV CP")
+    field(INPC, "$(P):OD$(N3):FPInvalidPackets_RBV CP")
+    field(INPD, "$(P):OD$(N4):FPInvalidPackets_RBV CP")
+    field(INPE, "$(P):OD$(N5):FPInvalidPackets_RBV CP")
+    field(INPF, "$(P):OD$(N6):FPInvalidPackets_RBV CP")
+    field(INPG, "$(P):OD$(N7):FPInvalidPackets_RBV CP")
+    field(INPH, "$(P):OD$(N8):FPInvalidPackets_RBV CP")
+    field(INPI, "$(P):OD$(N9):FPInvalidPackets_RBV CP")
+    field(INPJ, "$(P):OD$(N10):FPInvalidPackets_RBV CP")
+    field(CALC, "A+B+C+D+E+F+G+H+I+J")
+}
+
+###################################################################
+#  This sums dropped packets in the applications                  #
+###################################################################
+record(calcout, "$(P)$(R)SVR$(SERVER):FPDroppedPackets_RBV")
+{
+    field(INPA, "$(P):OD$(N1):FPDroppedPackets_RBV CP")
+    field(INPB, "$(P):OD$(N2):FPDroppedPackets_RBV CP")
+    field(INPC, "$(P):OD$(N3):FPDroppedPackets_RBV CP")
+    field(INPD, "$(P):OD$(N4):FPDroppedPackets_RBV CP")
+    field(INPE, "$(P):OD$(N5):FPDroppedPackets_RBV CP")
+    field(INPF, "$(P):OD$(N6):FPDroppedPackets_RBV CP")
+    field(INPG, "$(P):OD$(N7):FPDroppedPackets_RBV CP")
+    field(INPH, "$(P):OD$(N8):FPDroppedPackets_RBV CP")
+    field(INPI, "$(P):OD$(N9):FPDroppedPackets_RBV CP")
+    field(INPJ, "$(P):OD$(N10):FPDroppedPackets_RBV CP")
+    field(CALC, "A+B+C+D+E+F+G+H+I+J")
+}
+
+###################################################################
+#  Calculate server connection status (AND connected records)     #
+###################################################################
+record(calcout, "$(P)$(R)SVR$(SERVER):FRConnected_RBV")
+{
+    field(INPA, "$(P):OD$(N1):FRProcessConnected_RBV CP")
+    field(INPB, "$(P):OD$(N2):FRProcessConnected_RBV CP")
+    field(INPC, "$(P):OD$(N3):FRProcessConnected_RBV CP")
+    field(INPD, "$(P):OD$(N4):FRProcessConnected_RBV CP")
+    field(INPE, "$(P):OD$(N5):FRProcessConnected_RBV CP")
+    field(INPF, "$(P):OD$(N6):FRProcessConnected_RBV CP")
+    field(INPG, "$(P):OD$(N7):FRProcessConnected_RBV CP")
+    field(INPH, "$(P):OD$(N8):FRProcessConnected_RBV CP")
+    field(INPI, "$(P):OD$(N9):FRProcessConnected_RBV CP")
+    field(INPJ, "$(P):OD$(N10):FRProcessConnected_RBV CP")
+    field(CALC, "A&B&C&D&E&F&G&H&I&J")
+}
+
+record(calcout, "$(P)$(R)SVR$(SERVER):FPConnected_RBV")
+{
+    field(INPA, "$(P):OD$(N1):FPProcessConnected_RBV CP")
+    field(INPB, "$(P):OD$(N2):FPProcessConnected_RBV CP")
+    field(INPC, "$(P):OD$(N3):FPProcessConnected_RBV CP")
+    field(INPD, "$(P):OD$(N4):FPProcessConnected_RBV CP")
+    field(INPE, "$(P):OD$(N5):FPProcessConnected_RBV CP")
+    field(INPF, "$(P):OD$(N6):FPProcessConnected_RBV CP")
+    field(INPG, "$(P):OD$(N7):FPProcessConnected_RBV CP")
+    field(INPH, "$(P):OD$(N8):FPProcessConnected_RBV CP")
+    field(INPI, "$(P):OD$(N9):FPProcessConnected_RBV CP")
+    field(INPJ, "$(P):OD$(N10):FPProcessConnected_RBV CP")
+    field(CALC, "A&B&C&D&E&F&G&H&I&J")
+}
+
+record(calcout, "$(P)$(R)SVR$(SERVER):FPErrorState_RBV")
+{
+    field(INPA, "$(P):OD$(N1):FPErrorState_RBV CP")
+    field(INPB, "$(P):OD$(N2):FPErrorState_RBV CP")
+    field(INPC, "$(P):OD$(N3):FPErrorState_RBV CP")
+    field(INPD, "$(P):OD$(N4):FPErrorState_RBV CP")
+    field(INPE, "$(P):OD$(N5):FPErrorState_RBV CP")
+    field(INPF, "$(P):OD$(N6):FPErrorState_RBV CP")
+    field(INPG, "$(P):OD$(N7):FPErrorState_RBV CP")
+    field(INPH, "$(P):OD$(N8):FPErrorState_RBV CP")
+    field(INPI, "$(P):OD$(N9):FPErrorState_RBV CP")
+    field(INPJ, "$(P):OD$(N10):FPErrorState_RBV CP")
+    field(CALC, "A&B&C&D&E&F&G&H&I&J")
+}
+
+record(calcout, "$(P)$(R)SVR$(SERVER):Writing_RBV")
+{
+    field(INPA, "$(P):OD$(N1):Writing_RBV CP")
+    field(INPB, "$(P):OD$(N2):Writing_RBV CP")
+    field(INPC, "$(P):OD$(N3):Writing_RBV CP")
+    field(INPD, "$(P):OD$(N4):Writing_RBV CP")
+    field(INPE, "$(P):OD$(N5):Writing_RBV CP")
+    field(INPF, "$(P):OD$(N6):Writing_RBV CP")
+    field(INPG, "$(P):OD$(N7):Writing_RBV CP")
+    field(INPH, "$(P):OD$(N8):Writing_RBV CP")
+    field(INPI, "$(P):OD$(N9):Writing_RBV CP")
+    field(INPJ, "$(P):OD$(N10):Writing_RBV CP")
+    field(CALC, "A&B&C&D&E&F&G&H&I&J")
+}
+
+record(calcout, "$(P)$(R)SVR$(SERVER):LowBufferWarning_RBV")
+{
+    field(INPA, "$(P):OD$(N1):LowBufferWarning_RBV CP")
+    field(INPB, "$(P):OD$(N2):LowBufferWarning_RBV CP")
+    field(INPC, "$(P):OD$(N3):LowBufferWarning_RBV CP")
+    field(INPD, "$(P):OD$(N4):LowBufferWarning_RBV CP")
+    field(INPE, "$(P):OD$(N5):LowBufferWarning_RBV CP")
+    field(INPF, "$(P):OD$(N6):LowBufferWarning_RBV CP")
+    field(INPG, "$(P):OD$(N7):LowBufferWarning_RBV CP")
+    field(INPH, "$(P):OD$(N8):LowBufferWarning_RBV CP")
+    field(INPI, "$(P):OD$(N9):LowBufferWarning_RBV CP")
+    field(INPJ, "$(P):OD$(N10):LowBufferWarning_RBV CP")
+    field(CALC, "A|B|C|D|E|F|G|H|I|J")
+}
+
+record(calcout, "$(P)$(R)SVR$(SERVER):LowBufferError_RBV")
+{
+    field(INPA, "$(P):OD$(N1):LowBufferError_RBV CP")
+    field(INPB, "$(P):OD$(N2):LowBufferError_RBV CP")
+    field(INPC, "$(P):OD$(N3):LowBufferError_RBV CP")
+    field(INPD, "$(P):OD$(N4):LowBufferError_RBV CP")
+    field(INPE, "$(P):OD$(N5):LowBufferError_RBV CP")
+    field(INPF, "$(P):OD$(N6):LowBufferError_RBV CP")
+    field(INPG, "$(P):OD$(N7):LowBufferError_RBV CP")
+    field(INPH, "$(P):OD$(N8):LowBufferError_RBV CP")
+    field(INPI, "$(P):OD$(N9):LowBufferError_RBV CP")
+    field(INPJ, "$(P):OD$(N10):LowBufferError_RBV CP")
+    field(CALC, "A|B|C|D|E|F|G|H|I|J")
+}
+

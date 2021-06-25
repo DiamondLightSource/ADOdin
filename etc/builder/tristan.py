@@ -23,7 +23,7 @@ TRISTAN_DIMENSIONS = {
     # Sensor: (Width, Height)
     "1M": (2048, 512),
     "2M": (2048, 1024),
-    "10M": (4096, 2560)
+    "10M": (4183, 3043)
 }
 
 class _TristanProcessPlugin(_DatasetCreationPlugin):
@@ -33,14 +33,13 @@ class _TristanProcessPlugin(_DatasetCreationPlugin):
     LIBRARY_PATH = OdinPaths.TRISTAN_DETECTOR
     DATASETS = [
         dict(name="data", datatype="uint32", chunks=[1]),
-        dict(name="raw_data", datatype="uint64", chunks=[524288]),
-        dict(name="event_id", datatype="uint32", chunks=[524288]),
-        dict(name="event_time_offset", datatype="uint64", chunks=[524288]),
-        dict(name="event_energy", datatype="uint32", chunks=[524288]),
-        dict(name="image", datatype="uint16", dims=[512, 2048], chunks=[1, 512, 2048]),
-        dict(name="cue_timestamp_zero", datatype="uint64", chunks=[524288]),
-        dict(name="cue_id", datatype="uint16", chunks=[524288]),
-        dict(name="time_slice", datatype="uint32", chunks=[40])
+        dict(name="raw_data", datatype="uint64", chunks=[2097152]),
+        dict(name="event_id", datatype="uint32", chunks=[2097152]),
+        dict(name="event_time_offset", datatype="uint64", chunks=[2097152]),
+        dict(name="event_energy", datatype="uint32", chunks=[2097152]),
+        dict(name="image", datatype="uint16", dims=[3043, 4183], chunks=[1, 3043, 4183]),
+        dict(name="cue_timestamp_zero", datatype="uint64", chunks=[2097152]),
+        dict(name="cue_id", datatype="uint16", chunks=[2097152])
     ]
 
     def __init__(self, sensor):
@@ -72,7 +71,7 @@ class _TristanProcessPlugin(_DatasetCreationPlugin):
 
 class TristanMetaWriter(_MetaWriter):
     DETECTOR = "Tristan"
-    WRITER_CLASS = "TristanMetaWriter"
+    WRITER_CLASS = "latrd.meta.tristan_meta_writer.TristanMetaWriter"
 
     def _add_python_modules(self):
         self.PYTHON_MODULES.update(dict(tristan_detector=OdinPaths.TRISTAN_DETECTOR))
@@ -311,7 +310,7 @@ class TristanDetector(_OdinDetector):
                     ipaddr=process.server.FEM_DEST_IP,
                     port=process.base_udp_port,
                     subnet=process.server.FEM_DEST_SUBNET,
-                    links=[1, 0, 0, 0, 0, 0, 0, 0]
+                    links=[1, 1, 1, 1, 0, 0, 0, 0]
                 )
                 fem_config.append(config)
             node_config.append(fem_config)
@@ -327,7 +326,7 @@ class TristanDetector(_OdinDetector):
                     ipaddr=process.server.FEM_DEST_IP,
                     port=process.base_udp_port,
                     subnet=process.server.FEM_DEST_SUBNET,
-                    links=[1, 0, 0, 0, 0, 0, 0, 0]
+                    links=[1, 1, 1, 1, 0, 0, 0, 0]
                 )
                 node_config.append(config)
 
@@ -433,6 +432,12 @@ class TristanOdinDataServer(_OdinDataServer):
         self.BASE_UDP_PORT += 1
         return process
 
+    def configure_processes(self, server_rank, total_servers, total_processes):
+        rank = server_rank * len(self.processes)
+        for idx, process in enumerate(self.processes):
+            process.RANK = rank
+            process.TOTAL = total_processes
+            rank += 1
 
 class _TristanFPTemplate(AutoSubstitution):
     TemplateFile = "TristanOD.template"
@@ -458,19 +463,20 @@ def add_tristan_fp_template(cls):
     return cls
 
 
-@add_tristan_fp_template
 class _Tristan4NodeFPTemplate(AutoSubstitution):
     TemplateFile = "Tristan4NodeOD.template"
 
 
-@add_tristan_fp_template
 class _Tristan8NodeFPTemplate(AutoSubstitution):
     TemplateFile = "Tristan8NodeOD.template"
 
 
-@add_tristan_fp_template
 class _Tristan16NodeFPTemplate(AutoSubstitution):
     TemplateFile = "Tristan16NodeOD.template"
+
+
+class _Tristan100NodeFPTemplate(AutoSubstitution):
+    TemplateFile = "Tristan100NodeOD.template"
 
 
 class TristanOdinDataDriver(_OdinDataDriver):
@@ -481,7 +487,8 @@ class TristanOdinDataDriver(_OdinDataDriver):
         # Number of OdinData nodes: Template
         4: _Tristan4NodeFPTemplate,
         8: _Tristan8NodeFPTemplate,
-        16: _Tristan16NodeFPTemplate
+        16: _Tristan16NodeFPTemplate,
+        100: _Tristan100NodeFPTemplate
     }
     META_WRITER_CLASS = TristanMetaWriter
 
@@ -494,7 +501,7 @@ class TristanOdinDataDriver(_OdinDataDriver):
 
         if self.odin_data_processes not in self.FP_TEMPLATES.keys():
             raise ValueError(
-                "Total number of OdinData processes must be {}".format(self.FP_TEMPLATES.keys())
+                "Total number of OdinData processes must be {}, requested {}".format(self.FP_TEMPLATES.keys(), self.odin_data_processes)
             )
         else:
             sensor = self.ODIN_DATA_PROCESSES[0].sensor

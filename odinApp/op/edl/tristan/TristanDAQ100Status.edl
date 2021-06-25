@@ -3,9 +3,9 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 740
-y 185
-w 891
+x 26
+y 125
+w 1221
 h 581
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
@@ -46,8 +46,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 5
-y 130
+x 395
+y 5
 w 385
 h 160
 fgColor index 14
@@ -67,8 +67,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 90
-y 195
+x 480
+y 70
 w 198
 h 13
 font "arial-medium-r-12.0"
@@ -147,10 +147,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 395
-y 15
-w 485
-h 525
+x 0
+y 170
+w 1205
+h 410
 fgColor index 14
 bgColor index 3
 topShadowColor index 1
@@ -160,7 +160,7 @@ filePv "LOC\\dummy=i:0"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "OdinDataStatus8"
+  0 "Tristan10ServerStatus_embed"
 }
 noScroll
 endObjectProperties
@@ -171,8 +171,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 820
-y 550
+x 1140
+y 130
 w 60
 h 25
 fgColor index 46
@@ -182,47 +182,5 @@ botShadowColor index 11
 label "EXIT"
 font "arial-bold-r-12.0"
 3d
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 175
-y 305
-w 40
-h 20
-fgColor index 25
-onColor index 3
-offColor index 3
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):OD:ResetAllFR.PROC"
-pressValue "1"
-onLabel "Reset"
-offLabel "Reset"
-3d
-font "arial-bold-r-10.0"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 15
-y 305
-w 155
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Reset all FR applications"
-}
 endObjectProperties
 
