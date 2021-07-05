@@ -14,4 +14,4 @@ HDF5_FILTERS = $(TOOLS)/hdf5filters/0-7-0
 ODIN_DATA = $(TOOLS)/odin-data/1-6-0dls3
 EXCALIBUR_DETECTOR = $(TOOLS)/excalibur-detector/1-0-1dls2
 EIGER_DETECTOR = $(TOOLS)/eiger-detector/1-11-0
-TRISTAN_DETECTOR = $(TOOLS)/tristan-detector/0-6-1
+TRISTAN_DETECTOR = $(TOOLS)/tristan-detector/0-6-2
