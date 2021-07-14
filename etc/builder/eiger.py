@@ -232,7 +232,7 @@ class EigerDetector(_OdinDetector):
 
         self.control_server = ODIN_CONTROL_SERVER
 
-        print("{}".format(args))
+        debug_print("{}".format(args), 1)
         # Instantiate template corresponding to SENSOR, passing through some of own args
         detector_template = self.DETECTOR_OPTIONS[DETECTOR_VERSION][0]
         detector_args = {
