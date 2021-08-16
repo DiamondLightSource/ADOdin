@@ -197,7 +197,7 @@ class _PluginConfig(Device):
 class _OdinDataServer(Device):
 
     """Store configuration for an OdinDataServer"""
-    PORT_BASE = 5000
+    PORT_BASE = 10000
     PROCESS_COUNT = 0
 
     # Device attributes
@@ -243,10 +243,10 @@ class _OdinDataServer(Device):
 
     def create_od_startup_scripts(self):
         for idx, process in enumerate(self.processes):
-            fp_port_number = 5004 + (10 * idx)
-            fr_port_number = 5000 + (10 * idx)
-            ready_port_number = 5001 + (10 * idx)
-            release_port_number = 5002 + (10 * idx)
+            fp_port_number = 10004 + (10 * idx)
+            fr_port_number = 10000 + (10 * idx)
+            ready_port_number = 10001 + (10 * idx)
+            release_port_number = 10002 + (10 * idx)
 
             # If TOTAL_NUMA_NODES was set, we enable the NUMA call macro instantitation
             if self.TOTAL_NUMA_NODES > 0:
@@ -304,7 +304,7 @@ class OdinLogConfig(Device):
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
         BEAMLINE=Simple("Beamline name, e.g. b21, i02-2", str),
-        DETECTOR=Choice("Detector type", ["Excalibur1M", "Excalibur3M", "Eiger4M", "Eiger9M", "Eiger16M"])
+        DETECTOR=Choice("Detector type", ["Excalibur1M", "Excalibur3M", "Eiger4M", "Eiger9M", "Eiger16M", "Tristan1M", "Tristan10M"])
     )
 
 
@@ -339,7 +339,16 @@ class _OdinControlServer(Device):
 
         self.odin_data_servers = [
             server for server in [
-                ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4
+                ODIN_DATA_SERVER_1,
+                ODIN_DATA_SERVER_2,
+                ODIN_DATA_SERVER_3,
+                ODIN_DATA_SERVER_4,
+                ODIN_DATA_SERVER_5,
+                ODIN_DATA_SERVER_6,
+                ODIN_DATA_SERVER_7,
+                ODIN_DATA_SERVER_8,
+                ODIN_DATA_SERVER_9,
+                ODIN_DATA_SERVER_10
             ] if server is not None
         ]
 
@@ -445,6 +454,7 @@ class _MetaWriter(object):
         odin_data=OdinPaths.ODIN_DATA
     )
     DETECTOR = ""
+    SENSOR_SHAPE = None
     TEMPLATE = _MetaWriterTemplate
 
     def __init__(self, odin_data_servers):
@@ -453,7 +463,7 @@ class _MetaWriter(object):
         self.data_endpoints = []
         for server in odin_data_servers:
             if server is not None:
-                base_port = 5000
+                base_port = 10000
                 for odin_data in server.processes:
                     port = base_port + 8
                     self.data_endpoints.append("tcp://{}:{}".format(odin_data.IP, port))
@@ -468,10 +478,16 @@ class _MetaWriter(object):
         else:
             writer = ""
 
+        if self.SENSOR_SHAPE is not None:
+            sensor_shape = "--sensor-shape {} {}".format(*self.SENSOR_SHAPE)
+        else:
+            sensor_shape = ""
+
         macros = dict(
             PYTHON_MODULES=self.PYTHON_MODULES,
             APP_PATH=self.APP_PATH,
             WRITER=writer,
+            SENSOR_SHAPE=sensor_shape,
             DATA_ENDPOINTS=",".join(self.data_endpoints),
             DETECTOR_MODEL="{}{}".format(self.DETECTOR, self.sensor),
         )

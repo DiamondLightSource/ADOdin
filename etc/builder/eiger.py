@@ -96,6 +96,7 @@ class EigerFan(Device):
 
 class EigerMetaWriter(_MetaWriter):
     DETECTOR = "Eiger"
+    SENSOR_SHAPE = None
     WRITER_CLASS = "metalistener.EigerMetaWriter"
 
     def _add_python_modules(self):
@@ -231,7 +232,7 @@ class EigerDetector(_OdinDetector):
 
         self.control_server = ODIN_CONTROL_SERVER
 
-        print("{}".format(args))
+        debug_print("{}".format(args), 1)
         # Instantiate template corresponding to SENSOR, passing through some of own args
         detector_template = self.DETECTOR_OPTIONS[DETECTOR_VERSION][0]
         detector_args = {
@@ -324,8 +325,14 @@ class EigerOdinDataDriver(_OdinDataDriver):
     OD_SCREENS = [1, 2, 4, 8]
     META_WRITER_CLASS = EigerMetaWriter
 
-    def __init__(self, **args):
+    def __init__(self, SENSOR_Y=None, SENSOR_X=None, **args):
+        # Insert sensor shape before base class init called
+        sensor_shape = (SENSOR_Y, SENSOR_X)
+        if None not in sensor_shape:
+            EigerMetaWriter.SENSOR_SHAPE = sensor_shape
+
         self.__super.__init__(DETECTOR="eiger", **args)
+
         # Update the attributes of self from the commandline args
         self.__dict__.update(locals())
 
@@ -340,6 +347,11 @@ class EigerOdinDataDriver(_OdinDataDriver):
 
     # __init__ arguments
     ArgInfo = _OdinDataDriver.ArgInfo.filtered(without=["DETECTOR"])
+    ArgInfo += makeArgInfo(
+        __init__,
+        SENSOR_Y=Simple("Sensor Y dimension (height)", int),
+        SENSOR_X=Simple("Sensor X dimension (width)", int)
+    )
 
 
 class EigerOdinBatchFile(OdinBatchFile):

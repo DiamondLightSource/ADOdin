@@ -4,7 +4,7 @@
 	<ADOdin.EigerPluginConfig MODE="Malcolm" name="PluginConfig"/>
 	<ADOdin.EigerOdinDataServer IO_THREADS="2" IP="127.0.0.1" PLUGIN_CONFIG="PluginConfig" PROCESSES="4" SHARED_MEM_SIZE="1600000000" SOURCE="EigerFan" name="ODServer1"/>
 	<ADOdin.EigerOdinControlServer API="1.8.0" EIGER_FAN="EigerFan" ENDPOINT="127.0.0.1:8080" IP="127.0.0.1" META_WRITER_IP="127.0.0.1" ODIN_DATA_SERVER_1="ODServer1" name="ControlServer"/>
-	<ADOdin.EigerOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" P="$(hostname)-EIGER" PORT="ODN.OD" R=":OD:" TIMEOUT="1"/>
+	<ADOdin.EigerOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" P="$(hostname)-EIGER" PORT="ODN.OD" R=":OD:" SENSOR_X="4148" SENSOR_Y="4362" TIMEOUT="1"/>
 	<ADOdin.OdinLogConfig BEAMLINE="iXX" DETECTOR="Eiger16M" name="LogConfig"/>
 	<!--6 -> 1 Second-->
 	<EPICS_BASE.dbpf name="Polling" pv="$(hostname)-EIGER:OD:ReadStatus.SCAN" value="6"/>
@@ -13,7 +13,7 @@
 	<EPICS_BASE.dbpf name="ChunkDepth" pv="$(hostname)-EIGER:OD:NumFramesChunks" value="1"/>
 	<EPICS_BASE.dbpf name="ChunkWidth" pv="$(hostname)-EIGER:OD:NumColChunks" value="4148"/>
 	<EPICS_BASE.dbpf name="ChunkHeight" pv="$(hostname)-EIGER:OD:NumRowChunks" value="4362"/>
-	<EPICS_BASE.dbpf name="DataType" pv="$(hostname)-EIGER:OD:DataType" value="UInt16"/>
+	<EPICS_BASE.dbpf name="DataType" pv="$(hostname)-EIGER:OD:DataType" value="UInt32"/>
 	<EPICS_BASE.dbpf name="Compression" pv="$(hostname)-EIGER:OD:Compression" value="BSLZ4"/>
 	<EPICS_BASE.dbpf name="BlockSize" pv="$(hostname)-EIGER:OD:BlockSize" value="1000"/>
 	<EPICS_BASE.dbpf name="BlocksPerFile" pv="$(hostname)-EIGER:OD:BlocksPerFile" value="1"/>

@@ -1,0 +1,219 @@
+# Tristan100NodeOD.template
+# Defines the parameters required for the Tristan processing plugin
+
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, DET, Detector Suffix
+# % macro, PORT, Asyn Port name
+# % macro, TIMEOUT, Timeout for Asyn driver requests
+# % macro, name, Name specifying builder GUI generation
+
+# This associates the template with an edm screen
+# % gui, $(name), edm, TristanDAQ100Status.edl, P=$(P),R=$(R)
+# % gui, $(PORT), edmtab, TristanDAQMain.edl, P=$(P),R=$(R)
+
+
+# Timeout record required for macro substitution in builder
+record(ao, "$(P)$(R)TimeoutSetting")
+{
+    field(VAL, "$(TIMEOUT)")
+}
+
+
+################################################################################
+#
+# Include 100 FP templates
+#
+################################################################################
+
+
+substitute "TOTAL=100"
+
+substitute "SERVER=01,N1=1,N2=2,N3=3,N4=4,N5=5,N6=6,N7=7,N8=8,N9=9,N10=10,A1=0,A2=1,A3=2,A4=3,A5=4,A6=5,A7=6,A8=7,A9=8,A10=9"
+include "TristanServer10NodeOD.template"
+
+substitute "SERVER=02,N1=11,N2=12,N3=13,N4=14,N5=15,N6=16,N7=17,N8=18,N9=19,N10=20,A1=10,A2=11,A3=12,A4=13,A5=14,A6=15,A7=16,A8=17,A9=18,A10=19"
+include "TristanServer10NodeOD.template"
+
+substitute "SERVER=03,N1=21,N2=22,N3=23,N4=24,N5=25,N6=26,N7=27,N8=28,N9=29,N10=30,A1=20,A2=21,A3=22,A4=23,A5=24,A6=25,A7=26,A8=27,A9=28,A10=29"
+include "TristanServer10NodeOD.template"
+
+substitute "SERVER=04,N1=31,N2=32,N3=33,N4=34,N5=35,N6=36,N7=37,N8=38,N9=39,N10=40,A1=30,A2=31,A3=32,A4=33,A5=34,A6=35,A7=36,A8=37,A9=38,A10=39"
+include "TristanServer10NodeOD.template"
+
+substitute "SERVER=05,N1=41,N2=42,N3=43,N4=44,N5=45,N6=46,N7=47,N8=48,N9=49,N10=50,A1=40,A2=41,A3=42,A4=43,A5=44,A6=45,A7=46,A8=47,A9=48,A10=49"
+include "TristanServer10NodeOD.template"
+
+substitute "SERVER=06,N1=51,N2=52,N3=53,N4=54,N5=55,N6=56,N7=57,N8=58,N9=59,N10=60,A1=50,A2=51,A3=52,A4=53,A5=54,A6=55,A7=56,A8=57,A9=58,A10=59"
+include "TristanServer10NodeOD.template"
+
+substitute "SERVER=07,N1=61,N2=62,N3=63,N4=64,N5=65,N6=66,N7=67,N8=68,N9=69,N10=70,A1=60,A2=61,A3=62,A4=63,A5=64,A6=65,A7=66,A8=67,A9=68,A10=69"
+include "TristanServer10NodeOD.template"
+
+substitute "SERVER=08,N1=71,N2=72,N3=73,N4=74,N5=75,N6=76,N7=77,N8=78,N9=79,N10=80,A1=70,A2=71,A3=72,A4=73,A5=74,A6=75,A7=76,A8=77,A9=78,A10=79"
+include "TristanServer10NodeOD.template"
+
+substitute "SERVER=09,N1=81,N2=82,N3=83,N4=84,N5=85,N6=86,N7=87,N8=88,N9=89,N10=90,A1=80,A2=81,A3=82,A4=83,A5=84,A6=85,A7=86,A8=87,A9=88,A10=89"
+include "TristanServer10NodeOD.template"
+
+substitute "SERVER=10,N1=91,N2=92,N3=93,N4=94,N5=95,N6=96,N7=97,N8=98,N9=99,N10=100,A1=90,A2=91,A3=92,A4=93,A5=94,A6=95,A7=96,A8=97,A9=98,A10=99"
+include "TristanServer10NodeOD.template"
+
+
+###################################################################
+#  This sums all UDP packets across all servers                   #
+###################################################################
+record(calcout, "$(P)$(R)SumUdpPackets")
+{
+    field(INPA, "$(P)$(R)SVR01:SumUdpPackets CP")
+    field(INPB, "$(P)$(R)SVR02:SumUdpPackets CP")
+    field(INPC, "$(P)$(R)SVR03:SumUdpPackets CP")
+    field(INPD, "$(P)$(R)SVR04:SumUdpPackets CP")
+    field(INPE, "$(P)$(R)SVR05:SumUdpPackets CP")
+    field(INPF, "$(P)$(R)SVR06:SumUdpPackets CP")
+    field(INPG, "$(P)$(R)SVR07:SumUdpPackets CP")
+    field(INPH, "$(P)$(R)SVR08:SumUdpPackets CP")
+    field(INPI, "$(P)$(R)SVR09:SumUdpPackets CP")
+    field(INPJ, "$(P)$(R)SVR10:SumUdpPackets CP")
+    field(CALC, "A+B+C+D+E+F+G+H+I+J")
+    field(OUT, "$(P)$(DET)UdpReceived_RBV PP")
+}
+
+
+###################################################################
+#  This checks FR connected status across all servers             #
+###################################################################
+record(calcout, "$(P)$(R)FRConnected_RBV")
+{
+    field(INPA, "$(P)$(R)SVR01:FRConnected_RBV CP")
+    field(INPB, "$(P)$(R)SVR02:FRConnected_RBV CP")
+    field(INPC, "$(P)$(R)SVR03:FRConnected_RBV CP")
+    field(INPD, "$(P)$(R)SVR04:FRConnected_RBV CP")
+    field(INPE, "$(P)$(R)SVR05:FRConnected_RBV CP")
+    field(INPF, "$(P)$(R)SVR06:FRConnected_RBV CP")
+    field(INPG, "$(P)$(R)SVR07:FRConnected_RBV CP")
+    field(INPH, "$(P)$(R)SVR08:FRConnected_RBV CP")
+    field(INPI, "$(P)$(R)SVR09:FRConnected_RBV CP")
+    field(INPJ, "$(P)$(R)SVR10:FRConnected_RBV CP")
+    field(CALC, "A&B&C&D&E&F&G&H&I&J")
+}
+
+
+###################################################################
+#  This checks FP connected status across all servers             #
+###################################################################
+record(calcout, "$(P)$(R)FPConnected_RBV")
+{
+    field(INPA, "$(P)$(R)SVR01:FPConnected_RBV CP")
+    field(INPB, "$(P)$(R)SVR02:FPConnected_RBV CP")
+    field(INPC, "$(P)$(R)SVR03:FPConnected_RBV CP")
+    field(INPD, "$(P)$(R)SVR04:FPConnected_RBV CP")
+    field(INPE, "$(P)$(R)SVR05:FPConnected_RBV CP")
+    field(INPF, "$(P)$(R)SVR06:FPConnected_RBV CP")
+    field(INPG, "$(P)$(R)SVR07:FPConnected_RBV CP")
+    field(INPH, "$(P)$(R)SVR08:FPConnected_RBV CP")
+    field(INPI, "$(P)$(R)SVR09:FPConnected_RBV CP")
+    field(INPJ, "$(P)$(R)SVR10:FPConnected_RBV CP")
+    field(CALC, "A&B&C&D&E&F&G&H&I&J")
+}
+
+
+###################################################################
+#  This checks FP error status across all servers                 #
+###################################################################
+record(calcout, "$(P)$(R)FPError_RBV")
+{
+    field(INPA, "$(P)$(R)SVR01:FPErrorState_RBV CP")
+    field(INPB, "$(P)$(R)SVR02:FPErrorState_RBV CP")
+    field(INPC, "$(P)$(R)SVR03:FPErrorState_RBV CP")
+    field(INPD, "$(P)$(R)SVR04:FPErrorState_RBV CP")
+    field(INPE, "$(P)$(R)SVR05:FPErrorState_RBV CP")
+    field(INPF, "$(P)$(R)SVR06:FPErrorState_RBV CP")
+    field(INPG, "$(P)$(R)SVR07:FPErrorState_RBV CP")
+    field(INPH, "$(P)$(R)SVR08:FPErrorState_RBV CP")
+    field(INPI, "$(P)$(R)SVR09:FPErrorState_RBV CP")
+    field(INPJ, "$(P)$(R)SVR10:FPErrorState_RBV CP")
+    field(CALC, "A&B&C&D&E&F&G&H&I&J")
+}
+
+
+###################################################################
+#  This resets all FRs                                            #
+###################################################################
+record(seq, "$(P)$(R)ResetAllFR")
+{
+    field(DOL1, "1")
+    field(LNK1, "$(P)$(R)SVR01:ResetStats.PROC PP")
+    field(DLY1, "0.0")
+    field(DOL2, "1")
+    field(LNK2, "$(P)$(R)SVR02:ResetStats.PROC PP")
+    field(DLY2, "0.0")
+    field(DOL3, "1")
+    field(LNK3, "$(P)$(R)SVR03:ResetStats.PROC PP")
+    field(DLY3, "0.0")
+    field(DOL4, "1")
+    field(LNK4, "$(P)$(R)SVR04:ResetStats.PROC PP")
+    field(DLY4, "0.0")
+    field(DOL5, "1")
+    field(LNK5, "$(P)$(R)SVR05:ResetStats.PROC PP")
+    field(DLY5, "0.0")
+    field(DOL6, "1")
+    field(LNK6, "$(P)$(R)SVR06:ResetStats.PROC PP")
+    field(DLY6, "0.0")
+    field(DOL7, "1")
+    field(LNK7, "$(P)$(R)SVR07:ResetStats.PROC PP")
+    field(DLY7, "0.0")
+    field(DOL8, "1")
+    field(LNK8, "$(P)$(R)SVR08:ResetStats.PROC PP")
+    field(DLY8, "0.0")
+    field(DOL9, "1")
+    field(LNK9, "$(P)$(R)SVR09:ResetStats.PROC PP")
+    field(DLY9, "0.0")
+    field(DOLA, "1")
+    field(LNKA, "$(P)$(R)SVR10:ResetStats.PROC PP")
+    field(DLYA, "0.0")
+}
+
+###################################################################
+#  This ensures that the correct HDF5 bit depth is selected       #
+#  when the detector bit depth is changed.                        #
+###################################################################
+record(calcout, "$(P)$(R)DetToFPBitDepth")
+{
+    field(INPA, "$(P)$(DET)CounterDepth CP")
+    field(CALC, "A=0||A=1?0:A=2?1:2")
+    field(OUT, "$(P):OD:DataType PP")
+}
+
+###################################################################
+#  This ensures that the acquisition ID is sent to the            #
+#  process plugin when capture is started.                        #
+###################################################################
+# Process AcqID_Calc when $(P)$(R):Capture set to 1
+record(calcout, "$(P)$(R)Proc:CalcCaptureStart")
+{
+    field(INPA, "$(P)$(R)Capture CP")
+    field(CALC, "A=1?1:0")
+    field(OUT, "$(P)$(R)Proc:AcqID_Calc.PROC PP")
+    field(OOPT, "Transition To Non-zero")
+}
+
+# Fetch AcquisitionID from OdinDataDriver
+record(acalcout, "$(P)$(R)Proc:AcqID_Calc")
+{
+    field(INAA, "$(P)$(R)AcquisitionID CP")
+    field(CALC, "AA")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
+    field(OUT,  "$(P)$(R)Proc:AcquisitionID PP")
+    field(NELM, "256")
+    field(NUSE, "256")
+}
+
+record(waveform, "$(P)$(R)Proc:AcquisitionID")
+{
+    field(DTYP, "asynOctetWrite")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(INP,  "@asyn($(PORT),0,1)_ODS_fp/config/tristan/acq_id")
+}

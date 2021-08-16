@@ -3,98 +3,53 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 36
-y 368
-w 1436
-h 481
-font "arial-medium-r-18.0"
-ctlFont "arial-medium-r-18.0"
-btnFont "arial-medium-r-18.0"
+x 479
+y 550
+w 1201
+h 401
+font "arial-medium-r-12.0"
+ctlFont "arial-medium-r-12.0"
+btnFont "arial-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 textColor index 14
-ctlFgColor1 index 14
-ctlFgColor2 index 0
-ctlBgColor1 index 0
-ctlBgColor2 index 14
-topShadowColor index 0
-botShadowColor index 14
-title "Tristan Detector Status"
+ctlFgColor1 index 25
+ctlFgColor2 index 25
+ctlBgColor1 index 3
+ctlBgColor2 index 3
+topShadowColor index 1
+botShadowColor index 11
+title "Tristan Server $(SVR) Details"
 showGrid
 snapToGrid
 gridSize 5
 endScreenProperties
 
-# (Exit Button)
-object activeExitButtonClass
+# (Embedded Window)
+object activePipClass
 beginObjectProperties
 major 4
 minor 1
 release 0
-x 670
-y 445
-w 60
-h 25
-fgColor index 46
+x 125
+y 30
+w 101
+h 351
+fgColor index 14
 bgColor index 3
 topShadowColor index 1
 botShadowColor index 11
-label "EXIT"
-font "arial-bold-r-12.0"
-3d
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 0
-y 0
-w 1445
-h 30
-
-beginGroup
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x -5
-y 0
-w 1445
-h 30
-lineColor index 3
-fill
-fillColor index 3
-endObjectProperties
-
-# (Lines)
-object activeLineClass
-beginObjectProperties
-major 4
-minor 0
-release 1
-x -5
-y 3
-w 1445
-h 24
-lineColor index 11
-fillColor index 0
-numPoints 3
-xPoints {
-  0 -5
-  1 1440
-  2 1440
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "TristanFPStatus_embed"
 }
-yPoints {
-  0 27
-  1 27
-  2 3
+symbols {
+  0 "RANK=$(R1)"
 }
+noScroll
 endObjectProperties
 
 # (Static Text)
@@ -103,64 +58,17 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x -5
-y 3
-w 1445
-h 24
-font "arial-bold-r-16.0"
+x 125
+y 10
+w 100
+h 20
+font "arial-medium-r-14.0"
 fontAlign "center"
 fgColor index 14
-bgColor index 61
-value {
-  "Tristan Detector Status (10M)"
-}
-endObjectProperties
-
-# (Lines)
-object activeLineClass
-beginObjectProperties
-major 4
-minor 0
-release 1
-x -5
-y 3
-w 1445
-h 24
-lineColor index 1
-fillColor index 0
-numPoints 3
-xPoints {
-  0 -5
-  1 -5
-  2 1440
-}
-yPoints {
-  0 27
-  1 3
-  2 3
-}
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 520
-y 90
-w 110
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Remote Temp"
+  "FP $(R1)"
 }
 endObjectProperties
 
@@ -170,16 +78,17 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
-y 115
-w 110
+x 230
+y 10
+w 100
 h 20
-font "arial-bold-r-12.0"
+font "arial-medium-r-14.0"
+fontAlign "center"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "PSU Temp"
+  "FP $(R2)"
 }
 endObjectProperties
 
@@ -189,16 +98,17 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
-y 140
-w 110
+x 335
+y 10
+w 100
 h 20
-font "arial-bold-r-12.0"
+font "arial-medium-r-14.0"
+fontAlign "center"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Fan Temp"
+  "FP $(R3)"
 }
 endObjectProperties
 
@@ -208,16 +118,17 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
-y 65
-w 110
+x 440
+y 10
+w 100
 h 20
-font "arial-bold-r-12.0"
+font "arial-medium-r-14.0"
+fontAlign "center"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Fem Temp"
+  "FP $(R4)"
 }
 endObjectProperties
 
@@ -227,16 +138,17 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
-y 165
-w 110
+x 545
+y 10
+w 100
 h 20
-font "arial-bold-r-12.0"
+font "arial-medium-r-14.0"
+fontAlign "center"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Power Enabled"
+  "FP $(R5)"
 }
 endObjectProperties
 
@@ -246,16 +158,17 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
-y 190
-w 110
+x 650
+y 10
+w 100
 h 20
-font "arial-bold-r-12.0"
+font "arial-medium-r-14.0"
+fontAlign "center"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Output Alert"
+  "FP $(R6)"
 }
 endObjectProperties
 
@@ -265,16 +178,17 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
-y 215
-w 110
+x 755
+y 10
+w 100
 h 20
-font "arial-bold-r-12.0"
+font "arial-medium-r-14.0"
+fontAlign "center"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "PSU Temp Alert"
+  "FP $(R7)"
 }
 endObjectProperties
 
@@ -284,16 +198,17 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
-y 240
-w 110
+x 860
+y 10
+w 100
 h 20
-font "arial-bold-r-12.0"
+font "arial-medium-r-14.0"
+fontAlign "center"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Fan Alert"
+  "FP $(R8)"
 }
 endObjectProperties
 
@@ -303,16 +218,17 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
-y 290
-w 110
+x 965
+y 10
+w 100
 h 20
-font "arial-bold-r-12.0"
+font "arial-medium-r-14.0"
+fontAlign "center"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Sensor Temp"
+  "FP $(R9)"
 }
 endObjectProperties
 
@@ -322,45 +238,94 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
-y 265
-w 110
+x 1070
+y 10
+w 100
 h 20
-font "arial-bold-r-12.0"
+font "arial-medium-r-14.0"
+fontAlign "center"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Sensor Humidity"
+  "FP $(R10)"
 }
 endObjectProperties
 
-# (Embedded Window)
-object activePipClass
+# (Static Text)
+object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
-x 630
+release 1
+x 5
 y 35
-w 80
-h 400
+w 100
+h 20
+font "arial-medium-r-14.0"
 fgColor index 14
-bgColor index 0
-topShadowColor index 0
-botShadowColor index 14
-displaySource "menu"
-filePv "LOC\\dummy=i:0"
-setSize
-sizeOfs 5
-numDsps 1
-displayFileName {
-  0 "TristanFemStatus_embed.edl"
+bgColor index 3
+useDisplayBg
+value {
+  "FR Connected"
 }
-symbols {
-  0 "FEM=0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 55
+w 100
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FP Connected"
 }
-noScroll
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 75
+w 100
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FP Health"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 95
+w 100
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Writing"
+}
 endObjectProperties
 
 # (Embedded Window)
@@ -369,21 +334,23 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 0
+x 230
 y 30
-w 495
-h 410
+w 101
+h 351
 fgColor index 14
-bgColor index 0
-topShadowColor index 0
-botShadowColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "TristanDetectorStatus_embed.edl"
+  0 "TristanFPStatus_embed"
+}
+symbols {
+  0 "RANK=$(R2)"
 }
 noScroll
 endObjectProperties
@@ -394,24 +361,23 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 710
-y 35
-w 80
-h 400
+x 335
+y 30
+w 101
+h 351
 fgColor index 14
-bgColor index 0
-topShadowColor index 0
-botShadowColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "TristanFemStatus_embed.edl"
+  0 "TristanFPStatus_embed"
 }
 symbols {
-  0 "FEM=1"
+  0 "RANK=$(R3)"
 }
 noScroll
 endObjectProperties
@@ -422,24 +388,23 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 790
-y 35
-w 80
-h 400
+x 440
+y 30
+w 101
+h 351
 fgColor index 14
-bgColor index 0
-topShadowColor index 0
-botShadowColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "TristanFemStatus_embed.edl"
+  0 "TristanFPStatus_embed"
 }
 symbols {
-  0 "FEM=2"
+  0 "RANK=$(R4)"
 }
 noScroll
 endObjectProperties
@@ -450,24 +415,23 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 870
-y 35
-w 80
-h 400
+x 545
+y 30
+w 101
+h 351
 fgColor index 14
-bgColor index 0
-topShadowColor index 0
-botShadowColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "TristanFemStatus_embed.edl"
+  0 "TristanFPStatus_embed"
 }
 symbols {
-  0 "FEM=3"
+  0 "RANK=$(R5)"
 }
 noScroll
 endObjectProperties
@@ -478,24 +442,23 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 950
-y 35
-w 80
-h 400
+x 650
+y 30
+w 101
+h 351
 fgColor index 14
-bgColor index 0
-topShadowColor index 0
-botShadowColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "TristanFemStatus_embed.edl"
+  0 "TristanFPStatus_embed"
 }
 symbols {
-  0 "FEM=4"
+  0 "RANK=$(R6)"
 }
 noScroll
 endObjectProperties
@@ -506,24 +469,23 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 1030
-y 35
-w 80
-h 400
+x 755
+y 30
+w 101
+h 351
 fgColor index 14
-bgColor index 0
-topShadowColor index 0
-botShadowColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "TristanFemStatus_embed.edl"
+  0 "TristanFPStatus_embed"
 }
 symbols {
-  0 "FEM=5"
+  0 "RANK=$(R7)"
 }
 noScroll
 endObjectProperties
@@ -534,24 +496,23 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 1110
-y 35
-w 80
-h 400
+x 860
+y 30
+w 101
+h 351
 fgColor index 14
-bgColor index 0
-topShadowColor index 0
-botShadowColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "TristanFemStatus_embed.edl"
+  0 "TristanFPStatus_embed"
 }
 symbols {
-  0 "FEM=6"
+  0 "RANK=$(R8)"
 }
 noScroll
 endObjectProperties
@@ -562,24 +523,23 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 1190
-y 35
-w 80
-h 400
+x 965
+y 30
+w 101
+h 351
 fgColor index 14
-bgColor index 0
-topShadowColor index 0
-botShadowColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "TristanFemStatus_embed.edl"
+  0 "TristanFPStatus_embed"
 }
 symbols {
-  0 "FEM=7"
+  0 "RANK=$(R9)"
 }
 noScroll
 endObjectProperties
@@ -590,52 +550,23 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 1270
-y 35
-w 80
-h 400
+x 1070
+y 30
+w 101
+h 351
 fgColor index 14
-bgColor index 0
-topShadowColor index 0
-botShadowColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
 displaySource "menu"
 filePv "LOC\\dummy=i:0"
-setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "TristanFemStatus_embed.edl"
+  0 "TristanFPStatus_embed"
 }
 symbols {
-  0 "FEM=8"
-}
-noScroll
-endObjectProperties
-
-# (Embedded Window)
-object activePipClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 1350
-y 35
-w 80
-h 400
-fgColor index 14
-bgColor index 0
-topShadowColor index 0
-botShadowColor index 14
-displaySource "menu"
-filePv "LOC\\dummy=i:0"
-setSize
-sizeOfs 5
-numDsps 1
-displayFileName {
-  0 "TristanFemStatus_embed.edl"
-}
-symbols {
-  0 "FEM=9"
+  0 "RANK=$(R10)"
 }
 noScroll
 endObjectProperties
@@ -646,16 +577,16 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
-y 365
-w 110
+x 5
+y 120
+w 115
 h 20
-font "arial-bold-r-12.0"
+font "arial-medium-r-14.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Max X"
+  "Packets Recv"
 }
 endObjectProperties
 
@@ -665,16 +596,16 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
-y 340
-w 110
+x 5
+y 145
+w 115
 h 20
-font "arial-bold-r-12.0"
+font "arial-medium-r-14.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Min X"
+  "Free Buffers"
 }
 endObjectProperties
 
@@ -684,16 +615,16 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
-y 415
-w 110
+x 5
+y 215
+w 115
 h 20
-font "arial-bold-r-12.0"
+font "arial-medium-r-14.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Max Y"
+  "Dropped Packets"
 }
 endObjectProperties
 
@@ -703,16 +634,73 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
-y 390
-w 110
+x 5
+y 240
+w 115
 h 20
-font "arial-bold-r-12.0"
+font "arial-medium-r-14.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Min Y"
+  "Invalid Packets"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 265
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Time Mismatches"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 170
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Memory Warning"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 190
+w 115
+h 20
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Out of Memory"
 }
 endObjectProperties
 

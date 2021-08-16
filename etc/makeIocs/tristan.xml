@@ -5,6 +5,7 @@
 	<ADOdin.TristanOdinControlServer HARDWARE_ENDPOINT="tcp://127.0.0.1:27654" IP="127.0.0.1" META_WRITER_IP="127.0.0.1" ODIN_DATA_SERVER_1="TRS.DATA1" name="TRS.CTRL"/>
 	<ADOdin.TristanOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="TRS.CTRL" P="$(hostname)-TRISTAN" PORT="TRS.DATA" R=":CAM:" TIMEOUT="1" TOTAL="8"/>
 	<ADOdin.TristanDetector ADDR="0" ODIN_CONTROL_SERVER="TRS.CTRL" ODIN_DATA_DRIVER="TRS.DATA" P="$(hostname)-TRISTAN" PORT="TRS.CAM" R=":CAM:" SENSOR="10M" TIMEOUT="1" UDP_CONFIG="ROUNDROBIN"/>
+	<ADOdin.OdinLogConfig BEAMLINE="iXX" DETECTOR="Tristan1M" name="LogConfig"/>
 	<!--7 => 0.5 Second-->
 	<EPICS_BASE.dbpf name="PollingCam" pv="$(hostname)-TRISTAN:CAM:ReadStatus.SCAN" value="7"/>
 	<EPICS_BASE.dbpf name="PollingHdf" pv="$(hostname)-TRISTAN:OD:ReadStatus.SCAN" value="7"/>

@@ -47,7 +47,8 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
 
     : OdinClient(portName, serverHostname, odinServerPort,
                  detectorName, maxBuffers,
-                 maxMemory, priority, stackSize),
+                 maxMemory, priority, stackSize,
+                 20),  // Maximum address size set to 20 (current largest is 10 for 10M)
     mAPI(detectorName, serverHostname, odinServerPort)
 {
   strncpy(mHostname, serverHostname, sizeof(mHostname));

@@ -5,11 +5,18 @@
 # % macro, R, Device Suffix
 # % macro, DET, Detector Suffix
 # % macro, PORT, Asyn Port name
+# % macro, TIMEOUT, Timeout for Asyn driver requests
 # % macro, name, Name specifying builder GUI generation
 
 # This associates the template with an edm screen
 # % gui, $(name), edm, TristanDAQ16Status.edl, P=$(P),R=$(R)
 # % gui, $(PORT), edmtab, TristanDAQMain.edl, P=$(P),R=$(R)
+
+# Timeout record required for macro substitution in builder
+record(ao, "$(P)$(R)TimeoutSetting")
+{
+    field(VAL, "$(TIMEOUT)")
+}
 
 ################################################################################
 #
@@ -50,6 +57,103 @@ substitute "ADDRESS=14"
 include "TristanOD.template"
 substitute "ADDRESS=15"
 include "TristanOD.template"
+
+###################################################################
+#  This sums all packets received.                                #
+###################################################################
+record(calcout, "$(P)$(R)SumUdpPackets1")
+{
+    field(INPA, "$(P)$(R)0FRPacketsReceived_RBV CP")
+    field(INPB, "$(P)$(R)1FRPacketsReceived_RBV CP")
+    field(INPC, "$(P)$(R)2FRPacketsReceived_RBV CP")
+    field(INPD, "$(P)$(R)3FRPacketsReceived_RBV CP")
+    field(INPE, "$(P)$(R)4FRPacketsReceived_RBV CP")
+    field(INPF, "$(P)$(R)5FRPacketsReceived_RBV CP")
+    field(INPG, "$(P)$(R)6FRPacketsReceived_RBV CP")
+    field(INPH, "$(P)$(R)7FRPacketsReceived_RBV CP")
+    field(CALC, "A+B+C+D+E+F+G+H")
+}
+
+record(calcout, "$(P)$(R)SumUdpPackets2")
+{
+    field(INPA, "$(P)$(R)8FRPacketsReceived_RBV CP")
+    field(INPB, "$(P)$(R)9FRPacketsReceived_RBV CP")
+    field(INPC, "$(P)$(R)10FRPacketsReceived_RBV CP")
+    field(INPD, "$(P)$(R)11FRPacketsReceived_RBV CP")
+    field(INPE, "$(P)$(R)12FRPacketsReceived_RBV CP")
+    field(INPF, "$(P)$(R)13FRPacketsReceived_RBV CP")
+    field(INPG, "$(P)$(R)14FRPacketsReceived_RBV CP")
+    field(INPH, "$(P)$(R)15FRPacketsReceived_RBV CP")
+    field(CALC, "A+B+C+D+E+F+G+H")
+}
+
+record(calcout, "$(P)$(R)SumUdpPackets")
+{
+    field(INPA, "$(P)$(R)SumUdpPackets1 CP")
+    field(INPB, "$(P)$(R)SumUdpPackets2 CP")
+    field(CALC, "A+B")
+    field(OUT, "$(P)$(DET)UdpReceived_RBV PP")
+}
+
+###################################################################
+#  This resets all FRs                                            #
+###################################################################
+record(seq, "$(P)$(R)ResetAllFR")
+{
+    field(DOL1, "1")
+    field(LNK1, "$(P):OD1:ResetStatistics.PROC PP")
+    field(DLY1, "0.0")
+    field(DOL2, "1")
+    field(LNK2, "$(P):OD2:ResetStatistics.PROC PP")
+    field(DLY2, "0.0")
+    field(DOL3, "1")
+    field(LNK3, "$(P):OD3:ResetStatistics.PROC PP")
+    field(DLY3, "0.0")
+    field(DOL4, "1")
+    field(LNK4, "$(P):OD4:ResetStatistics.PROC PP")
+    field(DLY4, "0.0")
+    field(DOL5, "1")
+    field(LNK5, "$(P):OD5:ResetStatistics.PROC PP")
+    field(DLY5, "0.0")
+    field(DOL6, "1")
+    field(LNK6, "$(P):OD6:ResetStatistics.PROC PP")
+    field(DLY6, "0.0")
+    field(DOL7, "1")
+    field(LNK7, "$(P):OD7:ResetStatistics.PROC PP")
+    field(DLY7, "0.0")
+    field(DOL8, "1")
+    field(LNK8, "$(P):OD8:ResetStatistics.PROC PP")
+    field(DLY8, "0.0")
+    field(FLNK, "$(P)$(R)ResetAllFR2")
+}
+
+record(seq, "$(P)$(R)ResetAllFR2")
+{
+    field(DOL1, "1")
+    field(LNK1, "$(P):OD9:ResetStatistics.PROC PP")
+    field(DLY1, "0.0")
+    field(DOL2, "1")
+    field(LNK2, "$(P):OD10:ResetStatistics.PROC PP")
+    field(DLY2, "0.0")
+    field(DOL3, "1")
+    field(LNK3, "$(P):OD11:ResetStatistics.PROC PP")
+    field(DLY3, "0.0")
+    field(DOL4, "1")
+    field(LNK4, "$(P):OD12:ResetStatistics.PROC PP")
+    field(DLY4, "0.0")
+    field(DOL5, "1")
+    field(LNK5, "$(P):OD13:ResetStatistics.PROC PP")
+    field(DLY5, "0.0")
+    field(DOL6, "1")
+    field(LNK6, "$(P):OD14:ResetStatistics.PROC PP")
+    field(DLY6, "0.0")
+    field(DOL7, "1")
+    field(LNK7, "$(P):OD15:ResetStatistics.PROC PP")
+    field(DLY7, "0.0")
+    field(DOL8, "1")
+    field(LNK8, "$(P):OD16:ResetStatistics.PROC PP")
+    field(DLY8, "0.0")
+}
 
 ###################################################################
 #  This ensures that the correct HDF5 bit depth is selected       #
