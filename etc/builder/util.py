@@ -26,7 +26,7 @@ class OdinPaths(object):
     def configure_paths(cls, release_path):
         paths = cls.parse_release_file(release_path)
 
-        cls.ODIN_PROC_SERV = paths["ODIN_PROC_SERV"]
+        cls.ODIN_PROC_SERV_CONTROL = paths["ODIN_PROC_SERV_CONTROL"]
         cls.HDF5_FILTERS = os.path.join(paths["HDF5_FILTERS"], "prefix/hdf5_1.10/h5plugin")
         cls.ODIN_DATA = paths["ODIN_DATA"]
 

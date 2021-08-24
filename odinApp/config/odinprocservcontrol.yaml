@@ -1,4 +1,4 @@
-#!$ODIN_PROC_SERV/prefix/bin/odinprocservcontrol
+#!$ODIN_PROC_SERV_CONTROL/prefix/bin/odinprocservcontrol
 
 ioc_name: $IOC_NAME
 prefix: $PREFIX

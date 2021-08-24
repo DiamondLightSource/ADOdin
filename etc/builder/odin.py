@@ -761,7 +761,7 @@ class OdinProcServ(Device):
         _OdinProcServ(name=detector_name, PREFIX=PREFIX)
 
         config = dict(
-            ODIN_PROC_SERV=OdinPaths.ODIN_PROC_SERV,
+            ODIN_PROC_SERV_CONTROL=OdinPaths.ODIN_PROC_SERV_CONTROL,
             IOC_NAME=IOC_NAME,
             PREFIX=PREFIX,
             PROCESS_PREFIX=PROCESS_PREFIX,
