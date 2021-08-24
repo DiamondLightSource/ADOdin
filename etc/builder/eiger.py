@@ -4,7 +4,7 @@ from iocbuilder import Device, AutoSubstitution
 from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
 
-from util import OdinPaths, expand_template_file, create_batch_entry, debug_print
+from util import OdinPaths, expand_template_file, debug_print
 from odin import (
     _OdinDetector,
     _OdinData,
@@ -13,8 +13,8 @@ from odin import (
     _OdinControlServer,
     _MetaWriter,
     _PluginConfig,
-    OdinBatchFile,
-    OdinStartAllScript
+    OdinProcServ,
+    OdinStartAllScript,
 )
 from plugins import (
     _OffsetAdjustmentPlugin,
@@ -76,10 +76,6 @@ class EigerFan(Device):
 
         expand_template_file("eiger_fan_startup", macros, "stEigerFan.sh",
                              executable=True)
-
-    def add_batch_entry(self, entries, beamline, number):
-        entries.append(create_batch_entry(beamline, number, "EigerFan"))
-        return number + 1
 
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
@@ -354,14 +350,11 @@ class EigerOdinDataDriver(_OdinDataDriver):
     )
 
 
-class EigerOdinBatchFile(OdinBatchFile):
+class EigerOdinProcServ(OdinProcServ):
 
-    def add_extra_entries(self, entries, process_number):
-        process_number = self.odin_data_driver.control_server.eiger_fan.add_batch_entry(
-            entries, self.beamline, process_number
-        )
-
-        return process_number
+    @property
+    def extra_applications(self):
+        return ["EigerFan"]
 
 
 class EigerOdinStartAllScript(OdinStartAllScript):

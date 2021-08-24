@@ -1,0 +1,10 @@
+#!$ODIN_PROC_SERV_CONTROL/prefix/bin/odinprocservcontrol
+
+ioc_name: $IOC_NAME
+prefix: $PREFIX
+process_prefix: $PROCESS_PREFIX
+process_count: $PROCESS_COUNT
+server_process_name: $SERVER_PROCESS_NAME
+server_delay: $SERVER_DELAY
+adodin_ioc_name: $ADODIN_IOC_NAME
+ioc_delay: $IOC_DELAY
