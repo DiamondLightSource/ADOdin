@@ -838,6 +838,18 @@ record(bi, "$(P)$(R)CRW_RBV")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/detector/crw")
 }
 
+################################################################################
+# Housekeeping standby status
+################################################################################
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)HousekeepingStandby_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/housekeeping/standby")
+}
+
 ###################################################################
 #  Threshold setting                                              #
 ###################################################################

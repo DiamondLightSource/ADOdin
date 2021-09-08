@@ -9,6 +9,11 @@
 #   TOTAL   - Total number of FEMs
 #   TIMEOUT - Timeout
 
+##############################################################################################
+#
+# Housekeeping status items
+#
+##############################################################################################
 #% archiver 1 monitor
 record(longin, "$(P)$(R)$(ADDRESS):FEMMinX_RBV")
 {
@@ -82,15 +87,6 @@ record(longin, "$(P)$(R)$(ADDRESS):FanAlert_RBV")
 }
 
 #% archiver 1 monitor
-record(ai, "$(P)$(R)$(ADDRESS):FEMTemp_RBV")
-{
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynFloat64")
-    field(VAL,  "0.0")
-    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/fem/temp")
-}
-
-#% archiver 1 monitor
 record(ai, "$(P)$(R)$(ADDRESS):RemoteTemp_RBV")
 {
     field(SCAN, "I/O Intr")
@@ -118,7 +114,161 @@ record(ai, "$(P)$(R)$(ADDRESS):FanTemp_RBV")
 }
 
 #% archiver 1 monitor
-record(ai, "$(P)$(R)$(ADDRESS):SensorHumidity0_RBV")
+record(ai, "$(P)$(R)$(ADDRESS):Tacho_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/housekeeping/tacho")
+}
+
+#% archiver 1 monitor
+record(longin, "$(P)$(R)$(ADDRESS):PWM_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODI$(TOTAL)_status/housekeeping/pwm")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):CurrentSenseFEMS_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/housekeeping/current_sense_fems")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):VoltageSenseFEMS_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/housekeeping/voltage_sense_fems")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):CurrentSenseFrontend_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/housekeeping/current_sense_frontend")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):VoltageSenseFrontend_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/housekeeping/voltage_sense_frontend")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):CurrentSense1v8_POL_A_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/housekeeping/current_sense_1v8_0")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):CurrentSense1v8_POL_B_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/housekeeping/current_sense_1v8_1")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):VoltageSense1v8_POL_A_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/housekeeping/voltage_sense_1v8_0")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):VoltageSense1v8_POL_B_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/housekeeping/voltage_sense_1v8_1")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):CurrentSense5v_POL_A_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/housekeeping/current_sense_5v_0")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):CurrentSense5v_POL_B_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/housekeeping/current_sense_5v_1")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):VoltageSense5v_POL_A_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/housekeeping/voltage_sense_5v_0")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):VoltageSense5v_POL_B_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/housekeeping/voltage_sense_5v_1")
+}
+
+##############################################################################################
+#
+# FEM status items
+#
+##############################################################################################
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):FEMTempPCB_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/fem/temp_pcb")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):FEMTempFPGA_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/fem/temp_fpga")
+}
+
+##############################################################################################
+#
+# Sensor status items
+#
+##############################################################################################
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorHumidityPOL_A_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynFloat64")
@@ -127,7 +277,7 @@ record(ai, "$(P)$(R)$(ADDRESS):SensorHumidity0_RBV")
 }
 
 #% archiver 1 monitor
-record(ai, "$(P)$(R)$(ADDRESS):SensorHumidity1_RBV")
+record(ai, "$(P)$(R)$(ADDRESS):SensorHumidityPOL_B_RBV")
 {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynFloat64")
@@ -295,5 +445,41 @@ record(ai, "$(P)$(R)$(ADDRESS):SensorTempPcb1_RBV")
     field(DTYP, "asynFloat64")
     field(VAL,  "0.0")
     field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/temp_pcb_1")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorVoltage0_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/voltage_0")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorVoltage1_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/voltage_1")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorCurrent0_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/current_0")
+}
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)$(ADDRESS):SensorCurrent1_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODD$(TOTAL)_status/sensor/current_1")
 }
 

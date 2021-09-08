@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 36
-y 516
-w 1436
-h 501
+x 871
+y 367
+w 1011
+h 381
 font "arial-medium-r-18.0"
 ctlFont "arial-medium-r-18.0"
 btnFont "arial-medium-r-18.0"
@@ -19,7 +19,7 @@ ctlBgColor1 index 0
 ctlBgColor2 index 14
 topShadowColor index 0
 botShadowColor index 14
-title "Tristan Detector Status"
+title "Tristan Housekeeping"
 showGrid
 snapToGrid
 gridSize 5
@@ -31,8 +31,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 1370
-y 465
+x 945
+y 345
 w 60
 h 25
 fgColor index 46
@@ -52,7 +52,7 @@ minor 0
 release 0
 x 0
 y 0
-w 1445
+w 1140
 h 30
 
 beginGroup
@@ -63,9 +63,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x -5
+x -15
 y 0
-w 1445
+w 1031
 h 30
 lineColor index 3
 fill
@@ -78,17 +78,17 @@ beginObjectProperties
 major 4
 minor 0
 release 1
-x -5
+x -15
 y 3
-w 1445
+w 1031
 h 24
 lineColor index 11
 fillColor index 0
 numPoints 3
 xPoints {
-  0 -5
-  1 1440
-  2 1440
+  0 -15
+  1 1016
+  2 1016
 }
 yPoints {
   0 27
@@ -103,16 +103,16 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x -5
+x -15
 y 3
-w 1445
+w 1031
 h 24
 font "arial-bold-r-16.0"
 fontAlign "center"
 fgColor index 14
 bgColor index 61
 value {
-  "Tristan Detector Status (10M)"
+  "Tristan Housekeeping (10M)"
 }
 endObjectProperties
 
@@ -122,17 +122,17 @@ beginObjectProperties
 major 4
 minor 0
 release 1
-x -5
+x -15
 y 3
-w 1445
+w 1031
 h 24
 lineColor index 1
 fillColor index 0
 numPoints 3
 xPoints {
-  0 -5
-  1 -5
-  2 1440
+  0 -15
+  1 -15
+  2 1016
 }
 yPoints {
   0 27
@@ -151,16 +151,16 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
+x 5
 y 115
-w 110
+w 130
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Remote Temp"
+  "Current (Frontend)"
 }
 endObjectProperties
 
@@ -170,16 +170,16 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
+x 5
 y 140
-w 110
+w 130
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "PSU Temp"
+  "Voltage (Frontend)"
 }
 endObjectProperties
 
@@ -189,16 +189,16 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
+x 5
 y 165
-w 110
+w 130
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Fan Temp"
+  "Current (1v8 POL_A)"
 }
 endObjectProperties
 
@@ -208,16 +208,16 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
+x 5
 y 65
-w 110
+w 130
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Fem PCB Temp"
+  "Current (FEM)"
 }
 endObjectProperties
 
@@ -227,16 +227,16 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
+x 5
 y 190
-w 110
+w 130
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Power Enabled"
+  "Current (1v8 POL_B)"
 }
 endObjectProperties
 
@@ -246,16 +246,16 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
+x 5
 y 215
-w 110
+w 130
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Output Alert"
+  "Voltage (1v8 POL_A)"
 }
 endObjectProperties
 
@@ -265,16 +265,16 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
+x 5
 y 240
-w 110
+w 130
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "PSU Temp Alert"
+  "Voltage (1v8 POL_B)"
 }
 endObjectProperties
 
@@ -284,16 +284,54 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
+x 5
 y 265
-w 110
+w 130
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Fan Alert"
+  "Current (5v POL_A)"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 315
+w 130
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Voltage (5v POL_A)"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 290
+w 130
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Current (5v POL_B)"
 }
 endObjectProperties
 
@@ -303,10 +341,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 630
+x 135
 y 35
 w 80
-h 410
+h 335
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
@@ -317,7 +355,7 @@ setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "TristanFemStatus_embed.edl"
+  0 "TristanHousekeepingStatus_embed.edl"
 }
 symbols {
   0 "FEM=0"
@@ -331,35 +369,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 0
-y 30
-w 495
-h 410
-fgColor index 14
-bgColor index 0
-topShadowColor index 0
-botShadowColor index 14
-displaySource "menu"
-filePv "LOC\\dummy=i:0"
-setSize
-sizeOfs 5
-numDsps 1
-displayFileName {
-  0 "TristanDetectorStatus_embed.edl"
-}
-noScroll
-endObjectProperties
-
-# (Embedded Window)
-object activePipClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 710
+x 215
 y 35
 w 80
-h 410
+h 335
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
@@ -370,7 +383,7 @@ setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "TristanFemStatus_embed.edl"
+  0 "TristanHousekeepingStatus_embed.edl"
 }
 symbols {
   0 "FEM=1"
@@ -384,10 +397,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 790
+x 295
 y 35
 w 80
-h 410
+h 335
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
@@ -398,7 +411,7 @@ setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "TristanFemStatus_embed.edl"
+  0 "TristanHousekeepingStatus_embed.edl"
 }
 symbols {
   0 "FEM=2"
@@ -412,10 +425,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 870
+x 375
 y 35
 w 80
-h 410
+h 335
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
@@ -426,7 +439,7 @@ setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "TristanFemStatus_embed.edl"
+  0 "TristanHousekeepingStatus_embed.edl"
 }
 symbols {
   0 "FEM=3"
@@ -440,10 +453,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 950
+x 455
 y 35
 w 80
-h 410
+h 335
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
@@ -454,7 +467,7 @@ setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "TristanFemStatus_embed.edl"
+  0 "TristanHousekeepingStatus_embed.edl"
 }
 symbols {
   0 "FEM=4"
@@ -468,10 +481,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 1030
+x 535
 y 35
 w 80
-h 410
+h 335
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
@@ -482,7 +495,7 @@ setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "TristanFemStatus_embed.edl"
+  0 "TristanHousekeepingStatus_embed.edl"
 }
 symbols {
   0 "FEM=5"
@@ -496,10 +509,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 1110
+x 615
 y 35
 w 80
-h 410
+h 335
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
@@ -510,7 +523,7 @@ setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "TristanFemStatus_embed.edl"
+  0 "TristanHousekeepingStatus_embed.edl"
 }
 symbols {
   0 "FEM=6"
@@ -524,10 +537,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 1190
+x 695
 y 35
 w 80
-h 410
+h 335
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
@@ -538,7 +551,7 @@ setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "TristanFemStatus_embed.edl"
+  0 "TristanHousekeepingStatus_embed.edl"
 }
 symbols {
   0 "FEM=7"
@@ -552,10 +565,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 1270
+x 775
 y 35
 w 80
-h 410
+h 335
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
@@ -566,7 +579,7 @@ setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "TristanFemStatus_embed.edl"
+  0 "TristanHousekeepingStatus_embed.edl"
 }
 symbols {
   0 "FEM=8"
@@ -580,10 +593,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 1350
+x 855
 y 35
 w 80
-h 410
+h 335
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
@@ -594,7 +607,7 @@ setSize
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "TristanFemStatus_embed.edl"
+  0 "TristanHousekeepingStatus_embed.edl"
 }
 symbols {
   0 "FEM=9"
@@ -608,115 +621,16 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
-y 365
-w 110
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Max X"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 520
-y 340
-w 110
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Min X"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 520
-y 415
-w 110
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Max Y"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 520
-y 390
-w 110
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Min Y"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 520
+x 5
 y 90
-w 110
+w 130
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Fem FPGA Temp"
-}
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 4
-release 0
-x 1285
-y 465
-w 75
-h 25
-fgColor index 43
-bgColor index 3
-topShadowColor index 0
-botShadowColor index 14
-font "arial-bold-r-14.0"
-buttonLabel "Sensor"
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "Tristan10SensorStatus"
+  "Voltage (FEM)"
 }
 endObjectProperties
 
@@ -726,58 +640,16 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 520
-y 290
-w 110
+x 5
+y 340
+w 130
 h 20
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Tacho"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 520
-y 315
-w 110
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "PWM"
-}
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 4
-release 0
-x 1080
-y 465
-w 195
-h 25
-fgColor index 43
-bgColor index 3
-topShadowColor index 0
-botShadowColor index 14
-font "arial-bold-r-14.0"
-buttonLabel "Additional Housekeeping"
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "Tristan10HousekeepingStatus"
+  "Voltage (5v POL_B)"
 }
 endObjectProperties
 
