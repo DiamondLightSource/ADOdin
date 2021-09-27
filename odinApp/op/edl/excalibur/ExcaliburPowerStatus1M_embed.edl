@@ -3,7 +3,7 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 288
+x 296
 y 99
 w 740
 h 360
@@ -1847,5 +1847,66 @@ endObjectProperties
 
 endGroup
 
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 590
+y 330
+w 20
+h 20
+controlPv "$(P)$(R)PollingActive"
+lineColor index 14
+onColor index 15
+offColor index 20
+lineWidth 2
+numBits 1
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 615
+y 330
+w 110
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "POLLING"
+}
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 680
+y 330
+w 45
+h 20
+fgColor index 25
+onColor index 3
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)ContinuePolling"
+pressValue "1"
+onLabel "Poll"
+offLabel "Poll"
+3d
+useEnumNumeric
+font "arial-bold-r-12.0"
 endObjectProperties
 
