@@ -6,8 +6,15 @@ from iocbuilder.modules.ADCore import ADCore, ADBaseTemplate, makeTemplateInstan
 from iocbuilder.modules.restClient import restClient
 from iocbuilder.modules.calc import Calc
 
-from util import debug_print, OdinPaths, data_file_path, expand_template_file, \
-    create_batch_entry, create_config_entry
+from util import (
+    debug_print,
+    OdinPaths,
+    data_file_path,
+    expand_template_file,
+    create_config_entry,
+    write_batch_file,
+    ADODIN_ROOT,
+)
 
 
 # ~~~~~~~~ #
@@ -82,16 +89,6 @@ class _OdinData(Device):
 
     def create_config_files(self, index, total):
         raise NotImplementedError("Method must be implemented by child classes")
-
-    def add_batch_entries(self, entries, beamline, number):
-        entries.append(
-            create_batch_entry(beamline, number, "FrameReceiver{}".format(self.RANK + 1))
-        )
-        number += 1
-        entries.append(
-            create_batch_entry(beamline, number, "FrameProcessor{}".format(self.RANK + 1))
-        )
-        return number + 1
 
 
 class _FrameProcessorPlugin(Device):
@@ -437,10 +434,6 @@ class _OdinControlServer(Device):
                "endpoints = {}\n" \
                "update_interval = 0.2".format(", ".join(fp_endpoints), ", ".join(fr_endpoints))
 
-    def add_batch_entry(self, entries, beamline, number):
-        entries.append(create_batch_entry(beamline, number, "OdinServer"))
-        return number + 1
-
 
 class _MetaWriterTemplate(AutoSubstitution):
     TemplateFile = "MetaListener.template"
@@ -496,10 +489,6 @@ class _MetaWriter(object):
 
     def _add_python_modules(self):
         pass
-
-    def add_batch_entry(self, entries, beamline, number):
-        entries.append(create_batch_entry(beamline, number, "MetaWriter"))
-        return number + 1
 
 
 # ~~~~~~~~~~~~ #
@@ -682,49 +671,6 @@ class _OdinDataDriver(AsynPort):
         )
 
 
-class OdinBatchFile(Device):
-
-    """Create configure-ioc batch file for all processes"""
-
-    # Device attributes
-    AutoInstantiate = True
-
-    def __init__(self, BEAMLINE, ODIN_DATA_DRIVER):
-        self.__super.__init__()
-        self.odin_data_driver = ODIN_DATA_DRIVER
-        self.beamline = BEAMLINE
-
-        self.create_batch_file()
-
-    def create_batch_file(self):
-        entries = []
-        process_number = 1
-        process_number = self.add_extra_entries(entries, process_number)
-        process_number = self.odin_data_driver.meta_writer.add_batch_entry(
-            entries, self.beamline, process_number
-        )
-        for odin_data_server in self.odin_data_driver.control_server.odin_data_servers:
-            for odin_data_process in odin_data_server.processes:
-                process_number = odin_data_process.add_batch_entries(
-                    entries, self.beamline, process_number
-                )
-        self.odin_data_driver.control_server.add_batch_entry(
-            entries, self.beamline, process_number
-        )
-
-        stream = IocDataStream("configure_odin")
-        stream.write("\n".join(entries) + "\n")
-
-    def add_extra_entries(self, entries, process_number):
-        return process_number
-
-    # __init__ arguments
-    ArgInfo = makeArgInfo(__init__,
-        BEAMLINE=Simple("Beamline domain name, e.g. BL14I, BL21B", str),
-        ODIN_DATA_DRIVER=Ident("OdinDataDriver", _OdinDataDriver)
-    )
-
-
 class OdinStartAllScript(Device):
 
     """Create a start-up script for this IOC"""
@@ -770,3 +716,112 @@ class OdinStartAllScript(Device):
         return "gnome-terminal --tab --title=\"{script}\" -- bash -c \"${{{script}}}\"".format(
             script=script
         )
+
+class _OdinProcServ(AutoSubstitution):
+    TemplateFile = "OdinProcServ.template"
+
+class _OdinProcServProcess(AutoSubstitution):
+    TemplateFile = "OdinProcServProcess.template"
+
+class OdinProcServ(Device):
+
+    def __init__(
+        self,
+        ODIN_DATA_DRIVER,
+        IOC_NAME,
+        PREFIX,
+        PROCESS_PREFIX,
+        ADODIN_IOC_NAME,
+        SERVER_DELAY=2,
+        IOC_DELAY=5,
+    ):
+        self.odin_data_driver = ODIN_DATA_DRIVER
+
+        application_names = self.create_application_list()
+        process_names = [
+            self._format_odin_process(PROCESS_PREFIX, i)
+            for i in range(1, len(application_names) + 1)
+        ]
+
+        # Create Templates
+        detector_name = PROCESS_PREFIX.split("-")[-1]
+        for application_name, process_name in zip(application_names, process_names):
+            _OdinProcServProcess(
+                name=detector_name,
+                APPLICATION_NAME=application_name,
+                PROCESS_NAME=process_name,
+            )
+        # Add ADOdin IOC
+        _OdinProcServProcess(
+            name=detector_name,
+            APPLICATION_NAME=ADODIN_IOC_NAME,
+            PROCESS_NAME=ADODIN_IOC_NAME,
+        )
+        # Add root screen with start/stop/restart all buttons
+        _OdinProcServ(name=detector_name, PREFIX=PREFIX)
+
+        config = dict(
+            ODIN_PROC_SERV_CONTROL=OdinPaths.ODIN_PROC_SERV_CONTROL,
+            IOC_NAME=IOC_NAME,
+            PREFIX=PREFIX,
+            PROCESS_PREFIX=PROCESS_PREFIX,
+            PROCESS_COUNT=len(process_names),
+            SERVER_PROCESS_NAME=process_names[0],  # The server is the first process
+            SERVER_DELAY=SERVER_DELAY,
+            ADODIN_IOC_NAME=ADODIN_IOC_NAME,
+            IOC_DELAY=IOC_DELAY,
+        )
+        self.write_ioc_boot_script(config)
+
+        batch_entries = [
+            "{} st{}.sh".format(process, application)
+            for process, application in zip(process_names, application_names)
+        ]
+        # Insert ourselves into the batch file
+        batch_entries.append("{0} {0}.yaml".format(config["IOC_NAME"]))
+        write_batch_file(batch_entries)
+
+    def create_application_list(self):
+        application_names = ["OdinServer"]
+
+        number = 1
+        for odin_data_server in self.odin_data_driver.control_server.odin_data_servers:
+            for _ in odin_data_server.processes:
+                application_names.append("FrameReceiver{}".format(number))
+                application_names.append("FrameProcessor{}".format(number))
+                number += 1
+
+        application_names.append("MetaWriter")
+        application_names.extend(self.extra_applications)
+
+        return application_names
+
+    @property
+    def extra_applications(self):
+        return []
+
+    # __init__ arguments
+    ArgInfo = makeArgInfo(
+        __init__,
+        ODIN_DATA_DRIVER=Ident("OdinDataDriver", _OdinDataDriver),
+        IOC_NAME=Simple("OdinProcServ IOC name - e.g. BLXXY-CS-IOC-01", str),
+        PREFIX=Simple("Prefix of OdinProcServ PVs - e.g. BLXXY-CS-EIG1-01", str),
+        PROCESS_PREFIX=Simple("Prefix of odin processes - e.g. BLXXY-EA-EIG1", str),
+        SERVER_DELAY=Simple("Delay before starting odin server", int),
+        ADODIN_IOC_NAME=Simple("Name of ADOdin IOC", str),
+        IOC_DELAY=Simple("Delay before starting IOC", int),
+    )
+
+    def _format_odin_process(self, prefix, process_number):
+        if not prefix.endswith("-"):
+            prefix += "-"
+        return "{}{:02d}".format(prefix, process_number)
+
+    def write_ioc_boot_script(self, config):
+        expand_template_file(
+            "odinprocservcontrol.yaml",
+            config,
+            "{}.yaml".format(config["IOC_NAME"]),
+            executable=True
+        )
+

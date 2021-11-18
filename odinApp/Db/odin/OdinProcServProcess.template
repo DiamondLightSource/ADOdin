@@ -1,0 +1,7 @@
+# #################################################################################### #
+# A Button and status LED for a single odin process
+
+#% macro, name, Unique detector name, e.g. EIG1
+#% macro, APPLICATION_NAME, Odin application name
+#% macro, PROCESS_NAME, Process name
+# % gui, $(name)ProcServ.$(APPLICATION_NAME), edmembed, OdinProcServ_embed.edl, APPLICATION_NAME=$(APPLICATION_NAME),PROCESS_NAME=$(PROCESS_NAME)
