@@ -12,10 +12,17 @@ include $(TOP)/configure/CONFIG
 # databases, templates, substitutions like this
 
 DB += ArcDetector.template
+DB += Arc1NodeOD.template
 DB += Arc2NodeOD.template
+DB += Arc4NodeOD.template
 DB += ArcOD.template
+DB += ArcODMode.template
+DB += Arc1FemStatus.template
 DB += Arc2FemStatus.template
 DB += ArcFemStatus.template
+DB += Arc1FemHousekeeping.template
+DB += Arc2FemHousekeeping.template
+DB += ArcBaseFemHousekeeping.template
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add

@@ -1,0 +1,63 @@
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, DET, Detector Suffix
+# % macro, PORT, Asyn Port name
+# % macro, OD_HDF_STATUS_GUI, Label for OdinData Status EDM button
+# % macro, OD_DET_CONFIG_GUI, Label for OdinData Process EDM button
+# % macro, ACQ_GUI, Label for Excalibur Acquisition EDM button
+
+# This associates the template with an edm screen
+# % gui, $(PORT), edmtab, ExcaliburDAQMain.edl, P=$(P),R=$(R)
+# % gui, $(OD_HDF_STATUS_GUI), edm, OdinDataStatus1.edl, P=$(P),R=$(R)
+# % gui, $(OD_DET_CONFIG_GUI), edm, ExcaliburOD.edl, P=$(P),R=$(R)
+# % gui, $(ACQ_GUI), edm, ExcaliburAcquisition.edl, P=$(P),R=$(R)
+
+################################################################################
+#
+# Include 1 FP template
+#
+################################################################################
+
+substitute "TOTAL=2"
+substitute "ADDRESS=0"
+include "ExcaliburOD.template"
+
+###################################################################
+#  This ensures that the correct HDF5 bit depth is selected       #
+#  when the detector bit depth is changed.                        #
+###################################################################
+record(calcout, "$(P)$(R)DetToFPBitDepth")
+{
+    field(INPA, "$(P)$(DET)CounterDepth CP")
+    field(CALC, "A=0||A=1?0:A=2?1:A=3?2:1")
+    field(OUT, "$(P)$(R)DataType PP")
+}
+
+###################################################################
+#  Override the image width, height and chunk records             #
+#  to make sure they are disabled.                                #
+###################################################################
+record(longout, "$(P)$(R)ImageWidth")
+{
+    field(DISA, "1")
+}
+
+record(longout, "$(P)$(R)ImageHeight")
+{
+    field(DISA, "1")
+}
+
+record(longout, "$(P)$(R)NumColChunks")
+{
+    field(DISA, "1")
+}
+
+record(longout, "$(P)$(R)NumRowChunks")
+{
+    field(DISA, "1")
+}
+
+record(longout, "$(P)$(R)NumFramesChunks")
+{
+    field(DISA, "1")
+}

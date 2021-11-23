@@ -1,0 +1,627 @@
+# ArcBaseFemHousekeeping.template
+# Defines the housekeeping parameters only available from the master FEM.
+
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, PORT, Asyn Port name
+# % macro, TIMEOUT, Timeout
+
+# To be included in a template that defines the following:
+#   * $(P)$(R)DEVSTA_P5V
+#   * $(P)$(R)DEVSTA_HK
+#   * $(P)$(R)HvLvSoftTripTemp
+#   * $(P)$(R)HvLvSoftTripHumidity
+
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)P5V_A_VMON")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_p5va_vmon")
+    field(EGU,  "V")
+    field(LOW,  "4.8")
+    field(HIGH, "5.2")
+    field(PREC, "2")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)P5V_B_VMON")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_p5vb_vmon")
+    field(EGU,  "V")
+    field(LOW,  "4.8")
+    field(HIGH, "5.2")
+    field(PREC, "2")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)P48V_VMON")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_p48v_vmon")
+    field(EGU,  "V")
+    field(LOW,  "44.0")
+    field(HIGH, "52.0")
+    field(PREC, "2")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)P48V_IMON")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_p48v_imon")
+    field(EGU,  "A")
+    field(LOW,  "0.0")
+    field(HIGH, "10.0")
+    field(PREC, "2")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)P5VSUP_VMON")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_p5vsup_vmon")
+    field(EGU,  "V")
+    field(LOW,  "4.8")
+    field(HIGH, "5.2")
+    field(PREC, "2")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)P5VSUP_IMON")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_p5vsup_imon")
+    field(EGU,  "A")
+    field(LOW,  "0.0")
+    field(HIGH, "0.2")
+    field(PREC, "2")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)HUMIDITY_MON")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_humidity_mon")
+    field(EGU,  "%RH")
+    field(LOW,  "0.0")
+    field(HIGH, "50.0")
+    field(PREC, "0")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)AIR_TEMP_MON")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_air_temp_mon")
+    field(EGU,  "C")
+    field(LOW,  "0.0")
+    field(HIGH, "40.0")
+    field(PREC, "1")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)COOLANT_TEMP_MON")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_coolant_temp_mon")
+    field(EGU,  "C")
+    field(LOW,  "0.0")
+    field(HIGH, "30.0")
+    field(PREC, "1")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)COOLANT_FLOW_MON")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_coolant_flow_mon")
+    field(EGU,  "cc/min")
+    field(LOW,  "100.0")
+    field(HIGH, "10000.0")
+    field(PREC, "0")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)P3V3_IMON")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_p3v3_imon")
+    field(EGU,  "A")
+    field(LOW,  "0.0")
+    field(HIGH, "1.0")
+    field(PREC, "2")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)P1V8_IMON_A")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_p1v8_imonA")
+    field(EGU,  "A")
+    field(LOW,  "0.0")
+    field(HIGH, "20.0")
+    field(PREC, "2")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)BIAS_IMON")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_bias_imon")
+    field(EGU,  "mA")
+    field(LOW,  "0.0")
+    field(HIGH, "10")
+    field(PREC, "5")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)P3V3_VMON")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_p3v3_vmon")
+    field(EGU,  "V")
+    field(LOW,  "3.1")
+    field(HIGH, "3.5")
+    field(PREC, "2")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)P1V8_VMON_A")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_p1v8_vmon")
+    field(EGU,  "V")
+    field(LOW,  "1.7")
+    field(HIGH, "1.9")
+    field(PREC, "2")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)BIAS_VMON")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_bias_vmon")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)P1V8_IMON_B")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_p1v8_imonB")
+    field(EGU,  "A")
+    field(LOW,  "0.0")
+    field(HIGH, "20.0")
+    field(PREC, "2")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+# % autosave 2 LOW HIGH
+#% archiver 10 Monitor
+record(ai, "$(P)$(R)P1V8_VMON_B")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_status/powercard/pwr_p1v8_vmonB")
+    field(EGU,  "V")
+    field(LOW,  "1.7")
+    field(HIGH, "1.9")
+    field(PREC, "2")
+    field(HSV,  "MAJOR")
+    field(LSV,  "MAJOR")
+}
+
+#% archiver 10 Monitor
+record(bi, "$(P)$(R)COOLANT_TEMP_STATUS")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_status/powercard/pwr_coolant_temp_status")
+    field(ZSV,  "MAJOR")
+}
+
+#% archiver 10 Monitor
+record(bi, "$(P)$(R)HUMIDITY_STATUS")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_status/powercard/pwr_humidity_status")
+    field(ZSV,  "MAJOR")
+}
+
+#% archiver 10 Monitor
+record(bi, "$(P)$(R)COOLANT_FLOW_STATUS")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_status/powercard/pwr_coolant_flow_status")
+    field(ZSV,  "MAJOR")
+}
+
+#% archiver 10 Monitor
+record(bi, "$(P)$(R)AIR_TEMP_STATUS")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_status/powercard/pwr_air_temp_status")
+    field(ZSV,  "MAJOR")
+}
+
+#% archiver 10 Monitor
+record(bi, "$(P)$(R)FAN_FAULT")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_status/powercard/pwr_fan_fault")
+    field(OSV,  "MAJOR")
+}
+
+#% archiver 10 Monitor
+record(bo, "$(P)$(R)BIAS_ON_OFF")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/hv_enable")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
+}
+
+record(bi, "$(P)$(R)BIAS_ON_OFF_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_status/powercard/hv_enabled")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
+    field(FLNK, "$(P)$(R)BIAS_LEVEL:HIGH")
+}
+
+# % autosave 2
+#% archiver 10 Monitor
+record(ao, "$(P)$(R)BIAS_LEVEL")
+{
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_config/hv_bias")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(DRVH, "120.0")
+    field(FLNK, "$(P)$(R)BIAS_LEVEL:HIGH")
+    field(PINI, "1")
+}
+# Set the bias alarm levels according to the desired bias level
+# % autosave 2 
+record(ao, "$(P)$(R)BIAS_LEVEL:DELTA")
+{
+    field(VAL,  "5")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(FLNK, "$(P)$(R)BIAS_LEVEL:HIGH")
+}
+record(calcout, "$(P)$(R)BIAS_LEVEL:HIGH")
+{
+    field(INPA, "$(P)$(R)BIAS_LEVEL")
+    field(INPB, "$(P)$(R)BIAS_LEVEL:DELTA")
+    field(INPC, "$(P)$(R)BIAS_ON_OFF_RBV")
+    field(CALC, "C?(A+B):20")
+    field(DOPT, "Use CALC")
+    field(OOPT, "Every Time")
+    field(OUT,  "$(P)$(R)BIAS_VMON.HIGH")
+    field(FLNK, "$(P)$(R)BIAS_LEVEL:LOW")
+}
+record(calcout, "$(P)$(R)BIAS_LEVEL:LOW")
+{
+    field(INPA, "$(P)$(R)BIAS_LEVEL")
+    field(INPB, "$(P)$(R)BIAS_LEVEL:DELTA")
+    field(INPC, "$(P)$(R)BIAS_ON_OFF")
+    field(CALC, "C?(A-B):0")
+    field(DOPT, "Use CALC")
+    field(OOPT, "Every Time")
+    field(OUT,  "$(P)$(R)BIAS_VMON.LOW")
+    field(FLNK, "$(P)$(R)BIAS_VMON:PROC")
+}
+record(seq, "$(P)$(R)BIAS_VMON:PROC")
+{
+    field(SELM, "All")
+    field(DOL1, "1")
+    field(LNK1, "$(P)$(R)BIAS_VMON.PROC")
+}
+
+# Overall housekeeping alarm state
+record(calc, "$(P)$(R)DEVSTA")
+{
+    field(INPA, "$(P)$(R)DEVSTA1 MS CP")
+    field(INPB, "$(P)$(R)DEVSTA2 MS CP")
+    field(INPC, "$(P)$(R)DEVSTA_P5V MS CP")  # Implemented in XFemHousekeeping
+    field(INPD, "$(P)$(R)DEVSTA_HK MS CP")  # Implemented in XFemHousekeeping
+    field(ACKT, "NO")
+}
+record(calc, "$(P)$(R)DEVSTA1")
+{
+    field(INPA, "$(P)$(R)HUMIDITY_MON MS CP")
+    field(INPB, "$(P)$(R)AIR_TEMP_MON MS CP")
+    field(INPC, "$(P)$(R)COOLANT_TEMP_MON MS CP")
+    field(INPD, "$(P)$(R)COOLANT_FLOW_MON MS CP")
+    field(INPE, "$(P)$(R)P3V3_IMON MS CP")
+    field(INPF, "$(P)$(R)P1V8_IMON_A MS CP")
+    field(INPG, "$(P)$(R)BIAS_IMON MS CP")
+    field(INPH, "$(P)$(R)P3V3_VMON MS CP")
+    field(INPI, "$(P)$(R)P1V8_VMON_A MS CP")
+    field(INPJ, "$(P)$(R)BIAS_VMON MS CP")
+    field(INPK, "$(P)$(R)P1V8_IMON_B MS CP")
+    field(INPL, "$(P)$(R)P1V8_VMON_B MS CP")
+    field(ACKT, "NO")
+}
+record(calc, "$(P)$(R)DEVSTA2")
+{
+    field(INPA, "$(P)$(R)P5V_A_VMON MS CP")
+    field(INPB, "$(P)$(R)P5V_B_VMON MS CP")
+    field(INPC, "$(P)$(R)P5VSUP_VMON MS CP")
+    field(INPD, "$(P)$(R)P5VSUP_IMON MS CP")
+    field(INPE, "$(P)$(R)P48V_VMON MS CP")
+    field(INPF, "$(P)$(R)P48V_IMON MS CP")
+    field(INPG, "$(P)$(R)COOLANT_TEMP_STATUS MS CP")
+    field(INPH, "$(P)$(R)HUMIDITY_STATUS MS CP")
+    field(INPI, "$(P)$(R)COOLANT_FLOW_STATUS MS CP")
+    field(INPJ, "$(P)$(R)AIR_TEMP_STATUS MS CP")
+    field(INPK, "$(P)$(R)FAN_FAULT MS CP")
+    field(ACKT, "NO")
+}
+
+# Monitor the alarm state of the FEM moly temperatures and humidities.  If any
+# go into alarm, switch off the HV supply and then the LV supply.
+record(calc, "$(P)$(R)HvLvSoftTrip_CALC")
+{
+    field(INPA, "$(P)$(R)HvLvSoftTripTemp")  # Implemented in XFemHousekeeping
+    field(INPB, "$(P)$(R)HvLvSoftTripHumidity")  # Implemented in XFemHousekeeping
+    field(C,    "0")  # The forced initial state
+    field(CALC, "A|B|C")
+    field(FLNK, "$(P)$(R)HvLvSoftTrip")
+}
+record(bo, "$(P)$(R)HvLvSoftTrip")
+{
+    field(DOL,  "$(P)$(R)HvLvSoftTrip_CALC")
+    field(OMSL, "closed_loop")
+    field(ZNAM, "Normal")
+    field(ONAM, "Active")
+    field(FLNK, "$(P)$(R)HvLvSoftTrip_TRG")
+}
+record(calcout, "$(P)$(R)HvLvSoftTrip_TRG")
+{
+    field(INPA, "$(P)$(R)HvLvSoftTrip")
+    field(CALC, "A")
+    field(OOPT, "Transition To Non-zero")
+    field(DOPT, "Use CALC")
+    field(OUT,  "$(P)$(R)HvLvSoftTrip_SEQ.PROC")
+}
+record(seq, "$(P)$(R)HvLvSoftTrip_SEQ")
+{
+    field(SELM, "All")
+    field(DOL1, "0")
+    field(LNK1, "$(P)$(R)BIAS_ON_OFF PP")
+    field(DLY2, "1.0")
+    field(DOL2, "0")
+    field(LNK2, "$(P)$(R)CONFIG:ACQUIRE:LvControl PP")
+}
+# If the LV control goes high while the soft trip is activated,
+# set the overidden flag to 1.
+record(calcout, "$(P)$(R)HvLvSoftTripOverridden1")
+{
+    field(INPA, "$(P)$(R)CONFIG:ACQUIRE:LvControl CP")
+    field(INPB, "$(P)$(R)HvLvSoftTrip")
+    field(CALC, "A")
+    field(OOPT, "Transition To Non-zero")
+    field(DOPT, "Use OCAL")
+    field(OCAL, "B")
+    field(OUT,  "$(P)$(R)HvLvSoftTripOverridden PP")
+}
+# If the LV control is low or the soft trip is inactive,
+# set the overridden flag to 0.
+record(calcout, "$(P)$(R)HvLvSoftTripOverridden2")
+{
+    field(INPA, "$(P)$(R)CONFIG:ACQUIRE:LvControl CP")
+    field(INPB, "$(P)$(R)HvLvSoftTrip CP")
+    field(CALC, "(A=0)||(B=0)")
+    field(OOPT, "When Non-zero")
+    field(DOPT, "Use OCAL")
+    field(OCAL, "0")
+    field(OUT,  "$(P)$(R)HvLvSoftTripOverridden PP")
+}
+# Indicates whether the soft trip has been overridden
+record(bo, "$(P)$(R)HvLvSoftTripOverridden")
+{
+    field(ZNAM, "Normal")
+    field(ONAM, "Overridden")
+    field(FLNK, "$(P)$(R)HvLvSoftTripOverridden3")
+}
+# On a low to high transition of the overridden flag, clear
+# the force bit
+record(calcout, "$(P)$(R)HvLvSoftTripOverridden3")
+{
+    field(INPA, "$(P)$(R)HvLvSoftTripOverridden")
+    field(CALC, "A")
+    field(OOPT, "Transition To Non-zero")
+    field(DOPT, "Use OCAL")
+    field(OCAL, "0")
+    field(OUT,  "$(P)$(R)HvLvSoftTrip3.B")
+}
+
+# Write a 1 to this record to reset the them
+#% archiver 10 Monitor
+#record(bo, "$(P)$(R)DOFEMRESET")
+#{
+#    field(DTYP, "asynInt32")
+#    field(VAL,  "0")
+#    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))ADFEM_REBOOT")
+#    field(ZNAM, "Idle")
+#    field(ONAM, "Resetting")
+#}
+#
+# Process this record to reset the FEMs
+record(seq, "$(P)$(R)FEMRESET")
+{
+	field(SELM, "All")
+	# State to busy
+	field(DLY1, "0")
+	field(DOL1, "1")
+	field(LNK1, "$(P)$(R)FEMRESETSTATE PP")
+	# Turn off the LV power
+	field(DLY2, "0")
+	field(DOL2, "0")
+	field(LNK2, "$(P):CONFIG:ACQUIRE:LvControl PP")
+	# Wait 5 seconds and then send the FEM reset
+	field(DLY3, "5")
+	field(DOL3, "1")
+	field(LNK3, "$(P)$(R)DOFEMRESET PP")
+	# Wait 15 seconds for completion
+	field(DLY4, "15")
+	field(DOL4, "0")
+	field(LNK4, "$(P)$(R)FEMRESETSTATE PP")
+}
+
+# The reset state indication
+record(bo, "$(P)$(R)FEMRESETSTATE")
+{
+	field(VAL, "0")
+	field(ZNAM, "Idle")
+	field(ONAM, "Resetting")
+}
+
+# Low voltage control
+# This PV is slaved to the master in a very specific fashion and should
+# not be individually manipulated.  So no GDA nor autosave tags.
+#record(calcout, "$(P)$(R)LvControlDownload")
+#{
+#    field(INPA, "$(P)$(R)CONFIG:ACQUIRE:LvControl CP")
+#    field(INPB, "$(P)$(R)LvControlLocal")
+#    field(CALC, "A#B")
+#    field(OCAL, "A")
+#    field(OOPT, "When Non-zero")
+#    field(DOPT, "Use OCAL")
+#    field(OUT,  "$(P)$(R)LvControlLocal PP")
+#}
+#record(bo, "$(P)$(R)LvControlLocal")
+#{
+#    field(DTYP, "asynInt32")
+#    field(VAL,  "0")
+#    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/lv_enable")
+#    field(ZNAM, "Off")
+#    field(ONAM, "On")
+#}
+#record(bo, "$(P)$(R)CONFIG:ACQUIRE:LvControl")
+#{
+#    field(VAL,  "0")
+#    field(ZNAM, "Off")
+#    field(ONAM, "On")
+#}
+record(bo, "$(P)$(R)CONFIG:ACQUIRE:LvControl")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_config/lv_enable")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
+}
+
+#% archiver 1 monitor
+record(bi, "$(P)$(R)CONFIG:ACQUIRE:LvControl_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN,  "I/O Intr")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODI_status/lv_enabled")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
+}
+
