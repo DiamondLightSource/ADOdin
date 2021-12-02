@@ -2,15 +2,10 @@
 # % macro, R, Device Suffix
 # % macro, DET, Detector Suffix
 # % macro, PORT, Asyn Port name
-# % macro, OD_HDF_STATUS_GUI, Label for OdinData Status EDM button
-# % macro, OD_DET_CONFIG_GUI, Label for OdinData Process EDM button
-# % macro, ACQ_GUI, Label for Excalibur Acquisition EDM button
 
 # This associates the template with an edm screen
-# % gui, $(PORT), edmtab, ExcaliburDAQMain.edl, P=$(P),R=$(R)
-# % gui, $(OD_HDF_STATUS_GUI), edm, OdinDataStatus4.edl, P=$(P),R=$(R)
-# % gui, $(OD_DET_CONFIG_GUI), edm, ExcaliburOD.edl, P=$(P),R=$(R)
-# % gui, $(ACQ_GUI), edm, ExcaliburAcquisition.edl, P=$(P),R=$(R)
+# % gui, $(name), edm, ArcDAQ2Status.edl, P=$(P),R=$(R)
+# % gui, $(PORT), edmtab, ArcDAQMain.edl, P=$(P),R=$(R)
 
 ################################################################################
 #

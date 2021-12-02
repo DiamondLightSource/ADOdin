@@ -81,11 +81,11 @@ class _ArcOdinData(_OdinData):
     CONFIG_TEMPLATES = {
         "1FEM": {
             "FrameProcessor": "fp_arc.json",
-            "FrameReceiver": "fr_arc_1.json"
+            "FrameReceiver": "fr_arc.json"
         },
         "2FEM": {
             "FrameProcessor": "fp_arc.json",
-            "FrameReceiver": "fr_arc_2.json"
+            "FrameReceiver": "fr_arc.json"
         }
     }
 
@@ -254,7 +254,9 @@ class ArcOdinControlServer(_OdinControlServer):
     )
 
     def _add_python_modules(self):
-        self.PYTHON_MODULES.update(dict(arc_detector=OdinPaths.ARC_DETECTOR))
+        # TODO need an alternative way to put the python 3 startup path in to the startup script
+        pass
+        # self.PYTHON_MODULES.update(dict(arc_detector=OdinPaths.ARC_DETECTOR))
 
     def get_extra_startup_macro(self):
         return '--staticlogfields beamline=${{BEAMLINE}},\
@@ -392,8 +394,6 @@ class ArcOdinDataDriver(_OdinDataDriver):
                 DET=detector_arg,
                 PORT=args["PORT"],
                 TIMEOUT=args["TIMEOUT"],
-                OD_DET_CONFIG_GUI=self.gui_macro(args["PORT"], "OdinData.Arc"),
-                ACQ_GUI=self.gui_macro(args["PORT"], "Acquisition"),
                 **self.create_gui_macros(args["PORT"])
             )
             _ArcXNodeFPTemplate = self.FP_TEMPLATES[len(self.ODIN_DATA_PROCESSES)]
