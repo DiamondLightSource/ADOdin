@@ -215,7 +215,7 @@ class ArcOdinControlServer(_OdinControlServer):
 
     """Store configuration for an ArcOdinControlServer"""
 
-    ODIN_SERVER = os.path.join(OdinPaths.ARC_DETECTOR, "prefix/bin/arc_odin")
+    ODIN_SERVER = os.path.join(OdinPaths.ARC_DETECTOR_PYTHON3, "bin/arc_odin")
     CONFIG_TEMPLATES = {
         "1FEM": {
             "chip_mask": "0xFF",
@@ -273,7 +273,7 @@ application_name="arc_odin",detector="Arc{}" \
 
     def _create_arc_config_entry(self):
         return "[adapter.arc]\n" \
-               "module = arc.adapter.ArcAdapter\n" \
+               "module = arc.arc_adapter.ArcAdapter\n" \
                "detector_fems = {}\n" \
                "powercard_fem_idx = {}\n" \
                "chip_enable_mask = {}\n" \
