@@ -254,9 +254,9 @@ class ArcOdinControlServer(_OdinControlServer):
     )
 
     def _add_python_modules(self):
-        # TODO need an alternative way to put the python 3 startup path in to the startup script
+        # return nothing since the python3 venv for arc odin server already has the
+        # required dependencies
         pass
-        # self.PYTHON_MODULES.update(dict(arc_detector=OdinPaths.ARC_DETECTOR))
 
     def get_extra_startup_macro(self):
         return '--staticlogfields beamline=${{BEAMLINE}},\
@@ -289,7 +289,7 @@ application_name="arc_odin",detector="Arc{}" \
             fr_endpoints.append(process.FR_ENDPOINT)
 
         return "[adapter.fp]\n" \
-               "module = odin_data.fp_compression_adapter.FPCompressionAdapter\n" \
+               "module = odin_data.frame_processor_adapter.FrameProcessorAdapter\n" \
                "endpoints = {}\n" \
                "update_interval = 0.2\n" \
                "datasets = data,data2\n\n" \
