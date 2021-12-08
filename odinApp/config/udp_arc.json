@@ -1,12 +1,1 @@
-{
-    "fems": [
-$FEM_CONFIG
-    ],
-    "nodes": {
-$NODE_CONFIG
-    },
-    "farm_mode" : {
-        "enable": 1,
-        "num_dests": $NUM_DESTS
-    }
-}
+$MODULE_CONFIG

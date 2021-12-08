@@ -304,7 +304,7 @@ class ArcOdinControlServer(_OdinControlServer):
 
     def get_extra_startup_macro(self):
         return (
-            '--staticlogfields beamline=${{BEAMLINE}},'
+            '--staticlogfields beamline=${BEAMLINE},'
             'application_name="arc_odin",detector="Arc" '
             '--logserver="graylog2.diamond.ac.uk:12210" --access_logging=ERROR'
         )
@@ -441,40 +441,6 @@ class ArcOdinDataDriver(_OdinDataDriver):
     ArgInfo = _OdinDataDriver.ArgInfo.filtered(without=["DETECTOR", "TOTAL", "R"])
 
 
-class _Arc1FemHousekeepingTemplate(AutoSubstitution):
-    TemplateFile = "Arc1FemHousekeeping.template"
-
-
-class _Arc2FemHousekeepingTemplate(AutoSubstitution):
-    TemplateFile = "Arc2FemHousekeeping.template"
-
-
-class _ArcFemStatusTemplate(AutoSubstitution):
-    WarnMacros = False
-    TemplateFile = "ArcFemStatus.template"
-
-
-def add_arc_fem_status(cls):
-    """Convenience function to add arcFemStatusTemplate attributes to a class that
-    includes it via an msi include statement rather than verbatim"""
-    cls.Arguments = _ArcFemStatusTemplate.Arguments + [
-        x for x in cls.Arguments if x not in _ArcFemStatusTemplate.Arguments
-    ]
-    cls.ArgInfo = _ArcFemStatusTemplate.ArgInfo + cls.ArgInfo.filtered(
-        without=_ArcFemStatusTemplate.ArgInfo.Names()
-    )
-    cls.Defaults.update(_ArcFemStatusTemplate.Defaults)
-    return cls
-
-
-@add_arc_fem_status
-class _Arc1FemStatusTemplate(AutoSubstitution):
-    TemplateFile = "Arc1FemStatus.template"
-
-
-@add_arc_fem_status
-class _Arc2FemStatusTemplate(AutoSubstitution):
-    TemplateFile = "Arc2FemStatus.template"
 
 
 class ArcDetector(_OdinDetector):
@@ -482,9 +448,10 @@ class ArcDetector(_OdinDetector):
     """Create an Arc detector"""
 
     DETECTOR = "arc"
-    SENSOR_OPTIONS = {  # (Status Template, Housekeeping Template, Number of FEMs)
-        "1FEM": (_Arc1FemStatusTemplate, _Arc1FemHousekeepingTemplate, 2),
-        "2FEM": (_Arc2FemStatusTemplate, _Arc2FemHousekeepingTemplate, 2),
+    # TODO add status templates here
+    SENSOR_OPTIONS = {  # (AutoSubstitution Template, Number of modules)
+        "1FEM": ( 1),
+        "2FEM": ( 2),
     }
 
     # This tells xmlbuilder to use PORT instead of name as the row ID
@@ -516,96 +483,26 @@ class ArcDetector(_OdinDetector):
 
         self.control_server = ODIN_CONTROL_SERVER
 
-        # Add the FEM housekeeping template
-        fem_hk_template = self.SENSOR_OPTIONS[SENSOR][1]
-        fem_hk_args = {
-            "P": args["P"],
-            "R": args["R"],
-            "PORT": PORT,
-            "TIMEOUT": args["TIMEOUT"],
-        }
-        fem_hk_template(**fem_hk_args)
-
         # Instantiate template corresponding to SENSOR, passing through some of own args
-        status_template = self.SENSOR_OPTIONS[SENSOR][0]
-        gui_name = PORT[: PORT.find(".")] + ".Detector"
-        status_args = {
-            "P": args["P"],
-            "R": args["R"],
-            "ADDRESS": "0",
-            "PORT": PORT,
-            "NAME": gui_name,
-            "TIMEOUT": args["TIMEOUT"],
-            "TOTAL": self.SENSOR_OPTIONS[SENSOR][2],
-        }
-        status_template(**status_args)
+        # TODO add status template
+        # status_template = self.SENSOR_OPTIONS[SENSOR][0]
+        # gui_name = PORT[: PORT.find(".")] + ".Detector"
+        # status_args = {
+        #     "P": args["P"],
+        #     "R": args["R"],
+        #     "ADDRESS": "0",
+        #     "PORT": PORT,
+        #     "NAME": gui_name,
+        #     "TIMEOUT": args["TIMEOUT"],
+        #     "TOTAL": self.SENSOR_OPTIONS[SENSOR][2],
+        # }
+        # status_template(**status_args)
 
         self.create_udp_file()
 
     def create_udp_file(self):
-        fem_dests = []
-        for offset in range(
-            self.SENSOR_OPTIONS[self.SENSOR][2]
-        ):  # 1 for 1FEM, 2 for 2FEM
-            fem_dests.append(
-                #    "fems": [
-                "        {{\n"
-                '            "name": "fem{number}",\n'
-                '            "mac": "62:00:00:00:00:0{number}",\n'
-                '            "ipaddr": "10.0.2.10{number}",\n'
-                '            "port": 6000{number},\n'
-                '            "dest_port_offset": {offset}\n'
-                "        }}".format(number=offset + 1, offset=offset)
-                #    ...
-                #    ]
-            )
-
-        if any(
-            server.DIRECT_FEM_CONNECTION
-            for server in self.control_server.odin_data_servers
-        ):
-            node_config = (
-                self.generate_direct_fem_node_config()
-            )  # [[<FEM1>], [<FEM2>], ...]
-            node_labels = ["fem{}".format(n) for n in range(1, len(fem_dests) + 1)]
-        else:
-            node_config = self.generate_simple_node_config()  # [[<ALL_FEMS>]]
-            node_labels = ["all_fems"]
-
-        node_dests = []
-        for node_label, fem_config in zip(node_labels, node_config):
-            fem_node_dests = []
-            for dest_config in fem_config:
-                fem_node_dests.append(
-                    #    "nodes": {
-                    #        "fem1": [
-                    "            {{\n"
-                    '                "name": "dest{id}",\n'
-                    '                "mac": "{mac}",\n'
-                    '                "ipaddr": "{ip}",\n'
-                    '                "port": {port}\n'
-                    "            }}".format(**dest_config)
-                    #        ...
-                    #        ],
-                    #    ...
-                    #    }
-                )
-
-            node_dests.append(
-                #    "nodes": {
-                '        "{}": [\n'
-                "{}\n"
-                "        ]".format(node_label, ",\n".join(fem_node_dests))
-                #    ...
-                #    }
-            )
-
-        macros = dict(
-            FEM_CONFIG=",\n".join(fem_dests),
-            NODE_CONFIG=",\n".join(node_dests),
-            NUM_DESTS=len(self.control_server.odin_data_processes),
-        )
-        expand_template_file("udp_arc.json", macros, "udp_arc.json")
+        # TODO see tristan UDP file creation
+        pass
 
     # __init__ arguments
     ArgInfo = (
