@@ -138,13 +138,13 @@ class _ArcPluginConfig(_PluginConfig):
         hdf = _FileWriterPlugin(source=blosc)
         super(_ArcPluginConfig, self).__init__(
             PLUGIN_1=arc,
-            PLUGIN_2=offset,
-            PLUGIN_3=uid,
-            PLUGIN_4=sum,
-            PLUGIN_5=gap,
-            PLUGIN_6=view,
-            PLUGIN_7=blosc,
-            PLUGIN_8=hdf,
+            PLUGIN_2=uid,
+            PLUGIN_3=sum,
+            PLUGIN_4=view,
+            PLUGIN_5=hdf,
+            # PLUGIN_2=offset,
+            # PLUGIN_5=gap,
+            # PLUGIN_7=blosc,
         )
 
         # Set the modes
