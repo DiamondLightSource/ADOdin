@@ -31,14 +31,39 @@ from plugins import (
     _DatasetCreationPlugin,
 )
 
-
 debug_print("Arc: {}".format(OdinPaths.ARC_DETECTOR), 1)
 
-ARC_DIMENSIONS = {
-    # Sensor: (Width, Height)
-    "1FEM": (768, 3072),
-    "2FEM": (768, 6144),
-}
+
+class ArcDimensions:
+    FEM_PIXELS_PER_CHIP_X = 256
+    FEM_PIXELS_PER_CHIP_Y = 256
+    FEM_CHIPS_PER_SUPER_MODULE_X = 3
+    FEM_CHIPS_PER_SUPER_MODULE_Y = 2
+    FEM_SUPER_MODULES_PER_FEM_X = 1
+    FEM_SUPER_MODULES_PER_FEM_Y = 6
+    FEM_CHIP_GAP_PIXELS_X = 3
+    FEM_CHIP_GAP_PIXELS_Y = 3
+
+    def __init__(self, super_module_count=1):
+        # the following calculations will then determine number of FEMS and pixel
+        # dimensions from the super module count (assuming that the modules are
+        # installed upwards from 0,0 )
+
+        self.fem_count = (
+            int(
+                super_module_count
+                / (self.FEM_SUPER_MODULES_PER_FEM_X * self.FEM_SUPER_MODULES_PER_FEM_Y)
+            )
+            + 1
+        )
+
+        self.x_pixels = self.FEM_PIXELS_PER_CHIP_X * self.FEM_CHIPS_PER_SUPER_MODULE_X
+        self.y_pixels = (
+            self.FEM_PIXELS_PER_CHIP_Y
+            * self.FEM_CHIPS_PER_SUPER_MODULE_Y
+            * self.FEM_SUPER_MODULES_PER_FEM_Y
+        )
+        self.pixels = self.x_pixels * self.y_pixels
 
 
 class _ArcProcessPlugin(_DatasetCreationPlugin):
@@ -47,24 +72,24 @@ class _ArcProcessPlugin(_DatasetCreationPlugin):
     CLASS_NAME = "ArcProcessPlugin"
     LIBRARY_PATH = OdinPaths.ARC_DETECTOR
 
-    def __init__(self, sensor):
-        ddims = [ARC_DIMENSIONS[sensor][1], ARC_DIMENSIONS[sensor][0]]
-        dchunks = [1, ARC_DIMENSIONS[sensor][1], ARC_DIMENSIONS[sensor][0]]
+    def __init__(self, SUPER_MODULES=12):
+        self.dims = ArcDimensions(SUPER_MODULES)
+
+        d_dims = [self.dims.x_pixels, self.dims.y_pixels]
+        d_chunks = [1, self.dims.x_pixels, self.dims.y_pixels]
 
         DATASETS = [
-            dict(name="data", datatype="uint16", dims=ddims, chunks=dchunks),
-            dict(name="data2", datatype="uint16", dims=ddims, chunks=dchunks),
+            dict(name="data", datatype="uint16", dims=d_dims, chunks=d_chunks),
+            dict(name="data2", datatype="uint16", dims=d_dims, chunks=d_chunks),
         ]
         super(_ArcProcessPlugin, self).__init__(None)
-
-        self.sensor = sensor
 
     def create_extra_config_entries(self, rank, total):
         entries = []
         dimensions_entry = {
             self.NAME: {
-                "width": ARC_DIMENSIONS[self.sensor][0],
-                "height": ARC_DIMENSIONS[self.sensor][1],
+                "width": self.dims.x_pixels,
+                "height": self.dims.y_pixels,
             }
         }
         entries.append(create_config_entry(dimensions_entry))
@@ -72,21 +97,24 @@ class _ArcProcessPlugin(_DatasetCreationPlugin):
         return entries
 
     ArgInfo = _FrameProcessorPlugin.ArgInfo + makeArgInfo(
-        __init__, sensor=Choice("Sensor type", ["1FEM", "2FEM"])
+        __init__, SUPER_MODULES=Simple("Super Module Count", int)
     )
 
 
 class _ArcOdinData(_OdinData):
 
     CONFIG_TEMPLATES = {
-        "1FEM": {"FrameProcessor": "fp_arc.json", "FrameReceiver": "fr_arc.json"},
-        "2FEM": {"FrameProcessor": "fp_arc.json", "FrameReceiver": "fr_arc.json"},
+        1: {"FrameProcessor": "fp_arc.json", "FrameReceiver": "fr_arc1.json"},
+        2: {"FrameProcessor": "fp_arc.json", "FrameReceiver": "fr_arc2.json"},
     }
 
-    def __init__(self, server, READY, RELEASE, META, PLUGINS, SENSOR, BASE_UDP_PORT):
+    def __init__(
+        self, server, READY, RELEASE, META, PLUGINS, SUPER_MODULES, BASE_UDP_PORT
+    ):
         super(_ArcOdinData, self).__init__(server, READY, RELEASE, META, PLUGINS)
         self.plugins = PLUGINS
-        self.sensor = SENSOR
+        self.sensor = "Arc {} FEM".format(SUPER_MODULES)
+        self.dims = ArcDimensions(SUPER_MODULES)
         self.base_udp_port = BASE_UDP_PORT
 
     def create_config_files(self, index, total):
@@ -97,14 +125,14 @@ class _ArcOdinData(_OdinData):
             RX_PORT_3=self.base_udp_port
             + 2,  # 2 - 3 will be ignored in the 1FEM template
             RX_PORT_4=self.base_udp_port + 3,
-            WIDTH=ARC_DIMENSIONS[self.sensor][0],
-            HEIGHT=ARC_DIMENSIONS[self.sensor][1],
+            WIDTH=self.dims.x_pixels,
+            HEIGHT=self.dims.y_pixels,
         )
 
         if self.plugins is None:
             super(_ArcOdinData, self).create_config_file(
                 "fp",
-                self.CONFIG_TEMPLATES[self.sensor]["FrameProcessor"],
+                self.CONFIG_TEMPLATES[self.dims.fem_count]["FrameProcessor"],
                 extra_macros=macros,
             )
         else:
@@ -114,7 +142,7 @@ class _ArcOdinData(_OdinData):
 
         super(_ArcOdinData, self).create_config_file(
             "fr",
-            self.CONFIG_TEMPLATES[self.sensor]["FrameReceiver"],
+            self.CONFIG_TEMPLATES[self.dims.fem_count]["FrameReceiver"],
             extra_macros=macros,
         )
 
@@ -127,22 +155,21 @@ class _ArcPluginConfig(_PluginConfig):
     # Device attributes
     AutoInstantiate = True
 
-    def __init__(self, SENSOR):
-        arc = _ArcProcessPlugin(sensor=SENSOR)
+    def __init__(self, dims=ArcDimensions(12)):
+        arc = _ArcProcessPlugin(dims.fem_count)
         offset = _OffsetAdjustmentPlugin(source=arc)
         uid = _UIDAdjustmentPlugin(source=offset)
         sum = _SumPlugin(source=uid)
-        gap = _ArcGapFillPlugin(source=sum, SENSOR=SENSOR, CHIP_GAP=3, MODULE_GAP=124)
-        view = _LiveViewPlugin(source=gap)
-        blosc = _BloscPlugin(source=gap)
-        hdf = _FileWriterPlugin(source=blosc)
+        # gap = _ArcGapFillPlugin(source=sum, dims=dims)
+        view = _LiveViewPlugin(source=sum)
+        hdf = _FileWriterPlugin(source=sum)
         super(_ArcPluginConfig, self).__init__(
             PLUGIN_1=arc,
-            PLUGIN_2=uid,
-            PLUGIN_3=sum,
-            PLUGIN_4=view,
-            PLUGIN_5=hdf,
-            # PLUGIN_2=offset,
+            PLUGIN_3=offset,
+            PLUGIN_4=uid,
+            PLUGIN_5=sum,
+            PLUGIN_6=view,
+            PLUGIN_7=hdf,
             # PLUGIN_5=gap,
             # PLUGIN_7=blosc,
         )
@@ -150,27 +177,17 @@ class _ArcPluginConfig(_PluginConfig):
         # Set the modes
         self.modes = ["compression", "no_compression"]
 
-        # Now we need to create the standard mode chain (with compression)
-        arc.add_mode("compression")
-        offset.add_mode("compression", source=arc)
-        uid.add_mode("compression", source=offset)
-        sum.add_mode("compression", source=uid)
-        gap.add_mode("compression", source=sum)
-        view.add_mode("compression", source=gap)
-        blosc.add_mode("compression", source=gap)
-        hdf.add_mode("compression", source=blosc)
-
         # Now we need to create the no compression mode chain (no blosc in the chain)
         arc.add_mode("no_compression")
         offset.add_mode("no_compression", source=arc)
         uid.add_mode("no_compression", source=offset)
         sum.add_mode("no_compression", source=uid)
-        gap.add_mode("no_compression", source=sum)
-        view.add_mode("no_compression", source=gap)
-        hdf.add_mode("no_compression", source=gap)
+        # gap.add_mode("no_compression", source=sum)
+        view.add_mode("no_compression", source=sum)
+        hdf.add_mode("no_compression", source=sum)
 
     def detector_setup(self, od_args):
-        ## Make an instance of our template
+        # Make an instance of our template
         makeTemplateInstance(_ArcModeTemplate, locals(), od_args)
 
 
@@ -184,33 +201,34 @@ class ArcOdinDataServer(_OdinDataServer):
     def __init__(
         self,
         IP,
+        SUPER_MODULES,
         PROCESSES,
-        SENSOR,
         FEM_DEST_MAC,
         FEM_DEST_IP="10.0.2.2",
         SHARED_MEM_SIZE=1048576000,
         PLUGIN_CONFIG=None,
         FEM_DEST_MAC_2=None,
         FEM_DEST_IP_2=None,
-        DIRECT_FEM_CONNECTION=False,
     ):
-        self.sensor = SENSOR
+        self.sensor = "Arc {} FEM".format(SUPER_MODULES)
+        dims = ArcDimensions(SUPER_MODULES)
         if PLUGIN_CONFIG is None:
             if ArcOdinDataServer.PLUGIN_CONFIG is None:
                 # Create the standard Arc plugin config
-                ArcOdinDataServer.PLUGIN_CONFIG = _ArcPluginConfig(SENSOR)
+                ArcOdinDataServer.PLUGIN_CONFIG = _ArcPluginConfig(dims)
+
+        # Update attributes with parameters
+        self.__dict__.update(locals())
 
         self.__super.__init__(
             IP, PROCESSES, SHARED_MEM_SIZE, ArcOdinDataServer.PLUGIN_CONFIG
         )
-        # Update attributes with parameters
-        self.__dict__.update(locals())
 
     ArgInfo = makeArgInfo(
         __init__,
         IP=Simple("IP address of server hosting OdinData processes", str),
         PROCESSES=Simple("Number of OdinData processes on this server", int),
-        SENSOR=Choice("Sensor type", ["1FEM", "2FEM"]),
+        SUPER_MODULES=Simple("Number of super modules installed on detector", int),
         FEM_DEST_MAC=Simple(
             "MAC address of node data link (destination for FEM to send to)", str
         ),
@@ -221,17 +239,17 @@ class ArcOdinDataServer(_OdinDataServer):
         PLUGIN_CONFIG=Ident("Define a custom set of plugins", _PluginConfig),
         FEM_DEST_MAC_2=Simple("MAC address of second node data link", str),
         FEM_DEST_IP_2=Simple("IP address of second node data link", str),
-        DIRECT_FEM_CONNECTION=Simple(
-            "True if data links go direct from FEM to server. "
-            "False if data links go through a switch. "
-            "This determines what is done with the second FEM_DEST",
-            bool,
-        ),
     )
 
     def create_odin_data_process(self, server, ready, release, meta, plugin_config):
         process = _ArcOdinData(
-            server, ready, release, meta, plugin_config, self.sensor, self.BASE_UDP_PORT
+            server,
+            ready,
+            release,
+            meta,
+            plugin_config,
+            self.SUPER_MODULES,
+            self.BASE_UDP_PORT,
         )
         self.BASE_UDP_PORT += 6
         return process
@@ -304,7 +322,7 @@ class ArcOdinControlServer(_OdinControlServer):
 
     def get_extra_startup_macro(self):
         return (
-            '--staticlogfields beamline=${BEAMLINE},'
+            "--staticlogfields beamline=${BEAMLINE},"
             'application_name="arc_odin",detector="Arc" '
             '--logserver="graylog2.diamond.ac.uk:12210" --access_logging=ERROR'
         )
@@ -441,8 +459,6 @@ class ArcOdinDataDriver(_OdinDataDriver):
     ArgInfo = _OdinDataDriver.ArgInfo.filtered(without=["DETECTOR", "TOTAL", "R"])
 
 
-
-
 class ArcDetector(_OdinDetector):
 
     """Create an Arc detector"""
@@ -450,8 +466,8 @@ class ArcDetector(_OdinDetector):
     DETECTOR = "arc"
     # TODO add status templates here
     SENSOR_OPTIONS = {  # (AutoSubstitution Template, Number of modules)
-        "1FEM": ( 1),
-        "2FEM": ( 2),
+        "1FEM": (1),
+        "2FEM": (2),
     }
 
     # This tells xmlbuilder to use PORT instead of name as the row ID
@@ -583,8 +599,9 @@ class _ArcGapFillPlugin(_FrameProcessorPlugin):
     NAME = "gap"
     CLASS_NAME = "GapFillPlugin"
 
-    def __init__(self, source=None, SENSOR="3M", CHIP_GAP=3, MODULE_GAP=124):
+    def __init__(self, source=None, dims=ArcDimensions(12)):
         super(_ArcGapFillPlugin, self).__init__(source)
+        # TODO work out gaps from the dims values
         self.sensor = SENSOR
         self.chip_gap = CHIP_GAP
         self.module_gap = MODULE_GAP
