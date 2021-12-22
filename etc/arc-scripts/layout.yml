@@ -1,0 +1,46 @@
+---
+template:
+  direction: Horizontal
+  parts:
+    - direction: Vertical  # part 1
+      borderless: true
+      split_size:
+        Fixed: 1
+      run:
+        plugin:
+          location: "zellij:tab-bar"
+    - direction: Vertical # part 2
+      body: true
+    - direction: Vertical # part 3
+      borderless: true
+      split_size:
+        Fixed: 2
+      run:
+        plugin:
+          location: "zellij:status-bar"
+tabs:
+  - name: "Main"
+    # NOTE direction describes the direction of the separator bars
+    # so Horizontal adds panes listed below each other
+    # vertical adds panes listed to the right of each other
+    direction: Horizontal
+    parts:
+      - body: true
+      - direction: Vertical
+        split_size:
+          Percent: 50
+        parts:
+          - run:
+              command: {cmd: bash, args: ["-c", "${FR1}"]}
+          - run:
+              command: {cmd: bash, args: ["-c", "${FP1}"]}
+      - direction: Vertical
+        parts:
+          - run:
+              command: {cmd: bash, args: ["-c", "cd /dls_sw/work/Arc/arc-detector/control/ && pipenv run arc_simulator"]}      
+          - run:
+              command: {cmd: bash, args: ["-c", "${MetaWriter}"]}
+      - run: 
+          command:  {cmd: bash, args: ["-c", "${IOC}"]}
+        split_size:
+            Percent: 20
