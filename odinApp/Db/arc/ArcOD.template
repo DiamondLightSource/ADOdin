@@ -35,5 +35,5 @@ record(stringout, "$(P)$(R)$(ADDRESS)FPOperationMode")
     field(OMSL, "closed_loop")
     field(DOL,  "$(P)$(DET)OperationMode_STR.SVAL CP")
     field(DTYP, "asynOctetWrite")
-    field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS$(TOTAL)_fp/config/latrd/mode/$(ADDRESS)")
+    field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS$(TOTAL)_fp/config/arc/mode/$(ADDRESS)")
 }

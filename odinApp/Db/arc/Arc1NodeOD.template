@@ -7,7 +7,6 @@
 # This associates the template with an edm screen
 # % gui, $(name), edm, ArcDAQ2Status.edl, P=$(P),R=$(R)
 # % gui, $(PORT), edmtab, ArcDAQMain.edl, P=$(P),R=$(R)
-# % gui, $(PORT), edmtab, ExcaliburDAQMain.edl, P=$(P),R=$(R)
 # % gui, $(OD_HDF_STATUS_GUI), edm, OdinDataStatus1.edl, P=$(P),R=$(R)
 
 
@@ -17,9 +16,9 @@
 #
 ################################################################################
 
-substitute "TOTAL=2"
+substitute "TOTAL=1"
 substitute "ADDRESS=0"
-include "ExcaliburOD.template"
+include "ArcOD.template"
 
 ###################################################################
 #  This ensures that the correct HDF5 bit depth is selected       #

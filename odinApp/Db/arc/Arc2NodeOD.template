@@ -1,5 +1,3 @@
-# arc1NodeOD.template
-# Defines the parameters required for the Arc processing plugin
 
 # % macro, P, Device Prefix
 # % macro, R, Device Suffix
@@ -11,9 +9,10 @@
 # % gui, $(PORT), edmtab, ArcDAQMain.edl, P=$(P),R=$(R)
 # % gui, $(OD_HDF_STATUS_GUI), edm, OdinDataStatus1.edl, P=$(P),R=$(R)
 
+
 ################################################################################
 #
-# Include 4 FP templates
+# Include 1 FP template
 #
 ################################################################################
 
@@ -30,39 +29,35 @@ include "ArcOD.template"
 record(calcout, "$(P)$(R)DetToFPBitDepth")
 {
     field(INPA, "$(P)$(DET)CounterDepth CP")
-    field(CALC, "A=0||A=1?0:A=2?1:2")
-    field(OUT, "$(P):OD:DataType PP")
+    field(CALC, "A=0||A=1?0:A=2?1:A=3?2:1")
+    field(OUT, "$(P)$(R)DataType PP")
 }
 
 ###################################################################
-#  This ensures that the acquisition ID is sent to the            #
-#  process plugin when capture is started.                        #
+#  Override the image width, height and chunk records             #
+#  to make sure they are disabled.                                #
 ###################################################################
-# Process AcqID_Calc when $(P)$(R):Capture set to 1
-record(calcout, "$(P)$(R)Proc:CalcCaptureStart")
+record(longout, "$(P)$(R)ImageWidth")
 {
-    field(INPA, "$(P)$(R)Capture CP")
-    field(CALC, "A=1?1:0")
-    field(OUT, "$(P)$(R)Proc:AcqID_Calc.PROC PP")
-    field(OOPT, "Transition To Non-zero")
+    field(DISA, "1")
 }
 
-# Fetch AcquisitionID from OdinDataDriver
-record(acalcout, "$(P)$(R)Proc:AcqID_Calc")
+record(longout, "$(P)$(R)ImageHeight")
 {
-    field(INAA, "$(P)$(R)AcquisitionID CP")
-    field(CALC, "AA")
-    field(OOPT, "Every Time")
-    field(DOPT, "Use CALC")
-    field(OUT,  "$(P)$(R)Proc:AcquisitionID PP")
-    field(NELM, "256")
-    field(NUSE, "256")
+    field(DISA, "1")
 }
 
-record(waveform, "$(P)$(R)Proc:AcquisitionID")
+record(longout, "$(P)$(R)NumColChunks")
 {
-    field(DTYP, "asynOctetWrite")
-    field(FTVL, "CHAR")
-    field(NELM, "256")
-    field(INP,  "@asyn($(PORT),0,1)_ODS_fp/config/latrd/acq_id")
+    field(DISA, "1")
+}
+
+record(longout, "$(P)$(R)NumRowChunks")
+{
+    field(DISA, "1")
+}
+
+record(longout, "$(P)$(R)NumFramesChunks")
+{
+    field(DISA, "1")
 }
