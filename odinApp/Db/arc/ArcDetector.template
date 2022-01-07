@@ -11,6 +11,14 @@
 
 include "ADBase.template"
 
+
+###################################################################
+# Force polling of status at 1Hz
+record(bo, "$(P)$(R)ReadStatus")
+{
+    field(SCAN, "1 second")
+}
+
 ###################################################################
 #  Connection                                                     #
 ###################################################################
@@ -62,86 +70,6 @@ record(longin, "$(P)$(R)UdpSent_RBV")
 #% archiver 1 monitor
 record(longin, "$(P)$(R)UdpReceived_RBV")
 {
-}
-
-# Operation mode.
-# % autosave 2
-#% archiver 10 Monitor
-record(mbbo, "$(P)$(R)OperationMode")
-{
-    field(SCAN, "Passive")
-    field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/mode")
-    field(ZRVL, "0")
-    field(ONVL, "1")
-    field(TWVL, "2")
-    field(ZRST, "time_energy")
-    field(ONST, "time_only")
-    field(TWST, "count")
-    field(PINI, "1")
-}
-
-# Operation mode read back.
-record(mbbi, "$(P)$(R)OperationMode_RBV")
-{
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/mode")
-    field(ZRVL, "0")
-    field(ONVL, "1")
-    field(TWVL, "2")
-    field(ZRST, "time_energy")
-    field(ONST, "time_only")
-    field(TWST, "count")
-}
-
-# Obtain the string representation of the mode
-record(scalcout, "$(P)$(R)OperationMode_STR")
-{
-    field(INPA, "$(P)$(R)OperationMode CP")
-    field(INAA, "$(P)$(R)OperationMode.ZRST CP")
-    field(INBB, "$(P)$(R)OperationMode.ONST CP")
-    field(INCC, "$(P)$(R)OperationMode.TWST CP")
-    field(CALC, "@@A")
-}
-
-# Profile.
-# % autosave 2
-#% archiver 10 Monitor
-record(mbbo, "$(P)$(R)Profile")
-{
-    field(SCAN, "Passive")
-    field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/profile")
-    field(ZRVL, "0")
-    field(ONVL, "1")
-    field(TWVL, "2")
-    field(THVL, "3")
-    field(FRVL, "4")
-    field(ZRST, "standard")
-    field(ONST, "fast")
-    field(TWST, "energy")
-    field(THST, "user")
-    field(FRST, "current")
-    field(PINI, "1")
-}
-
-# Profile read back.
-record(mbbi, "$(P)$(R)Profile_RBV")
-{
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/profile")
-    field(ZRVL, "0")
-    field(ONVL, "1")
-    field(TWVL, "2")
-    field(THVL, "3")
-    field(FRVL, "4")
-    field(ZRST, "standard")
-    field(ONST, "fast")
-    field(TWST, "energy")
-    field(THST, "user")
-    field(FRST, "current")
 }
 
 record(bo, "$(P)$(R)CommandTimeZero")
@@ -366,38 +294,6 @@ record(mbbi, "$(P)$(R)TriggerTimestampTtl_RBV")
     field(THST, "both")
 }
 
-# % autosave 2
-#% archiver 10 Monitor
-record(mbbo, "$(P)$(R)TriggerTimestampTzero")
-{
-    field(SCAN, "Passive")
-    field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp/tzero")
-    field(ZRVL, "0")
-    field(ONVL, "1")
-    field(TWVL, "2")
-    field(THVL, "3")
-    field(ZRST, "none")
-    field(ONST, "re")
-    field(TWST, "fe")
-    field(THST, "both")
-    field(PINI, "1")
-}
-
-record(mbbi, "$(P)$(R)TriggerTimestampTzero_RBV")
-{
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp/tzero")
-    field(ZRVL, "0")
-    field(ONVL, "1")
-    field(TWVL, "2")
-    field(THVL, "3")
-    field(ZRST, "none")
-    field(ONST, "re")
-    field(TWST, "fe")
-    field(THST, "both")
-}
 
 ###################################################################
 #  Termination                                                    #
@@ -478,38 +374,6 @@ record(mbbi, "$(P)$(R)TriggerPrimaryClkSrc_RBV")
     field(ONVL, "1")
     field(ZRST, "internal")
     field(ONST, "external")
-}
-
-###################################################################
-#  Time Zero                                                      #
-###################################################################
-# % autosave 2
-#% archiver 10 Monitor
-record(mbbo, "$(P)$(R)TriggerTimeZero")
-{
-    field(SCAN, "Passive")
-    field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/tzero")
-    field(ZRVL, "0")
-    field(ONVL, "1")
-    field(TWVL, "2")
-    field(ZRST, "internal")
-    field(ONST, "external")
-    field(TWST, "off")
-    field(PINI, "1")
-}
-
-record(mbbi, "$(P)$(R)TriggerTimeZero_RBV")
-{
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/tzero")
-    field(ZRVL, "0")
-    field(ONVL, "1")
-    field(TWVL, "2")
-    field(ZRST, "internal")
-    field(ONST, "external")
-    field(TWST, "off")
 }
 
 ###################################################################
@@ -741,15 +605,6 @@ record(stringin, "$(P)$(R)YPixelSize_RBV")
     field(SCAN, "I/O Intr")
     field(DTYP, "asynOctetRead")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/y_pixel_size")
-}
-
-#% archiver 1 monitor
-record(longin, "$(P)$(R)TimesliceNumber_RBV")
-{
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynInt32")
-    field(VAL,  "0")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_status/detector/timeslice_number")
 }
 
 #% archiver 1 monitor
