@@ -37,3 +37,4 @@ record(stringout, "$(P)$(R)$(ADDRESS)FPOperationMode")
     field(DTYP, "asynOctetWrite")
     field(OUT,  "@asyn($(PORT),$(ADDRESS),$(TIMEOUT))_ODS$(TOTAL)_fp/config/arc/mode/$(ADDRESS)")
 }
+

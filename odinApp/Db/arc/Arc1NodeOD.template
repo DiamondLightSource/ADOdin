@@ -20,6 +20,58 @@ substitute "TOTAL=1"
 substitute "ADDRESS=0"
 include "ArcOD.template"
 
+
+###################################################################
+#  This sums all UDP packets across all FRs                   #
+###################################################################
+record(calcout, "$(P)$(R)SumUdpPackets")
+{
+    field(INPA, "$(P):OD1:SumUdpPackets CP")
+    field(CALC, "A")
+    field(OUT, "$(P)$(DET)UdpReceived_RBV PP")
+}
+
+
+###################################################################
+#  This checks FR connected status across all FRs             #
+###################################################################
+record(calcout, "$(P)$(R)FRConnected_RBV")
+{
+    field(INPA, "$(P):OD1:FRProcessConnected_RBV CP")
+    field(CALC, "A")
+}
+
+
+###################################################################
+#  This checks FP connected status across all FPs             #
+###################################################################
+record(calcout, "$(P)$(R)FPConnected_RBV")
+{
+    field(INPA, "$(P):OD1:FPProcessConnected_RBV CP")
+    field(CALC, "A")
+}
+
+
+###################################################################
+#  This checks FP error status across all FPs                 #
+###################################################################
+record(calcout, "$(P)$(R)FPError_RBV")
+{
+    field(INPA, "$(P):OD1:FPErrorState_RBV CP")
+    field(CALC, "A")
+}
+
+
+###################################################################
+#  This resets all FRs                                            #
+###################################################################
+record(seq, "$(P)$(R)ResetAllFR")
+{
+    field(DOL1, "1")
+    field(LNK1, "$(P):OD1:ResetStats.PROC PP")
+    field(DLY1, "0.0")
+}
+
 ###################################################################
 #  This ensures that the correct HDF5 bit depth is selected       #
 #  when the detector bit depth is changed.                        #
@@ -59,3 +111,6 @@ record(longout, "$(P)$(R)NumFramesChunks")
 {
     field(DISA, "1")
 }
+
+
+
