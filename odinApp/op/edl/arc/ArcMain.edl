@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 709
-y 131
+x 2239
+y 474
 w 390
 h 820
 font "arial-bold-r-12.0"
@@ -54,44 +54,6 @@ fill
 fillColor index 3
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 275
-y 605
-w 105
-h 25
-controlPv "$(P)$(R)CounterDepth"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 275
-y 575
-w 105
-h 25
-controlPv "$(P)$(R)OperationMode"
-fgColor index 16
-fgAlarm
-bgColor index 10
-fill
-font "arial-bold-r-12.0"
-fontAlign "center"
-endObjectProperties
-
 # (Rectangle)
 object activeRectangleClass
 beginObjectProperties
@@ -113,30 +75,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 205
-y 575
-w 65
-h 25
-font "arial-bold-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Operation"
-  "Mode"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
 x 5
 y 220
-w 71
+w 2
 h 13
 font "arial-medium-r-12.0"
 fgColor index 14
@@ -156,7 +97,7 @@ minor 1
 release 1
 x 200
 y 550
-w 88
+w 2
 h 13
 font "arial-medium-r-12.0"
 fgColor index 14
@@ -191,7 +132,7 @@ minor 1
 release 1
 x 5
 y 5
-w 32
+w 2
 h 13
 font "arial-medium-r-12.0"
 fgColor index 14
@@ -378,7 +319,7 @@ minor 1
 release 1
 x 200
 y 100
-w 74
+w 2
 h 13
 font "arial-medium-r-12.0"
 fgColor index 14
@@ -600,7 +541,7 @@ minor 1
 release 1
 x 200
 y 310
-w 48
+w 2
 h 13
 font "arial-medium-r-12.0"
 fgColor index 14
@@ -787,7 +728,7 @@ minor 1
 release 1
 x 5
 y 100
-w 49
+w 2
 h 13
 font "arial-medium-r-12.0"
 fgColor index 14
@@ -991,66 +932,6 @@ font "arial-bold-r-12.0"
 fontAlign "center"
 endObjectProperties
 
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 205
-y 605
-w 65
-h 25
-font "arial-bold-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Profile"
-}
-endObjectProperties
-
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 275
-y 605
-w 105
-h 25
-fgColor index 25
-bgColor index 3
-inconsistentColor index 0
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)$(R)Profile"
-indicatorPv "$(P)$(R)Profile_RBV"
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 275
-y 575
-w 105
-h 25
-fgColor index 25
-bgColor index 3
-inconsistentColor index 0
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)$(R)OperationMode"
-indicatorPv "$(P)$(R)OperationMode_RBV"
-font "arial-bold-r-12.0"
-endObjectProperties
-
 # (Message Button)
 object activeMessageButtonClass
 beginObjectProperties
@@ -1226,26 +1107,6 @@ major 4
 minor 0
 release 0
 x 80
-y 600
-w 105
-h 25
-fgColor index 25
-bgColor index 3
-inconsistentColor index 0
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)$(R)TriggerTimeZero"
-indicatorPv "$(P)$(R)TriggerTimeZero_RBV"
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 80
 y 630
 w 105
 h 25
@@ -1397,26 +1258,6 @@ useDisplayBg
 value {
   "Clock"
   "Source"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 10
-y 600
-w 65
-h 25
-font "arial-bold-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "T Zero"
 }
 endObjectProperties
 
@@ -1606,46 +1447,6 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 10
-y 455
-w 65
-h 25
-font "arial-bold-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "T Zero"
-}
-endObjectProperties
-
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 80
-y 455
-w 105
-h 25
-fgColor index 25
-bgColor index 3
-inconsistentColor index 0
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)$(R)TriggerTimestampTzero"
-indicatorPv "$(P)$(R)TriggerTimestampTzero_RBV"
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
 x 205
 y 495
 w 65
@@ -1780,29 +1581,8 @@ major 4
 minor 1
 release 1
 x 200
-y 670
-w 65
-h 25
-font "arial-bold-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Time"
-  "Zero"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 200
 y 645
-w 51
+w 2
 h 13
 font "arial-medium-r-12.0"
 fgColor index 14
@@ -1812,29 +1592,6 @@ value {
 }
 autoSize
 border
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 275
-y 670
-w 105
-h 25
-fgColor index 25
-onColor index 3
-offColor index 3
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)$(R)CommandTimeZero.PROC"
-pressValue "1"
-onLabel "time_zero"
-offLabel "time_zero"
-3d
-font "arial-bold-r-12.0"
 endObjectProperties
 
 # (Byte)
@@ -2045,7 +1802,7 @@ minor 1
 release 1
 x 5
 y 720
-w 74
+w 2
 h 13
 font "arial-medium-r-12.0"
 fgColor index 14
