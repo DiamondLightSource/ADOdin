@@ -78,14 +78,16 @@ class _ArcProcessPlugin(_DatasetCreationPlugin):
         d_dims = [self.dims.x_pixels, self.dims.y_pixels]
         d_chunks = [1, self.dims.x_pixels, self.dims.y_pixels]
 
-        DATASETS = [
+        self.DATASETS = [
             dict(name="data", datatype="uint16", dims=d_dims, chunks=d_chunks),
             dict(name="data2", datatype="uint16", dims=d_dims, chunks=d_chunks),
         ]
         super(_ArcProcessPlugin, self).__init__(None)
 
     def create_extra_config_entries(self, rank, total):
-        entries = []
+        entries = super(_ArcProcessPlugin, self).create_extra_config_entries(
+            self, rank
+        )
         dimensions_entry = {
             self.NAME: {
                 "width": self.dims.x_pixels,
@@ -122,8 +124,8 @@ class _ArcOdinData(_OdinData):
             DETECTOR=OdinPaths.ARC_DETECTOR,
             RX_PORT_1=self.base_udp_port,
             RX_PORT_2=self.base_udp_port + 1,
-            RX_PORT_3=self.base_udp_port
-            + 2,  # 2 - 3 will be ignored in the 1FEM template
+            # 2 - 3 will be ignored in the 1FEM template
+            RX_PORT_3=self.base_udp_port + 2,
             RX_PORT_4=self.base_udp_port + 3,
             WIDTH=self.dims.x_pixels,
             HEIGHT=self.dims.y_pixels,
@@ -152,7 +154,7 @@ class _ArcModeTemplate(AutoSubstitution):
 
 
 class _ArcPluginConfig(_PluginConfig):
-    # Device attributes
+    # Class to define the standard set of plugins that an Arc Detector uses
     AutoInstantiate = True
 
     def __init__(self, dims=ArcDimensions(12)):
