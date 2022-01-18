@@ -61,7 +61,7 @@ class ArcDimensions:
         self.y_pixels = (
             self.FEM_PIXELS_PER_CHIP_Y
             * self.FEM_CHIPS_PER_SUPER_MODULE_Y
-            * self.FEM_SUPER_MODULES_PER_FEM_Y
+            * super_module_count
         )
         self.pixels = self.x_pixels * self.y_pixels
 
@@ -75,8 +75,8 @@ class _ArcProcessPlugin(_DatasetCreationPlugin):
     def __init__(self, SUPER_MODULES=12):
         self.dims = ArcDimensions(SUPER_MODULES)
 
-        d_dims = [self.dims.x_pixels, self.dims.y_pixels]
-        d_chunks = [1, self.dims.x_pixels, self.dims.y_pixels]
+        d_dims = [self.dims.y_pixels, self.dims.x_pixels]
+        d_chunks = [1, self.dims.y_pixels, self.dims.x_pixels]
 
         self.DATASETS = [
             dict(name="data", datatype="uint16", dims=d_dims, chunks=d_chunks),
@@ -85,9 +85,7 @@ class _ArcProcessPlugin(_DatasetCreationPlugin):
         super(_ArcProcessPlugin, self).__init__(None)
 
     def create_extra_config_entries(self, rank, total):
-        entries = super(_ArcProcessPlugin, self).create_extra_config_entries(
-            self, rank
-        )
+        entries = super(_ArcProcessPlugin, self).create_extra_config_entries(self, rank)
         dimensions_entry = {
             self.NAME: {
                 "width": self.dims.x_pixels,
@@ -611,7 +609,10 @@ class _ArcGapFillPlugin(_FrameProcessorPlugin):
     def create_extra_config_entries(self, rank, total):
         entries = []
 
-        chip_size = [256, 256]
+        chip_size = [
+            ArcDimensions.FEM_PIXELS_PER_CHIP_X,
+            ArcDimensions.FEM_PIXELS_PER_CHIP_Y,
+        ]
         x_gaps = [0] + [self.chip_gap] * 7 + [0]
         # TODO these will need adjusting
         if self.sensor == "1FEM":
