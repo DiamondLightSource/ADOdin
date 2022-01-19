@@ -18,29 +18,38 @@ template:
       run:
         plugin:
           location: "zellij:status-bar"
+session:
+  name: arc-detector
+  attach: true
 tabs:
   - name: "Main"
-    # NOTE direction describes the direction of the separator bars
-    # so Horizontal adds panes listed below each other
-    # vertical adds panes listed to the right of each other
     direction: Horizontal
     parts:
-      - body: true
+      - direction: Vertical
+        split_size:
+          Percent: 20
+        parts:     
+          - run: 
+              command:  {cmd: bash, args: ["-c", "sleep 4 && ${OdinServer}"]}
+            pane_name: Odin Server
+          - run: 
+              command:  {cmd: bash, args: ["-c", "${IOC}"]}
+            pane_name: EPICS IOC
       - direction: Vertical
         split_size:
           Percent: 50
         parts:
           - run:
               command: {cmd: bash, args: ["-c", "${FR1}"]}
+            pane_name: Frame Receiver
           - run:
               command: {cmd: bash, args: ["-c", "${FP1}"]}
+            pane_name: Frame Processor
       - direction: Vertical
         parts:
           - run:
               command: {cmd: bash, args: ["-c", "cd /dls_sw/work/Arc/arc-detector/control/ && pipenv run arc_simulator"]}      
+            pane_name: Arc Simulator
           - run:
-              command: {cmd: bash, args: ["-c", "${MetaWriter}"]}
-      - run: 
-          command:  {cmd: bash, args: ["-c", "${IOC}"]}
-        split_size:
-            Percent: 20
+              command: {cmd: bash, args: ["-c", "${MetaWriter}"]}  
+            pane_name: Meta Writer
