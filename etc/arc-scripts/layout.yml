@@ -26,30 +26,38 @@ tabs:
     direction: Horizontal
     parts:
       - direction: Vertical
-        split_size:
-          Percent: 20
         parts:     
           - run: 
-              command:  {cmd: bash, args: ["-c", "sleep 4 && ${OdinServer}"]}
+              command:  {cmd: bash, args: ["-c", "sleep 7 && ${OdinServer} ; bash"]}
             pane_name: Odin Server
           - run: 
-              command:  {cmd: bash, args: ["-c", "${IOC}"]}
+              command:  {cmd: bash, args: ["-c", "${IOC} ; bash"]}
             pane_name: EPICS IOC
       - direction: Vertical
         split_size:
-          Percent: 50
+              Percent: 50
         parts:
           - run:
-              command: {cmd: bash, args: ["-c", "${FR1}"]}
+              command: {cmd: bash, args: ["-c", "${FR1} ; bash"]}
             pane_name: Frame Receiver
           - run:
-              command: {cmd: bash, args: ["-c", "${FP1}"]}
+              command: {cmd: bash, args: ["-c", "${FP1} ; bash"]}
+            split_size:
+              Percent: 60
             pane_name: Frame Processor
       - direction: Vertical
         parts:
           - run:
-              command: {cmd: bash, args: ["-c", "cd /dls_sw/work/Arc/arc-detector/control/ && pipenv run arc_simulator"]}      
+              command: {cmd: bash, args: ["-c", "cd /dls_sw/work/Arc/arc-detector/control/ && pipenv run arc_simulator ; bash"]}      
             pane_name: Arc Simulator
           - run:
-              command: {cmd: bash, args: ["-c", "${MetaWriter}"]}  
+              command: {cmd: bash, args: ["-c", "${MetaWriter} ; bash"]}  
             pane_name: Meta Writer
+      - direction: Vertical
+        parts:
+          - run:
+              command: {cmd: bash}  
+            pane_name: Bash Shell
+          - run:
+              command: {cmd: bash}  
+            pane_name: Bash Shell
