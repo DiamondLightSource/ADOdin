@@ -7,11 +7,11 @@
 	<ADOdin.OdinLogConfig BEAMLINE="iXX" DETECTOR="Arc" name="LogConfig"/>
 	<!--6 -> 1 Second-->
 	<EPICS_BASE.dbpf name="Polling" pv="ARC:OD:ReadStatus.SCAN" value="6"/>
-	<EPICS_BASE.dbpf name="ImageWidth" pv="ARC:OD:ImageWidth" value="768"/>
-	<EPICS_BASE.dbpf name="ImageHeight" pv="ARC:OD:ImageHeight" value="6144"/>
+	<EPICS_BASE.dbpf name="ImageWidth" pv="ARC:OD:ImageWidth" value="256"/>
+	<EPICS_BASE.dbpf name="ImageHeight" pv="ARC:OD:ImageHeight" value="1280"/>
 	<EPICS_BASE.dbpf name="ChunkDepth" pv="ARC:OD:NumFramesChunks" value="1"/>
-	<EPICS_BASE.dbpf name="ChunkWidth" pv="ARC:OD:NumColChunks" value="768"/>
-	<EPICS_BASE.dbpf name="ChunkHeight" pv="ARC:OD:NumRowChunks" value="6144"/>
+	<EPICS_BASE.dbpf name="ChunkWidth" pv="ARC:OD:NumColChunks" value="256"/>
+	<EPICS_BASE.dbpf name="ChunkHeight" pv="ARC:OD:NumRowChunks" value="1280"/>
 	<EPICS_BASE.dbpf name="DataType" pv="ARC:OD:DataType" value="UInt16"/>
 	<EPICS_BASE.dbpf name="UDPConfig" pv="ARC:CAM:UdpConfigFile" value="$(INSTALL)/arcApp/data/udp_arc.json"/>
 	<ADOdin.OdinStartAllScript driver="ODN.OD" name="StartAllScript"/>

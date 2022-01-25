@@ -31,7 +31,7 @@ tabs:
               command:  {cmd: bash, args: ["-c", "sleep 7 && ${OdinServer} ; bash"]}
             pane_name: Odin Server
           - run: 
-              command:  {cmd: bash, args: ["-c", "${IOC} ; bash"]}
+              command:  {cmd: bash, args: ["-c", "sleep 7 && ${IOC} ; bash"]}
             pane_name: EPICS IOC
       - direction: Vertical
         split_size:

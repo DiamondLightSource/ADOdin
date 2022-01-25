@@ -63,6 +63,16 @@ class ArcDimensions:
             * self.FEM_CHIPS_PER_SUPER_MODULE_Y
             * super_module_count
         )
+
+        # TODO TODO TODO - the pixels in the first example UDP capture file 
+        # are 256 * 1280 which does not line up with any definition of 
+        # super module -> dimensions calculation 
+        # SUGGESTION: make the code agnostic of dimensions and use the 
+        # packet header info only - is that possible?
+        # if not just supply dimensions and rebuild everything for each change
+        self.x_pixels = 256
+        self.y_pixels = 1280
+
         self.pixels = self.x_pixels * self.y_pixels
 
 
