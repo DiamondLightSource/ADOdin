@@ -205,20 +205,28 @@ class ArcOdinDataServer(_OdinDataServer):
 
     """Store configuration for an ArcOdinDataServer"""
 
-    BASE_UDP_PORT = 61649
+    BASE_UDP_PORT = 61000
     PLUGIN_CONFIG = None
 
+    # TODO TODO In reality the Arc Server will have 4 FEM DEST NICs
+    # so this class needs 4 sets of FEM details added OR the builder
+    # model would need changing
+
+    # for the moment with 1 FEM and n FR this works OK and I'm going to 
+    # defer changes because I would prefer to rewrite a Python Odin 
+    # config generator in Python3, supported by ibek and containerised
+    # Odin IOCs
     def __init__(
         self,
         IP,
-        SUPER_MODULES,
         PROCESSES,
         FEM_DEST_MAC,
         FEM_DEST_IP="10.0.2.2",
+        FEM_DEST_SUBNET=24,
+        FEM_DEST_NAME="em1",
+        SUPER_MODULES=2,
         SHARED_MEM_SIZE=1048576000,
-        PLUGIN_CONFIG=None,
-        FEM_DEST_MAC_2=None,
-        FEM_DEST_IP_2=None,
+        PLUGIN_CONFIG=None
     ):
         self.sensor = "Arc {} FEM".format(SUPER_MODULES)
         dims = ArcDimensions(SUPER_MODULES)
@@ -245,10 +253,14 @@ class ArcOdinDataServer(_OdinDataServer):
         FEM_DEST_IP=Simple(
             "IP address of node data link (destination for FEM to send to)", str
         ),
+        FEM_DEST_SUBNET=Simple(
+            "Subnet bits of node data link IP (destination for FEM to send to)", str
+        ),
+        FEM_DEST_NAME=Simple(
+            "NIC name of node data link (destination for FEM to send to)", str
+        ),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
         PLUGIN_CONFIG=Ident("Define a custom set of plugins", _PluginConfig),
-        FEM_DEST_MAC_2=Simple("MAC address of second node data link", str),
-        FEM_DEST_IP_2=Simple("IP address of second node data link", str),
     )
 
     def create_odin_data_process(self, server, ready, release, meta, plugin_config):
@@ -261,7 +273,7 @@ class ArcOdinDataServer(_OdinDataServer):
             self.SUPER_MODULES,
             self.BASE_UDP_PORT,
         )
-        self.BASE_UDP_PORT += 6
+        self.BASE_UDP_PORT += 1
         return process
 
 
@@ -453,7 +465,6 @@ class ArcOdinDataDriver(_OdinDataDriver):
                 )
             )
         else:
-            sensor = self.ODIN_DATA_PROCESSES[0].sensor
             template_args = dict(
                 P=args["P"],
                 R=":OD:",
@@ -474,11 +485,6 @@ class ArcDetector(_OdinDetector):
     """Create an Arc detector"""
 
     DETECTOR = "arc"
-    # TODO add status templates here
-    SENSOR_OPTIONS = {  # (AutoSubstitution Template, Number of modules)
-        "1FEM": (1),
-        "2FEM": (2),
-    }
 
     # This tells xmlbuilder to use PORT instead of name as the row ID
     UniqueName = "PORT"
@@ -492,7 +498,7 @@ class ArcDetector(_OdinDetector):
         PORT,
         ODIN_CONTROL_SERVER,
         ODIN_DATA_DRIVER,
-        SENSOR,
+        FEMS=1,
         BUFFERS=0,
         MEMORY=0,
         **args
@@ -526,10 +532,6 @@ class ArcDetector(_OdinDetector):
 
         self.create_udp_file()
 
-    def create_udp_file(self):
-        # TODO see tristan UDP file creation
-        pass
-
     # __init__ arguments
     ArgInfo = (
         ADBaseTemplate.ArgInfo
@@ -541,7 +543,7 @@ class ArcDetector(_OdinDetector):
                 "Odin control server instance", _OdinControlServer
             ),
             ODIN_DATA_DRIVER=Ident("OdinDataDriver instance", _OdinDataDriver),
-            SENSOR=Choice("Sensor type", SENSOR_OPTIONS.keys()),
+            FEMS=Simple("FEM Count", int),
             BUFFERS=Simple(
                 "Maximum number of NDArray buffers to be created for plugin callbacks",
                 int,
@@ -555,54 +557,49 @@ class ArcDetector(_OdinDetector):
     )
     ArgInfo = ArgInfo.filtered(without=["R"])
 
-    def generate_simple_node_config(self):
-        fem_config = []
-        for idx, process in enumerate(
-            sorted(self.control_server.odin_data_processes, key=lambda x: x.RANK)
-        ):
-            config = dict(
-                id=idx + 1,
-                mac=process.server.FEM_DEST_MAC,
-                ip=process.server.FEM_DEST_IP,
-                port=process.base_udp_port,
-            )
-            fem_config.append(config)
+    def create_udp_file(self):
+        nodes = self.generate_point_to_point_config()
+        div_floor, div_rem = divmod(len(nodes), self.FEMS)
+        # Split the list of all available nodes (FR applications) into equally sized lists
+        node_list = list(nodes[i * div_floor + min(i, div_rem):(i + 1)
+         * div_floor + min(i + 1, div_rem)] for i in range(self.FEMS))
 
-        # A nested list to specify the same config is valid for all FEMS
-        node_config = [fem_config]
-        return node_config
+        udp_config = {}
+        # Now loop over the modules, creating a full node list for each
+        # After each iteration, move the first block of nodes to the back of the list
+        # This creates a round robin list for each module across all nodes, with each
+        # starting node spread equally across all available nodes
+        for index in range(self.FEMS):
+            module_key = "module{:02d}".format(index+1)
+            module_nodes = [element for node in node_list for element in node]
+            udp_config[module_key] = {'nodes': module_nodes}
+            first_node = node_list[0]
+            node_list = node_list[1:]
+            node_list.append(first_node)
 
-    def generate_direct_fem_node_config(self):
-        if len(self.control_server.odin_data_servers) != 1:
-            raise ValueError(
-                "Can only use DIRECT_FEM_CONNECTION with a single OdinDataServer"
-            )
-        server = self.control_server.odin_data_servers[0]
-        if server.FEM_DEST_MAC_2 is None or server.FEM_DEST_IP_2 is None:
-            raise ValueError(
-                "DIRECT_FEM_CONNECTION requires FEM_DEST_MAC_2 and FEM_DEST_IP_2"
-            )
+        # Generate the udp configuration file
+        macros = dict(
+            MODULE_CONFIG=create_config_entry(udp_config)
+        )
 
-        # FEMs are connected directly to a NIC on the server
-        # Each will have its own list of entries, one for every receiver, with different ports
+        expand_template_file("udp_arc.json", macros, "udp_arc.json")
+
+    def generate_point_to_point_config(self):
         node_config = []
-        id = 1
-        for mac, ip in [
-            (server.FEM_DEST_MAC, server.FEM_DEST_IP),
-            (server.FEM_DEST_MAC_2, server.FEM_DEST_IP_2),
-        ]:
+        for server in self.control_server.odin_data_servers:
             fem_config = []
-            for process in sorted(
-                self.control_server.odin_data_processes, key=lambda x: x.RANK
-            ):
-                config = dict(id=id, mac=mac, ip=ip, port=process.base_udp_port)
+            for idx, process in enumerate(sorted(server.processes, key=lambda x: x.RANK)):
+                config = dict(
+                    mac=process.server.FEM_DEST_MAC,
+                    name=process.server.FEM_DEST_NAME,
+                    ipaddr=process.server.FEM_DEST_IP,
+                    port=process.base_udp_port,
+                    subnet=process.server.FEM_DEST_SUBNET,
+                    links=[1, 1, 0, 0, 0, 0, 0, 0]
+                )
                 fem_config.append(config)
-                id += 1
-
             node_config.append(fem_config)
-
         return node_config
-
 
 class _ArcGapFillPlugin(_FrameProcessorPlugin):
 

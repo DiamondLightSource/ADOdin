@@ -5,6 +5,11 @@
 #
 # this uses zellij which is a little easier to use than tmux
 
+# this makes it easier to run python projects on multiple machines
+# without having to release a lightweight virtual env to production
+# NOTE: this environment variable must be set when the build is run too
+export PIPENV_VENV_IN_PROJECT=enabled
+
 export THIS_DIR="$(realpath $(dirname ${BASH_SOURCE[0]}))"
 export SESSION="ArcOdin"
 
@@ -26,4 +31,5 @@ function launch_sim {
     pipenv run arc_simulator
 }
 
+export SHELL=bash
 /home/hgv27681/bin/zellij --layout-path ${THIS_DIR}/layout.yml

@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <components arch="linux-x86_64">
-	<ADOdin.ArcOdinDataServer FEM_DEST_IP="127.0.0.1" FEM_DEST_MAC="AA:AA:AA:AA:AA:AA" FEM_DEST_IP_2="" FEM_DEST_MAC_2="" IP="127.0.0.1" SUPER_MODULES="1" PROCESSES="1" name="ArcDataServer"/>
+	<ADOdin.ArcOdinDataServer name="ArcDataServer" IP="127.0.0.1" FEM_DEST_IP="192.168.0.34" FEM_DEST_SUBNET="28" FEM_DEST_MAC="00:0a:f7:b6:b3:dd" SUPER_MODULES="1" PROCESSES="1"/>
 	<ADOdin.ArcOdinControlServer IP="127.0.0.1" PORT="8889" ODIN_DATA_SERVER_1="ArcDataServer" name="ControlServer"/>
 	<ADOdin.ArcOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" P="ARC" PORT="ODN.OD" TIMEOUT="1" />
-	<ADOdin.ArcDetector ADDR="0" ODIN_CONTROL_SERVER="ControlServer" ODIN_DATA_DRIVER="ODN.OD" P="ARC" PORT="ODN.CAM" SENSOR="1FEM" TIMEOUT="1"/>
+	<ADOdin.ArcDetector ADDR="0" ODIN_CONTROL_SERVER="ControlServer" ODIN_DATA_DRIVER="ODN.OD" P="ARC" PORT="ODN.CAM" FEMS="1" TIMEOUT="1"/>
 	<ADOdin.OdinLogConfig BEAMLINE="iXX" DETECTOR="Arc" name="LogConfig"/>
 	<!--6 -> 1 Second-->
 	<EPICS_BASE.dbpf name="Polling" pv="ARC:OD:ReadStatus.SCAN" value="6"/>
