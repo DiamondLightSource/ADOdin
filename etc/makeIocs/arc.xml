@@ -13,6 +13,5 @@
 	<EPICS_BASE.dbpf name="ChunkWidth" pv="ARC:OD:NumColChunks" value="256"/>
 	<EPICS_BASE.dbpf name="ChunkHeight" pv="ARC:OD:NumRowChunks" value="1280"/>
 	<EPICS_BASE.dbpf name="DataType" pv="ARC:OD:DataType" value="UInt16"/>
-	<EPICS_BASE.dbpf name="UDPConfig" pv="ARC:CAM:UdpConfigFile" value="$(INSTALL)/arcApp/data/udp_arc.json"/>
 	<ADOdin.OdinStartAllScript driver="ODN.OD" name="StartAllScript"/>
 </components>

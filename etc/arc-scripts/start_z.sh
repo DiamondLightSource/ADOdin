@@ -15,6 +15,7 @@ export SESSION="ArcOdin"
 
 # SCRIPT_DIR=$THIS_DIR/iocs/arc-lab/arc-labApp/data
 export SCRIPT_DIR=$THIS_DIR/../../iocs/arc/arcApp/data
+cd ${SCRIPT_DIR}
  
 # note this section can be copied from ioc's startAll.sh ##############
 export IOC_ROOT="$SCRIPT_DIR/../.."

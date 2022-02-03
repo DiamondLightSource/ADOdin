@@ -10,6 +10,7 @@ from util import (
     debug_print,
     create_config_entry,
     OneLineEntry,
+    data_file_path
 )
 from odin import (
     _OdinDetector,
@@ -356,11 +357,13 @@ class ArcOdinControlServer(_OdinControlServer):
         return OdinPaths.ARC_DETECTOR + "/prefix/html/static"
 
     def _create_arc_config_entry(self):
+        upd_path = os.path.join('.',  'udp_arc.json')
         return (
             "[adapter.arc]\n"
             "module = arc.arc_adapter.ArcAdapter\n"
             "endpoint = {}\n"
-            "firmware = 0.0.1\n".format(self.HARDWARE_ENDPOINT)
+            "firmware = 0.0.1\n"
+            "udp_file = {}\n".format(self.HARDWARE_ENDPOINT, upd_path)
         )
 
     def _create_odin_data_config_entry(self):
