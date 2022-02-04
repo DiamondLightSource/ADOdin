@@ -48,7 +48,7 @@ tabs:
       - direction: Vertical
         parts:
           - run:
-              command: {cmd: bash, args: ["-c", "cd /dls_sw/work/Arc/arc-detector/control/ && pipenv run arc_simulator ; bash"]}      
+              command: {cmd: bash, args: ["-c", "cd ${SIM_DIR} && $sim ; bash"]}      
             pane_name: Arc Simulator
           - run:
               command: {cmd: bash, args: ["-c", "${MetaWriter} ; bash"]}  

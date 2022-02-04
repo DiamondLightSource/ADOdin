@@ -13,7 +13,6 @@ export PIPENV_VENV_IN_PROJECT=enabled
 export THIS_DIR="$(realpath $(dirname ${BASH_SOURCE[0]}))"
 export SESSION="ArcOdin"
 
-# SCRIPT_DIR=$THIS_DIR/iocs/arc-lab/arc-labApp/data
 export SCRIPT_DIR=$THIS_DIR/../../iocs/arc/arcApp/data
 cd ${SCRIPT_DIR}
  
@@ -27,10 +26,15 @@ export OdinServer="$SCRIPT_DIR/stOdinServer.sh"
 export IOC="$IOC_ROOT/bin/linux-x86_64/st$IOC_NAME.sh 6064"
 # end of copy section #################################################
 
-function launch_sim {
-    cd /dls_sw/work/Arc/arc-detector/control/ 
-    pipenv run arc_simulator
-}
+# this assumes arc-detector is a peer to ADODin
+# TODO - make a sim launcher scirpt in arc.py
+export SIM_DIR=${THIS_DIR}/../../../arc-detector/control/
+
+export sim="pipenv run arc_simulator"
+if [ "${1}" != "sim" ] ; then
+    export sim="echo start simulator with $sim"
+fi
+
 
 export SHELL=bash
 /home/hgv27681/bin/zellij --layout-path ${THIS_DIR}/layout.yml
