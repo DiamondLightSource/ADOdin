@@ -282,7 +282,7 @@ class ArcOdinControlServer(_OdinControlServer):
 
     """Store configuration for an ArcOdinControlServer"""
 
-    ODIN_SERVER = os.path.join(OdinPaths.ARC_DETECTOR_PYTHON3, "bin/arc_odin")
+    ODIN_SERVER = os.path.join(OdinPaths.ARC_DETECTOR_PYTHON3, "prefix/bin/arc_odin")
     CONFIG_TEMPLATES = {
         "1FEM": {
             "chip_mask": "0xFF",
