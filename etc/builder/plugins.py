@@ -170,24 +170,42 @@ class _FileWriterPlugin(_FrameProcessorPlugin):
 
     def create_extra_config_entries(self, rank, total):
         entries = []
-        entries.append(
-            create_config_entry(
-                {
-                    self.NAME: {
-                        "process": {
-                            "number": total,
-                            "rank": rank
-                        }
-                    }
+
+        # Tell this node its place in the world
+        process_entry = {
+            self.NAME: {
+                "process": {
+                    "number": total,
+                    "rank": rank
                 }
-            )
-        )
+            }
+        }
+        entries.append(create_config_entry(process_entry))
+
+        # Configure error durations (in milliseconds)
+        error_durations_entry = {
+            self.NAME: {
+                "file": {
+                    # 10 seconds
+                    "create_error_duration": 10000,
+                    "close_error_duration": 10000,
+                    # 1 second
+                    "write_error_duration": 1000,
+                    "flush_error_duration": 1000
+                }
+            }
+        }
+        entries.append(create_config_entry(error_durations_entry))
+
+        # Configure the name of the primary dataset
         dataset_entry = {
             self.NAME: {
                 "dataset": self.DATASET_NAME,
             }
         }
         entries.append(create_config_entry(dataset_entry))
+
+        # Enable index datasets if required
         if self.indexes:
             indexes_entry = {
                 self.NAME: {
