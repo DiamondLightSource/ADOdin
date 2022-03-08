@@ -189,9 +189,8 @@ class _FileWriterPlugin(_FrameProcessorPlugin):
                     # 10 seconds
                     "create_error_duration": 10000,
                     "close_error_duration": 10000,
-                    # 1 second
-                    "write_error_duration": 1000,
-                    "flush_error_duration": 1000
+                    "write_error_duration": 10000,
+                    "flush_error_duration": 10000
                 }
             }
         }
