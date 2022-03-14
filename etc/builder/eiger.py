@@ -321,11 +321,9 @@ class EigerOdinDataDriver(_OdinDataDriver):
     OD_SCREENS = [1, 2, 4, 8]
     META_WRITER_CLASS = EigerMetaWriter
 
-    def __init__(self, SENSOR_Y=None, SENSOR_X=None, **args):
+    def __init__(self, SENSOR_Y, SENSOR_X, **args):
         # Insert sensor shape before base class init called
-        sensor_shape = (SENSOR_Y, SENSOR_X)
-        if None not in sensor_shape:
-            EigerMetaWriter.SENSOR_SHAPE = sensor_shape
+        EigerMetaWriter.SENSOR_SHAPE = (SENSOR_Y, SENSOR_X)
 
         self.__super.__init__(DETECTOR="eiger", **args)
 
