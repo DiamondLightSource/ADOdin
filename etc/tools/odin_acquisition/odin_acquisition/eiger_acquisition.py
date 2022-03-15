@@ -2,6 +2,8 @@ import argparse
 import ctypes
 import logging
 from datetime import datetime
+from os import makedirs
+from time import sleep
 from pathlib import Path
 
 from cothread import Event
@@ -38,11 +40,11 @@ class EigerTestDetector:
             raise EigerUnreachableError
 
     def wait_on_pv_to_val(
-        self, param, desired_value, timeout_seconds=WAIT_PV_TIMEOUT_SECONDS
+        self, param, desired_value, timeout_seconds=WAIT_PV_TIMEOUT_SECONDS, datatype=None
     ):
         @timeout(timeout_seconds)
         def timeout_wait_on_pv_to_val(param, desired_value):
-            current_value = caget(f"{self.pv_stem}:{param}")
+            current_value = caget(f"{self.pv_stem}:{param}", datatype=datatype)
             if current_value != desired_value:
                 done = Event()
 
@@ -53,7 +55,9 @@ class EigerTestDetector:
                 logging.debug(
                     f"Waiting for {self.pv_stem}:{param} to be {desired_value}"
                 )
-                m = camonitor(f"{self.pv_stem}:{param}", check_equals_desired)
+                m = camonitor(
+                    f"{self.pv_stem}:{param}", check_equals_desired, datatype=datatype
+                )
                 done.Wait()
                 m.close()
                 logging.debug(f"{self.pv_stem}:{param} now equal to {desired_value}")
@@ -66,12 +70,12 @@ class EigerTestDetector:
         return timeout_wait_on_pv_to_val(param, desired_value)
 
     def put(self, param, val, datatype=None, wait=True):
-        caput(f"{self.pv_stem}:{param}", val, datatype=datatype, wait=wait)
+        caput(f"{self.pv_stem}:{param}", val, datatype=datatype, wait=wait, timeout=10)
         logging.debug(f"Put {param} to {val}")
 
     def get(self, param, datatype=None):
         logging.debug(f"Called caget {param}")
-        return caget(f"{self.pv_stem}:{param}", datatype=datatype)
+        return caget(f"{self.pv_stem}:{param}", datatype=datatype, timeout=10)
 
     def put_eiger_params(self, acquire_period, num_images):
         self.put("CAM:ManualTrigger", "Yes")
@@ -84,8 +88,12 @@ class EigerTestDetector:
         self.put("CAM:StreamEnable", "Yes")
 
     def put_odin_params(self, file_name, file_path):
-        self.put("OD:FilePath", str(file_path), datatype=DBR_CHAR_STR)
         self.put("OD:FileName", str(file_name), datatype=DBR_CHAR_STR)
+        # Make sure FileName propagates through database logic
+        self.wait_on_pv_to_val("OD:META:FileName_RBV", file_name, datatype=DBR_CHAR_STR)
+        self.wait_on_pv_to_val("OD:AcquisitionID_RBV", file_name, datatype=DBR_CHAR_STR)
+
+        self.put("OD:FilePath", str(file_path), datatype=DBR_CHAR_STR)
 
         # Get number of frames to wait for
         num_capture = self.get("CAM:NumImages")
@@ -189,7 +197,7 @@ class EigerTestDetector:
             logging.info(f"Acq parameters: {acquisition_parameters}")
 
 
-def make_parser():
+def parse_args():
     def parameter_pair(arg):
         test = arg.split(",")
         return float(test[0]), int(test[1])
@@ -216,42 +224,87 @@ def make_parser():
         + "acquisitions)",
     )
     parser.add_argument(
-        "log_file_directory",
+        "--log-directory",
+        default=None,
         type=Path,
         help="Directory to write log file",
     )
     parser.add_argument(
-        "--log_file_name",
+        "--log-name",
         default="eiger_test.log",
         type=str,
         help="Filename of log file",
     )
     parser.add_argument(
-        "--log_level",
+        "--log-level",
         choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
         default="DEBUG",
         type=str,
         help="Log level",
     )
-    return parser
+    parser.add_argument(
+        "--runs",
+        default=1,
+        type=int,
+        help="How many times to run the acquisition(s)",
+    )
+    parser.add_argument(
+        "--delay",
+        default=0,
+        type=int,
+        help="Delay (in seconds) between acquisitions",
+    )
+    parser.add_argument(
+        "--directory-blocks",
+        default=0,
+        type=int,
+        help="Number of acquisitions per directory - default don't create directories",
+    )
+
+    args = parser.parse_args()
+
+    if args.log_directory is None:
+        args.log_directory = args.filepath
+
+    return args
 
 
 def main():
-    args = make_parser().parse_args()
+    args = parse_args()
 
     logging.basicConfig(
-        filename=args.log_file_directory / args.log_file_name,
-        level=getattr(logging, args.log_level.upper()),
+        filename=args.log_directory / args.log_name,
+        level=args.log_level,
         format="%(asctime)s.%(msecs)03d:%(levelname)s - %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
     )
 
     detector = EigerTestDetector(args.pv_stem)
-    for id, (acquire_period, num_images) in enumerate(args.parameter_list):
-        filename = f"{args.filename}_{id}"
-        detector.prepare_and_run_acquisition(
-            filename, args.filepath, acquire_period, num_images
-        )
+
+    file_path = args.filepath
+    run = 0
+    while True:
+        logging.info(f"Run {run}")
+
+        if args.directory_blocks and run % args.directory_blocks == 0:
+            file_path = args.filepath / f"{run // args.directory_blocks}"
+            makedirs(file_path, exist_ok=True)
+
+        # Note odin requires different file names for sequential acquisitions
+        for id, (acquire_period, num_images) in enumerate(args.parameter_list):
+            filename = f"{args.filename}_{run}_{id}"
+            detector.prepare_and_run_acquisition(
+                filename, file_path, acquire_period, num_images
+            )
+            if args.delay:
+                logging.debug(f"Acquisition complete - Waiting {args.delay} seconds")
+                sleep(args.delay)
+
+        if args.runs > 0 and run >= args.runs:
+            logging.info(f"All {args.runs} runs complete")
+            break
+
+        run += 1
 
 
 if __name__ == "__main__":
