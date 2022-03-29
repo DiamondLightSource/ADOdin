@@ -766,6 +766,16 @@ record(ai, "$(P)$(R)TickHertz_RBV")
 }
 
 #% archiver 1 monitor
+record(longin, "$(P)$(R)TimesliceRolloverDuration_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(EGU,  "bits")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_config/timeslice/duration_rollover_bits")
+}
+
+#% archiver 1 monitor
 record(longin, "$(P)$(R)TimesliceNumber_RBV")
 {
     field(SCAN, "I/O Intr")
@@ -826,6 +836,18 @@ record(bi, "$(P)$(R)CRW_RBV")
     field(DTYP, "asynInt32")
     field(VAL,  "0")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/detector/crw")
+}
+
+################################################################################
+# Housekeeping standby status
+################################################################################
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)HousekeepingStandby_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/housekeeping/standby")
 }
 
 ###################################################################
