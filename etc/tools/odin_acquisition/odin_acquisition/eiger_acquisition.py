@@ -23,8 +23,9 @@ class FPError(Exception):
 
 
 class EigerTestDetector:
-    def __init__(self, pv_stem):
+    def __init__(self, pv_stem: str, file_writing_enabled: bool = True):
         self.pv_stem = pv_stem
+        self.file_writing_enabled = file_writing_enabled
 
         # We will increment this value each time we complete an acq
         self.acquisition_id = 1
@@ -115,20 +116,27 @@ class EigerTestDetector:
         self.put("CAM:Acquire", 1, wait=False)
 
         # Wait on fan ready (this waits on detector armed itself)
-        self.wait_on_pv_to_val("OD:FAN:StateReady_RBV", 1)
+        if self.file_writing_enabled:
+            self.wait_on_pv_to_val("OD:FAN:StateReady_RBV", 1)
         self.put("CAM:Trigger", 1)
 
         # Block until all images are received then return to allow disarm
-        self.wait_on_pv_to_val("OD:Capture_RBV", 0, wait_time)
+        if self.file_writing_enabled:
+            self.wait_on_pv_to_val("OD:Capture_RBV", 0, wait_time)
+        else:
+            sleep(10)
+            print("Finished sleep - file writing should be complete")
 
     def disarm(self):
-        self.put("OD:StartTimeout", 1, wait=False)
+        if self.file_writing_enabled:
+            self.put("OD:StartTimeout", 1, wait=False)
         self.put("CAM:Acquire", 0)
 
     def clear_previous_acquisition_failures(self):
         self.disarm()
-        self.put("OD:Capture", 0)
-        self.clear_fp_errors()
+        if self.file_writing_enabled:
+            self.put("OD:Capture", 0)
+            self.clear_fp_errors()
 
     def clear_fp_errors(self, num_fps=4):
         for fp in range(1, num_fps + 1):
@@ -162,15 +170,17 @@ class EigerTestDetector:
         try:
             self.clear_previous_acquisition_failures()
             self.put_eiger_params(acquire_period, num_images)
-            self.put_odin_params(filename, filepath)
+            if self.file_writing_enabled:
+                self.put_odin_params(filename, filepath)
             self.acquire_manual_trigger(
                 WAIT_PV_TIMEOUT_SECONDS + acquire_period * num_images
             )
             self.disarm()
-            if self.get_num_fp_errors():
-                # If we have fp errors, set success to False and raise an error
-                success = False
-                raise FPError("One or more FP in error state")
+            if self.file_writing_enabled:
+                if self.get_num_fp_errors():
+                    # If we have fp errors, set success to False and raise an error
+                    success = False
+                    raise FPError("One or more FP in error state")
             else:
                 success = True
         except TimeoutError:
@@ -186,7 +196,7 @@ class EigerTestDetector:
                 "ID": self.acquisition_id,
                 "time": now,
                 "success": success,
-                "fp_errors": self.get_fp_errors(),
+                "fp_errors": self.get_fp_errors() if self.file_writing_enabled else "NA",
                 "filename": filename,
                 "filepath": filepath,
                 "acquire_period": acquire_period,
@@ -260,6 +270,12 @@ def parse_args():
         type=int,
         help="Number of acquisitions per directory - default don't create directories",
     )
+    parser.add_argument(
+        "--no-file-writing",
+        type=bool,
+        action="store_false",
+        help="Do not configure file writing and use sleeps instead",
+    )
 
     args = parser.parse_args()
 
@@ -279,7 +295,7 @@ def main():
         datefmt="%Y-%m-%d %H:%M:%S",
     )
 
-    detector = EigerTestDetector(args.pv_stem)
+    detector = EigerTestDetector(args.pv_stem, not args.no_file_writing)
 
     file_path = args.filepath
     run = 0
