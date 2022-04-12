@@ -18,6 +18,9 @@
 	<EPICS_BASE.dbpf name="BlockSize" pv="$(hostname)-EIGER:OD:BlockSize" value="1000"/>
 	<EPICS_BASE.dbpf name="BlocksPerFile" pv="$(hostname)-EIGER:OD:BlocksPerFile" value="1"/>
 	<EPICS_BASE.dbpf name="CloseFileTimeout" pv="$(hostname)-EIGER:OD:CloseFileTimeout" value="10000"/>
+	<!--<EPICS_BASE.dbpf name="StreamYes" pv="$(hostname)-EIGER:CAM:StreamEnable" value="Yes"/>-->
+	<!--<EPICS_BASE.dbpf name="LiveViewYes" pv="$(hostname)-EIGER:CAM:LiveViewEnable" value="Yes"/>-->
+	<!--<EPICS_BASE.dbpf name="LiveViewEndpoint" pv="$(hostname)-EIGER:CAM:LiveViewEndpoint" value="tcp://127.0.0.1:5555"/>-->
 	<ADOdin.EigerOdinStartAllScript driver="ODN.OD" name="StartAllScript"/>
 	<ADOdin.EigerOdinProcServ ADODIN_IOC_NAME="TS-EA-IOC-01" IOC_NAME="TS-CS-IOC-01" ODIN_DATA_DRIVER="ODN.OD" PREFIX="TS-CS-EIG1" PROCESS_PREFIX="TS-EA-EIG1"/>
 </components>
