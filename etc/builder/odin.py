@@ -21,7 +21,10 @@ from util import (
 # OdinData #
 # ~~~~~~~~ #
 
-debug_print("OdinData: {}".format(OdinPaths.ODIN_DATA), 1)
+debug_print(
+    "OdinData: \n{}\n{}".format(OdinPaths.ODIN_DATA_TOOL, OdinPaths.ODIN_DATA_PYTHON),
+    1
+)
 
 
 class _OdinDataTemplate(AutoSubstitution):
@@ -54,7 +57,7 @@ class _OdinData(Device):
 
     def create_config_file(self, prefix, template, extra_macros=None):
         macros = dict(
-            IP=self.server.IP, ODIN_DATA=OdinPaths.ODIN_DATA,
+            IP=self.server.IP, ODIN_DATA=OdinPaths.ODIN_DATA_TOOL,
             RD_PORT=self.READY, RL_PORT=self.RELEASE, META_PORT=self.META
         )
         if extra_macros is not None:
@@ -96,7 +99,7 @@ class _FrameProcessorPlugin(Device):
     NAME = None
     CLASS_NAME = None
     LIBRARY_NAME = None
-    LIBRARY_PATH = OdinPaths.ODIN_DATA
+    LIBRARY_PATH = OdinPaths.ODIN_DATA_TOOL
 
     TEMPLATE = None
     TEMPLATE_INSTANTIATED = False
@@ -259,7 +262,7 @@ class _OdinDataServer(Device):
             output_file = "stFrameReceiver{}.sh".format(process.RANK + 1)
             macros = dict(
                 NUMBER=process.RANK + 1,
-                ODIN_DATA=OdinPaths.ODIN_DATA,
+                ODIN_DATA=OdinPaths.ODIN_DATA_TOOL,
                 BUFFER_IDX=idx + 1, SHARED_MEMORY=self.SHARED_MEM_SIZE,
                 CTRL_PORT=fr_port_number, IO_THREADS=self.IO_THREADS,
                 READY_PORT=ready_port_number, RELEASE_PORT=release_port_number,
@@ -270,7 +273,7 @@ class _OdinDataServer(Device):
             output_file = "stFrameProcessor{}.sh".format(process.RANK + 1)
             macros = dict(
                 NUMBER=process.RANK + 1,
-                ODIN_DATA=OdinPaths.ODIN_DATA,
+                ODIN_DATA=OdinPaths.ODIN_DATA_TOOL,
                 HDF5_FILTERS=OdinPaths.HDF5_FILTERS,
                 CTRL_PORT=fp_port_number,
                 READY_PORT=ready_port_number, RELEASE_PORT=release_port_number,
@@ -315,9 +318,6 @@ class _OdinControlServer(Device):
 
     ODIN_SERVER = None
     ADAPTERS = ["fp", "fr", "meta_listener"]
-    PYTHON_MODULES = dict(
-        odin_data=OdinPaths.ODIN_DATA
-    )
 
     # Device attributes
     AutoInstantiate = True
@@ -357,7 +357,6 @@ class _OdinControlServer(Device):
             if server is not None:
                 self.odin_data_processes += server.processes
 
-        self._add_python_modules()
         self.create_startup_script()
 
     ArgInfo = makeArgInfo(__init__,
@@ -381,15 +380,11 @@ class _OdinControlServer(Device):
 
     def create_startup_script(self):
         macros = dict(
-            PYTHON_MODULES=self.PYTHON_MODULES,
             ODIN_SERVER=self.ODIN_SERVER,
             CONFIG="odin_server.cfg",
             EXTRA_PARAMS=self.get_extra_startup_macro()
         )
         expand_template_file("odin_server_startup", macros, "stOdinServer.sh", executable=True)
-
-    def _add_python_modules(self):
-        pass
 
     def create_config_file(self):
         macros = dict(PORT=self.PORT,
@@ -440,12 +435,9 @@ class _MetaWriterTemplate(AutoSubstitution):
 
 
 class _MetaWriter(object):
-
-    APP_PATH = OdinPaths.ODIN_DATA
+    APP_PATH = OdinPaths.ODIN_DATA_PYTHON
+    APP_NAME = "meta_writer"
     WRITER_CLASS = None
-    PYTHON_MODULES = dict(
-        odin_data=OdinPaths.ODIN_DATA
-    )
     DETECTOR = ""
     SENSOR_SHAPE = None
     TEMPLATE = _MetaWriterTemplate
@@ -462,7 +454,6 @@ class _MetaWriter(object):
                     self.data_endpoints.append("tcp://{}:{}".format(odin_data.IP, port))
                     base_port += 10
 
-        self._add_python_modules()
         self.create_startup_script()
 
     def create_startup_script(self):
@@ -477,8 +468,8 @@ class _MetaWriter(object):
             sensor_shape = ""
 
         macros = dict(
-            PYTHON_MODULES=self.PYTHON_MODULES,
             APP_PATH=self.APP_PATH,
+            APP_NAME=self.APP_NAME,
             WRITER=writer,
             SENSOR_SHAPE=sensor_shape,
             DATA_ENDPOINTS=",".join(self.data_endpoints),
@@ -486,9 +477,6 @@ class _MetaWriter(object):
         )
 
         expand_template_file("meta_startup", macros, "stMetaWriter.sh", executable=True)
-
-    def _add_python_modules(self):
-        pass
 
 
 # ~~~~~~~~~~~~ #
@@ -682,8 +670,8 @@ class OdinStartAllScript(Device):
 
     def create_start_all_script(self, detector_name, odin_data_processes):
         scripts = self.create_scripts(odin_data_processes)
-        macros = dict(DETECTOR=getattr(OdinPaths, "{}_DETECTOR".format(detector_name)),
-                      ODIN_DATA=OdinPaths.ODIN_DATA,
+        macros = dict(DETECTOR=getattr(OdinPaths, "{}_TOOL".format(detector_name)),
+                      ODIN_DATA=OdinPaths.ODIN_DATA_TOOL,
                       SCRIPTS="\n".join([script for script in scripts]),
                       COMMANDS="\n".join([self.create_command_entry(script.split("=")[0])
                                           for script in scripts]))

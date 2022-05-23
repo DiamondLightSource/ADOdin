@@ -32,7 +32,10 @@ from plugins import (
 )
 
 
-debug_print("Excalibur: {}".format(OdinPaths.EXCALIBUR_DETECTOR), 1)
+debug_print(
+    "Excalibur: \n{}\n{}".format(OdinPaths.EXCALIBUR_TOOL, OdinPaths.EXCALIBUR_PYTHON),
+    1
+)
 
 EXCALIBUR_DIMENSIONS = {
     # Sensor: (Width, Height)
@@ -45,7 +48,7 @@ class _ExcaliburProcessPlugin(_DatasetCreationPlugin):
 
     NAME = "excalibur"
     CLASS_NAME = "ExcaliburProcessPlugin"
-    LIBRARY_PATH = OdinPaths.EXCALIBUR_DETECTOR
+    LIBRARY_PATH = OdinPaths.EXCALIBUR_TOOL
 
     def __init__(self, sensor):
         ddims = [EXCALIBUR_DIMENSIONS[sensor][1], EXCALIBUR_DIMENSIONS[sensor][0]]
@@ -96,7 +99,7 @@ class _ExcaliburOdinData(_OdinData):
         self.base_udp_port = BASE_UDP_PORT
 
     def create_config_files(self, index, total):
-        macros = dict(DETECTOR=OdinPaths.EXCALIBUR_DETECTOR,
+        macros = dict(DETECTOR=OdinPaths.EXCALIBUR_TOOL,
                       RX_PORT_1=self.base_udp_port,
                       RX_PORT_2=self.base_udp_port + 1,
                       RX_PORT_3=self.base_udp_port + 2,  # 3 - 6 will be ignored in the 1M template
@@ -217,7 +220,9 @@ class ExcaliburOdinControlServer(_OdinControlServer):
 
     """Store configuration for an ExcaliburOdinControlServer"""
 
-    ODIN_SERVER = os.path.join(OdinPaths.EXCALIBUR_DETECTOR, "prefix/bin/excalibur_odin")
+    ODIN_SERVER = os.path.join(
+        OdinPaths.EXCALIBUR_PYTHON, "prefix/bin/excalibur_control"
+    )
     CONFIG_TEMPLATES = {
         "1M": {
             "chip_mask": "0xFF, 0xFF",
@@ -256,9 +261,6 @@ class ExcaliburOdinControlServer(_OdinControlServer):
         ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer)
     )
 
-    def _add_python_modules(self):
-        self.PYTHON_MODULES.update(dict(excalibur_detector=OdinPaths.EXCALIBUR_DETECTOR))
-
     def get_extra_startup_macro(self):
         return '--staticlogfields beamline=${{BEAMLINE}},\
 application_name="excalibur_odin",detector="Excalibur{}" \
@@ -270,7 +272,7 @@ application_name="excalibur_odin",detector="Excalibur{}" \
         ]
 
     def create_odin_server_static_path(self):
-        return OdinPaths.EXCALIBUR_DETECTOR + "/prefix/html/static"
+        return os.path.join(OdinPaths.EXCALIBUR_PYTHON + "prefix/html/static")
 
     def _create_excalibur_config_entry(self):
         return "[adapter.excalibur]\n" \

@@ -25,14 +25,14 @@ from plugins import (
 )
 
 
-debug_print("Eiger: = {}".format(OdinPaths.EIGER_DETECTOR), 1)
+debug_print("Eiger: = \n{}\n{}".format(OdinPaths.EIGER_TOOL, OdinPaths.EIGER_PYTHON), 1)
 
 
 class _EigerProcessPlugin(_DatasetCreationPlugin):
 
     NAME = "eiger"
     CLASS_NAME = "EigerProcessPlugin"
-    LIBRARY_PATH = OdinPaths.EIGER_DETECTOR
+    LIBRARY_PATH = OdinPaths.EIGER_TOOL
     DATASETS = [
         dict(name="compressed_size", datatype="uint32")
     ]
@@ -70,7 +70,7 @@ class EigerFan(Device):
             numa_call = "numactl --membind={node} --cpunodebind={node} ".format(node=self.NUMA_NODE)
         else:
             numa_call = ""
-        macros = dict(EIGER_DETECTOR=OdinPaths.EIGER_DETECTOR, IP=self.DETECTOR_IP,
+        macros = dict(EIGER_DETECTOR=OdinPaths.EIGER_TOOL, IP=self.DETECTOR_IP,
                       PROCESSES=self.PROCESSES, SOCKETS=self.SOCKETS, BLOCK_SIZE=self.BLOCK_SIZE,
                       THREADS=self.THREADS, NUMA=numa_call)
 
@@ -93,10 +93,9 @@ class EigerFan(Device):
 class EigerMetaWriter(_MetaWriter):
     DETECTOR = "Eiger"
     SENSOR_SHAPE = None
-    WRITER_CLASS = "metalistener.EigerMetaWriter"
-
-    def _add_python_modules(self):
-        self.PYTHON_MODULES.update(dict(eiger_data=OdinPaths.EIGER_DETECTOR))
+    APP_PATH = OdinPaths.EIGER_PYTHON
+    APP_NAME = "eiger_meta_writer"
+    WRITER_CLASS = "eiger_detector.EigerMetaWriter"
 
 
 class _EigerOdinData(_OdinData):
@@ -112,7 +111,7 @@ class _EigerOdinData(_OdinData):
         self.sensor = SENSOR
 
     def create_config_files(self, index, total):
-        macros = dict(DETECTOR=OdinPaths.EIGER_DETECTOR,
+        macros = dict(DETECTOR=OdinPaths.EIGER_TOOL,
                       IP=self.source,
                       RX_PORT_SUFFIX=self.RANK,
                       SENSOR=self.sensor)
@@ -257,7 +256,7 @@ class EigerOdinControlServer(_OdinControlServer):
 
     """Store configuration for an EigerOdinControlServer"""
 
-    ODIN_SERVER = os.path.join(OdinPaths.EIGER_DETECTOR, "prefix/bin/eiger_odin")
+    ODIN_SERVER = os.path.join(OdinPaths.EIGER_PYTHON, "prefix/bin/eiger_control")
 
     def __init__(self, ENDPOINT, API, IP, EIGER_FAN, CTRL_PORT=8888, META_WRITER_IP=None,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
@@ -285,9 +284,6 @@ class EigerOdinControlServer(_OdinControlServer):
         ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer)
     )
 
-    def _add_python_modules(self):
-        self.PYTHON_MODULES.update(dict(eiger_control=OdinPaths.EIGER_DETECTOR))
-
     def create_extra_config_entries(self):
         return [
             self._create_control_config_entry(),
@@ -296,18 +292,18 @@ class EigerOdinControlServer(_OdinControlServer):
 
     def _create_control_config_entry(self):
         return "[adapter.eiger]\n" \
-               "module = eiger.eiger_adapter.EigerAdapter\n" \
+               "module = eiger_detector.EigerAdapter\n" \
                "endpoint = {}\n" \
                "api = {}".format(self.ENDPOINT, self.API)
 
     def _create_eiger_fan_config_entry(self):
         return "[adapter.eiger_fan]\n" \
-               "module = eiger.eiger_fan_adapter.EigerFanAdapter\n" \
+               "module = eiger_detector.EigerFanAdapter\n" \
                "endpoints = {}:5559\n" \
                "update_interval = 0.5".format(self.eiger_fan.IP)
 
     def create_odin_server_static_path(self):
-        return OdinPaths.EIGER_DETECTOR + "/prefix/html/static"
+        return os.path.join(OdinPaths.EIGER_PYTHON, "prefix/html/static")
 
 
 class _EigerDetectorTemplate(AutoSubstitution):

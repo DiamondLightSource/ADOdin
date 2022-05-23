@@ -28,19 +28,24 @@ class OdinPaths(object):
 
         cls.ODIN_PROC_SERV_CONTROL = paths["ODIN_PROC_SERV_CONTROL"]
         cls.HDF5_FILTERS = os.path.join(paths["HDF5_FILTERS"], "prefix/hdf5_1.10/h5plugin")
-        cls.ODIN_DATA = paths["ODIN_DATA"]
+        cls.ODIN_DATA_TOOL = paths["ODIN_DATA_TOOL"]
+        cls.ODIN_DATA_PYTHON = paths["ODIN_DATA_PYTHON"]
 
-        for detector_path in [path for module, path in paths.items()
-                              if module.endswith("DETECTOR")]:
+        for detector_path in [
+            path for module, path in paths.items()
+            if module.endswith("TOOL") and not "ODIN_DATA" in module
+        ]:
             detector_paths = cls.parse_release_file(
                 os.path.join(detector_path, "configure/RELEASE")
             )
-            if detector_paths["ODIN_DATA"] != cls.ODIN_DATA:
-                raise EnvironmentError("Mismatched odin-data dependency in {}".format(detector_path))
+            if detector_paths["ODIN_DATA"] != cls.ODIN_DATA_TOOL:
+                raise EnvironmentError(
+                    "Mismatched odin-data dependency in {}".format(detector_path)
+                )
 
-        cls.EIGER_DETECTOR = paths["EIGER_DETECTOR"]
-        cls.EXCALIBUR_DETECTOR = paths["EXCALIBUR_DETECTOR"]
-        cls.TRISTAN_DETECTOR = paths["TRISTAN_DETECTOR"]
+        for module, path in paths.items():
+            if module.endswith("TOOL") or module.endswith("PYTHON"):
+                setattr(cls, module, path)
 
     @classmethod
     def parse_release_file(cls, release_path):
@@ -72,13 +77,6 @@ def expand_template_file(template, macros, output_file, executable=False):
     else:
         mode = None
 
-    if "PYTHON_MODULES" in macros:
-        paths = [
-            find_python_egg(module, path)
-            for module, path in macros["PYTHON_MODULES"].items()
-        ]
-        macros["PYTHONPATH"] = "export PYTHONPATH={}".format(":".join(paths))
-
     with open(os.path.join(ADODIN_DATA, template)) as template_file:
         template_config = Template(template_file.read())
 
@@ -89,15 +87,6 @@ def expand_template_file(template, macros, output_file, executable=False):
 
     stream = IocDataStream(output_file, mode)
     stream.write(output)
-
-
-def find_python_egg(module, path):
-    eggs_dir = os.path.join(path, "prefix/lib/python2.7/site-packages")
-    for entry in os.listdir(eggs_dir):
-        if module in entry:
-            return os.path.join(eggs_dir, entry)
-
-    raise IOError("Could not find module {} in {}" .format(module, eggs_dir))
 
 
 def write_batch_file(batch_entries):
