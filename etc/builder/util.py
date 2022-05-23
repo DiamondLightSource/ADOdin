@@ -47,7 +47,7 @@ class OdinPaths(object):
         macros = {}
         with open(release_path) as release_file:
             for line in release_file.readlines():
-                if "=" in line:
+                if not line.startswith("#") and "=" in line:
                     module, path = line.split("=", 1)
                     macros[module.strip()] = path.strip()
 
