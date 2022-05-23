@@ -7,7 +7,11 @@
 OdinLiveViewListener::OdinLiveViewListener() :
     ctx_(1),
     socket_(ctx_, ZMQ_SUB),
-    connected_(false)
+    connected_(false),
+    last_image_header_(""),
+    last_image_invalid_reason_(""),
+    last_image_valid_(false),
+    image_counter_(0)
 {
 
 }
@@ -52,6 +56,7 @@ ImageDescription OdinLiveViewListener::read_full_image()
 {
     this->read_header();
     this->read_frame();
+    image_counter_++;
     return image_;
 }
 
@@ -78,22 +83,31 @@ void OdinLiveViewListener::read_frame()
 
 void OdinLiveViewListener::parse_json_header(const std::string& header_str)
 {
+    std::string parse_progress = "";
+    // Save the header string for debugging
+    last_image_header_ = header_str;
     // Reset the image validity
     image_.valid = true;
     // Parse the message, catching any unexpected exceptions from rapidjson
+    last_image_invalid_reason_ = "";
+
     try {
+        parse_progress = "parse JSON document";
         doc_.Parse(header_str.c_str());
         // Test if the message parsed correctly, otherwise set the validity to false
         if (doc_.HasParseError())
         {
             image_.valid = false;
+            last_image_invalid_reason_ += "JSON parser error | ";
         }
 
         rapidjson::Value::ConstMemberIterator itr = doc_.FindMember("frame_num");
         if (itr == doc_.MemberEnd())
         {
             image_.valid = false;
+            last_image_invalid_reason_ += "Could not find frame_num | ";
         } else {
+            parse_progress = "parse integer frame_num";
             image_.number = itr->value.GetInt();
         }
 
@@ -101,7 +115,9 @@ void OdinLiveViewListener::parse_json_header(const std::string& header_str)
         if (itr == doc_.MemberEnd())
         {
             image_.valid = false;
+            last_image_invalid_reason_ += "Could not find dtype | ";
         } else {
+            parse_progress = "parse string dtype";
             image_.dtype = itr->value.GetString();
         }
 
@@ -109,7 +125,9 @@ void OdinLiveViewListener::parse_json_header(const std::string& header_str)
         if (itr == doc_.MemberEnd())
         {
             image_.valid = false;
+            last_image_invalid_reason_ += "Could not find shape | ";
         } else {
+            parse_progress = "parse array of string dimensions";
             std::string val = itr->value[1].GetString();
             sscanf(val.c_str(), "%zu", &(image_.width));
             val = itr->value[0].GetString();
@@ -118,6 +136,28 @@ void OdinLiveViewListener::parse_json_header(const std::string& header_str)
     }
     catch (...) {
         image_.valid = false;
+        last_image_invalid_reason_ += "Unexpected exception caught during [" + parse_progress + "]";
     }
+    // Save the image validity
+    last_image_valid_ = image_.valid;
 }
 
+std::string OdinLiveViewListener::get_last_image_header()
+{
+    return last_image_header_;
+}
+
+std::string OdinLiveViewListener::get_last_image_invalid_reason()
+{
+    return last_image_invalid_reason_;
+}
+
+bool OdinLiveViewListener::get_last_image_valid()
+{
+    return last_image_valid_;
+}
+
+uint32_t OdinLiveViewListener::get_image_counter()
+{
+    return image_counter_;
+}

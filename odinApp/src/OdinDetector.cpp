@@ -80,6 +80,10 @@ int OdinDetector::createDetectorParams()
 
   // Create the parameter to store the Live View endpoint
   createParam(OdinDetectorLVEndpoint, asynParamOctet,   &mLiveViewEndpoint);
+  createParam(OdinDetectorLVImageHeader, asynParamOctet,   &mLiveViewImageHeader);
+  createParam(OdinDetectorLVInvalidReason, asynParamOctet,   &mLiveViewInvalidReason);
+  createParam(OdinDetectorLVImageValid, asynParamInt32,   &mLiveViewImageValid);
+  createParam(OdinDetectorLVImageCounter, asynParamInt32,   &mLiveViewImageCounter);
 
   // Bind the num_images parameter to NIMAGES asyn parameter
   mNumImages = createRESTParam(ADNumImagesString, REST_P_INT, SSDetector, "config/num_images");
@@ -124,6 +128,12 @@ void OdinDetector::live_view_task()
         while (mLV.listen_for_frame(0)){
             img = mLV.read_full_image();
         }
+
+        setStringParam(mLiveViewImageHeader, mLV.get_last_image_header());
+        setStringParam(mLiveViewInvalidReason, mLV.get_last_image_invalid_reason());
+        setIntegerParam(mLiveViewImageValid, mLV.get_last_image_valid());
+        setIntegerParam(mLiveViewImageCounter, mLV.get_image_counter());
+        callParamCallbacks();
 
         // Only forward the image if it is considered valid
         if (img.valid) {

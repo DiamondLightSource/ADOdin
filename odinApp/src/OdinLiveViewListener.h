@@ -49,6 +49,11 @@ public:
 
     void parse_json_header(const std::string& header_str);
 
+    std::string get_last_image_header();
+    std::string get_last_image_invalid_reason();
+    bool get_last_image_valid();
+    uint32_t get_image_counter();
+
 private:
     std::string endpoint_;
     zmq::context_t ctx_;
@@ -58,6 +63,10 @@ private:
     zmq::message_t frame_;
     ImageDescription image_;
     rapidjson::Document doc_;
+    std::string last_image_header_;
+    std::string last_image_invalid_reason_;
+    bool last_image_valid_;
+    uint32_t image_counter_;
 };
 
 #endif //ADODIN_ODINLIVEVIEWLISTENER_H

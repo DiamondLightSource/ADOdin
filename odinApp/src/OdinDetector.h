@@ -10,6 +10,10 @@
 // Detector
 #define OdinDetectorConnected          "ODIN_DETECTOR_CONNECTED"
 #define OdinDetectorLVEndpoint         "ODIN_DETECTOR_LV"
+#define OdinDetectorLVImageHeader      "ODIN_DETECTOR_LV_HEADER"
+#define OdinDetectorLVInvalidReason    "ODIN_DETECTOR_LV_INV_REASON"
+#define OdinDetectorLVImageValid       "ODIN_DETECTOR_LV_VALID"
+#define OdinDetectorLVImageCounter     "ODIN_DETECTOR_LV_COUNTER"
 // OdinData
 #define OdinFPCount                    "ODIN_NUM_PROCESSES"
 #define OdinProcessRank                "ODIN_PROCESS_RANK"
@@ -97,6 +101,10 @@ class OdinDetector : public OdinClient
   int mChunkWidth;
 
   int mLiveViewEndpoint;
+  int mLiveViewImageHeader;
+  int mLiveViewInvalidReason;
+  int mLiveViewImageValid;
+  int mLiveViewImageCounter;
 
   int mProcessInitialised;
   int mNumCapturedSum;
