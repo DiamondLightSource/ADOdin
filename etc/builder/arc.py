@@ -32,7 +32,7 @@ from plugins import (
     _DatasetCreationPlugin,
 )
 
-debug_print("Arc: {}".format(OdinPaths.ARC_DETECTOR), 1)
+debug_print("Arc: = \n{}\n{}".format(OdinPaths.ARC_TOOL, OdinPaths.ARC_PYTHON), 1)
 
 
 class ArcDimensions:
@@ -81,7 +81,7 @@ class _ArcProcessPlugin(_DatasetCreationPlugin):
 
     NAME = "arc"
     CLASS_NAME = "ArcProcessPlugin"
-    LIBRARY_PATH = OdinPaths.ARC_DETECTOR
+    LIBRARY_PATH = OdinPaths.ARC_TOOL
 
     def __init__(self, SUPER_MODULES=12):
         self.dims = ArcDimensions(SUPER_MODULES)
@@ -130,7 +130,7 @@ class _ArcOdinData(_OdinData):
 
     def create_config_files(self, index, total):
         macros = dict(
-            DETECTOR=OdinPaths.ARC_DETECTOR,
+            DETECTOR=OdinPaths.ARC_TOOL,
             RX_PORT_1=self.base_udp_port,
             RX_PORT_2=self.base_udp_port + 1,
             # 2 - 3 will be ignored in the 1FEM template
@@ -282,7 +282,7 @@ class ArcOdinControlServer(_OdinControlServer):
 
     """Store configuration for an ArcOdinControlServer"""
 
-    ODIN_SERVER = os.path.join(OdinPaths.ARC_DETECTOR_PYTHON3, "prefix/bin/arc_odin")
+    ODIN_SERVER = os.path.join(OdinPaths.ARC_PYTHON, "prefix/bin/arc_control")
     CONFIG_TEMPLATES = {
         "1FEM": {
             "chip_mask": "0xFF",
@@ -338,11 +338,6 @@ class ArcOdinControlServer(_OdinControlServer):
         ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
     )
 
-    def _add_python_modules(self):
-        # return nothing since the python3 venv for arc odin server already has the
-        # required dependencies
-        pass
-
     def get_extra_startup_macro(self):
         return (
             "--staticlogfields beamline=${BEAMLINE},"
@@ -354,7 +349,7 @@ class ArcOdinControlServer(_OdinControlServer):
         return [self._create_arc_config_entry()]
 
     def create_odin_server_static_path(self):
-        return OdinPaths.ARC_DETECTOR + "/prefix/html/static"
+        return os.path.join(OdinPaths.ARC_PYTHON, "prefix/html/static")
 
     def _create_arc_config_entry(self):
         upd_path = os.path.join('.',  'udp_arc.json')
