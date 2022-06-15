@@ -1,0 +1,13 @@
+[
+  {
+    "decoder_type": "Arc",
+    "decoder_path": "$DETECTOR/prefix/lib",
+    "rx_ports": "$RX_PORT_1",
+    "decoder_config": {
+      "enable_packet_logging": false,
+      "frame_timeout_ms": 1000,
+      "fem_port_map": "$RX_PORT_1:0",
+      "bitdepth": "12-bit"
+    }
+  }
+]

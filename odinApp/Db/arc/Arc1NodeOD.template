@@ -1,0 +1,116 @@
+
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, DET, Detector Suffix
+# % macro, name, Name specifying builder GUI generation
+
+# This associates the template with an edm screen
+# % gui, $(name), edm, ArcDAQ2Status.edl, P=$(P),R=$(R)
+# % gui, $(PORT), edmtab, ArcDAQMain.edl, P=$(P),R=$(R)
+# % gui, $(OD_HDF_STATUS_GUI), edm, OdinDataStatus1.edl, P=$(P),R=$(R)
+
+
+################################################################################
+#
+# Include 1 FP template
+#
+################################################################################
+
+substitute "TOTAL=1"
+substitute "ADDRESS=0"
+include "ArcOD.template"
+
+
+###################################################################
+#  This sums all UDP packets across all FRs                   #
+###################################################################
+record(calcout, "$(P)$(R)SumUdpPackets")
+{
+    field(INPA, "$(P):OD1:SumUdpPackets CP")
+    field(CALC, "A")
+    field(OUT, "$(P)$(DET)UdpReceived_RBV PP")
+}
+
+
+###################################################################
+#  This checks FR connected status across all FRs             #
+###################################################################
+record(calcout, "$(P)$(R)FRConnected_RBV")
+{
+    field(INPA, "$(P):OD1:FRProcessConnected_RBV CP")
+    field(CALC, "A")
+}
+
+
+###################################################################
+#  This checks FP connected status across all FPs             #
+###################################################################
+record(calcout, "$(P)$(R)FPConnected_RBV")
+{
+    field(INPA, "$(P):OD1:FPProcessConnected_RBV CP")
+    field(CALC, "A")
+}
+
+
+###################################################################
+#  This checks FP error status across all FPs                 #
+###################################################################
+record(calcout, "$(P)$(R)FPError_RBV")
+{
+    field(INPA, "$(P):OD1:FPErrorState_RBV CP")
+    field(CALC, "A")
+}
+
+
+###################################################################
+#  This resets all FRs                                            #
+###################################################################
+record(seq, "$(P)$(R)ResetAllFR")
+{
+    field(DOL1, "1")
+    field(LNK1, "$(P):OD1:ResetStats.PROC PP")
+    field(DLY1, "0.0")
+}
+
+###################################################################
+#  This ensures that the correct HDF5 bit depth is selected       #
+#  when the detector bit depth is changed.                        #
+###################################################################
+record(calcout, "$(P)$(R)DetToFPBitDepth")
+{
+    field(INPA, "$(P)$(DET)CounterDepth CP")
+    field(CALC, "A=0||A=1?0:A=2?1:A=3?2:1")
+    field(OUT, "$(P)$(R)DataType PP")
+}
+
+###################################################################
+#  Override the image width, height and chunk records             #
+#  to make sure they are disabled.                                #
+###################################################################
+record(longout, "$(P)$(R)ImageWidth")
+{
+    field(DISA, "1")
+}
+
+record(longout, "$(P)$(R)ImageHeight")
+{
+    field(DISA, "1")
+}
+
+record(longout, "$(P)$(R)NumColChunks")
+{
+    field(DISA, "1")
+}
+
+record(longout, "$(P)$(R)NumRowChunks")
+{
+    field(DISA, "1")
+}
+
+record(longout, "$(P)$(R)NumFramesChunks")
+{
+    field(DISA, "1")
+}
+
+
+

@@ -1,0 +1,63 @@
+---
+template:
+  direction: Horizontal
+  parts:
+    - direction: Vertical  # part 1
+      borderless: true
+      split_size:
+        Fixed: 1
+      run:
+        plugin:
+          location: "zellij:tab-bar"
+    - direction: Vertical # part 2
+      body: true
+    - direction: Vertical # part 3
+      borderless: true
+      split_size:
+        Fixed: 2
+      run:
+        plugin:
+          location: "zellij:status-bar"
+session:
+  name: arc-detector
+  attach: true
+tabs:
+  - name: "Main"
+    direction: Horizontal
+    parts:
+      - direction: Vertical
+        parts:     
+          - run: 
+              command:  {cmd: bash, args: ["-c", "sleep 7 && ${OdinServer} ; bash"]}
+            pane_name: Odin Server
+          - run: 
+              command:  {cmd: bash, args: ["-c", "sleep 11 && ${IOC} ; bash"]}
+            pane_name: EPICS IOC
+      - direction: Vertical
+        split_size:
+              Percent: 50
+        parts:
+          - run:
+              command: {cmd: bash, args: ["-c", "${FR1} ; bash"]}
+            pane_name: Frame Receiver
+          - run:
+              command: {cmd: bash, args: ["-c", "${FP1} ; bash"]}
+            split_size:
+              Percent: 60
+            pane_name: Frame Processor
+      - direction: Vertical
+        parts:
+          - run:
+              command: {cmd: bash, args: ["-c", "cd ${SIM_DIR} && $sim ; bash"]}      
+            pane_name: Arc Simulator
+          - run:
+              command: {cmd: bash, args: ["-c", "${MetaWriter} ; bash"]}  
+            pane_name: Meta Writer
+      - direction: Vertical
+        parts:
+          - run:
+              command: {cmd: bash}  
+            pane_name: Bash Shell
+          - run:
+              command: {cmd: bash}  
+            pane_name: Bash Shell
