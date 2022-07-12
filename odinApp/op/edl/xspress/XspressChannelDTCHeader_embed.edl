@@ -3,9 +3,9 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 793
-y 143
-w 1190
+x 1744
+y 199
+w 1590
 h 25
 font "arial-medium-r-18.0"
 ctlFont "arial-medium-r-18.0"
@@ -31,7 +31,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 130
+x 280
 y 5
 w 87
 h 13
@@ -51,7 +51,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 255
+x 470
 y 5
 w 74
 h 13
@@ -71,7 +71,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 515
+x 805
 y 5
 w 103
 h 13
@@ -91,7 +91,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 35
+x 170
 y 5
 w 34
 h 13
@@ -111,7 +111,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 375
+x 615
 y 5
 w 116
 h 13
@@ -131,7 +131,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 670
+x 990
 y 5
 w 73
 h 13
@@ -151,10 +151,10 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 810
+x 1140
 y 5
 w 60
-h 13
+h 15
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -171,10 +171,10 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 1060
+x 1445
 y 5
-w 89
-h 13
+w 90
+h 15
 font "arial-bold-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -191,7 +191,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 925
+x 1275
 y 5
 w 102
 h 13

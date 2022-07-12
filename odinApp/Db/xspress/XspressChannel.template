@@ -186,7 +186,7 @@ record(ai, "$(P)$(R)C$(CHAN)_DTC_AEO_RBV")
     field(VAL,  "0")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_config/dtc_all_evt_off")
     field(SCAN, "I/O Intr")
-    field(PREC, "4")
+    field(PREC, "10")
 }
 
 record(ai, "$(P)$(R)C$(CHAN)_DTC_AEG_RBV")
@@ -195,7 +195,7 @@ record(ai, "$(P)$(R)C$(CHAN)_DTC_AEG_RBV")
     field(VAL,  "0")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_config/dtc_all_evt_grad")
     field(SCAN, "I/O Intr")
-    field(PREC, "4")
+    field(PREC, "10")
 }
 
 record(ai, "$(P)$(R)C$(CHAN)_DTC_AERO_RBV")
@@ -204,7 +204,7 @@ record(ai, "$(P)$(R)C$(CHAN)_DTC_AERO_RBV")
     field(VAL,  "0")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_config/dtc_all_evt_rate_off")
     field(SCAN, "I/O Intr")
-    field(PREC, "4")
+    field(PREC, "10")
 }
 
 record(ai, "$(P)$(R)C$(CHAN)_DTC_AERG_RBV")
@@ -213,7 +213,7 @@ record(ai, "$(P)$(R)C$(CHAN)_DTC_AERG_RBV")
     field(VAL,  "0")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_config/dtc_all_evt_rate_grad")
     field(SCAN, "I/O Intr")
-    field(PREC, "4")
+    field(PREC, "10")
 }
 
 record(ai, "$(P)$(R)C$(CHAN)_DTC_IWO_RBV")
@@ -222,7 +222,7 @@ record(ai, "$(P)$(R)C$(CHAN)_DTC_IWO_RBV")
     field(VAL,  "0")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_config/dtc_in_win_off")
     field(SCAN, "I/O Intr")
-    field(PREC, "4")
+    field(PREC, "10")
 }
 
 record(ai, "$(P)$(R)C$(CHAN)_DTC_IWG_RBV")
@@ -231,7 +231,7 @@ record(ai, "$(P)$(R)C$(CHAN)_DTC_IWG_RBV")
     field(VAL,  "0")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_config/dtc_in_win_grad")
     field(SCAN, "I/O Intr")
-    field(PREC, "4")
+    field(PREC, "10")
 }
 
 record(ai, "$(P)$(R)C$(CHAN)_DTC_IWRO_RBV")
@@ -240,7 +240,7 @@ record(ai, "$(P)$(R)C$(CHAN)_DTC_IWRO_RBV")
     field(VAL,  "0")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_config/dtc_in_win_rate_off")
     field(SCAN, "I/O Intr")
-    field(PREC, "4")
+    field(PREC, "10")
 }
 
 record(ai, "$(P)$(R)C$(CHAN)_DTC_IWRG_RBV")
@@ -249,7 +249,7 @@ record(ai, "$(P)$(R)C$(CHAN)_DTC_IWRG_RBV")
     field(VAL,  "0")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_config/dtc_in_win_rate_grad")
     field(SCAN, "I/O Intr")
-    field(PREC, "4")
+    field(PREC, "10")
 }
 
 

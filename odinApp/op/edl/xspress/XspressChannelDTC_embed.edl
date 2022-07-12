@@ -3,9 +3,9 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1945
-y 429
-w 1190
+x 1743
+y 274
+w 1590
 h 25
 font "arial-medium-r-18.0"
 ctlFont "arial-medium-r-18.0"
@@ -31,9 +31,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 125
+x 250
 y 0
-w 110
+w 160
 h 20
 controlPv "$(P)$(R)C$(CHAN)_DTC_AEG_RBV"
 fgColor index 16
@@ -50,7 +50,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 0
+x 110
 y 5
 w 51
 h 13
@@ -70,9 +70,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 255
+x 430
 y 0
-w 100
+w 150
 h 20
 controlPv "$(P)$(R)C$(CHAN)_DTC_AEO_RBV"
 fgColor index 16
@@ -89,7 +89,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 25
+x 150
 y 0
 w 80
 h 20
@@ -108,9 +108,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 380
+x 595
 y 0
-w 120
+w 165
 h 20
 controlPv "$(P)$(R)C$(CHAN)_DTC_AERG_RBV"
 fgColor index 16
@@ -127,9 +127,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 515
+x 785
 y 0
-w 120
+w 160
 h 20
 controlPv "$(P)$(R)C$(CHAN)_DTC_AERO_RBV"
 fgColor index 16
@@ -146,9 +146,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 670
+x 960
 y 0
-w 110
+w 140
 h 20
 controlPv "$(P)$(R)C$(CHAN)_DTC_IWG_RBV"
 fgColor index 16
@@ -165,9 +165,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 800
+x 1115
 y 0
-w 100
+w 135
 h 20
 controlPv "$(P)$(R)C$(CHAN)_DTC_IWO_RBV"
 fgColor index 16
@@ -184,9 +184,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 925
+x 1265
 y 0
-w 120
+w 140
 h 20
 controlPv "$(P)$(R)C$(CHAN)_DTC_IWRG_RBV"
 fgColor index 16
@@ -203,9 +203,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 1060
+x 1425
 y 0
-w 120
+w 135
 h 20
 controlPv "$(P)$(R)C$(CHAN)_DTC_IWRO_RBV"
 fgColor index 16

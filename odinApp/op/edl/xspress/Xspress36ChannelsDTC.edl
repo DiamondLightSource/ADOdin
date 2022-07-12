@@ -4,9 +4,9 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 466
-y 242
-w 1250
+x 367
+y 261
+w 1700
 h 1000
 font "arial-medium-r-12.0"
 ctlFont "arial-medium-r-12.0"
@@ -34,7 +34,7 @@ minor 1
 release 0
 x 25
 y 20
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -58,7 +58,7 @@ minor 1
 release 0
 x 25
 y 45
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -85,7 +85,7 @@ minor 1
 release 0
 x 25
 y 70
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -112,7 +112,7 @@ minor 1
 release 0
 x 25
 y 95
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -139,7 +139,7 @@ minor 1
 release 0
 x 25
 y 120
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -166,7 +166,7 @@ minor 1
 release 0
 x 25
 y 145
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -193,7 +193,7 @@ minor 1
 release 0
 x 25
 y 170
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -220,7 +220,7 @@ minor 1
 release 0
 x 25
 y 195
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -247,7 +247,7 @@ minor 1
 release 0
 x 25
 y 220
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -274,7 +274,7 @@ minor 1
 release 0
 x 25
 y 245
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -301,7 +301,7 @@ minor 1
 release 0
 x 25
 y 270
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -328,7 +328,7 @@ minor 1
 release 0
 x 25
 y 295
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -355,7 +355,7 @@ minor 1
 release 0
 x 25
 y 320
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -382,7 +382,7 @@ minor 1
 release 0
 x 25
 y 345
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -409,7 +409,7 @@ minor 1
 release 0
 x 25
 y 370
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -436,7 +436,7 @@ minor 1
 release 0
 x 25
 y 395
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -463,7 +463,7 @@ minor 1
 release 0
 x 25
 y 420
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -490,7 +490,7 @@ minor 1
 release 0
 x 25
 y 445
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -517,7 +517,7 @@ minor 1
 release 0
 x 25
 y 470
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -544,7 +544,7 @@ minor 1
 release 0
 x 25
 y 495
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -571,7 +571,7 @@ minor 1
 release 0
 x 25
 y 520
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -598,7 +598,7 @@ minor 1
 release 0
 x 25
 y 545
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -625,7 +625,7 @@ minor 1
 release 0
 x 25
 y 570
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -652,7 +652,7 @@ minor 1
 release 0
 x 25
 y 595
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -679,7 +679,7 @@ minor 1
 release 0
 x 25
 y 620
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -706,7 +706,7 @@ minor 1
 release 0
 x 25
 y 645
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -733,7 +733,7 @@ minor 1
 release 0
 x 25
 y 670
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -760,7 +760,7 @@ minor 1
 release 0
 x 25
 y 695
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -787,7 +787,7 @@ minor 1
 release 0
 x 25
 y 720
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -814,7 +814,7 @@ minor 1
 release 0
 x 25
 y 745
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -841,7 +841,7 @@ minor 1
 release 0
 x 25
 y 770
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -868,7 +868,7 @@ minor 1
 release 0
 x 25
 y 795
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -895,7 +895,7 @@ minor 1
 release 0
 x 25
 y 820
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -922,7 +922,7 @@ minor 1
 release 0
 x 25
 y 845
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -949,7 +949,7 @@ minor 1
 release 0
 x 25
 y 870
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -976,7 +976,7 @@ minor 1
 release 0
 x 25
 y 895
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
@@ -1003,7 +1003,7 @@ minor 1
 release 0
 x 25
 y 920
-w 1190
+w 1590
 h 25
 fgColor index 14
 bgColor index 3
