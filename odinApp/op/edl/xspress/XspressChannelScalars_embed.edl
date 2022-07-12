@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 1166
-y 722
+y 759
 w 1900
 h 25
 font "arial-medium-r-18.0"
@@ -222,7 +222,7 @@ x 425
 y 0
 w 80
 h 20
-controlPv "$(P)$(R)C$(CHAN)_SCA5:Value_RBV"
+controlPv "$(P)$(R)C$(CHAN)_SCA6:Value_RBV"
 fgColor index 16
 fgAlarm
 bgColor index 10
