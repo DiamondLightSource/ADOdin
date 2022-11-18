@@ -1,36 +1,17 @@
+import math
 import os
 
 from iocbuilder import AutoSubstitution
-from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
+from iocbuilder.arginfo import Choice, Ident, Simple, makeArgInfo
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
-
-from util import (
-    OdinPaths,
-    expand_template_file,
-    debug_print,
-    create_config_entry,
-    OneLineEntry,
-    data_file_path
-)
-from odin import (
-    _OdinDetector,
-    _OdinData,
-    _OdinDataDriver,
-    _OdinDataServer,
-    _OdinControlServer,
-    _MetaWriter,
-    _PluginConfig,
-    _FrameProcessorPlugin,
-)
-from plugins import (
-    _LiveViewPlugin,
-    _OffsetAdjustmentPlugin,
-    _UIDAdjustmentPlugin,
-    _SumPlugin,
-    _BloscPlugin,
-    _FileWriterPlugin,
-    _DatasetCreationPlugin,
-)
+from odin import (_FrameProcessorPlugin, _MetaWriter, _OdinControlServer,
+                  _OdinData, _OdinDataDriver, _OdinDataServer, _OdinDetector,
+                  _PluginConfig)
+from plugins import (_BloscPlugin, _DatasetCreationPlugin, _FileWriterPlugin,
+                     _LiveViewPlugin, _OffsetAdjustmentPlugin, _SumPlugin,
+                     _UIDAdjustmentPlugin)
+from util import (OdinPaths, OneLineEntry, create_config_entry, data_file_path,
+                  debug_print, expand_template_file)
 
 debug_print("Arc: = \n{}\n{}".format(OdinPaths.ARC_TOOL, OdinPaths.ARC_PYTHON), 1)
 
@@ -50,12 +31,18 @@ class ArcDimensions:
         # dimensions from the super module count (assuming that the modules are
         # installed upwards from 0,0 )
 
+        # TODO hard coding supermodule count for now - need to determine the
+        # best way to work out the dimensions of the image and probably needs
+        # to be more dynamic than a setting in the builder XML.
+        # (the UDP packet header has this info - can we dynamically use this?)
+        super_module_count=6
+
+
         self.fem_count = (
-            int(
+            math.ceil(
                 super_module_count
                 / (self.FEM_SUPER_MODULES_PER_FEM_X * self.FEM_SUPER_MODULES_PER_FEM_Y)
             )
-            + 1
         )
 
         self.x_pixels = self.FEM_PIXELS_PER_CHIP_X * self.FEM_CHIPS_PER_SUPER_MODULE_X
@@ -65,14 +52,6 @@ class ArcDimensions:
             * super_module_count
         )
 
-        # TODO TODO TODO - the pixels in the first example UDP capture file 
-        # are 256 * 1280 which does not line up with any definition of 
-        # super module -> dimensions calculation 
-        # SUGGESTION: make the code agnostic of dimensions and use the 
-        # packet header info only - is that possible?
-        # if not just supply dimensions and rebuild everything for each change
-        self.x_pixels = 256
-        self.y_pixels = 1280
 
         self.pixels = self.x_pixels * self.y_pixels
 
@@ -206,15 +185,14 @@ class ArcOdinDataServer(_OdinDataServer):
 
     """Store configuration for an ArcOdinDataServer"""
 
-    BASE_UDP_PORT = 61000
     PLUGIN_CONFIG = None
 
     # TODO TODO In reality the Arc Server will have 4 FEM DEST NICs
     # so this class needs 4 sets of FEM details added OR the builder
     # model would need changing
 
-    # for the moment with 1 FEM and n FR this works OK and I'm going to 
-    # defer changes because I would prefer to rewrite a Python Odin 
+    # for the moment with 1 FEM and n FR this works OK and I'm going to
+    # defer changes because I would prefer to rewrite a Python Odin
     # config generator in Python3, supported by ibek and containerised
     # Odin IOCs
     def __init__(
@@ -227,7 +205,8 @@ class ArcOdinDataServer(_OdinDataServer):
         FEM_DEST_NAME="em1",
         SUPER_MODULES=2,
         SHARED_MEM_SIZE=1048576000,
-        PLUGIN_CONFIG=None
+        PLUGIN_CONFIG=None,
+        BASE_UDP_PORT=61000
     ):
         self.sensor = "Arc {} FEM".format(SUPER_MODULES)
         dims = ArcDimensions(SUPER_MODULES)
@@ -262,6 +241,7 @@ class ArcOdinDataServer(_OdinDataServer):
         ),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
         PLUGIN_CONFIG=Ident("Define a custom set of plugins", _PluginConfig),
+        BASE_UDP_PORT=Simple("Starting UDP Port for first FEM", int),
     )
 
     def create_odin_data_process(self, server, ready, release, meta, plugin_config):
@@ -352,7 +332,7 @@ class ArcOdinControlServer(_OdinControlServer):
         return os.path.join(OdinPaths.ARC_PYTHON, "prefix/html/static")
 
     def _create_arc_config_entry(self):
-        upd_path = os.path.join('.',  'udp_arc.json')
+        upd_path = 'udp_arc.json'
         return (
             "[adapter.arc]\n"
             "module = arc_detector.control.arc_adapter.ArcAdapter\n"
@@ -576,27 +556,27 @@ class ArcDetector(_OdinDetector):
             node_list.append(first_node)
 
         # Generate the udp configuration file
+        config_cmd = {"config": udp_config}
         macros = dict(
-            MODULE_CONFIG=create_config_entry(udp_config)
+            MODULE_CONFIG=create_config_entry(config_cmd)
         )
+
 
         expand_template_file("udp_arc.json", macros, "udp_arc.json")
 
     def generate_point_to_point_config(self):
         node_config = []
         for server in self.control_server.odin_data_servers:
-            fem_config = []
             for idx, process in enumerate(sorted(server.processes, key=lambda x: x.RANK)):
                 config = dict(
                     mac=process.server.FEM_DEST_MAC,
                     name=process.server.FEM_DEST_NAME,
                     ipaddr=process.server.FEM_DEST_IP,
                     port=process.base_udp_port,
-                    subnet=process.server.FEM_DEST_SUBNET,
-                    links=[1, 1, 0, 0, 0, 0, 0, 0]
+                    subnet=int(process.server.FEM_DEST_SUBNET),
+                    links=[1, 0, 0, 0, 0, 0, 0, 0]
                 )
-                fem_config.append(config)
-            node_config.append(fem_config)
+                node_config.append(config)
         return node_config
 
 class _ArcGapFillPlugin(_FrameProcessorPlugin):

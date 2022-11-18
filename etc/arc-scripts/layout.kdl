@@ -1,0 +1,43 @@
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        children
+        pane size=2 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+    tab split_direction="Horizontal" {
+        pane split_direction="Vertical" {
+            pane command="bash" name="Odin Server" {
+                args "-c" "sleep 2 && ${OdinServer} ; bash"
+            }
+            pane command="bash" name="EPICS IOC" {
+                args "-c" "sleep 5 && ${IOC} ; bash"
+            }
+        }
+        pane size="50%" split_direction="Vertical" {
+            pane command="bash" name="Frame Receiver" {
+                args "-c" "${FR1} ; bash"
+            }
+            pane command="bash" name="Frame Processor" size="60%" {
+                args "-c" "${FP1} ; bash"
+            }
+        }
+        pane split_direction="Vertical" {
+            pane command="bash" name="Arc Simulator" {
+                args "-c" "cd ${SIM_DIR} && $sim ; bash"
+            }
+            pane command="bash" name="Meta Writer" {
+                args "-c" "${MetaWriter} ; bash"
+            }
+        }
+        // pane split_direction="Vertical" {
+        //     pane command="bash" name="Bash Shell"
+        //     pane command="bash" name="Bash Shell"
+        // }
+    }
+}
+session_name "arc-detector"
+attach_to_session true
