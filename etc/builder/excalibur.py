@@ -221,7 +221,7 @@ class ExcaliburOdinControlServer(_OdinControlServer):
     """Store configuration for an ExcaliburOdinControlServer"""
 
     ODIN_SERVER = os.path.join(
-        OdinPaths.EXCALIBUR_PYTHON, "prefix/bin/excalibur_control"
+        OdinPaths.EXCALIBUR_PYTHON, "bin/excalibur_control"
     )
     CONFIG_TEMPLATES = {
         "1M": {
@@ -276,7 +276,7 @@ application_name="excalibur_odin",detector="Excalibur{}" \
 
     def _create_excalibur_config_entry(self):
         return "[adapter.excalibur]\n" \
-               "module = excalibur.adapter.ExcaliburAdapter\n" \
+               "module = excalibur_detector.control.adapter.ExcaliburAdapter\n" \
                "detector_fems = {}\n" \
                "powercard_fem_idx = {}\n" \
                "chip_enable_mask = {}\n" \
@@ -291,15 +291,19 @@ application_name="excalibur_odin",detector="Excalibur{}" \
             fp_endpoints.append(process.FP_ENDPOINT)
             fr_endpoints.append(process.FR_ENDPOINT)
 
-        return "[adapter.fp]\n" \
-               "module = odin_data.fp_compression_adapter.FPCompressionAdapter\n" \
-               "endpoints = {}\n" \
-               "update_interval = 0.2\n" \
-               "datasets = data,data2\n\n" \
-               "[adapter.fr]\n" \
-               "module = odin_data.frame_receiver_adapter.FrameReceiverAdapter\n" \
-               "endpoints = {}\n" \
-               "update_interval = 0.2".format(", ".join(fp_endpoints), ", ".join(fr_endpoints))
+        return (
+            "[adapter.fp]\n"
+            "module = odin_data.control.fp_compression_adapter.FPCompressionAdapter\n"
+            "endpoints = {}\n"
+            "update_interval = 0.2\n"
+            "datasets = data,data2\n\n"
+            "[adapter.fr]\n"
+            "module = odin_data.control.frame_receiver_adapter.FrameReceiverAdapter\n"
+            "endpoints = {}\n"
+            "update_interval = 0.2".format(
+                ", ".join(fp_endpoints), ", ".join(fr_endpoints)
+            )
+        )
 
 
     @property

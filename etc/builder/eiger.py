@@ -256,7 +256,7 @@ class EigerOdinControlServer(_OdinControlServer):
 
     """Store configuration for an EigerOdinControlServer"""
 
-    ODIN_SERVER = os.path.join(OdinPaths.EIGER_PYTHON, "prefix/bin/eiger_control")
+    ODIN_SERVER = os.path.join(OdinPaths.EIGER_PYTHON, "bin/eiger_control")
 
     def __init__(self, ENDPOINT, API, IP, EIGER_FAN, CTRL_PORT=8888, META_WRITER_IP=None,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
@@ -292,13 +292,13 @@ class EigerOdinControlServer(_OdinControlServer):
 
     def _create_control_config_entry(self):
         return "[adapter.eiger]\n" \
-               "module = eiger_detector.EigerAdapter\n" \
+               "module = eiger_detector.control.eiger_adapter.EigerAdapter\n" \
                "endpoint = {}\n" \
                "api = {}".format(self.ENDPOINT, self.API)
 
     def _create_eiger_fan_config_entry(self):
         return "[adapter.eiger_fan]\n" \
-               "module = eiger_detector.EigerFanAdapter\n" \
+               "module = eiger_detector.control.eiger_fan_adapter.EigerFanAdapter\n" \
                "endpoints = {}:5559\n" \
                "update_interval = 0.5".format(self.eiger_fan.IP)
 

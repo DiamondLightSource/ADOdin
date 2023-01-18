@@ -420,7 +420,7 @@ class _OdinControlServer(Device):
     def _create_meta_writer_config_entry(self):
         return (
             "[adapter.meta_listener]\n"
-            "module = odin_data.meta_listener_adapter.MetaListenerAdapter\n"
+            "module = odin_data.control.meta_listener_adapter.MetaListenerAdapter\n"
             "endpoints = {}:5659\n"
             "update_interval = 0.5"
         ).format(self.meta_writer_ip)
@@ -432,14 +432,18 @@ class _OdinControlServer(Device):
             fp_endpoints.append(process.FP_ENDPOINT)
             fr_endpoints.append(process.FR_ENDPOINT)
 
-        return "[adapter.fp]\n" \
-               "module = odin_data.frame_processor_adapter.FrameProcessorAdapter\n" \
-               "endpoints = {}\n" \
-               "update_interval = 0.2\n\n" \
-               "[adapter.fr]\n" \
-               "module = odin_data.frame_receiver_adapter.FrameReceiverAdapter\n" \
-               "endpoints = {}\n" \
-               "update_interval = 0.2".format(", ".join(fp_endpoints), ", ".join(fr_endpoints))
+        return (
+            "[adapter.fp]\n"
+            "module = odin_data.control.frame_processor_adapter.FrameProcessorAdapter\n"
+            "endpoints = {}\n"
+            "update_interval = 0.2\n\n"
+            "[adapter.fr]\n"
+            "module = odin_data.control.frame_receiver_adapter.FrameReceiverAdapter\n"
+            "endpoints = {}\n"
+            "update_interval = 0.2".format(
+                ", ".join(fp_endpoints), ", ".join(fr_endpoints)
+            )
+        )
 
 
 class _MetaWriterTemplate(AutoSubstitution):

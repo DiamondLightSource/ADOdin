@@ -106,7 +106,7 @@ class TristanOdinControlServer(_OdinControlServer):
 
     """Store configuration for an TristanOdinControlServer"""
 
-    ODIN_SERVER = os.path.join(OdinPaths.TRISTAN_PYTHON, "prefix/bin/tristan_control")
+    ODIN_SERVER = os.path.join(OdinPaths.TRISTAN_PYTHON, "bin/tristan_control")
 
     def __init__(self, IP, PORT=8888, META_WRITER_IP=None,
                  HARDWARE_ENDPOINT="tcp://127.0.0.1:10100",
@@ -161,7 +161,7 @@ class TristanOdinControlServer(_OdinControlServer):
     def _create_tristan_config_entry(self):
         return (
             "[adapter.tristan]\n"
-            "module = tristan_detector.TristanControlAdapter\n"
+            "module = tristan_detector.control.tristan_adapter.TristanControlAdapter\n"
             "endpoint = {}\n"
             "firmware = 0.0.1"
         ).format(self.HARDWARE_ENDPOINT)

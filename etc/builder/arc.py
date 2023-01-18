@@ -282,7 +282,7 @@ class ArcOdinControlServer(_OdinControlServer):
 
     """Store configuration for an ArcOdinControlServer"""
 
-    ODIN_SERVER = os.path.join(OdinPaths.ARC_PYTHON, "prefix/bin/arc_control")
+    ODIN_SERVER = os.path.join(OdinPaths.ARC_PYTHON, "bin/arc_control")
     CONFIG_TEMPLATES = {
         "1FEM": {
             "chip_mask": "0xFF",
@@ -355,7 +355,7 @@ class ArcOdinControlServer(_OdinControlServer):
         upd_path = os.path.join('.',  'udp_arc.json')
         return (
             "[adapter.arc]\n"
-            "module = arc.arc_adapter.ArcAdapter\n"
+            "module = arc_detector.control.arc_adapter.ArcAdapter\n"
             "endpoint = {}\n"
             "firmware = 0.0.1\n"
             "udp_file = {}\n".format(self.HARDWARE_ENDPOINT, upd_path)
@@ -370,12 +370,12 @@ class ArcOdinControlServer(_OdinControlServer):
 
         return (
             "[adapter.fp]\n"
-            "module = odin_data.frame_processor_adapter.FrameProcessorAdapter\n"
+            "module = odin_data.control.frame_processor_adapter.FrameProcessorAdapter\n"
             "endpoints = {}\n"
             "update_interval = 0.2\n"
             "datasets = data,data2\n\n"
             "[adapter.fr]\n"
-            "module = odin_data.frame_receiver_adapter.FrameReceiverAdapter\n"
+            "module = odin_data.control.frame_receiver_adapter.FrameReceiverAdapter\n"
             "endpoints = {}\n"
             "update_interval = 0.2".format(
                 ", ".join(fp_endpoints), ", ".join(fr_endpoints)
