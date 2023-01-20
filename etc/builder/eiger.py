@@ -355,5 +355,13 @@ class EigerOdinStartAllScript(OdinStartAllScript):
 
     def create_scripts(self, odin_data_processes):
         scripts = [self.create_script_entry("EigerFan", "stEigerFan.sh")]
-        scripts += super(EigerOdinStartAllScript, self).create_scripts(odin_data_processes)
-        return scripts
+        kdl = [self.create_kdl_entry("stEigerFan.sh")]
+
+        _scripts, _kdl = super(EigerOdinStartAllScript, self).create_scripts(
+            odin_data_processes
+        )
+
+        scripts.extend(_scripts)
+        kdl.extend(_kdl)
+
+        return scripts, kdl

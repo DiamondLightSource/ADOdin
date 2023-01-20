@@ -685,16 +685,23 @@ class OdinStartAllScript(Device):
     ArgInfo = makeArgInfo(__init__, driver=Ident("OdinDataDriver", _OdinDataDriver))
 
     def create_start_all_script(self, detector_name, odin_data_processes):
-        scripts = self.create_scripts(odin_data_processes)
+        scripts, kdl = self.create_scripts(odin_data_processes)
         macros = dict(DETECTOR=getattr(OdinPaths, "{}_TOOL".format(detector_name)),
                       ODIN_DATA=OdinPaths.ODIN_DATA_TOOL,
                       SCRIPTS="\n".join([script for script in scripts]),
                       COMMANDS="\n".join([self.create_command_entry(script.split("=")[0])
                                           for script in scripts]))
         expand_template_file("odin_startup", macros, "startAll.sh", executable=True)
+        expand_template_file(
+            "layout.kdl",
+            dict(NAME=detector_name, PANES="\n".join([k for k in kdl])),
+            "startAll.kdl"
+        )
+        expand_template_file("startIOC.sh", None, "startIOC.sh", executable=True)
 
     def create_scripts(self, odin_data_processes):
         scripts = []
+        kdl = []
         for process_number in range(1, odin_data_processes + 1):
             scripts.append(self.create_script_entry(
                 "FR{}".format(process_number),
@@ -704,12 +711,19 @@ class OdinStartAllScript(Device):
                 "FP{}".format(process_number),
                 "stFrameProcessor{}.sh".format(process_number),
             ))
+            kdl.append(self.create_kdl_entry(
+                "stFrameReceiver{}.sh".format(process_number),
+            ))
+            kdl.append(self.create_kdl_entry(
+                "stFrameProcessor{}.sh".format(process_number),
+            ))
 
         scripts.append(self.create_script_entry(
             "MetaWriter", "stMetaWriter.sh",
         ))
+        kdl.append(self.create_kdl_entry("stMetaWriter.sh"))
 
-        return scripts
+        return scripts, kdl
 
     def create_script_entry(self, name, script_name):
         return "{name}=\"${{SCRIPT_DIR}}/{script_name}\"".format(
@@ -720,6 +734,9 @@ class OdinStartAllScript(Device):
         return "gnome-terminal --tab --title=\"{script}\" -- bash -c \"${{{script}}}\"".format(
             script=script
         )
+
+    def create_kdl_entry(self, command):
+        return '            pane command="./{}"'.format(command)
 
 class _OdinProcServ(AutoSubstitution):
     TemplateFile = "OdinProcServ.template"

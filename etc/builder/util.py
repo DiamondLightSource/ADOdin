@@ -71,16 +71,20 @@ OdinPaths.configure_paths(
 )
 
 
-def expand_template_file(template, macros, output_file, executable=False):
+def expand_template_file(input_file, macros, output_file, executable=False):
     if executable:
         mode = 0o755
     else:
         mode = None
 
-    with open(os.path.join(ADODIN_DATA, template)) as template_file:
-        template_config = Template(template_file.read())
+    with open(os.path.join(ADODIN_DATA, input_file)) as f:
+        input_content = f.read()
 
-    output = template_config.substitute(macros)
+    if macros is not None:
+        output = Template(input_content).substitute(macros)
+    else:
+        output = input_content
+
     debug_print("--- {} ----------------------------------------------".format(output_file), 2)
     debug_print(output, 2)
     debug_print("---", 2)
