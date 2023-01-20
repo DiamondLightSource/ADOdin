@@ -39,8 +39,10 @@ class OdinPaths(object):
                 os.path.join(detector_path, "configure/RELEASE")
             )
             if detector_paths["ODIN_DATA"] != cls.ODIN_DATA_TOOL:
-                raise EnvironmentError(
-                    "Mismatched odin-data dependency in {}".format(detector_path)
+                print(
+                    "WARNING: Mismatched odin-data dependency in {}".format(
+                        detector_path
+                    )
                 )
 
         for module, path in paths.items():
