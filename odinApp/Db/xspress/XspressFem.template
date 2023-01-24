@@ -1,0 +1,80 @@
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, PORT, Asyn Port name
+# % macro, ADDR, Asyn Port address
+# % macro, TOTAL, Total number of Cards
+# % macro, TIMEOUT, Timeout
+
+record(longin, "$(P)$(R)FEM$(ADDR):DROPPED_FRAMES")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_status/fem_dropped_frames")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin, "$(P)$(R)FEM$(ADDR):NUM_CHANNELS")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_status/num_ch_connected")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin, "$(P)$(R)FEM$(ADDR):CONNECTED")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_status/cards_connected")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)FEM$(ADDR):TEMP_0")
+{
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_status/temp_0")
+    field(SCAN, "I/O Intr")
+    field(PREC, "1")
+}
+
+record(ai, "$(P)$(R)FEM$(ADDR):TEMP_1")
+{
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_status/temp_1")
+    field(SCAN, "I/O Intr")
+    field(PREC, "1")
+}
+record(ai, "$(P)$(R)FEM$(ADDR):TEMP_2")
+{
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_status/temp_2")
+    field(SCAN, "I/O Intr")
+    field(PREC, "1")
+}
+record(ai, "$(P)$(R)FEM$(ADDR):TEMP_3")
+{
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_status/temp_3")
+    field(SCAN, "I/O Intr")
+    field(PREC, "1")
+}
+record(ai, "$(P)$(R)FEM$(ADDR):TEMP_4")
+{
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_status/temp_4")
+    field(SCAN, "I/O Intr")
+    field(PREC, "1")
+}
+record(ai, "$(P)$(R)FEM$(ADDR):TEMP_5")
+{
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_status/temp_5")
+    field(SCAN, "I/O Intr")
+    field(PREC, "1")
+}

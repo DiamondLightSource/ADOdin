@@ -61,11 +61,13 @@ record(longin, "$(P)$(R)META:ProcessConnected_RBV")
 
 ## Acquisition Specific
 
-record(stringin, "$(P)$(R)META:OutputFile_RBV")
+record(waveform, "$(P)$(R)META:OutputFile_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(SCAN, "I/O Intr")
-    field(INP,  "@asyn($(PORT),0,1)_ODS_meta_listener/status/full_file_path")
+   field(INP,  "@asyn($(PORT),0,1)_ODS_meta_listener/status/full_file_path")
+   field(FTVL, "CHAR")
+   field(NELM, "256")
 }
 
 record(longin, "$(P)$(R)META:ActiveProcessors_RBV")

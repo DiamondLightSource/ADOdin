@@ -1,4 +1,5 @@
 import plugins
+import xspress
 
 import arc
 import eiger

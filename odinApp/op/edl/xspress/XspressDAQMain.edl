@@ -1,0 +1,203 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 327
+y 362
+w 386
+h 785
+font "arial-medium-r-12.0"
+ctlFont "arial-medium-r-12.0"
+btnFont "arial-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 25
+ctlFgColor2 index 25
+ctlBgColor1 index 3
+ctlBgColor2 index 3
+topShadowColor index 1
+botShadowColor index 11
+title "Odin HDF"
+showGrid
+snapToGrid
+gridSize 5
+disableScroll
+endScreenProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 90
+w 395
+h 160
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "file"
+file "OdinDataHDF5_embed"
+sizeOfs 5
+numDsps 0
+noScroll
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 90
+y 165
+w 198
+h 13
+font "arial-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+visPv "DUMMY"
+visMin "0"
+value {
+  "OdinDataHDF5 Embedded Screen"
+}
+autoSize
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 0
+w 425
+h 80
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "menu"
+filePv "LOC\\dummy=i:0"
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "OdinDataDriver_embed"
+}
+noScroll
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 95
+y 30
+w 200
+h 13
+font "arial-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+visPv "DUMMY"
+visMin "0"
+value {
+  "OdinDataDriver Embedded Screen"
+}
+autoSize
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 260
+w 395
+h 60
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "file"
+file "ExcaliburODMode"
+sizeOfs 5
+numDsps 0
+noScroll
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 75
+y 285
+w 231
+h 13
+font "arial-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+visPv "DUMMY"
+visMin "0"
+value {
+  "Excalibur OD Compression Mode Screen"
+}
+autoSize
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 330
+w 385
+h 210
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+displaySource "file"
+file "MetaListener_embed"
+sizeOfs 5
+numDsps 0
+noScroll
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 100
+y 430
+w 183
+h 13
+font "arial-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+visPv "DUMMY"
+visMin "0"
+value {
+  "MetaListener Embedded Screen"
+}
+autoSize
+endObjectProperties
+

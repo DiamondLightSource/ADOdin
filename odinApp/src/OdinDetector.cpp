@@ -12,6 +12,7 @@
 #include <epicsExport.h>
 #include <iocsh.h>
 
+#define MAX_ASYN_ADDRESS 64
 static const char *driverName = "OdinDetector";
 
 /**
@@ -48,7 +49,7 @@ OdinDetector::OdinDetector(const char *portName, const char *serverHostname, int
     : OdinClient(portName, serverHostname, odinServerPort,
                  detectorName, maxBuffers,
                  maxMemory, priority, stackSize,
-                 20),  // Maximum address size set to 20 (current largest is 10 for 10M)
+                 MAX_ASYN_ADDRESS),  // Maximum address size set to 20 (current largest is 10 for 10M)
     mAPI(detectorName, serverHostname, odinServerPort)
 {
   strncpy(mHostname, serverHostname, sizeof(mHostname));
@@ -415,7 +416,7 @@ asynStatus OdinDetector::writeOctet(asynUser *pasynUser, const char *value,
 asynStatus OdinDetector::callParamCallbacks()
 {
   int status = 0;
-  for (int index = 0; index < 10; index++){
+  for (int index = 0; index < MAX_ASYN_ADDRESS; index++){
     status |= (int) ADDriver::callParamCallbacks(index);
   }
   return (asynStatus) status;

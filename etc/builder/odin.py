@@ -314,7 +314,8 @@ class OdinLogConfig(Device):
                 "Eiger16M",
                 "Tristan1M",
                 "Tristan10M",
-                "Arc"
+                "Arc",
+                "Xspress"
             ]
         )
     )
