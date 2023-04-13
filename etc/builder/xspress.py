@@ -32,7 +32,12 @@ from plugins import (
     _DatasetCreationPlugin,
 )
 
-debug_print("Xspress: {}".format(OdinPaths.XSPRESS_DETECTOR), 1)
+
+debug_print(
+    "Xspress: \n{}\n{}".format(OdinPaths.XSPRESS_TOOL, OdinPaths.XSPRESS_PYTHON),
+    1
+)
+
 
 class XspressOdinProcServ(OdinProcServ):
 
@@ -44,7 +49,7 @@ class _XspressProcessPlugin(_DatasetCreationPlugin):
 
     NAME = "xspress"
     CLASS_NAME = "XspressProcessPlugin"
-    LIBRARY_PATH = OdinPaths.XSPRESS_DETECTOR
+    LIBRARY_PATH = OdinPaths.XSPRESS_TOOL
     DATASETS = [
         dict(name="compressed_size", datatype="uint32")
     ]
@@ -109,7 +114,7 @@ class _XspressOdinData(_OdinData):
         zero_idx = index - 1
         base_mca = zero_idx * self.chans_per_processs_mca
         base_list = zero_idx * self.chans_per_processs_list
-        macros = dict(DETECTOR_ROOT=OdinPaths.XSPRESS_DETECTOR,
+        macros = dict(DETECTOR_ROOT=OdinPaths.XSPRESS_TOOL,
                       HDF_POSTFIX = self.hdf_postfix[zero_idx],
                       MCA1 = base_mca,
                       MCA2 = base_mca + 1,
@@ -159,7 +164,7 @@ class XspressOdinControlServer(_OdinControlServer):
 
     """Store configuration for an ArcOdinControlServer"""
 
-    ODIN_SERVER = os.path.join(OdinPaths.XSPRESS_DETECTOR_PYTHON3, "bin/xspress_odin")
+    ODIN_SERVER = os.path.join(OdinPaths.XSPRESS_PYTHON, "bin/xspress_control")
     PYTHON_MODULES = {}
     DAQ_ENDPOINTS = [
         "tcp://127.0.0.1:15150",
@@ -252,13 +257,13 @@ class XspressOdinControlServer(_OdinControlServer):
                 self._create_meta_writer_config_entry()]
 
     def create_odin_server_static_path(self):
-        return OdinPaths.XSPRESS_DETECTOR + "/example-config/static"
+        return OdinPaths.XSPRESS_TOOL + "/example-config/static"
 
     def _create_xspress_config_entry(self):
         config_entry = "\n".join(
             [
                 "[adapter.xsp]",
-                "module = xspress_odin.adapter.XspressAdapter",
+                "module = xspress_detector.control.adapter.XspressAdapter",
                 "endpoint = {}".format(self.HARDWARE_ENDPOINT),
                 "num_cards = {}".format(self.NUM_CARDS),
                 "num_tf = {}".format(self.NUM_TF),
@@ -279,17 +284,17 @@ class XspressOdinControlServer(_OdinControlServer):
     def _create_odin_data_config_entry(self):
         return """
 [adapter.fp]
-module = xspress_odin.fp_xspress_adapter.FPXspressAdapter
+module = xspress_detector.control.fp_xspress_adapter.FPXspressAdapter
 endpoints = 127.0.0.1:10004, 127.0.0.1:10014, 127.0.0.1:10024, 127.0.0.1:10034, 127.0.0.1:10044, 127.0.0.1:10054, 127.0.0.1:10064, 127.0.0.1:10074, 127.0.0.1:10084
 update_interval = 0.2
 
 [adapter.fr]
-module = odin_data.frame_receiver_adapter.FrameReceiverAdapter
+module = odin_data.control.frame_receiver_adapter.FrameReceiverAdapter
 endpoints = 127.0.0.1:10000, 127.0.0.1:10010, 127.0.0.1:10020, 127.0.0.1:10030, 127.0.0.1:10040, 127.0.0.1:10050, 127.0.0.1:10060, 127.0.0.1:10070, 127.0.0.1:10080
 update_interval = 0.2
 """
     def create_wrapper_start_up_script_and_config(self):
-        macros = dict(XSPRESS_DETECTOR=OdinPaths.XSPRESS_DETECTOR)
+        macros = dict(XSPRESS_DETECTOR=OdinPaths.XSPRESS_TOOL)
         expand_template_file("xspress_control_server_start_up.sh", macros, "stControlServer.sh", executable=True)
         expand_template_file("xspress_control_server_config.json", {}, "xspress.json")
 
@@ -298,9 +303,10 @@ update_interval = 0.2
 # ~~~~~~~~~~~~ 
 class XspressMetaWriter(_MetaWriter):
     DETECTOR = "Xspress"
-    WRITER_CLASS = "xspress_odin.xspress_meta_writer.XspressMetaWriter"
-    APP_PATH = os.path.join(OdinPaths.XSPRESS_DETECTOR_PYTHON3, "bin/xspress_meta_writer")
-    
+    WRITER_CLASS = "xspress_detector.data.xspress_meta_writer.XspressMetaWriter"
+    APP_PATH = OdinPaths.XSPRESS_PYTHON
+    APP_NAME = "xspress_meta_writer"
+
 
 # ~~~~~~~~~~~~ #
 # AreaDetector #
@@ -411,6 +417,6 @@ class XspressDetector(_OdinDetector):
     def create_live_startup_script(self):
 
         macros = dict(
-            XSPRESS_APP=os.path.join(OdinPaths.XSPRESS_DETECTOR_PYTHON3, "bin/xspress_live_merge")
+            XSPRESS_APP=os.path.join(OdinPaths.XSPRESS_PYTHON, "bin/xspress_live_merge")
         )
         expand_template_file("xspress_live_startup", macros, "stLiveViewMerge.sh", executable=True)
