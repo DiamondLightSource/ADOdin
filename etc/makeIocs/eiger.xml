@@ -4,23 +4,23 @@
 	<ADOdin.EigerPluginConfig MODE="Malcolm" name="PluginConfig"/>
 	<ADOdin.EigerOdinDataServer IO_THREADS="2" IP="127.0.0.1" PLUGIN_CONFIG="PluginConfig" PROCESSES="4" SHARED_MEM_SIZE="1600000000" SOURCE="EigerFan" name="ODServer1"/>
 	<ADOdin.EigerOdinControlServer API="1.8.0" EIGER_FAN="EigerFan" ENDPOINT="127.0.0.1:8080" IP="127.0.0.1" META_WRITER_IP="127.0.0.1" ODIN_DATA_SERVER_1="ODServer1" name="ControlServer"/>
-	<ADOdin.EigerOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" P="$(hostname)-EIGER" PORT="ODN.OD" R=":OD:" SENSOR_X="4148" SENSOR_Y="4362" TIMEOUT="1"/>
+	<ADOdin.EigerOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" P="EIGER" PORT="ODN.OD" R=":OD:" SENSOR_X="4148" SENSOR_Y="4362" TIMEOUT="1"/>
 	<ADOdin.OdinLogConfig BEAMLINE="iXX" DETECTOR="Eiger16M" name="LogConfig"/>
 	<!--6 -> 1 Second-->
-	<EPICS_BASE.dbpf name="Polling" pv="$(hostname)-EIGER:OD:ReadStatus.SCAN" value="6"/>
-	<EPICS_BASE.dbpf name="ImageWidth" pv="$(hostname)-EIGER:OD:ImageWidth" value="4148"/>
-	<EPICS_BASE.dbpf name="ImageHeight" pv="$(hostname)-EIGER:OD:ImageHeight" value="4362"/>
-	<EPICS_BASE.dbpf name="ChunkDepth" pv="$(hostname)-EIGER:OD:NumFramesChunks" value="1"/>
-	<EPICS_BASE.dbpf name="ChunkWidth" pv="$(hostname)-EIGER:OD:NumColChunks" value="4148"/>
-	<EPICS_BASE.dbpf name="ChunkHeight" pv="$(hostname)-EIGER:OD:NumRowChunks" value="4362"/>
-	<EPICS_BASE.dbpf name="DataType" pv="$(hostname)-EIGER:OD:DataType" value="UInt32"/>
-	<EPICS_BASE.dbpf name="Compression" pv="$(hostname)-EIGER:OD:Compression" value="BSLZ4"/>
-	<EPICS_BASE.dbpf name="BlockSize" pv="$(hostname)-EIGER:OD:BlockSize" value="1000"/>
-	<EPICS_BASE.dbpf name="BlocksPerFile" pv="$(hostname)-EIGER:OD:BlocksPerFile" value="1"/>
-	<EPICS_BASE.dbpf name="CloseFileTimeout" pv="$(hostname)-EIGER:OD:CloseFileTimeout" value="10000"/>
-	<!--<EPICS_BASE.dbpf name="StreamYes" pv="$(hostname)-EIGER:CAM:StreamEnable" value="Yes"/>-->
-	<!--<EPICS_BASE.dbpf name="LiveViewYes" pv="$(hostname)-EIGER:CAM:LiveViewEnable" value="Yes"/>-->
-	<!--<EPICS_BASE.dbpf name="LiveViewEndpoint" pv="$(hostname)-EIGER:CAM:LiveViewEndpoint" value="tcp://127.0.0.1:5555"/>-->
+	<EPICS_BASE.dbpf name="Polling" pv="EIGER:OD:ReadStatus.SCAN" value="6"/>
+	<EPICS_BASE.dbpf name="ImageWidth" pv="EIGER:OD:ImageWidth" value="4148"/>
+	<EPICS_BASE.dbpf name="ImageHeight" pv="EIGER:OD:ImageHeight" value="4362"/>
+	<EPICS_BASE.dbpf name="ChunkDepth" pv="EIGER:OD:NumFramesChunks" value="1"/>
+	<EPICS_BASE.dbpf name="ChunkWidth" pv="EIGER:OD:NumColChunks" value="4148"/>
+	<EPICS_BASE.dbpf name="ChunkHeight" pv="EIGER:OD:NumRowChunks" value="4362"/>
+	<EPICS_BASE.dbpf name="DataType" pv="EIGER:OD:DataType" value="UInt32"/>
+	<EPICS_BASE.dbpf name="Compression" pv="EIGER:OD:Compression" value="BSLZ4"/>
+	<EPICS_BASE.dbpf name="BlockSize" pv="EIGER:OD:BlockSize" value="1000"/>
+	<EPICS_BASE.dbpf name="BlocksPerFile" pv="EIGER:OD:BlocksPerFile" value="1"/>
+	<EPICS_BASE.dbpf name="CloseFileTimeout" pv="EIGER:OD:CloseFileTimeout" value="10000"/>
+	<!--<EPICS_BASE.dbpf name="StreamYes" pv="EIGER:CAM:StreamEnable" value="Yes"/>-->
+	<!--<EPICS_BASE.dbpf name="LiveViewYes" pv="EIGER:CAM:LiveViewEnable" value="Yes"/>-->
+	<!--<EPICS_BASE.dbpf name="LiveViewEndpoint" pv="EIGER:CAM:LiveViewEndpoint" value="tcp://127.0.0.1:5555"/>-->
 	<ADOdin.EigerOdinStartAllScript driver="ODN.OD" name="StartAllScript"/>
 	<ADOdin.EigerOdinProcServ ADODIN_IOC_NAME="TS-EA-IOC-01" IOC_NAME="TS-CS-IOC-01" ODIN_DATA_DRIVER="ODN.OD" PREFIX="TS-CS-EIG1" PROCESS_PREFIX="TS-EA-EIG1"/>
 </components>
