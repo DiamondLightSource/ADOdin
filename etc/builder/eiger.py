@@ -1,29 +1,27 @@
 import os
 
-from iocbuilder import Device, AutoSubstitution
-from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
+from iocbuilder import AutoSubstitution, Device
+from iocbuilder.arginfo import Choice, Ident, Simple, makeArgInfo
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
-
-from util import OdinPaths, expand_template_file, debug_print
 from odin import (
-    _OdinDetector,
+    OdinProcServ,
+    OdinStartAllScript,
+    _MetaWriter,
+    _OdinControlServer,
     _OdinData,
     _OdinDataDriver,
     _OdinDataServer,
-    _OdinControlServer,
-    _MetaWriter,
+    _OdinDetector,
     _PluginConfig,
-    OdinProcServ,
-    OdinStartAllScript,
 )
 from plugins import (
-    _OffsetAdjustmentPlugin,
-    _UIDAdjustmentPlugin,
+    _DatasetCreationPlugin,
     _FileWriterPlugin,
     _KafkaPlugin,
-    _DatasetCreationPlugin
+    _OffsetAdjustmentPlugin,
+    _UIDAdjustmentPlugin,
 )
-
+from util import OdinPaths, debug_print, expand_template_file
 
 debug_print("Eiger: = \n{}\n{}".format(OdinPaths.EIGER_TOOL, OdinPaths.EIGER_PYTHON), 1)
 
@@ -303,7 +301,7 @@ class EigerOdinControlServer(_OdinControlServer):
                "update_interval = 0.5".format(self.eiger_fan.IP)
 
     def create_odin_server_static_path(self):
-        return os.path.join(OdinPaths.EIGER_PYTHON, "prefix/html/static")
+        return os.path.join(OdinPaths.EIGER_TOOL, "html/static")
 
 
 class _EigerDetectorTemplate(AutoSubstitution):

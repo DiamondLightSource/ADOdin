@@ -4,14 +4,33 @@ import os
 from iocbuilder import AutoSubstitution
 from iocbuilder.arginfo import Choice, Ident, Simple, makeArgInfo
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
-from odin import (_FrameProcessorPlugin, _MetaWriter, _OdinControlServer,
-                  _OdinData, _OdinDataDriver, _OdinDataServer, _OdinDetector,
-                  _PluginConfig)
-from plugins import (_BloscPlugin, _DatasetCreationPlugin, _FileWriterPlugin,
-                     _LiveViewPlugin, _OffsetAdjustmentPlugin, _SumPlugin,
-                     _UIDAdjustmentPlugin)
-from util import (OdinPaths, OneLineEntry, create_config_entry, data_file_path,
-                  debug_print, expand_template_file)
+from odin import (
+    _FrameProcessorPlugin,
+    _MetaWriter,
+    _OdinControlServer,
+    _OdinData,
+    _OdinDataDriver,
+    _OdinDataServer,
+    _OdinDetector,
+    _PluginConfig,
+)
+from plugins import (
+    _BloscPlugin,
+    _DatasetCreationPlugin,
+    _FileWriterPlugin,
+    _LiveViewPlugin,
+    _OffsetAdjustmentPlugin,
+    _SumPlugin,
+    _UIDAdjustmentPlugin,
+)
+from util import (
+    OdinPaths,
+    OneLineEntry,
+    create_config_entry,
+    data_file_path,
+    debug_print,
+    expand_template_file,
+)
 
 debug_print("Arc: = \n{}\n{}".format(OdinPaths.ARC_TOOL, OdinPaths.ARC_PYTHON), 1)
 
@@ -329,7 +348,7 @@ class ArcOdinControlServer(_OdinControlServer):
         return [self._create_arc_config_entry()]
 
     def create_odin_server_static_path(self):
-        return os.path.join(OdinPaths.ARC_PYTHON, "prefix/html/static")
+        return os.path.join(OdinPaths.ARC_TOOLS, "html/static")
 
     def _create_arc_config_entry(self):
         upd_path = 'udp_arc.json'

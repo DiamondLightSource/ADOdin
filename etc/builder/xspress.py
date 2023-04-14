@@ -257,7 +257,7 @@ class XspressOdinControlServer(_OdinControlServer):
                 self._create_meta_writer_config_entry()]
 
     def create_odin_server_static_path(self):
-        return OdinPaths.XSPRESS_TOOL + "/example-config/static"
+        return os.path.join(OdinPaths.XSPRESS_TOOL, "html/static")
 
     def _create_xspress_config_entry(self):
         config_entry = "\n".join(

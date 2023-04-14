@@ -1,36 +1,34 @@
 import os
 
 from iocbuilder import AutoSubstitution
-from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
+from iocbuilder.arginfo import Choice, Ident, Simple, makeArgInfo
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
-
-from util import (
-    OdinPaths,
-    expand_template_file,
-    debug_print,
-    create_config_entry,
-    OneLineEntry,
-)
 from odin import (
-    _OdinDetector,
+    _FrameProcessorPlugin,
+    _MetaWriter,
+    _OdinControlServer,
     _OdinData,
     _OdinDataDriver,
     _OdinDataServer,
-    _OdinControlServer,
-    _MetaWriter,
+    _OdinDetector,
     _PluginConfig,
-    _FrameProcessorPlugin,
 )
 from plugins import (
+    _BloscPlugin,
+    _DatasetCreationPlugin,
+    _FileWriterPlugin,
     _LiveViewPlugin,
     _OffsetAdjustmentPlugin,
-    _UIDAdjustmentPlugin,
     _SumPlugin,
-    _BloscPlugin,
-    _FileWriterPlugin,
-    _DatasetCreationPlugin,
+    _UIDAdjustmentPlugin,
 )
-
+from util import (
+    OdinPaths,
+    OneLineEntry,
+    create_config_entry,
+    debug_print,
+    expand_template_file,
+)
 
 debug_print(
     "Excalibur: \n{}\n{}".format(OdinPaths.EXCALIBUR_TOOL, OdinPaths.EXCALIBUR_PYTHON),
@@ -272,7 +270,7 @@ application_name="excalibur_odin",detector="Excalibur{}" \
         ]
 
     def create_odin_server_static_path(self):
-        return os.path.join(OdinPaths.EXCALIBUR_PYTHON + "prefix/html/static")
+        return os.path.join(OdinPaths.EXCALIBUR_TOOL + "html/static")
 
     def _create_excalibur_config_entry(self):
         return "[adapter.excalibur]\n" \

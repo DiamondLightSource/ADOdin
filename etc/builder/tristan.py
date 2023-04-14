@@ -1,21 +1,20 @@
-import os
 import json
+import os
 
-from iocbuilder import Device, AutoSubstitution
-from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
+from iocbuilder import AutoSubstitution, Device
+from iocbuilder.arginfo import Choice, Ident, Simple, makeArgInfo
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
-
-from plugins import _DatasetCreationPlugin, _FileWriterPlugin
-from util import OdinPaths, expand_template_file, debug_print, create_config_entry
 from odin import (
-    _OdinData,
-    _OdinDataServer,
     _MetaWriter,
     _OdinControlServer,
+    _OdinData,
     _OdinDataDriver,
+    _OdinDataServer,
     _OdinDetector,
-    _PluginConfig
+    _PluginConfig,
 )
+from plugins import _DatasetCreationPlugin, _FileWriterPlugin
+from util import OdinPaths, create_config_entry, debug_print, expand_template_file
 
 debug_print(
     "Tristan: \n{}\n{}".format(OdinPaths.TRISTAN_TOOL, OdinPaths.TRISTAN_PYTHON), 1
@@ -156,7 +155,7 @@ class TristanOdinControlServer(_OdinControlServer):
         ]
 
     def create_odin_server_static_path(self):
-        return os.path.join(OdinPaths.TRISTAN_PYTHON, "prefix/html/static")
+        return os.path.join(OdinPaths.TRISTAN_TOOL, "html/static")
 
     def _create_tristan_config_entry(self):
         return (
