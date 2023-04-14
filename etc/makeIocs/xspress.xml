@@ -23,5 +23,4 @@
 	<EPICS_BASE.dbpf name="DBPF.13" pv="XSPRESS:ARR:EnableCallbacks" value="Enable"/>
 	<EPICS_BASE.dbpf name="DBPF.14" pv="XSPRESS:CAM:APP_DEBUG" value="0"/>
 	<ADOdin.XspressOdinProcServ ADODIN_IOC_NAME="BL29P-EA-IOC-80" IOC_NAME="BL29P-CS-IOC-80" ODIN_DATA_DRIVER="ODN.OD" PREFIX="BL29P-CS-XSP1" PROCESS_PREFIX="BL29P-EA-XSP1"/>
-	<procServControl.procServControl P="TEST32324" PORT="DSDAA" name="abv"/>
 </components>
