@@ -276,9 +276,7 @@ class XspressOdinControlServer(_OdinControlServer):
                 "daq_endpoints = {}".format(",".join(self.DAQ_ENDPOINTS)),
             ]
         )
-        print "-------------------\n"
-        print config_entry
-        print "-------------------\n"
+
         return config_entry
 
     def _create_odin_data_config_entry(self):
