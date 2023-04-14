@@ -1,6 +1,9 @@
+from __future__ import print_function
+
 import json
 import os
 import re
+import sys
 import uuid
 from string import Template
 
@@ -42,7 +45,8 @@ class OdinPaths(object):
                 print(
                     "WARNING: Mismatched odin-data dependency in {}".format(
                         detector_path
-                    )
+                    ),
+                    file=sys.stderr,
                 )
 
         for module, path in paths.items():
