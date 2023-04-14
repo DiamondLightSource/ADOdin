@@ -23,6 +23,10 @@ def data_file_path(file_name):
     return os.path.join(ADODIN_DATA, file_name)
 
 
+def remove_suffix(string, suffix):
+    return re.sub("{}$".format(suffix), "", string)
+
+
 class OdinPaths(object):
 
     @classmethod
@@ -41,10 +45,10 @@ class OdinPaths(object):
             detector_paths = cls.parse_release_file(
                 os.path.join(detector_path, "../configure/RELEASE")
             )
-            if detector_paths["ODIN_DATA"] != cls.ODIN_DATA_TOOL:
+            if detector_paths["ODIN_DATA"] != remove_suffix(cls.ODIN_DATA_TOOL, "/prefix"):
                 print(
-                    "WARNING: Mismatched odin-data dependency in {}".format(
-                        detector_path
+                    "WARNING: Mismatched odin-data dependency in {}: {}".format(
+                        detector_path, detector_paths["ODIN_DATA"]
                     ),
                     file=sys.stderr,
                 )
