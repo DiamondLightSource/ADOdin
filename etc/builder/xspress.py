@@ -321,7 +321,7 @@ class XspressOdinDataDriver(_OdinDataDriver):
         meta_class.SENSOR_SHAPE = [num_channels, max_spectra]
         self.META_WRITER_CLASS = meta_class
         args["R"] = ":OD:"
-        self.__super.__init__(DETECTOR="xsp", **args)
+        self.__super.__init__(DETECTOR="xspress", **args)
 
 
 
@@ -338,7 +338,7 @@ class XspressDetector(_OdinDetector):
 
     """Create an Xspress EPICS client detector"""
 
-    DETECTOR = "xsp"
+    DETECTOR = "xspress"
 
     # This tells xmlbuilder to use PORT instead of name as the row ID
     UniqueName = "PORT"
