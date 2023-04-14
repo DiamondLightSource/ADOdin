@@ -1,7 +1,7 @@
 [
     {
         "decoder_type": "Xspress",
-        "decoder_path": "$DETECTOR_ROOT/prefix/lib",
+        "decoder_path": "$DETECTOR_ROOT/lib",
         "rx_type": "zmq",
         "rx_address": "127.0.0.1",
         "rx_ports": "$RX_PORT,"

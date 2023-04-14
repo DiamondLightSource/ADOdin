@@ -10,7 +10,7 @@
       "load": {
         "index": "hdf",
         "name": "FileWriterPlugin",
-        "library": "$ODIN_DATA/prefix/lib/libHdf5Plugin.so"
+        "library": "$ODIN_DATA/lib/libHdf5Plugin.so"
       }
     }
   },
@@ -19,7 +19,7 @@
       "load": {
         "index": "arc",
         "name": "ArcProcessPlugin",
-        "library": "$DETECTOR/prefix/lib/libArcProcessPlugin.so"
+        "library": "$DETECTOR/lib/libArcProcessPlugin.so"
       }
     }
   },

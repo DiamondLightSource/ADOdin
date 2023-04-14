@@ -125,7 +125,7 @@ class _FrameProcessorPlugin(Device):
                 "load": {
                     "index": self.NAME,
                     "name": self.CLASS_NAME,
-                    "library": "{}/prefix/lib/lib{}.so".format(self.LIBRARY_PATH, library_name)
+                    "library": "{}/lib/lib{}.so".format(self.LIBRARY_PATH, library_name)
                 }
             }
         }

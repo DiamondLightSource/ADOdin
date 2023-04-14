@@ -36,7 +36,7 @@ class OdinPaths(object):
             if module.endswith("TOOL") and not "ODIN_DATA" in module
         ]:
             detector_paths = cls.parse_release_file(
-                os.path.join(detector_path, "configure/RELEASE")
+                os.path.join(detector_path, "../configure/RELEASE")
             )
             if detector_paths["ODIN_DATA"] != cls.ODIN_DATA_TOOL:
                 print(
