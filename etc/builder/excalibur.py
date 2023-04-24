@@ -270,7 +270,7 @@ application_name="excalibur_odin",detector="Excalibur{}" \
         ]
 
     def create_odin_server_static_path(self):
-        return os.path.join(OdinPaths.EXCALIBUR_TOOL + "html/static")
+        return os.path.join(OdinPaths.EXCALIBUR_TOOL, "html/static")
 
     def _create_excalibur_config_entry(self):
         return "[adapter.excalibur]\n" \
