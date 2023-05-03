@@ -45,7 +45,7 @@ class OdinPaths(object):
             detector_paths = cls.parse_release_file(
                 os.path.join(detector_path, "../configure/RELEASE")
             )
-            if detector_paths["ODIN_DATA"] != remove_suffix(cls.ODIN_DATA_TOOL, "/prefix"):
+            if not cls.ODIN_DATA_TOOL.startswith(detector_paths["ODIN_DATA"]):
                 print(
                     "WARNING: Mismatched odin-data dependency in {}: {}".format(
                         detector_path, detector_paths["ODIN_DATA"]
