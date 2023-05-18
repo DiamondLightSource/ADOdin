@@ -94,6 +94,10 @@ class _XspressOdinData(_OdinData):
         "36CHAN": {
             "FrameProcessor": "fp_xspress.json",
             "FrameReceiver": "fr_xspress.json"
+        },
+        "8CHAN":{
+            "FrameProcessor": "fp_xspress.json",
+            "FrameReceiver": "fr_xspress.json"
         }
     }
     fp_template = "fp_xspress.json"
@@ -151,7 +155,7 @@ class XspressOdinDataServer(_OdinDataServer):
     ArgInfo = makeArgInfo(__init__,
         IP=Simple("IP address of server hosting OdinData processes", str),
         PROCESSES=Simple("Number of OdinData processes on this server", int),
-        SENSOR=Choice("Sensor type", ["36CHAN",]),
+        SENSOR=Choice("Sensor type", ["36CHAN","8CHAN"]),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
         PLUGIN_CONFIG=Ident("Define a custom set of plugins", _PluginConfig)
     )
@@ -177,7 +181,29 @@ class XspressOdinControlServer(_OdinControlServer):
         "tcp://127.0.0.1:15157",
         "tcp://127.0.0.1:15158"
     ]
+    FP_ENDPOINTS = [
+        "127.0.0.1:10004",
+        "127.0.0.1:10014",
+        "127.0.0.1:10024",
+        "127.0.0.1:10034",
+        "127.0.0.1:10044",
+        "127.0.0.1:10054",
+        "127.0.0.1:10064",
+        "127.0.0.1:10074",
+        "127.0.0.1:10084",
+    ]
 
+    FR_ENDPOINTS = [
+        "127.0.0.1:10000",
+        "127.0.0.1:10010",
+        "127.0.0.1:10020",
+        "127.0.0.1:10030",
+        "127.0.0.1:10040",
+        "127.0.0.1:10050",
+        "127.0.0.1:10060",
+        "127.0.0.1:10070",
+        "127.0.0.1:10080",
+    ]
     def __init__(
         self,
         SETTINGS_PATH,
@@ -198,7 +224,8 @@ class XspressOdinControlServer(_OdinControlServer):
         ODIN_DATA_SERVER_4=None,
     ):
         self.__dict__.update(locals())
-        self.ADAPTERS.append("xsp")
+        self.ADAPTERS.append("xspress")
+        self.num_process = ODIN_DATA_SERVER_1.PROCESSES
 
         super(XspressOdinControlServer, self).__init__(
             IP,
@@ -257,12 +284,12 @@ class XspressOdinControlServer(_OdinControlServer):
                 self._create_meta_writer_config_entry()]
 
     def create_odin_server_static_path(self):
-        return os.path.join(OdinPaths.XSPRESS_TOOL, "html/static")
+        return os.path.join(OdinPaths.XSPRESS_TOOL, "../example-config/static")
 
     def _create_xspress_config_entry(self):
         config_entry = "\n".join(
             [
-                "[adapter.xsp]",
+                "[adapter.xspress]",
                 "module = xspress_detector.control.adapter.XspressAdapter",
                 "endpoint = {}".format(self.HARDWARE_ENDPOINT),
                 "num_cards = {}".format(self.NUM_CARDS),
@@ -273,24 +300,26 @@ class XspressOdinControlServer(_OdinControlServer):
                 "settings_path = {}".format(self.SETTINGS_PATH),
                 "run_flags = {}".format(self.RUN_FLAGS),
                 "debug = {}".format(self.DEBUG),
-                "daq_endpoints = {}".format(",".join(self.DAQ_ENDPOINTS)),
+                "num_process = {}".format(self.num_process),
+                "daq_endpoints = {}".format(",".join(self.DAQ_ENDPOINTS[:self.num_process])),
             ]
         )
 
         return config_entry
 
     def _create_odin_data_config_entry(self):
-        return """
-[adapter.fp]
-module = xspress_detector.control.fp_xspress_adapter.FPXspressAdapter
-endpoints = 127.0.0.1:10004, 127.0.0.1:10014, 127.0.0.1:10024, 127.0.0.1:10034, 127.0.0.1:10044, 127.0.0.1:10054, 127.0.0.1:10064, 127.0.0.1:10074, 127.0.0.1:10084
-update_interval = 0.2
+        return "\n".join([
+            "[adapter.fp]",
+            "module = xspress_detector.control.fp_xspress_adapter.FPXspressAdapter",
+            "endpoints = {}".format(",".join(self.FP_ENDPOINTS[:self.num_process])),
+            "update_interval = 0.2",
+            "",
+            "[adapter.fr]",
+            "module = odin_data.control.frame_receiver_adapter.FrameReceiverAdapter",
+            "endpoints = {}".format(",".join(self.FR_ENDPOINTS[:self.num_process])),
+            "update_interval = 0.2",
 
-[adapter.fr]
-module = odin_data.control.frame_receiver_adapter.FrameReceiverAdapter
-endpoints = 127.0.0.1:10000, 127.0.0.1:10010, 127.0.0.1:10020, 127.0.0.1:10030, 127.0.0.1:10040, 127.0.0.1:10050, 127.0.0.1:10060, 127.0.0.1:10070, 127.0.0.1:10080
-update_interval = 0.2
-"""
+        ])
     def create_wrapper_start_up_script_and_config(self):
         macros = dict(XSPRESS_DETECTOR=OdinPaths.XSPRESS_TOOL)
         expand_template_file("xspress_control_server_start_up.sh", macros, "stControlServer.sh", executable=True)
@@ -352,8 +381,22 @@ class XspressDetector(_OdinDetector):
         ODIN_DATA_DRIVER,
         BUFFERS=0,
         MEMORY=0,
+        NUM_PROCESSES=1,
         **args
     ):
+
+
+        LV_ENDPOINTS = [
+            "15500",
+            "15501",
+            "15502",
+            "15503",
+            "15504",
+            "15505",
+            "15506",
+            "15507",
+            "15508",]
+
         args["R"] = ":CAM:"
         # Init the superclass (OdinDetector)
         self.__super.__init__(
@@ -408,6 +451,10 @@ class XspressDetector(_OdinDetector):
                 "attached plugins",
                 int,
             ),
+            NUM_PROCESSES=Simple(
+                "Number of Live View processes necessary.",
+                int
+            )
         )
     )
     ArgInfo = ArgInfo.filtered(without=["R"])
@@ -417,4 +464,9 @@ class XspressDetector(_OdinDetector):
         macros = dict(
             XSPRESS_APP=os.path.join(OdinPaths.XSPRESS_PYTHON, "bin/xspress_live_merge")
         )
+        LV_endpoints=[]
+        macros["XSPRESS_APP"]+=' --sub_ports {}'.format(self.LV_ENDPOINTS[0])
+        for i in range(1,self.NUM_PROCESSES):
+            macros["XSPRESS_APP"] += ',' + str(self.LV_ENDPOINTS[i])
+        print(macros["XSPRESS_APP"])
         expand_template_file("xspress_live_startup", macros, "stLiveViewMerge.sh", executable=True)
