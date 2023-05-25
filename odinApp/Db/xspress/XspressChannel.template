@@ -253,3 +253,17 @@ record(ai, "$(P)$(R)C$(CHAN)_DTC_IWRG_RBV")
 }
 
 
+record(acalcout,"$(P)$(R)C$(CHAN)ChanLiveMCA")
+{
+    field(INAA, "$(P):ARR:ArrayData CPP")
+    field(INPA, "$(CHAN)")
+    field(CALC, "AA[((A-1)*4096), (A*4096)]")
+    field(NELM, "2359296")
+    field(OUT, "$(P)$(R)C$(CHAN)ChanLiveMCA_RBV PP")
+}
+
+record(waveform, "$(P)$(R)C$(CHAN)ChanLiveMCA_RBV")
+{
+    field(FTVL, "LONG")
+    field(NELM, "4096")
+}

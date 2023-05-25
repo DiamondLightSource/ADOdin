@@ -38,7 +38,8 @@ DETECTOR_CHOICES = Choice(
         "Tristan1M",
         "Tristan10M",
         "Arc",
-        "Xspress4"
+        "Xspress4",
+        "Xspress3",
     ]
 )
 

@@ -20,6 +20,7 @@ from odin import (
     _MetaWriter,
     _PluginConfig,
     OdinProcServ,
+    OdinStartAllScript,
     _FrameProcessorPlugin,
     DETECTOR_CHOICES,
 )
@@ -44,7 +45,7 @@ class XspressOdinProcServ(OdinProcServ):
 
     @property
     def extra_applications(self):
-        return ["ControlServer"]
+        return ["ControlServer","LiveViewMerge"]
 
 class _XspressProcessPlugin(_DatasetCreationPlugin):
 
@@ -372,6 +373,8 @@ class XspressDetector(_OdinDetector):
         BUFFERS=0,
         MEMORY=0,
         NUM_PROCESSES=1,
+        MAX_CHANNELS=8,
+        NUM_CARDS=2,
         **args
     ):
 
@@ -444,7 +447,15 @@ class XspressDetector(_OdinDetector):
             NUM_PROCESSES=Simple(
                 "Number of Live View processes necessary.",
                 int
-            )
+            ),
+            MAX_CHANNELS=Choice(
+                "Maximum number of channels expected for the detector (used for screen generation)",
+                ["8","36"]
+            ),
+            NUM_CARDS=Choice(
+                "Number of cards for this detector (used for screen generation)",
+                ["2","4"],
+            ),
         )
     )
     ArgInfo = ArgInfo.filtered(without=["R"])
@@ -460,3 +471,11 @@ class XspressDetector(_OdinDetector):
             macros["XSPRESS_APP"] += ',' + str(self.LV_ENDPOINTS[i])
         print(macros["XSPRESS_APP"])
         expand_template_file("xspress_live_startup", macros, "stLiveViewMerge.sh", executable=True)
+
+class XspressStartupScript(OdinStartAllScript):
+    """Create a Xspress Odin specific startup script"""
+    def __init__(self,driver,**args):
+        # OdinStartAllScript.__init__(self,driver,**args)
+        self.create_xspress_start_script(driver.DETECTOR.upper(), driver.odin_data_processes)
+
+    ArgInfo = makeArgInfo(__init__, driver=Ident("OdinDataDriver",_OdinDataDriver))
