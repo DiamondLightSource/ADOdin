@@ -640,7 +640,7 @@ class _OdinDataDriver(AsynPort):
     # __init__ arguments
     ArgInfo = (
         ADBaseTemplate.ArgInfo
-        + _OdinDataDriverTemplate.ArgInfo
+        + _OdinDataDriverTemplate.ArgInfo.filtered(without=["TOTAL"])
         + makeArgInfo(
             __init__,
             PORT=Simple("Port name for the detector", str),
