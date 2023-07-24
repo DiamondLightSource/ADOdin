@@ -21,6 +21,7 @@ from odin import (
     _PluginConfig,
     OdinProcServ,
     _FrameProcessorPlugin,
+    DETECTOR_CHOICES,
 )
 from plugins import (
     _LiveViewPlugin,
@@ -76,7 +77,7 @@ class XspressPlugins(_PluginConfig):
         live_plugin = _LiveViewPlugin(source=xspress_plugin)
         blosc_plugin = _BloscPlugin(source=live_plugin)
         fw_plugin = _FileWriterPlugin(source=blosc_plugin)
-        
+
         self._instance = super(XspressPlugins, self).__init__(
             PLUGIN_1=xspress_plugin,
             PLUGIN_2=live_plugin,
@@ -84,7 +85,7 @@ class XspressPlugins(_PluginConfig):
             PLUGIN_4=fw_plugin,
         )
         return self._instance
-        
+
 
 
 
@@ -208,6 +209,7 @@ class XspressOdinControlServer(_OdinControlServer):
         self,
         SETTINGS_PATH,
         IP="127.0.0.1",
+        DETECTOR="Xspress4",
         PORT=8888,
         BASE_IP="192.168.0.1",
         NUM_CARDS=4,
@@ -229,6 +231,7 @@ class XspressOdinControlServer(_OdinControlServer):
 
         super(XspressOdinControlServer, self).__init__(
             IP,
+            DETECTOR,
             PORT,
             META_WRITER_IP,
             ODIN_DATA_SERVER_1,
@@ -242,6 +245,7 @@ class XspressOdinControlServer(_OdinControlServer):
     ArgInfo = makeArgInfo(
         __init__,
         IP=Simple("IP address of control server", str),
+        DETECTOR=DETECTOR_CHOICES,
         PORT=Simple("Port of control server", int),
         HARDWARE_ENDPOINT=Simple("Control Application endpoint", str),
         MAX_CHANNELS=Simple("Number of channels in the Xspress", int),
@@ -327,7 +331,7 @@ class XspressOdinControlServer(_OdinControlServer):
 
 
 
-# ~~~~~~~~~~~~ 
+# ~~~~~~~~~~~~
 class XspressMetaWriter(_MetaWriter):
     DETECTOR = "Xspress"
     WRITER_CLASS = "xspress_detector.data.xspress_meta_writer.XspressMetaWriter"

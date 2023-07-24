@@ -12,6 +12,7 @@ from odin import (
     _OdinDataServer,
     _OdinDetector,
     _PluginConfig,
+    DETECTOR_CHOICES,
 )
 from plugins import _DatasetCreationPlugin, _FileWriterPlugin
 from util import OdinPaths, create_config_entry, debug_print, expand_template_file
@@ -107,7 +108,7 @@ class TristanOdinControlServer(_OdinControlServer):
 
     ODIN_SERVER = os.path.join(OdinPaths.TRISTAN_PYTHON, "bin/tristan_control")
 
-    def __init__(self, IP, PORT=8888, META_WRITER_IP=None,
+    def __init__(self, IP, DETECTOR, PORT=8888, META_WRITER_IP=None,
                  HARDWARE_ENDPOINT="tcp://127.0.0.1:10100",
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
                  ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None,
@@ -118,7 +119,7 @@ class TristanOdinControlServer(_OdinControlServer):
         self.ADAPTERS.append("tristan")
 
         super(TristanOdinControlServer, self).__init__(
-            IP, PORT, META_WRITER_IP,
+            IP, DETECTOR, PORT, META_WRITER_IP,
             ODIN_DATA_SERVER_1,
             ODIN_DATA_SERVER_2,
             ODIN_DATA_SERVER_3,
@@ -134,6 +135,7 @@ class TristanOdinControlServer(_OdinControlServer):
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
         IP=Simple("IP address of control server", str),
+        DETECTOR=DETECTOR_CHOICES,
         PORT=Simple("Port of control server", int),
         HARDWARE_ENDPOINT=Simple("Detector endpoint", str),
         META_WRITER_IP=Simple("IP address of MetaWriter (None -> first OdinDataServer)", str),
@@ -146,7 +148,7 @@ class TristanOdinControlServer(_OdinControlServer):
         ODIN_DATA_SERVER_7=Ident("OdinDataServer 7 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_8=Ident("OdinDataServer 8 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_9=Ident("OdinDataServer 9 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_10=Ident("OdinDataServer 10 configuration", _OdinDataServer)
+        ODIN_DATA_SERVER_10=Ident("OdinDataServer 10 configuration", _OdinDataServer),
     )
 
     def create_extra_config_entries(self):

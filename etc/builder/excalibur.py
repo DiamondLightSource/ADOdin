@@ -12,6 +12,7 @@ from odin import (
     _OdinDataServer,
     _OdinDetector,
     _PluginConfig,
+    DETECTOR_CHOICES,
 )
 from plugins import (
     _BloscPlugin,
@@ -240,8 +241,10 @@ class ExcaliburOdinControlServer(_OdinControlServer):
         self.__dict__.update(locals())
         self.ADAPTERS.append("excalibur")
 
+        DETECTOR = "Excalibur{}".format(SENSOR)
+
         super(ExcaliburOdinControlServer, self).__init__(
-            IP, PORT, META_WRITER_IP,
+            IP, DETECTOR, PORT, META_WRITER_IP,
             ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4
         )
 
@@ -256,7 +259,7 @@ class ExcaliburOdinControlServer(_OdinControlServer):
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer)
+        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
     )
 
     def get_extra_startup_macro(self):

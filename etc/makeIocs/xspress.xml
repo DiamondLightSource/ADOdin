@@ -2,7 +2,7 @@
 <components arch="linux-x86_64">
 	<EPICS_BASE.EpicsEnvSet key="EPICS_CA_MAX_ARRAY_BYTES" value="10000000"/>
 	<ADOdin.XspressOdinDataServer IP="127.0.0.1" PROCESSES="9" SENSOR="36CHAN" SHARED_MEM_SIZE="2147483648" name="XSP.DATA1"/>
-	<ADOdin.XspressOdinControlServer IP="127.0.0.1" ODIN_DATA_SERVER_1="XSP.DATA1" PORT="8888" SETTINGS_PATH="/dls_sw/b18/epics/xspress4/xspress4.list_mode37_pb/settings" name="ControlServer"/>
+	<ADOdin.XspressOdinControlServer DETECTOR="Xspress4" IP="127.0.0.1" ODIN_DATA_SERVER_1="XSP.DATA1" PORT="8888" SETTINGS_PATH="/dls_sw/b18/epics/xspress4/xspress4.list_mode37_pb/settings" name="ControlServer"/>
 	<ADOdin.XspressOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" P="XSPRESS" PORT="ODN.OD" TIMEOUT="1"/>
 	<ADOdin.XspressDetector ADDR="0" ODIN_CONTROL_SERVER="ControlServer" ODIN_DATA_DRIVER="ODN.OD" P="XSPRESS" PORT="ODN.CAM" TIMEOUT="1"/>
 	<ADCore.NDROI ENABLED="1" NDARRAY_PORT="ODN.CAM" P="XSPRESS" PORT="ODN.ROI" R=":ROI:"/>

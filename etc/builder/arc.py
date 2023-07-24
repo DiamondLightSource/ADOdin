@@ -13,6 +13,7 @@ from odin import (
     _OdinDataServer,
     _OdinDetector,
     _PluginConfig,
+    DETECTOR_CHOICES,
 )
 from plugins import (
     _BloscPlugin,
@@ -301,6 +302,7 @@ class ArcOdinControlServer(_OdinControlServer):
     def __init__(
         self,
         IP,
+        DETECTOR,
         PORT=8888,
         META_WRITER_IP=None,
         HARDWARE_ENDPOINT="tcp://127.0.0.1:10100",
@@ -314,6 +316,7 @@ class ArcOdinControlServer(_OdinControlServer):
 
         super(ArcOdinControlServer, self).__init__(
             IP,
+            DETECTOR,
             PORT,
             META_WRITER_IP,
             ODIN_DATA_SERVER_1,
@@ -326,6 +329,7 @@ class ArcOdinControlServer(_OdinControlServer):
     ArgInfo = makeArgInfo(
         __init__,
         IP=Simple("IP address of control server", str),
+        DETECTOR=DETECTOR_CHOICES,
         PORT=Simple("Port of control server", int),
         HARDWARE_ENDPOINT=Simple("Detector endpoint", str),
         META_WRITER_IP=Simple(

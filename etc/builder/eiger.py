@@ -4,6 +4,7 @@ from iocbuilder import AutoSubstitution, Device
 from iocbuilder.arginfo import Choice, Ident, Simple, makeArgInfo
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
 from odin import (
+    DETECTOR_CHOICES,
     OdinProcServ,
     OdinStartAllScript,
     _MetaWriter,
@@ -256,7 +257,7 @@ class EigerOdinControlServer(_OdinControlServer):
 
     ODIN_SERVER = os.path.join(OdinPaths.EIGER_PYTHON, "bin/eiger_control")
 
-    def __init__(self, ENDPOINT, API, IP, EIGER_FAN, CTRL_PORT=8888, META_WRITER_IP=None,
+    def __init__(self, ENDPOINT, API, IP, DETECTOR, EIGER_FAN, CTRL_PORT=8888, META_WRITER_IP=None,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
                  ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None):
         self.__dict__.update(locals())
@@ -265,14 +266,15 @@ class EigerOdinControlServer(_OdinControlServer):
         self.eiger_fan = EIGER_FAN
 
         super(EigerOdinControlServer, self).__init__(
-            IP, CTRL_PORT, META_WRITER_IP,
+            IP, DETECTOR, CTRL_PORT, META_WRITER_IP,
             ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4
         )
 
     ArgInfo = makeArgInfo(__init__,
+        IP=Simple("IP address of control server", str),
+        DETECTOR=DETECTOR_CHOICES,
         ENDPOINT=Simple("Detector endpoint", str),
         API=Choice("API version", ["1.6.0", "1.8.0"]),
-        IP=Simple("IP address of control server", str),
         CTRL_PORT=Simple("Port of control server", int),
         EIGER_FAN=Ident("EigerFan configuration", EigerFan),
         META_WRITER_IP=Simple("IP address of MetaWriter (None -> first OdinDataServer)", str),

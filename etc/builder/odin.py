@@ -26,6 +26,22 @@ debug_print(
     1
 )
 
+DETECTOR_CHOICES = Choice(
+    "Detector type",
+    [
+        "Excalibur1M",
+        "Excalibur3M",
+        "Eiger500K",
+        "Eiger4M",
+        "Eiger9M",
+        "Eiger16M",
+        "Tristan1M",
+        "Tristan10M",
+        "Arc",
+        "Xspress4"
+    ]
+)
+
 
 class _OdinDataTemplate(AutoSubstitution):
     TemplateFile = "OdinData.template"
@@ -305,19 +321,7 @@ class OdinLogConfig(Device):
     ArgInfo = makeArgInfo(
         __init__,
         BEAMLINE=Simple("Beamline name, e.g. b21, i02-2", str),
-        DETECTOR=Choice(
-            "Detector type",
-            [
-                "Excalibur1M",
-                "Excalibur3M",
-                "Eiger4M",
-                "Eiger16M",
-                "Tristan1M",
-                "Tristan10M",
-                "Arc",
-                "Xspress"
-            ]
-        )
+        DETECTOR=DETECTOR_CHOICES
     )
 
 
@@ -335,7 +339,7 @@ class _OdinControlServer(Device):
     # Device attributes
     AutoInstantiate = True
 
-    def __init__(self, IP, PORT=8888, META_WRITER_IP=None,
+    def __init__(self, IP, DETECTOR, PORT=8888, META_WRITER_IP=None,
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
                  ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None,
                  ODIN_DATA_SERVER_5=None, ODIN_DATA_SERVER_6=None,
@@ -344,6 +348,8 @@ class _OdinControlServer(Device):
         self.__super.__init__()
         # Update attributes with parameters
         self.__dict__.update(locals())
+
+        self.detector_model = DETECTOR
 
         self.meta_writer_ip = META_WRITER_IP or ODIN_DATA_SERVER_1.IP
 
@@ -374,6 +380,7 @@ class _OdinControlServer(Device):
 
     ArgInfo = makeArgInfo(__init__,
         IP=Simple("IP address of control server", str),
+        DETECTOR=DETECTOR_CHOICES,
         PORT=Simple("Port of control server", int),
         META_WRITER_IP=Simple("IP address of MetaWriter (None -> first OdinDataServer)", str),
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
@@ -385,7 +392,7 @@ class _OdinControlServer(Device):
         ODIN_DATA_SERVER_7=Ident("OdinDataServer 7 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_8=Ident("OdinDataServer 8 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_9=Ident("OdinDataServer 9 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_10=Ident("OdinDataServer 10 configuration", _OdinDataServer)
+        ODIN_DATA_SERVER_10=Ident("OdinDataServer 10 configuration", _OdinDataServer),
     )
 
     def get_extra_startup_macro(self):
@@ -459,8 +466,8 @@ class _MetaWriter(object):
     SENSOR_SHAPE = None
     TEMPLATE = _MetaWriterTemplate
 
-    def __init__(self, odin_data_servers):
-        self.sensor = odin_data_servers[0].sensor
+    def __init__(self, detector_model, odin_data_servers):
+        self.detector_model = detector_model
 
         self.data_endpoints = []
         for server in odin_data_servers:
@@ -490,7 +497,7 @@ class _MetaWriter(object):
             WRITER=writer,
             SENSOR_SHAPE=sensor_shape,
             DATA_ENDPOINTS=",".join(self.data_endpoints),
-            DETECTOR_MODEL="{}{}".format(self.DETECTOR, self.sensor),
+            DETECTOR_MODEL=self.detector_model,
         )
 
         expand_template_file("meta_startup", macros, "stMetaWriter.sh", executable=True)
@@ -626,7 +633,9 @@ class _OdinDataDriver(AsynPort):
             od_args["R"] = ":OD:"
             plugin_config.detector_setup(od_args)
 
-        self.meta_writer = self.META_WRITER_CLASS(self.control_server.odin_data_servers)
+        self.meta_writer = self.META_WRITER_CLASS(
+            self.control_server.detector_model, self.control_server.odin_data_servers
+        )
         template_args = {
             "P": args["P"],
             "R": ":OD:",

@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <components arch="linux-x86_64">
 	<ADOdin.ExcaliburOdinDataServer FEM_DEST_MAC="A0:36:9F:8C:52:3C" IP="127.0.0.1" PROCESSES="2" SENSOR="1M" SHARED_MEM_SIZE="10485760" name="DataServer1"/>
-	<ADOdin.ExcaliburOdinControlServer IP="127.0.0.1" ODIN_DATA_SERVER_1="DataServer1" SENSOR="1M" name="ControlServer"/>
+	<ADOdin.ExcaliburOdinControlServer IP="127.0.0.1" ODIN_DATA_SERVER_1="DataServer1" SENSOR="3M" name="ControlServer"/>
 	<ADOdin.ExcaliburOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" P="EXCBR" PORT="ODN.OD" TIMEOUT="1"/>
 	<ADOdin.ExcaliburDetector ADDR="0" ODIN_CONTROL_SERVER="ControlServer" ODIN_DATA_DRIVER="ODN.OD" P="EXCBR" PORT="ODN.CAM" SENSOR="1M" TIMEOUT="1"/>
 	<ADOdin.OdinLogConfig BEAMLINE="iXX" DETECTOR="Excalibur1M" name="LogConfig"/>
