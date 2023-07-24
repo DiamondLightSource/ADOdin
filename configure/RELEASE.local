@@ -21,16 +21,20 @@ ODIN_PROC_SERV_CONTROL = $(PYTHON)/odinprocservcontrol/0.2
 # EIGER_TOOL = $(MTOOLS)/eiger-detector/vscode_prefix
 
 # Production versions must include `/prefix`, as builder appends `/bin/<app>`
-ODIN_DATA_VERSION = odin-data/1.9.0+dls1/prefix
-EIGER_VERSION = eiger-detector/1.12.0/prefix
-TRISTAN_VERSION = tristan-detector/0.8.0/prefix
-XSPRESS_VERSION = xspress-detector/0.3.0/prefix
+ODIN_DATA_VERSION = odin-data/1.9.0+dls2/prefix
+EIGER_VERSION = eiger-detector/1.12.1/prefix
+EXCALIBUR_VERSION = excalibur-detector/1.2.0+dls1/prefix
+TRISTAN_VERSION = tristan-detector/0.9.0/prefix
+XSPRESS_VERSION = xspress-detector/0.3.1/prefix
 
 ODIN_DATA_TOOL = $(TOOLS)/$(ODIN_DATA_VERSION)
 ODIN_DATA_PYTHON = $(PYTHON)/$(ODIN_DATA_VERSION)
 
 EIGER_TOOL = $(TOOLS)/$(EIGER_VERSION)
 EIGER_PYTHON = $(PYTHON)/$(EIGER_VERSION)
+
+EXCALIBUR_TOOL = $(TOOLS)/$(EXCALIBUR_VERSION)
+EXCALIBUR_PYTHON = $(PYTHON)/$(EXCALIBUR_VERSION)
 
 TRISTAN_TOOL = $(TOOLS)/$(TRISTAN_VERSION)
 TRISTAN_PYTHON = $(PYTHON)/$(TRISTAN_VERSION)
