@@ -1,20 +1,43 @@
 EPICS_BASE = /dls_sw/epics/R3.14.12.7/base
-
 SUPPORT = /dls_sw/prod/R3.14.12.7/support
-WORK = /dls_sw/work/R3.14.12.7/support
 TOOLS = /dls_sw/prod/tools/RHEL7-x86_64
-WORK_TOOLS = /dls_sw/work/tools/RHEL7-x86_64
-PYTHON3 = /dls_sw/prod/python3/RHEL7-x86_64
-WORK_PYTHON3 = /dls_sw/work/python3/RHEL7-x86_64
+PYTHON = /dls_sw/prod/python3/RHEL7-x86_64
 
 ASYN = $(SUPPORT)/asyn/4-39
 ADCORE = $(SUPPORT)/ADCore/3-9dls2
 CALC = $(SUPPORT)/calc/3-7-3
 RESTCLIENT = $(SUPPORT)/restClient/0-5-2
 
-ODIN_PROC_SERV_CONTROL = $(PYTHON3)/odinprocservcontrol/0.2
 HDF5_FILTERS = $(TOOLS)/hdf5filters/0-7-0
-ODIN_DATA = $(TOOLS)/odin-data/1-7-0dls3
-EXCALIBUR_DETECTOR = $(TOOLS)/excalibur-detector/1-1-0dls2
-EIGER_DETECTOR = $(TOOLS)/eiger-detector/1-11-4
-TRISTAN_DETECTOR = $(TOOLS)/tristan-detector/0-7-0
+ODIN_PROC_SERV_CONTROL = $(PYTHON)/odinprocservcontrol/0.2
+
+# To point at a local version of an odin repo:
+# - Override `*_PYTHON` as the path to your venv
+# - Override `*_TOOL` as to the path to your install prefix - must be next to `configure/` directory
+# e.g.
+# VENV = /scratch/development/odin/venv
+# MTOOLS = /scratch/development/odin
+# EIGER_PYTHON = $(VENV)
+# EIGER_TOOL = $(MTOOLS)/eiger-detector/vscode_prefix
+
+# Production versions must include `/prefix`, as builder appends `/bin/<app>`
+ODIN_DATA_VERSION = odin-data/1.9.0+dls2/prefix
+EIGER_VERSION = eiger-detector/1.12.1/prefix
+EXCALIBUR_VERSION = excalibur-detector/1.2.0+dls1/prefix
+TRISTAN_VERSION = tristan-detector/0.9.0/prefix
+XSPRESS_VERSION = xspress-detector/0.3.1/prefix
+
+ODIN_DATA_TOOL = $(TOOLS)/$(ODIN_DATA_VERSION)
+ODIN_DATA_PYTHON = $(PYTHON)/$(ODIN_DATA_VERSION)
+
+EIGER_TOOL = $(TOOLS)/$(EIGER_VERSION)
+EIGER_PYTHON = $(PYTHON)/$(EIGER_VERSION)
+
+EXCALIBUR_TOOL = $(TOOLS)/$(EXCALIBUR_VERSION)
+EXCALIBUR_PYTHON = $(PYTHON)/$(EXCALIBUR_VERSION)
+
+TRISTAN_TOOL = $(TOOLS)/$(TRISTAN_VERSION)
+TRISTAN_PYTHON = $(PYTHON)/$(TRISTAN_VERSION)
+
+XSPRESS_TOOL = $(TOOLS)/$(XSPRESS_VERSION)
+XSPRESS_PYTHON = $(PYTHON)/$(XSPRESS_VERSION)

@@ -1,23 +1,25 @@
-import os
 import json
+import os
 
-from iocbuilder import Device, AutoSubstitution
-from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
+from iocbuilder import AutoSubstitution, Device
+from iocbuilder.arginfo import Choice, Ident, Simple, makeArgInfo
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
-
-from plugins import _DatasetCreationPlugin, _FileWriterPlugin
-from util import OdinPaths, expand_template_file, debug_print, create_config_entry
 from odin import (
-    _OdinData,
-    _OdinDataServer,
     _MetaWriter,
     _OdinControlServer,
+    _OdinData,
     _OdinDataDriver,
+    _OdinDataServer,
     _OdinDetector,
-    _PluginConfig
+    _PluginConfig,
+    DETECTOR_CHOICES,
 )
+from plugins import _DatasetCreationPlugin, _FileWriterPlugin
+from util import OdinPaths, create_config_entry, debug_print, expand_template_file
 
-debug_print("Tristan: {}".format(OdinPaths.TRISTAN_DETECTOR), 1)
+debug_print(
+    "Tristan: \n{}\n{}".format(OdinPaths.TRISTAN_TOOL, OdinPaths.TRISTAN_PYTHON), 1
+)
 
 TRISTAN_DIMENSIONS = {
     # Sensor: (Width, Height)
@@ -30,7 +32,7 @@ class _TristanProcessPlugin(_DatasetCreationPlugin):
 
     NAME = "tristan"
     CLASS_NAME = "LATRDProcessPlugin"
-    LIBRARY_PATH = OdinPaths.TRISTAN_DETECTOR
+    LIBRARY_PATH = OdinPaths.TRISTAN_TOOL
     DATASETS = [
         dict(name="data", datatype="uint32", chunks=[1]),
         dict(name="raw_data", datatype="uint64", chunks=[2097152]),
@@ -71,10 +73,9 @@ class _TristanProcessPlugin(_DatasetCreationPlugin):
 
 class TristanMetaWriter(_MetaWriter):
     DETECTOR = "Tristan"
-    WRITER_CLASS = "latrd.meta.tristan_meta_writer.TristanMetaWriter"
-
-    def _add_python_modules(self):
-        self.PYTHON_MODULES.update(dict(tristan_detector=OdinPaths.TRISTAN_DETECTOR))
+    APP_PATH = OdinPaths.TRISTAN_PYTHON
+    APP_NAME = "tristan_meta_writer"
+    WRITER_CLASS = "tristan_detector.TristanMetaWriter"
 
 
 class TristanControlSimulator(Device):
@@ -85,9 +86,11 @@ class TristanControlSimulator(Device):
     """Store configuration for an TristanOdinControlServer"""
     def __init__(self, PORT=10100, SENSOR="1M", **args):
         self.__dict__.update(locals())
-        macros = dict(TRISTAN_DETECTOR_PATH=OdinPaths.TRISTAN_DETECTOR,
-                      PORT=PORT,
-                      SENSOR=SENSOR)
+        macros = dict(
+            TRISTAN_DETECTOR_PATH=OdinPaths.TRISTAN_PYTHON,
+            PORT=PORT,
+            SENSOR=SENSOR
+        )
 
         expand_template_file("tristan_simulator_startup", macros, "stTristanSimulator.sh", executable=True)
         super(TristanControlSimulator, self).__init__()
@@ -103,9 +106,9 @@ class TristanOdinControlServer(_OdinControlServer):
 
     """Store configuration for an TristanOdinControlServer"""
 
-    ODIN_SERVER = os.path.join(OdinPaths.TRISTAN_DETECTOR, "prefix/bin/tristan_odin")
+    ODIN_SERVER = os.path.join(OdinPaths.TRISTAN_PYTHON, "bin/tristan_control")
 
-    def __init__(self, IP, PORT=8888, META_WRITER_IP=None,
+    def __init__(self, IP, DETECTOR, PORT=8888, META_WRITER_IP=None,
                  HARDWARE_ENDPOINT="tcp://127.0.0.1:10100",
                  ODIN_DATA_SERVER_1=None, ODIN_DATA_SERVER_2=None,
                  ODIN_DATA_SERVER_3=None, ODIN_DATA_SERVER_4=None,
@@ -116,7 +119,7 @@ class TristanOdinControlServer(_OdinControlServer):
         self.ADAPTERS.append("tristan")
 
         super(TristanOdinControlServer, self).__init__(
-            IP, PORT, META_WRITER_IP,
+            IP, DETECTOR, PORT, META_WRITER_IP,
             ODIN_DATA_SERVER_1,
             ODIN_DATA_SERVER_2,
             ODIN_DATA_SERVER_3,
@@ -132,6 +135,7 @@ class TristanOdinControlServer(_OdinControlServer):
     # __init__ arguments
     ArgInfo = makeArgInfo(__init__,
         IP=Simple("IP address of control server", str),
+        DETECTOR=DETECTOR_CHOICES,
         PORT=Simple("Port of control server", int),
         HARDWARE_ENDPOINT=Simple("Detector endpoint", str),
         META_WRITER_IP=Simple("IP address of MetaWriter (None -> first OdinDataServer)", str),
@@ -144,7 +148,7 @@ class TristanOdinControlServer(_OdinControlServer):
         ODIN_DATA_SERVER_7=Ident("OdinDataServer 7 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_8=Ident("OdinDataServer 8 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_9=Ident("OdinDataServer 9 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_10=Ident("OdinDataServer 10 configuration", _OdinDataServer)
+        ODIN_DATA_SERVER_10=Ident("OdinDataServer 10 configuration", _OdinDataServer),
     )
 
     def create_extra_config_entries(self):
@@ -153,12 +157,12 @@ class TristanOdinControlServer(_OdinControlServer):
         ]
 
     def create_odin_server_static_path(self):
-        return OdinPaths.TRISTAN_DETECTOR + "/prefix/html/static"
+        return os.path.join(OdinPaths.TRISTAN_TOOL, "html/static")
 
     def _create_tristan_config_entry(self):
         return (
             "[adapter.tristan]\n"
-            "module = latrd.detector.tristan_control_adapter.TristanControlAdapter\n"
+            "module = tristan_detector.control.tristan_adapter.TristanControlAdapter\n"
             "endpoint = {}\n"
             "firmware = 0.0.1"
         ).format(self.HARDWARE_ENDPOINT)
@@ -380,7 +384,7 @@ class _TristanOdinData(_OdinData):
         self.base_udp_port = BASE_UDP_PORT
 
     def create_config_files(self, index, total):
-        macros = dict(DETECTOR_ROOT=OdinPaths.TRISTAN_DETECTOR,
+        macros = dict(DETECTOR_ROOT=OdinPaths.TRISTAN_TOOL,
                       PROC_NUMBER=total,
                       PROC_RANK=index-1,
                       RX_PORT_1=self.base_udp_port,

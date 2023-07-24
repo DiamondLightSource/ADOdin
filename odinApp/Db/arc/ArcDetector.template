@@ -1,0 +1,714 @@
+# ArcDetector.template
+
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, PORT, Asyn Port name
+# % macro, ADDR, Asyn Port address
+# % macro, TIMEOUT, Timeout
+
+# This associates the template with an edm screen
+# % gui, $(PORT), edmtab, ArcMain.edl, P=$(P),R=$(R)
+
+include "ADBase.template"
+
+
+###################################################################
+# Force polling of status at 1Hz
+###################################################################
+record(bo, "$(P)$(R)ReadStatus")
+{
+    field(SCAN, "1 second")
+}
+
+###################################################################
+#  Connection                                                     #
+###################################################################
+#% archiver 1 monitor
+record(bi, "$(P)$(R)DetectorConnected_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_server/connected")
+    field(ZNAM, "Disconnected")
+    field(ONAM, "Connected")
+}
+
+#% archiver 1 monitor
+record(bi, "$(P)$(R)DetectorVersionCheck_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_server/version_check")
+    field(ZNAM, "Mismatch")
+    field(ONAM, "OK")
+}
+
+
+###################################################################
+#  Status                                                         #
+###################################################################
+# Number of frames taken in current acquisition.
+#% archiver 1 monitor
+record(longin, "$(P)$(R)ArrayCounter_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_status/detector/frames_acquired")
+}
+
+# Number of UDP packets that the detector has sent in current acquisition.
+#% archiver 1 monitor
+record(longin, "$(P)$(R)UdpSent_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_status/detector/udp_packets_sent")
+}
+
+# Number of UDP packets that the FRs have received.
+#% archiver 1 monitor
+record(longin, "$(P)$(R)UdpReceived_RBV")
+{
+}
+
+record(bo, "$(P)$(R)CommandTimeZero")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODC_command/time_zero")
+}
+
+###################################################################
+#  Trigger Start                                                  #
+###################################################################
+# % autosave 2
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)TriggerStart")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/start")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(ZRST, "internal")
+    field(ONST, "external_re")
+    field(TWST, "external_fe")
+    field(THST, "external_lvds_re")
+    field(FRST, "external_lvds_fe")
+    field(PINI, "1")
+}
+
+record(mbbi, "$(P)$(R)TriggerStart_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/start")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(ZRST, "internal")
+    field(ONST, "external_re")
+    field(TWST, "external_fe")
+    field(THST, "external_lvds_re")
+    field(FRST, "external_lvds_fe")
+}
+
+###################################################################
+#  Trigger Stop                                                   #
+###################################################################
+# % autosave 2
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)TriggerStop")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/stop")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(ZRST, "internal")
+    field(ONST, "external_re")
+    field(TWST, "external_fe")
+    field(THST, "external_lvds_re")
+    field(FRST, "external_lvds_fe")
+    field(PINI, "1")
+}
+
+record(mbbi, "$(P)$(R)TriggerStop_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/stop")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(ZRST, "internal")
+    field(ONST, "external_re")
+    field(TWST, "external_fe")
+    field(THST, "external_lvds_re")
+    field(FRST, "external_lvds_fe")
+}
+
+###################################################################
+#  Trigger Timestamp                                              #
+###################################################################
+# % autosave 2
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)TriggerTimestampFem")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp/fem")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "none")
+    field(ONST, "re")
+    field(TWST, "fe")
+    field(THST, "both")
+    field(PINI, "1")
+}
+
+record(mbbi, "$(P)$(R)TriggerTimestampFem_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp/fem")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "none")
+    field(ONST, "re")
+    field(TWST, "fe")
+    field(THST, "both")
+}
+
+# % autosave 2
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)TriggerTimestampLvds")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp/lvds")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "none")
+    field(ONST, "re")
+    field(TWST, "fe")
+    field(THST, "both")
+    field(PINI, "1")
+}
+
+record(mbbi, "$(P)$(R)TriggerTimestampLvds_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp/lvds")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "none")
+    field(ONST, "re")
+    field(TWST, "fe")
+    field(THST, "both")
+}
+
+# % autosave 2
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)TriggerTimestampSync")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp/sync")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "none")
+    field(ONST, "re")
+    field(TWST, "fe")
+    field(THST, "both")
+    field(PINI, "1")
+}
+
+record(mbbi, "$(P)$(R)TriggerTimestampSync_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp/sync")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "none")
+    field(ONST, "re")
+    field(TWST, "fe")
+    field(THST, "both")
+}
+
+# % autosave 2
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)TriggerTimestampTtl")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp/ttl")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "none")
+    field(ONST, "re")
+    field(TWST, "fe")
+    field(THST, "both")
+    field(PINI, "1")
+}
+
+record(mbbi, "$(P)$(R)TriggerTimestampTtl_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/timestamp/ttl")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "none")
+    field(ONST, "re")
+    field(TWST, "fe")
+    field(THST, "both")
+}
+
+
+###################################################################
+#  Termination                                                    #
+###################################################################
+# % autosave 2
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)TriggerTTLInTerm")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/ttl_in_term")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "term_50ohm")
+    field(ONST, "hi_z")
+    field(PINI, "1")
+}
+
+record(mbbi, "$(P)$(R)TriggerTTLInTerm_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/ttl_in_term")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "term_50ohm")
+    field(ONST, "hi_z")
+}
+
+# % autosave 2
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)TriggerTTLOutTerm")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/ttl_out_term")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "term_50ohm")
+    field(ONST, "lo_z")
+    field(PINI, "1")
+}
+
+record(mbbi, "$(P)$(R)TriggerTTLOutTerm_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/ttl_out_term")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "term_50ohm")
+    field(ONST, "lo_z")
+}
+
+###################################################################
+#  Primary Clock Source                                           #
+###################################################################
+# % autosave 2
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)TriggerPrimaryClkSrc")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/primary_clock_source")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "internal")
+    field(ONST, "external")
+    field(PINI, "1")
+}
+
+record(mbbi, "$(P)$(R)TriggerPrimaryClkSrc_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/primary_clock_source")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "internal")
+    field(ONST, "external")
+}
+
+###################################################################
+#  TTL Out                                                        #
+###################################################################
+# % autosave 2
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)TriggerTTLOut")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/ttl_out")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(FVVL, "5")
+    field(SXVL, "6")
+    field(SVVL, "7")
+    field(EIVL, "8")
+    field(ZRST, "follow_shutter")
+    field(ONST, "follow_shutter_read")
+    field(TWST, "one_per_acq_burst")
+    field(THST, "busy")
+    field(FRST, "counter_select")
+    field(FVST, "tzero")
+    field(SXST, "sync")
+    field(SVST, "lvds")
+    field(EIST, "ttl")
+    field(PINI, "1")
+}
+
+record(mbbi, "$(P)$(R)TriggerTTLOut_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/ttl_out")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(FVVL, "5")
+    field(SXVL, "6")
+    field(SVVL, "7")
+    field(EIVL, "8")
+    field(ZRST, "follow_shutter")
+    field(ONST, "follow_shutter_read")
+    field(TWST, "one_per_acq_burst")
+    field(THST, "busy")
+    field(FRST, "counter_select")
+    field(FVST, "tzero")
+    field(SXST, "sync")
+    field(SVST, "lvds")
+    field(EIST, "ttl")
+}
+
+###################################################################
+#  LVDS Out                                                       #
+###################################################################
+# % autosave 2
+#% archiver 10 Monitor
+record(mbbo, "$(P)$(R)TriggerLVDSOut")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/lvds_out")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(FVVL, "5")
+    field(SXVL, "6")
+    field(SVVL, "7")
+    field(EIVL, "8")
+    field(ZRST, "follow_shutter")
+    field(ONST, "follow_shutter_read")
+    field(TWST, "one_per_acq_burst")
+    field(THST, "busy")
+    field(FRST, "counter_select")
+    field(FVST, "tzero")
+    field(SXST, "sync")
+    field(SVST, "lvds")
+    field(EIST, "ttl")
+    field(PINI, "1")
+}
+
+record(mbbi, "$(P)$(R)TriggerLVDSOut_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODE_config/trigger/lvds_out")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(FVVL, "5")
+    field(SXVL, "6")
+    field(SVVL, "7")
+    field(EIVL, "8")
+    field(ZRST, "follow_shutter")
+    field(ONST, "follow_shutter_read")
+    field(TWST, "one_per_acq_burst")
+    field(THST, "busy")
+    field(FRST, "counter_select")
+    field(FVST, "tzero")
+    field(SXST, "sync")
+    field(SVST, "lvds")
+    field(EIST, "ttl")
+}
+
+################################################################################
+#
+# Clock status
+#
+################################################################################
+
+#% archiver 1 monitor
+record(ai, "$(P)$(R)ClockFrequency_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_status/clock/clock_freq")
+}
+
+#% archiver 1 monitor
+record(longin, "$(P)$(R)ClockDpllHold_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/clock/dpll_hold")
+}
+
+#% archiver 1 monitor
+record(longin, "$(P)$(R)ClockDpllLol_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/clock/dpll_lol")
+}
+
+################################################################################
+#
+# Detector Description
+#
+################################################################################
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)Description_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/description")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)DetectorType_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/detector_type")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)DetectorVariant_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/detector_variant")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)SensorMaterial_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/sensor_material")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)SensorThickness_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/sensor_thickness")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)SerialNumber_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/serial_number")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)SoftwareVersion_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/software_version")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)SoftwareBuild_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/software_build")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)XPixelSize_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/x_pixel_size")
+}
+
+#% archiver 1 monitor
+record(stringin, "$(P)$(R)YPixelSize_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_status/detector/y_pixel_size")
+}
+
+#% archiver 1 monitor
+record(bi, "$(P)$(R)ShutterOpen_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/detector/shutteropen")
+}
+
+#% archiver 1 monitor
+record(bi, "$(P)$(R)AcquisitionBusy_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/detector/acquisition_busy")
+}
+
+#% archiver 1 monitor
+record(bi, "$(P)$(R)ShutterBusy_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/detector/shutterbusy")
+}
+
+#% archiver 1 monitor
+record(bi, "$(P)$(R)FPGABusy_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/detector/fpga_busy")
+}
+
+#% archiver 1 monitor
+record(longin, "$(P)$(R)LoopAction_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_status/detector/loopaction")
+}
+
+#% archiver 1 monitor
+record(bi, "$(P)$(R)CRW_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/detector/crw")
+}
+
+###################################################################
+#  Threshold setting                                              #
+###################################################################
+# % autosave 2
+#% archiver 10 Monitor
+record(ao, "$(P)$(R)Threshold")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_config/threshold")
+    field(DRVH, "60.0")
+    field(DRVL, "3.0")
+}
+
+record(ai, "$(P)$(R)Threshold_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))_ODD_config/threshold")
+}
+
+###################################################################
+#  Set the Live View Endpoint                                     #
+###################################################################
+record(stringout, "$(P)$(R)LiveViewEndpoint")
+{
+    field(DTYP, "asynOctetWrite")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_DETECTOR_LV")
+    field(VAL,  "")
+}
+
+record(stringin, "$(P)$(R)LiveViewEndpoint_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_DETECTOR_LV")
+    field(VAL,  "")
+    field(SCAN, "I/O Intr")
+}
+
+###################################################################
+#  Calibration File Root                                          #
+###################################################################
+# Calibration file root
+# %autosave 2
+record(waveform, "$(P)$(R)CalFileRoot")
+{
+    field(PINI, "YES")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+}

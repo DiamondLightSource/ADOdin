@@ -1,0 +1,15 @@
+[
+    {
+        "decoder_type": "Xspress",
+        "decoder_path": "$DETECTOR_ROOT/lib",
+        "rx_type": "zmq",
+        "rx_address": "127.0.0.1",
+        "rx_ports": "$RX_PORT,"
+    },
+    {
+        "decoder_config": {
+            "enable_packet_logging": false,
+            "frame_timeout_ms": 1000
+        }
+    }
+]

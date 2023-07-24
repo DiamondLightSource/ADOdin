@@ -1,6 +1,9 @@
+from __future__ import print_function
+
+import json
 import os
 import re
-import json
+import sys
 import uuid
 from string import Template
 
@@ -20,6 +23,10 @@ def data_file_path(file_name):
     return os.path.join(ADODIN_DATA, file_name)
 
 
+def remove_suffix(string, suffix):
+    return re.sub("{}$".format(suffix), "", string)
+
+
 class OdinPaths(object):
 
     @classmethod
@@ -28,26 +35,34 @@ class OdinPaths(object):
 
         cls.ODIN_PROC_SERV_CONTROL = paths["ODIN_PROC_SERV_CONTROL"]
         cls.HDF5_FILTERS = os.path.join(paths["HDF5_FILTERS"], "prefix/hdf5_1.10/h5plugin")
-        cls.ODIN_DATA = paths["ODIN_DATA"]
+        cls.ODIN_DATA_TOOL = paths["ODIN_DATA_TOOL"]
+        cls.ODIN_DATA_PYTHON = paths["ODIN_DATA_PYTHON"]
 
-        for detector_path in [path for module, path in paths.items()
-                              if module.endswith("DETECTOR")]:
+        for detector_path in [
+            path for module, path in paths.items()
+            if module.endswith("TOOL") and not "ODIN_DATA" in module
+        ]:
             detector_paths = cls.parse_release_file(
-                os.path.join(detector_path, "configure/RELEASE")
+                os.path.join(detector_path, "../configure/RELEASE")
             )
-            if detector_paths["ODIN_DATA"] != cls.ODIN_DATA:
-                raise EnvironmentError("Mismatched odin-data dependency in {}".format(detector_path))
+            if not cls.ODIN_DATA_TOOL.startswith(detector_paths["ODIN_DATA"]):
+                print(
+                    "WARNING: Mismatched odin-data dependency in {}: {}".format(
+                        detector_path, detector_paths["ODIN_DATA"]
+                    ),
+                    file=sys.stderr,
+                )
 
-        cls.EIGER_DETECTOR = paths["EIGER_DETECTOR"]
-        cls.EXCALIBUR_DETECTOR = paths["EXCALIBUR_DETECTOR"]
-        cls.TRISTAN_DETECTOR = paths["TRISTAN_DETECTOR"]
+        for module, path in paths.items():
+            if module.endswith("TOOL") or module.endswith("PYTHON"):
+                setattr(cls, module, path)
 
     @classmethod
     def parse_release_file(cls, release_path):
         macros = {}
         with open(release_path) as release_file:
             for line in release_file.readlines():
-                if "=" in line:
+                if not line.startswith("#") and "=" in line:
                     module, path = line.split("=", 1)
                     macros[module.strip()] = path.strip()
 
@@ -66,38 +81,26 @@ OdinPaths.configure_paths(
 )
 
 
-def expand_template_file(template, macros, output_file, executable=False):
+def expand_template_file(input_file, macros, output_file, executable=False):
     if executable:
         mode = 0o755
     else:
         mode = None
 
-    if "PYTHON_MODULES" in macros:
-        paths = [
-            find_python_egg(module, path)
-            for module, path in macros["PYTHON_MODULES"].items()
-        ]
-        macros["PYTHONPATH"] = "export PYTHONPATH={}".format(":".join(paths))
+    with open(os.path.join(ADODIN_DATA, input_file)) as f:
+        input_content = f.read()
 
-    with open(os.path.join(ADODIN_DATA, template)) as template_file:
-        template_config = Template(template_file.read())
+    if macros is not None:
+        output = Template(input_content).substitute(macros)
+    else:
+        output = input_content
 
-    output = template_config.substitute(macros)
     debug_print("--- {} ----------------------------------------------".format(output_file), 2)
     debug_print(output, 2)
     debug_print("---", 2)
 
     stream = IocDataStream(output_file, mode)
     stream.write(output)
-
-
-def find_python_egg(module, path):
-    eggs_dir = os.path.join(path, "prefix/lib/python2.7/site-packages")
-    for entry in os.listdir(eggs_dir):
-        if module in entry:
-            return os.path.join(eggs_dir, entry)
-
-    raise IOError("Could not find module {} in {}" .format(module, eggs_dir))
 
 
 def write_batch_file(batch_entries):

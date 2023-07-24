@@ -1,7 +1,7 @@
 [
   {
     "decoder_type": "LATRD",
-    "decoder_path": "$DETECTOR_ROOT/prefix/lib",
+    "decoder_path": "$DETECTOR_ROOT/lib",
     "rx_ports": "$RX_PORT_1",
     "decoder_config": {
       "enable_packet_logging": false,

@@ -1,0 +1,255 @@
+# Xspresschannel.template
+
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, PORT, Asyn Port name
+# % macro, ADDR, Asyn Port address
+# % macro, CHAN, Channel number (=ADDR+1)
+# % macro, TOTAL, Total number of Channels
+# % macro, TIMEOUT, Timeout
+
+record(longin, "$(P)$(R)C$(CHAN)_FRAMES_ACQUIRED")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_status/ch_frames_acquired")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin, "$(P)$(R)C$(CHAN)_SCA5_LLM_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_config/sca5_low_lim")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout, "$(P)$(R)C$(CHAN)_SCA5_LLM")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC$(TOTAL)_config/sca5_low_lim/$(ADDR)")
+}
+
+record(longin, "$(P)$(R)C$(CHAN)_SCA5_HLM_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_config/sca5_high_lim")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout, "$(P)$(R)C$(CHAN)_SCA5_HLM")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC$(TOTAL)_config/sca5_high_lim/$(ADDR)")
+}
+
+
+record(longin, "$(P)$(R)C$(CHAN)_SCA6_LLM_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_config/sca6_low_lim")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout, "$(P)$(R)C$(CHAN)_SCA6_LLM")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC$(TOTAL)_config/sca6_low_lim/$(ADDR)")
+}
+
+record(longin, "$(P)$(R)C$(CHAN)_SCA6_HLM_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_config/sca6_high_lim")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout, "$(P)$(R)C$(CHAN)_SCA6_HLM")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC$(TOTAL)_config/sca6_high_lim/$(ADDR)")
+}
+
+record(longin, "$(P)$(R)C$(CHAN)_SCA4_THRESHOLD_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_config/sca4_threshold")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout, "$(P)$(R)C$(CHAN)_SCA4_THRESHOLD")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC$(TOTAL)_config/sca4_threshold/$(ADDR)")
+}
+
+record(longin, "$(P)$(R)C$(CHAN)_SCA0:Value_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_status/scalar_0")
+    field(SCAN, "I/O Intr")
+}
+record(longin, "$(P)$(R)C$(CHAN)_SCA1:Value_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_status/scalar_1")
+    field(SCAN, "I/O Intr")
+}
+record(longin, "$(P)$(R)C$(CHAN)_SCA2:Value_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_status/scalar_2")
+    field(SCAN, "I/O Intr")
+}
+record(longin, "$(P)$(R)C$(CHAN)_SCA3:Value_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_status/scalar_3")
+    field(SCAN, "I/O Intr")
+}
+record(longin, "$(P)$(R)C$(CHAN)_SCA4:Value_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_status/scalar_4")
+    field(SCAN, "I/O Intr")
+}
+record(longin, "$(P)$(R)C$(CHAN)_SCA5:Value_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_status/scalar_5")
+    field(SCAN, "I/O Intr")
+}
+record(longin, "$(P)$(R)C$(CHAN)_SCA6:Value_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_status/scalar_6")
+    field(SCAN, "I/O Intr")
+}
+record(longin, "$(P)$(R)C$(CHAN)_SCA7:Value_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_status/scalar_7")
+    field(SCAN, "I/O Intr")
+}
+record(longin, "$(P)$(R)C$(CHAN)_SCA8:Value_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_status/scalar_8")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)C$(CHAN)_DTC_FACTOR")
+{
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_status/dtc")
+    field(SCAN, "I/O Intr")
+    field(PREC, "4")
+}
+
+record(ai, "$(P)$(R)C$(CHAN)_DTC_INP_EST")
+{
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_status/inp_est")
+    field(SCAN, "I/O Intr")
+    field(PREC, "3")
+}
+
+
+
+record(longin, "$(P)$(R)C$(CHAN)_DTC_FLAGS_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI$(TOTAL)_config/dtc_flags")
+    field(SCAN, "I/O Intr")
+}
+
+
+record(ai, "$(P)$(R)C$(CHAN)_DTC_AEO_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_config/dtc_all_evt_off")
+    field(SCAN, "I/O Intr")
+    field(PREC, "10")
+}
+
+record(ai, "$(P)$(R)C$(CHAN)_DTC_AEG_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_config/dtc_all_evt_grad")
+    field(SCAN, "I/O Intr")
+    field(PREC, "10")
+}
+
+record(ai, "$(P)$(R)C$(CHAN)_DTC_AERO_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_config/dtc_all_evt_rate_off")
+    field(SCAN, "I/O Intr")
+    field(PREC, "10")
+}
+
+record(ai, "$(P)$(R)C$(CHAN)_DTC_AERG_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_config/dtc_all_evt_rate_grad")
+    field(SCAN, "I/O Intr")
+    field(PREC, "10")
+}
+
+record(ai, "$(P)$(R)C$(CHAN)_DTC_IWO_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_config/dtc_in_win_off")
+    field(SCAN, "I/O Intr")
+    field(PREC, "10")
+}
+
+record(ai, "$(P)$(R)C$(CHAN)_DTC_IWG_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_config/dtc_in_win_grad")
+    field(SCAN, "I/O Intr")
+    field(PREC, "10")
+}
+
+record(ai, "$(P)$(R)C$(CHAN)_DTC_IWRO_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_config/dtc_in_win_rate_off")
+    field(SCAN, "I/O Intr")
+    field(PREC, "10")
+}
+
+record(ai, "$(P)$(R)C$(CHAN)_DTC_IWRG_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD$(TOTAL)_config/dtc_in_win_rate_grad")
+    field(SCAN, "I/O Intr")
+    field(PREC, "10")
+}
+
+

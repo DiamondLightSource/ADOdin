@@ -196,26 +196,15 @@ class _FileWriterPlugin(_FrameProcessorPlugin):
         }
         entries.append(create_config_entry(error_durations_entry))
 
-        # Configure the name of the primary dataset
-        dataset_entry = {
+        # Configure file numbering to start from 000001.h5
+        file_number_entry = {
             self.NAME: {
-                "dataset": self.DATASET_NAME,
-            }
-        }
-        entries.append(create_config_entry(dataset_entry))
-
-        # Enable index datasets if required
-        if self.indexes:
-            indexes_entry = {
-                self.NAME: {
-                    "dataset": {
-                        self.DATASET_NAME: {
-                            "indexes": True
-                        }
-                    }
+                "file": {
+                    "first_number": 1
                 }
             }
-            entries.append(create_config_entry(indexes_entry))
+        }
+        entries.append(create_config_entry(file_number_entry))
 
         return entries
 

@@ -1,0 +1,655 @@
+# ArcDetector.template
+
+# % macro, P, Device Prefix
+# % macro, R, Device Suffix
+# % macro, PORT, Asyn Port name
+# % macro, ADDR, Asyn Port address
+# % macro, TIMEOUT, Timeout
+
+# This associates the template with an edm screen
+# % gui, $(PORT), edmtab, XspressMain.edl, P=$(P),R=$(R)
+# % gui, $(PORT)_OD, edmtab, XspressDAQMain.edl, P=$(P),R=:OD:
+# % gui, $(PORT)_DATA, edm, OdinDataStatus9.edl, P=$(P),R=:OD:
+# % gui, $(PORT)_debug, edm, XspressAll.edl, P=$(P),R=$(R)
+# % gui, $(PORT)_SCA, edm, Xspress36Channels.edl, P=$(P),R=$(R)
+# % gui, $(PORT)_DTC, edm, Xspress36ChannelsDTC.edl, P=$(P),R=$(R)
+# % gui, $(PORT)_Status, edm, XspressStatus36Chan4Fem.edl, P=$(P),R=$(R)
+
+include "ADBase.template"
+
+record(ai, "$(P)$(R)AcquireTime_RBV") {
+    field(PREC, "5")
+}
+
+record(ao, "$(P)$(R)AcquireTime") {
+    field(PREC, "5")
+}
+
+
+record(bi, "$(P)$(R)CONNECTED")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/connected")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+}
+
+record(bi, "$(P)$(R)RECONNECT_REQUIRED")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_status/reconnect_required")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+}
+
+record(bo, "$(P)$(R)MODE_CONTROL")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "Passive")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC_config/mode_control")
+    field(ZNAM, "mca")
+    field(ONAM, "list")
+}
+
+record(bo, "$(P)$(R)RECONFIGURE")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "Passive")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC_command/reconfigure")
+}
+
+record(waveform, "$(P)$(R)MODE_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_config/mode")
+    field(FTVL, "CHAR")
+    field(NELM, "32")
+    field(SCAN, "I/O Intr")
+}
+
+
+# Number of frames taken in current acquisition.
+#% archiver 1 monitor
+record(longin, "$(P)$(R)ArrayCounter_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_status/frames_acquired")
+}
+
+record(waveform, "$(P)$(R)CONFIG_PATH_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_config/config_path")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+}
+
+record(waveform, "$(P)$(R)CONFIG_PATH")
+{
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_config/config_path")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "Passive")
+}
+
+record(waveform, "$(P)$(R)CONFIG_SAVE_PATH_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_config/config_save_path")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+}
+
+record(waveform, "$(P)$(R)CONFIG_SAVE_PATH")
+{
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_config/config_save_path")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "Passive")
+}
+
+record(waveform, "$(P)$(R)BASE_IP_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_config/base_ip")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+}
+
+record(waveform, "$(P)$(R)BASE_IP")
+{
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_config/base_ip")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "Passive")
+}
+
+record(longin, "$(P)$(R)NUM_CARDS_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_config/num_cards")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin, "$(P)$(R)NUM_FRAMES_CONFIG_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_config/num_tf")
+    field(SCAN, "I/O Intr")
+}
+
+
+record(longin, "$(P)$(R)MAX_NUM_CHANNELS_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_config/max_channels")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin, "$(P)$(R)MAX_SPECTRA_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_config/max_spectra")
+    field(SCAN, "I/O Intr")
+}
+
+
+record(longin, "$(P)$(R)LIB_XSP_DEBUG_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_config/debug")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout, "$(P)$(R)LIB_XSP_DEBUG")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_config/debug")
+    field(SCAN, "Passive")
+}
+
+
+record(bi, "$(P)$(R)COLLECTRESGRADES_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_config/use_resgrades")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+}
+
+record(bo, "$(P)$(R)COLLECTRESGRADES")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "Passive")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_config/use_resgrades")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+}
+
+record(mbbi, "$(P)$(R)RUN_FLAGS_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "I/O Intr")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_config/run_flags")
+    field(ZRST, "SCALERS & HIST")
+    field(ZRVL, "0")
+    field(ONST, "SCALERS ONLY")
+    field(ONVL, "1")
+    field(TWST, "PLAYB, SCALERS & HIST")
+    field(TWVL, "2")
+    field(VAL,  "0")
+}
+
+record(mbbo, "$(P)$(R)RUN_FLAGS")
+{
+    field(DTYP, "asynInt32")
+    field(SCAN, "Passive")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_config/run_flags")
+    field(ZRST, "SCALERS & HIST")
+    field(ZRVL, "0")
+    field(ONST, "SCALERS ONLY")
+    field(ONVL, "1")
+    field(TWST, "PLAYB, SCALERS & HIST")
+    field(TWVL, "2")
+    field(VAL,  "0")
+}
+
+record(ao, "$(P)$(R)DTC_ENERGY")
+{
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_config/dtc_energy")
+    field(PREC, "3")
+}
+
+record(ai, "$(P)$(R)DTC_ENERGY_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_config/dtc_energy")
+    field(SCAN, "I/O Intr")
+    field(PREC, "3")
+}
+
+record(mbbo, "$(P)$(R)TriggerMode")
+{
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_config/trigger_mode")
+   field(ZRST, "Software")
+   field(ZRVL, "0")
+   field(ONST, "Hardware")
+   field(ONVL, "1")
+   field(TWST, "Burst")
+   field(TWVL, "2")
+   field(THST, "TTL Veto Only")
+   field(THVL, "3")
+   field(FRST, "IDC")
+   field(FRVL, "4")
+   field(FVST, "Software Start/Stop")
+   field(FVVL, "5")
+   field(SXST, "TTL Both")
+   field(SXVL, "6")
+   field(SVST, "LVDS Veto Only")
+   field(SVVL, "7")
+   field(EIST, "LVDS Both")
+   field(EIVL, "8")
+   field(VAL,  "0")
+}
+
+record(mbbi, "$(P)$(R)TriggerMode_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_config/trigger_mode")
+   field(ZRST, "Software")
+   field(ZRVL, "0")
+   field(ONST, "Hardware")
+   field(ONVL, "1")
+   field(TWST, "Burst")
+   field(TWVL, "2")
+   field(THST, "TTL Veto Only")
+   field(THVL, "3")
+   field(FRST, "IDC")
+   field(FRVL, "4")
+   field(FVST, "Software Start/Stop")
+   field(FVVL, "5")
+   field(SXST, "TTL Both")
+   field(SXVL, "6")
+   field(SVST, "LVDS Veto Only")
+   field(SVVL, "7")
+   field(EIST, "LVDS Both")
+   field(EIVL, "8")
+   field(SCAN, "I/O Intr")
+}
+
+
+# ///
+# /// Set whether the sense of F0 is inverted
+# /// (only used in LVDS_BOTH and TTL_BOTH modes)
+# ///
+record(longout, "$(P)$(R)INVERT_F0")
+{
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_config/invert_f0")
+   field(VAL,  "0")
+}
+
+# ///
+# /// Set whether the sense of F0 is inverted
+# /// (only used in LVDS_BOTH and TTL_BOTH modes)
+# ///
+record(longin, "$(P)$(R)INVERT_F0_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_config/invert_f0")
+   field(SCAN, "I/O Intr")
+}
+
+# ///
+# /// Set whether the sense of VETO is inverted
+# /// (only used in LVDS, LVDS_BOTH, TTL and TTL_BOTH modes)
+# ///
+record(longout, "$(P)$(R)INVERT_VETO")
+{
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_config/invert_veto")
+   field(VAL,  "0")
+}
+
+# ///
+# /// Set whether the sense of VETO is inverted
+# /// (only used in LVDS, LVDS_BOTH, TTL and TTL_BOTH modes)
+# ///
+record(longin, "$(P)$(R)INVERT_VETO_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_config/invert_veto")
+   field(SCAN, "I/O Intr")
+}
+
+# ///
+# /// Sets the trigger debounce time in 80 MHz cycles
+# ///
+record(longout, "$(P)$(R)DEBOUNCE")
+{
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_config/debounce")
+   field(VAL,  "0")
+}
+
+# ///
+# /// Sets the trigger debounce time in 80 MHz cycles
+# ///
+record(longin, "$(P)$(R)DEBOUNCE_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_config/debounce")
+   field(SCAN, "I/O Intr")
+}
+
+
+############
+# Commands #
+############
+
+record(longout, "$(P)$(R)CONNECT")
+{
+   field(SCAN, "Passive")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC_command/connect")
+}
+
+record(longout, "$(P)$(R)DISCONNECT")
+{
+   field(SCAN, "Passive")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC_command/disconnect")
+}
+
+
+record(longout, "$(P)$(R)SAVE_SETTINGS")
+{
+   field(SCAN, "Passive")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC_command/save")
+}
+
+record(longout, "$(P)$(R)RESTORE_SETTINGS")
+{
+   field(SCAN, "Passive")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC_command/restore")
+}
+
+record(longout, "$(P)$(R)SAVE_SETTINGS")
+{
+   field(SCAN, "Passive")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC_command/save")
+}
+
+
+record(longout, "$(P)$(R)Start")
+{
+   field(SCAN, "Passive")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC_command/start")
+}
+
+record(longout, "$(P)$(R)Stop")
+{
+   field(SCAN, "Passive")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC_command/stop")
+}
+
+record(longout, "$(P)$(R)TRIGGER")
+{
+   field(SCAN, "Passive")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC_command/trigger")
+}
+
+######################
+# Application params #
+######################
+
+record(longout, "$(P)$(R)APP_SHUTDOWN")
+{
+   field(SCAN, "Passive")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC_app/shutdown")
+}
+
+record(longin, "$(P)$(R)APP_DEBUG_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_app/debug_level")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout, "$(P)$(R)APP_DEBUG")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODI_app/debug_level")
+    field(SCAN, "Passive")
+}
+
+record(waveform, "$(P)$(R)APP_ENDPOINT_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_app/ctrl_endpoint")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+}
+
+
+
+##################
+# Adapter params #
+##################
+
+record(longin, "$(P)$(R)APP_CONNECTED_RBV")
+{
+   field(SCAN, "I/O Intr")
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_adapter/connected")
+}
+
+record(longout, "$(P)$(R)RESET")
+{
+   field(SCAN, "Passive")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC_adapter/reset")
+}
+
+record(longout, "$(P)$(R)UPDATE_LOOP")
+{
+   field(SCAN, "Passive")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC_adapter/update")
+}
+
+
+record(longout, "$(P)$(R)REQUEST_CONFIG")
+{
+   field(SCAN, "Passive")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODC_request_configuration")
+}
+
+record(waveform, "$(P)$(R)UPTIME_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_adapter/up_time")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+}
+
+record(waveform, "$(P)$(R)START_TIME_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_adapter/start_time")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+}
+
+record(waveform, "$(P)$(R)USERNAME_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODS_adapter/username")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)SCAN_TIME_RBV")
+{
+   field(SCAN, "I/O Intr")
+   field(DTYP, "asynFloat64")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_adapter/scan")
+   field(EGU,  "s")
+   field(PREC, "3")
+}
+
+record(ao, "$(P)$(R)SCAN_TIME")
+{
+   field(SCAN, "Passive")
+   field(DTYP, "asynFloat64")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODD_adapter/scan")
+}
+
+###################################################################
+#  Set the Live View Endpoint                                     #
+###################################################################
+record(stringout, "$(P)$(R)LiveViewEndpoint")
+{
+    field(DTYP, "asynOctetWrite")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_DETECTOR_LV")
+    field(VAL,  "")
+}
+
+record(stringin, "$(P)$(R)LiveViewEndpoint_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_DETECTOR_LV")
+    field(VAL,  "")
+    field(SCAN, "I/O Intr")
+}
+
+###################################################################
+#  Set the Live View Channel Calculation records                  #
+#                                                                 #
+#  These point to the ARR and ROI records, should they be macros? #
+###################################################################
+record(longout, "$(P)$(R)LiveIndexChannel")
+{
+}
+
+record(longout, "$(P)$(R)LiveIndexResgrade")
+{
+}
+
+record(calcout, "$(P)$(R)ResetLiveIndexResgrade")
+{
+    field(INPA, "$(P)$(R)COLLECTRESGRADES CPP")
+    field(CALC, "0")
+    field(OUT, "$(P)$(R)LiveIndexResgrade PP")
+}
+
+record(calcout, "$(P)$(R)CalcLiveIndex")
+{
+    field(INPA, "$(P)$(R)COLLECTRESGRADES CPP")
+    field(INPB, "$(P)$(R)LiveIndexChannel CPP")
+    field(INPC, "$(P)$(R)LiveIndexResgrade CPP")
+    field(CALC, "A=0?B:(B*16)+C")
+}
+
+record(calcout, "$(P)$(R)ReadbackLiveIndexChannel")
+{
+    field(INPA, "$(P)$(R)COLLECTRESGRADES CPP")
+    field(INPB, "$(P)$(R)CalcLiveIndex CPP")
+    field(CALC, "A=0?B:B/16")
+    field(SCAN, "1 second")
+    field(OUT, "$(P)$(R)LiveIndexChannel_RBV PP")
+}
+
+record(longout, "$(P)$(R)LiveIndexChannel_RBV")
+{
+}
+
+record(calcout, "$(P)$(R)ReadbackLiveIndexResgrade")
+{
+    field(INPA, "$(P)$(R)COLLECTRESGRADES CPP")
+    field(INPB, "$(P)$(R)CalcLiveIndex CPP")
+    field(INPC, "$(P)$(R)LiveIndexChannel_RBV CPP")
+    field(CALC, "A=0?0:(B-(16*C))")
+    field(SCAN, "1 second")
+    field(OUT, "$(P)$(R)LiveIndexResgrade_RBV PP")
+}
+
+record(longout, "$(P)$(R)LiveIndexResgrade_RBV")
+{
+}
+
+record(acalcout, "$(P)$(R)CalcLiveMCA")
+{
+    field(INAA, "$(P):ARR:ArrayData CPP")
+    field(INPA, "$(P)$(R)CalcLiveIndex CPP")
+    field(CALC, "AA[(A*4096), ((A+1)*4096)]")
+    field(NELM, "2359296")
+    field(OUT, "$(P)$(R)LiveMCA_RBV PP")
+}
+
+record(waveform, "$(P)$(R)LiveMCA_RBV")
+{
+    field(FTVL, "LONG")
+    field(NELM, "4096")
+}
+
+###################################################################
+#  Live view debug                                                #
+###################################################################
+record(waveform, "$(P)$(R)LiveViewHeader_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_DETECTOR_LV_HEADER")
+    field(FTVL, "CHAR")
+    field(NELM, "2048")
+    field(SCAN, "I/O Intr")
+}
+
+record(waveform, "$(P)$(R)LiveViewInvalidReason_RBV")
+{
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_DETECTOR_LV_INV_REASON")
+    field(FTVL, "CHAR")
+    field(NELM, "2048")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin, "$(P)$(R)LiveViewValid_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_DETECTOR_LV_VALID")
+}
+
+record(longin, "$(P)$(R)LiveViewCounter_RBV")
+{
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(VAL,  "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ODIN_DETECTOR_LV_COUNTER")
+}

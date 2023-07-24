@@ -1,38 +1,40 @@
 import os
 
 from iocbuilder import AutoSubstitution
-from iocbuilder.arginfo import makeArgInfo, Simple, Ident, Choice
+from iocbuilder.arginfo import Choice, Ident, Simple, makeArgInfo
 from iocbuilder.modules.ADCore import ADBaseTemplate, makeTemplateInstance
-
-from util import (
-    OdinPaths,
-    expand_template_file,
-    debug_print,
-    create_config_entry,
-    OneLineEntry,
-)
 from odin import (
-    _OdinDetector,
+    _FrameProcessorPlugin,
+    _MetaWriter,
+    _OdinControlServer,
     _OdinData,
     _OdinDataDriver,
     _OdinDataServer,
-    _OdinControlServer,
-    _MetaWriter,
+    _OdinDetector,
     _PluginConfig,
-    _FrameProcessorPlugin,
+    DETECTOR_CHOICES,
 )
 from plugins import (
+    _BloscPlugin,
+    _DatasetCreationPlugin,
+    _FileWriterPlugin,
     _LiveViewPlugin,
     _OffsetAdjustmentPlugin,
-    _UIDAdjustmentPlugin,
     _SumPlugin,
-    _BloscPlugin,
-    _FileWriterPlugin,
-    _DatasetCreationPlugin,
+    _UIDAdjustmentPlugin,
+)
+from util import (
+    OdinPaths,
+    OneLineEntry,
+    create_config_entry,
+    debug_print,
+    expand_template_file,
 )
 
-
-debug_print("Excalibur: {}".format(OdinPaths.EXCALIBUR_DETECTOR), 1)
+debug_print(
+    "Excalibur: \n{}\n{}".format(OdinPaths.EXCALIBUR_TOOL, OdinPaths.EXCALIBUR_PYTHON),
+    1
+)
 
 EXCALIBUR_DIMENSIONS = {
     # Sensor: (Width, Height)
@@ -45,7 +47,7 @@ class _ExcaliburProcessPlugin(_DatasetCreationPlugin):
 
     NAME = "excalibur"
     CLASS_NAME = "ExcaliburProcessPlugin"
-    LIBRARY_PATH = OdinPaths.EXCALIBUR_DETECTOR
+    LIBRARY_PATH = OdinPaths.EXCALIBUR_TOOL
 
     def __init__(self, sensor):
         ddims = [EXCALIBUR_DIMENSIONS[sensor][1], EXCALIBUR_DIMENSIONS[sensor][0]]
@@ -96,7 +98,7 @@ class _ExcaliburOdinData(_OdinData):
         self.base_udp_port = BASE_UDP_PORT
 
     def create_config_files(self, index, total):
-        macros = dict(DETECTOR=OdinPaths.EXCALIBUR_DETECTOR,
+        macros = dict(DETECTOR=OdinPaths.EXCALIBUR_TOOL,
                       RX_PORT_1=self.base_udp_port,
                       RX_PORT_2=self.base_udp_port + 1,
                       RX_PORT_3=self.base_udp_port + 2,  # 3 - 6 will be ignored in the 1M template
@@ -217,7 +219,9 @@ class ExcaliburOdinControlServer(_OdinControlServer):
 
     """Store configuration for an ExcaliburOdinControlServer"""
 
-    ODIN_SERVER = os.path.join(OdinPaths.EXCALIBUR_DETECTOR, "prefix/bin/excalibur_odin")
+    ODIN_SERVER = os.path.join(
+        OdinPaths.EXCALIBUR_PYTHON, "bin/excalibur_control"
+    )
     CONFIG_TEMPLATES = {
         "1M": {
             "chip_mask": "0xFF, 0xFF",
@@ -237,8 +241,10 @@ class ExcaliburOdinControlServer(_OdinControlServer):
         self.__dict__.update(locals())
         self.ADAPTERS.append("excalibur")
 
+        DETECTOR = "Excalibur{}".format(SENSOR)
+
         super(ExcaliburOdinControlServer, self).__init__(
-            IP, PORT, META_WRITER_IP,
+            IP, DETECTOR, PORT, META_WRITER_IP,
             ODIN_DATA_SERVER_1, ODIN_DATA_SERVER_2, ODIN_DATA_SERVER_3, ODIN_DATA_SERVER_4
         )
 
@@ -253,16 +259,8 @@ class ExcaliburOdinControlServer(_OdinControlServer):
         ODIN_DATA_SERVER_1=Ident("OdinDataServer 1 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_2=Ident("OdinDataServer 2 configuration", _OdinDataServer),
         ODIN_DATA_SERVER_3=Ident("OdinDataServer 3 configuration", _OdinDataServer),
-        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer)
+        ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
     )
-
-    def _add_python_modules(self):
-        self.PYTHON_MODULES.update(dict(excalibur_detector=OdinPaths.EXCALIBUR_DETECTOR))
-
-    def get_extra_startup_macro(self):
-        return '--staticlogfields beamline=${{BEAMLINE}},\
-application_name="excalibur_odin",detector="Excalibur{}" \
---logserver="graylog2.diamond.ac.uk:12210" --access_logging=ERROR'.format(self.SENSOR)
 
     def create_extra_config_entries(self):
         return [
@@ -270,11 +268,11 @@ application_name="excalibur_odin",detector="Excalibur{}" \
         ]
 
     def create_odin_server_static_path(self):
-        return OdinPaths.EXCALIBUR_DETECTOR + "/prefix/html/static"
+        return os.path.join(OdinPaths.EXCALIBUR_TOOL, "html/static")
 
     def _create_excalibur_config_entry(self):
         return "[adapter.excalibur]\n" \
-               "module = excalibur.adapter.ExcaliburAdapter\n" \
+               "module = excalibur_detector.control.adapter.ExcaliburAdapter\n" \
                "detector_fems = {}\n" \
                "powercard_fem_idx = {}\n" \
                "chip_enable_mask = {}\n" \
@@ -289,15 +287,19 @@ application_name="excalibur_odin",detector="Excalibur{}" \
             fp_endpoints.append(process.FP_ENDPOINT)
             fr_endpoints.append(process.FR_ENDPOINT)
 
-        return "[adapter.fp]\n" \
-               "module = odin_data.fp_compression_adapter.FPCompressionAdapter\n" \
-               "endpoints = {}\n" \
-               "update_interval = 0.2\n" \
-               "datasets = data,data2\n\n" \
-               "[adapter.fr]\n" \
-               "module = odin_data.frame_receiver_adapter.FrameReceiverAdapter\n" \
-               "endpoints = {}\n" \
-               "update_interval = 0.2".format(", ".join(fp_endpoints), ", ".join(fr_endpoints))
+        return (
+            "[adapter.fp]\n"
+            "module = odin_data.control.fp_compression_adapter.FPCompressionAdapter\n"
+            "endpoints = {}\n"
+            "update_interval = 0.2\n"
+            "datasets = data,data2\n\n"
+            "[adapter.fr]\n"
+            "module = odin_data.control.frame_receiver_adapter.FrameReceiverAdapter\n"
+            "endpoints = {}\n"
+            "update_interval = 0.2".format(
+                ", ".join(fp_endpoints), ", ".join(fr_endpoints)
+            )
+        )
 
 
     @property

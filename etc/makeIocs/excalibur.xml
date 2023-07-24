@@ -1,19 +1,19 @@
 <?xml version="1.0" ?>
 <components arch="linux-x86_64">
 	<ADOdin.ExcaliburOdinDataServer FEM_DEST_MAC="A0:36:9F:8C:52:3C" IP="127.0.0.1" PROCESSES="2" SENSOR="1M" SHARED_MEM_SIZE="10485760" name="DataServer1"/>
-	<ADOdin.ExcaliburOdinControlServer IP="127.0.0.1" ODIN_DATA_SERVER_1="DataServer1" SENSOR="1M" name="ControlServer"/>
-	<ADOdin.ExcaliburOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" P="$(hostname)-EXCBR" PORT="ODN.OD" TIMEOUT="1"/>
-	<ADOdin.ExcaliburDetector ADDR="0" ODIN_CONTROL_SERVER="ControlServer" ODIN_DATA_DRIVER="ODN.OD" P="$(hostname)-EXCBR" PORT="ODN.CAM" SENSOR="1M" TIMEOUT="1"/>
+	<ADOdin.ExcaliburOdinControlServer IP="127.0.0.1" ODIN_DATA_SERVER_1="DataServer1" SENSOR="3M" name="ControlServer"/>
+	<ADOdin.ExcaliburOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" P="EXCBR" PORT="ODN.OD" TIMEOUT="1"/>
+	<ADOdin.ExcaliburDetector ADDR="0" ODIN_CONTROL_SERVER="ControlServer" ODIN_DATA_DRIVER="ODN.OD" P="EXCBR" PORT="ODN.CAM" SENSOR="1M" TIMEOUT="1"/>
 	<ADOdin.OdinLogConfig BEAMLINE="iXX" DETECTOR="Excalibur1M" name="LogConfig"/>
 	<!--6 -> 1 Second-->
-	<EPICS_BASE.dbpf name="Polling" pv="$(hostname)-EXCBR:OD:ReadStatus.SCAN" value="6"/>
-	<EPICS_BASE.dbpf name="ImageWidth" pv="$(hostname)-EXCBR:OD:ImageWidth" value="2048"/>
-	<EPICS_BASE.dbpf name="ImageHeight" pv="$(hostname)-EXCBR:OD:ImageHeight" value="512"/>
-	<EPICS_BASE.dbpf name="ChunkDepth" pv="$(hostname)-EXCBR:OD:NumFramesChunks" value="1"/>
-	<EPICS_BASE.dbpf name="ChunkWidth" pv="$(hostname)-EXCBR:OD:NumColChunks" value="2048"/>
-	<EPICS_BASE.dbpf name="ChunkHeight" pv="$(hostname)-EXCBR:OD:NumRowChunks" value="512"/>
-	<EPICS_BASE.dbpf name="DataType" pv="$(hostname)-EXCBR:OD:DataType" value="UInt16"/>
-	<EPICS_BASE.dbpf name="UDPConfig" pv="$(hostname)-EXCBR:CAM:UdpConfigFile" value="$(INSTALL)/excaliburApp/data/udp_excalibur.json"/>
-	<!--<EPICS_BASE.dbpf pv="$(hostname)-EXCBR:CAM:CalFileRoot" value="/dls_sw/i13-1/epics/excalibur/V2.7"/>-->
+	<EPICS_BASE.dbpf name="Polling" pv="EXCBR:OD:ReadStatus.SCAN" value="6"/>
+	<EPICS_BASE.dbpf name="ImageWidth" pv="EXCBR:OD:ImageWidth" value="2048"/>
+	<EPICS_BASE.dbpf name="ImageHeight" pv="EXCBR:OD:ImageHeight" value="512"/>
+	<EPICS_BASE.dbpf name="ChunkDepth" pv="EXCBR:OD:NumFramesChunks" value="1"/>
+	<EPICS_BASE.dbpf name="ChunkWidth" pv="EXCBR:OD:NumColChunks" value="2048"/>
+	<EPICS_BASE.dbpf name="ChunkHeight" pv="EXCBR:OD:NumRowChunks" value="512"/>
+	<EPICS_BASE.dbpf name="DataType" pv="EXCBR:OD:DataType" value="UInt16"/>
+	<EPICS_BASE.dbpf name="UDPConfig" pv="EXCBR:CAM:UdpConfigFile" value="$(INSTALL)/excaliburApp/data/udp_excalibur.json"/>
+	<!--<EPICS_BASE.dbpf pv="EXCBR:CAM:CalFileRoot" value="/dls_sw/i13-1/epics/excalibur/V2.7"/>-->
 	<ADOdin.OdinStartAllScript driver="ODN.OD" name="StartAllScript"/>
 </components>
