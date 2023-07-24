@@ -341,12 +341,6 @@ class ArcOdinControlServer(_OdinControlServer):
         ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
     )
 
-    def get_extra_startup_macro(self):
-        return (
-            "--staticlogfields beamline=${BEAMLINE},"
-            'application_name="arc_odin",detector="Arc" '
-            '--logserver="graylog2.diamond.ac.uk:12210" --access_logging=ERROR'
-        )
 
     def create_extra_config_entries(self):
         return [self._create_arc_config_entry()]

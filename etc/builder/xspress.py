@@ -265,20 +265,6 @@ class XspressOdinControlServer(_OdinControlServer):
         ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
     )
 
-
-    def _add_python_modules(self):
-        # return nothing since the python3 venv for xspress odin server already has the
-        # required dependencies
-        pass
-
-    def get_extra_startup_macro(self):
-        return ""
-        return (
-            "--staticlogfields beamline=${BEAMLINE},"
-            'application_name="xspress_odin",detector="Xspress" '
-            '--logserver="graylog2.diamond.ac.uk:12210" --access_logging=ERROR'
-        )
-
     def create_odin_server_config_entries(self):
         '''
         TODO: undo this method override

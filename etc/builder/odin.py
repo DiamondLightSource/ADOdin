@@ -395,16 +395,26 @@ class _OdinControlServer(Device):
         ODIN_DATA_SERVER_10=Ident("OdinDataServer 10 configuration", _OdinDataServer),
     )
 
-    def get_extra_startup_macro(self):
-        return ""
-
     def create_startup_script(self):
+        static_fields = [
+            "beamline=${BEAMLINE}",
+            "application_name={}".format(self.ODIN_SERVER.split("/")[-1])
+        ] + [
+            "=".join((k, v)) for k, v in self.create_extra_static_fields().items()
+        ]
+        extra_params = " ".join([
+            "--graylog_static_fields " + ",".join(static_fields),
+        ])
+
         macros = dict(
             ODIN_SERVER=self.ODIN_SERVER,
             CONFIG="odin_server.cfg",
-            EXTRA_PARAMS=self.get_extra_startup_macro()
+            EXTRA_PARAMS=extra_params
         )
         expand_template_file("odin_server_startup", macros, "stOdinServer.sh", executable=True)
+
+    def create_extra_static_fields(self):
+        return dict(detector=self.detector_model)
 
     def create_config_file(self):
         macros = dict(PORT=self.PORT,

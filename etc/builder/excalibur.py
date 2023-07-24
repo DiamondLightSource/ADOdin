@@ -262,11 +262,6 @@ class ExcaliburOdinControlServer(_OdinControlServer):
         ODIN_DATA_SERVER_4=Ident("OdinDataServer 4 configuration", _OdinDataServer),
     )
 
-    def get_extra_startup_macro(self):
-        return '--staticlogfields beamline=${{BEAMLINE}},\
-application_name="excalibur_odin",detector="Excalibur{}" \
---logserver="graylog2.diamond.ac.uk:12210" --access_logging=ERROR'.format(self.SENSOR)
-
     def create_extra_config_entries(self):
         return [
             self._create_excalibur_config_entry()
