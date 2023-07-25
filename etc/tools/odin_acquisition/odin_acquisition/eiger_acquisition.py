@@ -3,8 +3,8 @@ import ctypes
 import logging
 from datetime import datetime
 from os import makedirs
-from time import sleep
 from pathlib import Path
+from time import sleep
 
 from cothread import Event
 from cothread.catools import DBR_CHAR_STR, ca_nothing, caget, camonitor, caput
@@ -23,9 +23,10 @@ class FPError(Exception):
 
 
 class EigerTestDetector:
-    def __init__(self, pv_stem: str, file_writing_enabled: bool = True):
+    def __init__(self, pv_stem: str, file_writing_enabled: bool, fp_count: int):
         self.pv_stem = pv_stem
         self.file_writing_enabled = file_writing_enabled
+        self.fp_count = fp_count
 
         # We will increment this value each time we complete an acq
         self.acquisition_id = 1
@@ -41,7 +42,11 @@ class EigerTestDetector:
             raise EigerUnreachableError
 
     def wait_on_pv_to_val(
-        self, param, desired_value, timeout_seconds=WAIT_PV_TIMEOUT_SECONDS, datatype=None
+        self,
+        param,
+        desired_value,
+        timeout_seconds=WAIT_PV_TIMEOUT_SECONDS,
+        datatype=None,
     ):
         @timeout(timeout_seconds)
         def timeout_wait_on_pv_to_val(param, desired_value):
@@ -105,7 +110,7 @@ class EigerTestDetector:
 
         # Get the data type
         eiger_bit_depth = self.get("CAM:BitDepthImage_RBV")
-        self.put("OD:DataType", "UInt" + str(eiger_bit_depth)) # 8, 16 or 32
+        self.put("OD:DataType", "UInt" + str(eiger_bit_depth))  # 8, 16 or 32
         self.put("OD:Capture", 1, wait=False)
 
         # Wait for data file writing and meta file writing to be ready
@@ -138,11 +143,11 @@ class EigerTestDetector:
             self.put("OD:Capture", 0)
             self.clear_fp_errors()
 
-    def clear_fp_errors(self, num_fps=4):
-        for fp in range(1, num_fps + 1):
+    def clear_fp_errors(self):
+        for fp in range(1, self.fp_count + 1):
             self.put(f"OD{fp}:FPClearErrors", 1)
 
-    def get_fp_errors(self, num_fps=4):
+    def get_fp_errors(self):
         # Check for file writer errors
         fp_errors = [
             "".join(
@@ -150,13 +155,13 @@ class EigerTestDetector:
                     ctypes.string_at(self.get(f"OD{fp}:FPErrorMessage_RBV").ctypes.data)
                 )
             )
-            for fp in range(1, num_fps + 1)
+            for fp in range(1, self.fp_count + 1)
         ]
         return fp_errors
 
-    def get_num_fp_errors(self, num_fps=4):
+    def get_num_fp_errors(self):
         fp_states = [
-            self.get(f"OD{fp}:FPErrorState_RBV") for fp in range(1, num_fps + 1)
+            self.get(f"OD{fp}:FPErrorState_RBV") for fp in range(1, self.fp_count + 1)
         ]
         return sum(fp_states)
 
@@ -196,7 +201,9 @@ class EigerTestDetector:
                 "ID": self.acquisition_id,
                 "time": now,
                 "success": success,
-                "fp_errors": self.get_fp_errors() if self.file_writing_enabled else "NA",
+                "fp_errors": self.get_fp_errors()
+                if self.file_writing_enabled
+                else "NA",
                 "filename": filename,
                 "filepath": filepath,
                 "acquire_period": acquire_period,
@@ -272,9 +279,12 @@ def parse_args():
     )
     parser.add_argument(
         "--no-file-writing",
-        type=bool,
-        action="store_false",
+        action="store_true",
+        default=False,
         help="Do not configure file writing and use sleeps instead",
+    )
+    parser.add_argument(
+        "--fp-count", default=4, type=int, help="Number of frame processors"
     )
 
     args = parser.parse_args()
@@ -295,7 +305,7 @@ def main():
         datefmt="%Y-%m-%d %H:%M:%S",
     )
 
-    detector = EigerTestDetector(args.pv_stem, not args.no_file_writing)
+    detector = EigerTestDetector(args.pv_stem, not args.no_file_writing, args.fp_count)
 
     file_path = args.filepath
     run = 0
@@ -316,11 +326,10 @@ def main():
                 logging.debug(f"Acquisition complete - Waiting {args.delay} seconds")
                 sleep(args.delay)
 
+        run += 1
         if args.runs > 0 and run >= args.runs:
             logging.info(f"All {args.runs} runs complete")
             break
-
-        run += 1
 
 
 if __name__ == "__main__":
