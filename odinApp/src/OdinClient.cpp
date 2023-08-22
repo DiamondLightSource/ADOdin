@@ -8,6 +8,7 @@
 #include "OdinClient.h"
 
 #include <sstream>
+#include <cstring>
 #include <epicsString.h>
 
 static const std::string DRIVER_VERSION("0-11-0");

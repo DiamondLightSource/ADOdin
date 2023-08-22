@@ -3,6 +3,7 @@
 #include <sstream>
 #include <numeric>
 #include <algorithm>
+#include <cstring>
 
 #include <epicsExport.h>
 #include <iocsh.h>
@@ -49,11 +50,11 @@ OdinDataDriver::OdinDataDriver(const char* portName, const char* serverHostname,
   // Register the detector API with the Odin client parent
   this->registerAPI(&mAPI);
 
-  createParams();
+  createOdinParams();
   fetchParams();
 }
 
-int OdinDataDriver::createParams()
+int OdinDataDriver::createOdinParams()
 {
   mAPIVersion = createRESTParam(OdinRestAPIVersion, REST_P_STRING, SSRoot, "api");
   // Create a parameter to store any error message from the Odin server

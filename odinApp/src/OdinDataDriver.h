@@ -81,7 +81,7 @@ class OdinDataDriver : public OdinClient
   std::string mDatasetName;
   std::string mProcessPluginName;
 
-  int createParams();
+  int createOdinParams();
 
   RestParam * createODRESTParam(const std::string &asynName, rest_param_type_t restType,
                                 sys_t subSystem, const std::string &name);
