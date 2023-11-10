@@ -1,0 +1,4 @@
+include:
+  - project: 'controls/reports/ci_templates'
+    ref: master
+    file: 'support/builder_module.yml'
