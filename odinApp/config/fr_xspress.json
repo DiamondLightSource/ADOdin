@@ -4,7 +4,11 @@
         "decoder_path": "$DETECTOR_ROOT/lib",
         "rx_type": "zmq",
         "rx_address": "127.0.0.1",
-        "rx_ports": "$RX_PORT,"
+        "rx_ports": "$RX_PORT,",
+        "shared_buffer_name": "odin_buf_$BUFFER_IDX",
+        "max_buffer_mem": $SHARED_MEM_SIZE,
+        "frame_ready_endpoint": "tcp://$IP:$RD_PORT",
+        "frame_release_endpoint": "tcp://$IP:$RL_PORT"
     },
     {
         "decoder_config": {

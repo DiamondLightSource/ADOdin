@@ -111,8 +111,8 @@ class _XspressOdinData(_OdinData):
 
 
 
-    def __init__(self, server, READY, RELEASE, META, SENSOR):
-        super(_XspressOdinData, self).__init__(server, READY, RELEASE, META, XspressPlugins())
+    def __init__(self, server, READY, RELEASE, META, SHARED_MEM_SIZE, BUFFER_IDX, SENSOR):
+        super(_XspressOdinData, self).__init__(server, READY, RELEASE, META, SHARED_MEM_SIZE, BUFFER_IDX, XspressPlugins())
         self.sensor = SENSOR
 
     def create_config_files(self, index, total):
@@ -161,8 +161,8 @@ class XspressOdinDataServer(_OdinDataServer):
         PLUGIN_CONFIG=Ident("Define a custom set of plugins", _PluginConfig)
     )
 
-    def create_odin_data_process(self, server, ready, release, meta, plugin_config):
-        process = _XspressOdinData(server, ready, release, meta, self.sensor)
+    def create_odin_data_process(self, server, ready, release, meta, buffer_size, buffer_idx, plugin_config):
+        process = _XspressOdinData(server, ready, release, meta, buffer_size, buffer_idx, self.sensor)
         return process
 
 class XspressOdinControlServer(_OdinControlServer):

@@ -91,8 +91,8 @@ class _ExcaliburOdinData(_OdinData):
         }
     }
 
-    def __init__(self, server, READY, RELEASE, META, PLUGINS, SENSOR, BASE_UDP_PORT):
-        super(_ExcaliburOdinData, self).__init__(server, READY, RELEASE, META, PLUGINS)
+    def __init__(self, server, READY, RELEASE, META, SHARED_MEM_SIZE, BUFFER_IDX, PLUGINS, SENSOR, BASE_UDP_PORT):
+        super(_ExcaliburOdinData, self).__init__(server, READY, RELEASE, META, SHARED_MEM_SIZE, BUFFER_IDX, PLUGINS)
         self.plugins = PLUGINS
         self.sensor = SENSOR
         self.base_udp_port = BASE_UDP_PORT
@@ -208,8 +208,8 @@ class ExcaliburOdinDataServer(_OdinDataServer):
                                      "This determines what is done with the second FEM_DEST", bool)
     )
 
-    def create_odin_data_process(self, server, ready, release, meta, plugin_config):
-        process = _ExcaliburOdinData(server, ready, release, meta, plugin_config,
+    def create_odin_data_process(self, server, ready, release, meta, buffer_size, buffer_idx, plugin_config):
+        process = _ExcaliburOdinData(server, ready, release, meta, buffer_size, buffer_idx, plugin_config,
                                      self.sensor, self.BASE_UDP_PORT)
         self.BASE_UDP_PORT += 6
         return process

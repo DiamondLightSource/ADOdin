@@ -119,9 +119,9 @@ class _ArcOdinData(_OdinData):
     }
 
     def __init__(
-        self, server, READY, RELEASE, META, PLUGINS, SUPER_MODULES, BASE_UDP_PORT
+        self, server, READY, RELEASE, META, SHARED_MEM_SIZE, BUFFER_IDX, PLUGINS, SUPER_MODULES, BASE_UDP_PORT
     ):
-        super(_ArcOdinData, self).__init__(server, READY, RELEASE, META, PLUGINS)
+        super(_ArcOdinData, self).__init__(server, READY, RELEASE, META, SHARED_MEM_SIZE, BUFFER_IDX, PLUGINS)
         self.plugins = PLUGINS
         self.sensor = "Arc {} FEM".format(SUPER_MODULES)
         self.dims = ArcDimensions(SUPER_MODULES)
@@ -264,12 +264,14 @@ class ArcOdinDataServer(_OdinDataServer):
         BASE_UDP_PORT=Simple("Starting UDP Port for first FEM", int),
     )
 
-    def create_odin_data_process(self, server, ready, release, meta, plugin_config):
+    def create_odin_data_process(self, server, ready, release, meta, buffer_size, buffer_idx, plugin_config):
         process = _ArcOdinData(
             server,
             ready,
             release,
             meta,
+            buffer_size,
+            buffer_idx,
             plugin_config,
             self.SUPER_MODULES,
             self.BASE_UDP_PORT,

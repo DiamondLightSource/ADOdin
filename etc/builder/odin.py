@@ -58,7 +58,7 @@ class _OdinData(Device):
     # Device attributes
     AutoInstantiate = True
 
-    def __init__(self, server, READY, RELEASE, META, PLUGINS):
+    def __init__(self, server, READY, RELEASE, META, SHARED_MEM_SIZE, BUFFER_IDX, PLUGINS):
         self.__super.__init__()
         # Update attributes with parameters
         self.__dict__.update(locals())
@@ -74,7 +74,9 @@ class _OdinData(Device):
     def create_config_file(self, prefix, template, extra_macros=None):
         macros = dict(
             IP=self.server.IP, ODIN_DATA=OdinPaths.ODIN_DATA_TOOL,
-            RD_PORT=self.READY, RL_PORT=self.RELEASE, META_PORT=self.META
+            RD_PORT=self.READY, RL_PORT=self.RELEASE, META_PORT=self.META,
+            SHARED_MEM_SIZE=self.SHARED_MEM_SIZE,
+            BUFFER_IDX=self.BUFFER_IDX
         )
         if extra_macros is not None:
             macros.update(extra_macros)
@@ -228,10 +230,11 @@ class _OdinDataServer(Device):
         self.plugins = PLUGIN_CONFIG
 
         self.processes = []
-        for _ in range(PROCESSES):
+        for idx in range(PROCESSES):
             self.processes.append(
                 self.create_odin_data_process(
-                    self, self.PORT_BASE + 1, self.PORT_BASE + 2, self.PORT_BASE + 8, PLUGIN_CONFIG)
+                    self, self.PORT_BASE + 1, self.PORT_BASE + 2, self.PORT_BASE + 8, 
+                    SHARED_MEM_SIZE, idx + 1, PLUGIN_CONFIG)
             )
             self.PORT_BASE += 10
 
@@ -247,7 +250,7 @@ class _OdinDataServer(Device):
                                 " - Optional for performance tuning", int)
     )
 
-    def create_odin_data_process(self, server, ready, release, meta, plugin_config):
+    def create_odin_data_process(self, server, ready, release, meta, buffer_size, buffer_idx, plugin_config):
         raise NotImplementedError("Method must be implemented by child classes")
 
     def configure_processes(self, server_rank, total_servers, total_processes):
@@ -279,9 +282,7 @@ class _OdinDataServer(Device):
             macros = dict(
                 NUMBER=process.RANK + 1,
                 ODIN_DATA=OdinPaths.ODIN_DATA_TOOL,
-                BUFFER_IDX=idx + 1, SHARED_MEMORY=self.SHARED_MEM_SIZE,
                 CTRL_PORT=fr_port_number, IO_THREADS=self.IO_THREADS,
-                READY_PORT=ready_port_number, RELEASE_PORT=release_port_number,
                 LOG_CONFIG=data_file_path("log4cxx.xml"),
                 NUMA=numa_call)
             expand_template_file("fr_startup", macros, output_file, executable=True)
@@ -292,7 +293,6 @@ class _OdinDataServer(Device):
                 ODIN_DATA=OdinPaths.ODIN_DATA_TOOL,
                 HDF5_FILTERS=OdinPaths.HDF5_FILTERS,
                 CTRL_PORT=fp_port_number,
-                READY_PORT=ready_port_number, RELEASE_PORT=release_port_number,
                 LOG_CONFIG=data_file_path("log4cxx.xml"),
                 NUMA=numa_call)
             expand_template_file("fp_startup", macros, output_file, executable=True)

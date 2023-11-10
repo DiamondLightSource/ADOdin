@@ -5,6 +5,10 @@
     "rx_type": "zmq",
     "rx_address": "$IP",
     "rx_ports": "3160$RX_PORT_SUFFIX,",
+    "shared_buffer_name": "odin_buf_$BUFFER_IDX",
+    "max_buffer_mem": $SHARED_MEM_SIZE,
+    "frame_ready_endpoint": "tcp://$IP:$RD_PORT",
+    "frame_release_endpoint": "tcp://$IP:$RL_PORT",
     "decoder_config": {
       "enable_packet_logging": false,
       "frame_timeout_ms": 1000,

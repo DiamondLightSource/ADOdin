@@ -3,6 +3,10 @@
     "decoder_type": "Arc",
     "decoder_path": "$DETECTOR/lib",
     "rx_ports": "$RX_PORT_1,$RX_PORT_2",
+    "shared_buffer_name": "odin_buf_$BUFFER_IDX",
+    "max_buffer_mem": $SHARED_MEM_SIZE,
+    "frame_ready_endpoint": "tcp://$IP:$RD_PORT",
+    "frame_release_endpoint": "tcp://$IP:$RL_PORT",
     "decoder_config": {
       "enable_packet_logging": false,
       "frame_timeout_ms": 1000,
