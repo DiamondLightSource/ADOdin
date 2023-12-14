@@ -423,7 +423,7 @@ class TristanOdinDataServer(_OdinDataServer):
         SENSOR=Choice("Sensor type", ["1M", "2M", "10M"]),
         FEM_DEST_MAC=Simple("MAC address of node data link (destination for FEM to send to)", str),
         FEM_DEST_IP=Simple("IP address of node data link (destination for FEM to send to)", str),
-        FEM_DEST_NAME=Simple("Name of the destination netowrk interface", str),
+        FEM_DEST_NAME=Simple("Name of the destination network interface", str),
         FEM_DEST_SUBNET=Simple("Subnet mask node transmits on", int),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
         PLUGIN_CONFIG=Ident("Define a custom set of plugins", _PluginConfig)
