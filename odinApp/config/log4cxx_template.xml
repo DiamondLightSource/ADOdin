@@ -20,7 +20,7 @@
 
     <appender name="graylog" class="org.apache.log4j.net.SyslogAppender">
         <param name="Facility" value="LOCAL1"/>
-        <param name="SyslogHost" value="graylog2.diamond.ac.uk:12211"/>
+        <param name="SyslogHost" value="graylog-log-target.diamond.ac.uk:12211"/>
         <param name="Threshold" value="INFO"/>
         <layout class="org.apache.log4j.PatternLayout">
             <!-- syslog standard RFC 5424 formatting. Unfortunately the log4cxx SyslogAppender does not do this automatically -->
