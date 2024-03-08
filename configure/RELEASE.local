@@ -23,9 +23,9 @@ ODIN_PROC_SERV_CONTROL = $(PYTHON)/odinprocservcontrol/0.2
 # Production versions must include `/prefix`, as builder appends `/bin/<app>`
 ODIN_DATA_VERSION = odin-data/1.10.1+dls1/prefix
 EIGER_VERSION = eiger-detector/1.13.0+dls1/prefix
-EXCALIBUR_VERSION = excalibur-detector/1.2.0+dls2/prefix
-TRISTAN_VERSION = tristan-detector/0.9.1/prefix
-XSPRESS_VERSION = xspress-detector/0.3.2/prefix
+EXCALIBUR_VERSION = excalibur-detector/1.2.0+dls3/prefix
+TRISTAN_VERSION = tristan-detector/0.9.2/prefix
+XSPRESS_VERSION = xspress-detector/0.4/prefix
 
 ODIN_DATA_TOOL = $(TOOLS)/$(ODIN_DATA_VERSION)
 ODIN_DATA_PYTHON = $(PYTHON)/$(ODIN_DATA_VERSION)
