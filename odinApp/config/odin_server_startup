@@ -2,7 +2,7 @@
 
 SCRIPT_DIR="$$( cd "$$( dirname "$$0" )" && pwd )"
 
-# Increase maximimum fds available for ZeroMQ sockets
+# Increase maximum fds available for ZeroMQ sockets
 ulimit -n 2048
 
 $ODIN_SERVER --config=$$SCRIPT_DIR/$CONFIG --logging=info --access_logging=ERROR --graylog_server graylog-log-target.diamond.ac.uk:12210 $EXTRA_PARAMS
