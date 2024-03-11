@@ -9,11 +9,12 @@
 # This associates the template with an edm screen
 # % gui, $(PORT), edmtab, XspressMain.edl, P=$(P),R=$(R)
 # % gui, $(PORT)_OD, edmtab, XspressDAQMain.edl, P=$(P),R=:OD:
-# % gui, $(PORT)_DATA, edm, OdinDataStatus9.edl, P=$(P),R=:OD:
+# % gui, $(PORT)_DATA, edm, OdinDataStatus$(NUM_PROCESSES).edl, P=$(P),R=:OD:
 # % gui, $(PORT)_debug, edm, XspressAll.edl, P=$(P),R=$(R)
-# % gui, $(PORT)_SCA, edm, Xspress36Channels.edl, P=$(P),R=$(R)
-# % gui, $(PORT)_DTC, edm, Xspress36ChannelsDTC.edl, P=$(P),R=$(R)
-# % gui, $(PORT)_Status, edm, XspressStatus36Chan4Fem.edl, P=$(P),R=$(R)
+# % gui, $(PORT)_SCA, edm, Xspress$(MAX_CHANNELS)Channels.edl, P=$(P),R=$(R)
+# % gui, $(PORT)_DTC, edm, Xspress$(MAX_CHANNELS)ChannelsDTC.edl, P=$(P),R=$(R)
+# % gui, $(PORT)_Status, edm, XspressStatus$(MAX_CHANNELS)Chan$(NUM_CARDS)Fem.edl, P=$(P),R=$(R)
+# % gui, $(PORT)_MCA, edm, Xspress$(MAX_CHANNELS)ChanMCA.edl, P=$(P),R=$(R),CHAN=$(MAX_CHANNELS)
 
 include "ADBase.template"
 

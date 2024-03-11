@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1910
-y 175
+x 1067
+y 266
 w 450
 h 950
 font "arial-bold-r-12.0"
@@ -48,7 +48,7 @@ release 0
 x 5
 y 720
 w 430
-h 165
+h 185
 lineColor index 14
 fill
 fillColor index 3
