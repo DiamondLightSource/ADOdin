@@ -7,8 +7,8 @@
         "rx_ports": "$RX_PORT,",
         "shared_buffer_name": "odin_buf_$BUFFER_IDX",
         "max_buffer_mem": $SHARED_MEM_SIZE,
-        "frame_ready_endpoint": "tcp://$IP:$RD_PORT",
-        "frame_release_endpoint": "tcp://$IP:$RL_PORT"
+        "frame_ready_endpoint": "tcp://127.0.0.1:$RD_PORT",
+        "frame_release_endpoint": "tcp://127.0.0.1:$RL_PORT"
     },
     {
         "decoder_config": {
