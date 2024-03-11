@@ -206,6 +206,19 @@ class _FileWriterPlugin(_FrameProcessorPlugin):
         }
         entries.append(create_config_entry(file_number_entry))
 
+        # Enable index datasets if required
+        if self.indexes:
+            indexes_entry = {
+                self.NAME: {
+                    "dataset": {
+                        self.DATASET_NAME: {
+                            "indexes": True
+                        }
+                    }
+                }
+            }
+            entries.append(create_config_entry(indexes_entry))
+
         return entries
 
 
