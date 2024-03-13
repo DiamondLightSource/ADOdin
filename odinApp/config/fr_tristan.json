@@ -3,6 +3,10 @@
     "decoder_type": "LATRD",
     "decoder_path": "$DETECTOR_ROOT/lib",
     "rx_ports": "$RX_PORT_1",
+    "shared_buffer_name": "odin_buf_$BUFFER_IDX",
+    "max_buffer_mem": $SHARED_MEM_SIZE,
+    "frame_ready_endpoint": "tcp://127.0.0.1:$RD_PORT",
+    "frame_release_endpoint": "tcp://127.0.0.1:$RL_PORT",
     "decoder_config": {
       "enable_packet_logging": false,
       "frame_timeout_ms": 1000

@@ -104,8 +104,8 @@ class _EigerOdinData(_OdinData):
         "FrameReceiver": "fr_eiger.json"
     }
 
-    def __init__(self, server, READY, RELEASE, META, PLUGIN_CONFIG, SOURCE_IP, SENSOR):
-        super(_EigerOdinData, self).__init__(server, READY, RELEASE, META, PLUGIN_CONFIG)
+    def __init__(self, server, READY, RELEASE, META, SHARED_MEM_SIZE, BUFFER_IDX, PLUGIN_CONFIG, SOURCE_IP, SENSOR):
+        super(_EigerOdinData, self).__init__(server, READY, RELEASE, META, SHARED_MEM_SIZE, BUFFER_IDX, PLUGIN_CONFIG)
         self.source = SOURCE_IP
         self.sensor = SENSOR
 
@@ -191,8 +191,8 @@ class EigerOdinDataServer(_OdinDataServer):
                                 " - Optional for performance tuning", int)
     )
 
-    def create_odin_data_process(self, server, ready, release, meta, plugin_config):
-        return _EigerOdinData(server, ready, release, meta, plugin_config, self.source, self.sensor)
+    def create_odin_data_process(self, server, ready, release, meta, buffer_size, buffer_idx,  plugin_config):
+        return _EigerOdinData(server, ready, release, meta, buffer_size, buffer_idx, plugin_config, self.source, self.sensor)
 
 
 class _EigerV16DetectorTemplate(AutoSubstitution):

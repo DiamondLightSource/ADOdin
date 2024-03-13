@@ -1,0 +1,1282 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 566
+y 160
+w 2400
+h 950
+font "arial-bold-r-12.0"
+ctlFont "arial-bold-r-12.0"
+btnFont "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 25
+ctlFgColor2 index 25
+ctlBgColor1 index 3
+ctlBgColor2 index 3
+topShadowColor index 1
+botShadowColor index 11
+showGrid
+snapToGrid
+gridSize 5
+endScreenProperties
+
+# (Exit Button)
+object activeExitButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 2330
+y 920
+w 65
+h 25
+fgColor index 46
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+label "EXIT"
+font "arial-bold-r-14.0"
+3d
+endObjectProperties
+
+# (X-Y Graph)
+object xyGraphClass
+beginObjectProperties
+major 4
+minor 8
+release 0
+# Geometry
+x 0
+y 75
+w 600
+h 400
+# Appearance
+border
+yLabel "Counts"
+fgColor index 14
+bgColor index 3
+gridColor index 14
+font "arial-bold-r-14.0"
+# Operating Modes
+nPts 1
+# X axis properties
+showXAxis
+xAxisSrc "AutoScale"
+xMax 1
+# Y axis properties
+showYAxis
+yAxisSrc "AutoScale"
+yMax 1
+# Y2 axis properties
+y2AxisSrc "AutoScale"
+y2Max 1
+# Trace Properties
+numTraces 1
+yPv {
+  0 "$(P)$(R)C1ChanLiveMCA_RBV"
+}
+plotColor {
+  0 index 24
+}
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 2405
+h 35
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 2405
+h 35
+lineColor index 51
+fill
+fillColor index 51
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1203
+y 10
+w 38
+h 18
+font "arial-bold-r-16.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "MCA"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (X-Y Graph)
+object xyGraphClass
+beginObjectProperties
+major 4
+minor 8
+release 0
+# Geometry
+x 600
+y 75
+w 600
+h 400
+# Appearance
+border
+yLabel "Counts"
+fgColor index 14
+bgColor index 3
+gridColor index 14
+font "arial-bold-r-14.0"
+# Operating Modes
+nPts 1
+# X axis properties
+showXAxis
+xAxisSrc "AutoScale"
+xMax 1
+# Y axis properties
+showYAxis
+yAxisSrc "AutoScale"
+yMax 1
+# Y2 axis properties
+y2AxisSrc "AutoScale"
+y2Max 1
+# Trace Properties
+numTraces 1
+yPv {
+  0 "$(P)$(R)C2ChanLiveMCA_RBV"
+}
+plotColor {
+  0 index 24
+}
+endObjectProperties
+
+# (X-Y Graph)
+object xyGraphClass
+beginObjectProperties
+major 4
+minor 8
+release 0
+# Geometry
+x 1800
+y 520
+w 600
+h 400
+# Appearance
+border
+yLabel "Counts"
+fgColor index 14
+bgColor index 3
+gridColor index 14
+font "arial-bold-r-14.0"
+# Operating Modes
+nPts 1
+# X axis properties
+showXAxis
+xAxisSrc "AutoScale"
+xMax 1
+# Y axis properties
+showYAxis
+yAxisSrc "AutoScale"
+yMax 1
+# Y2 axis properties
+y2AxisSrc "AutoScale"
+y2Max 1
+# Trace Properties
+numTraces 1
+yPv {
+  0 "$(P)$(R)C8ChanLiveMCA_RBV"
+}
+plotColor {
+  0 index 24
+}
+endObjectProperties
+
+# (X-Y Graph)
+object xyGraphClass
+beginObjectProperties
+major 4
+minor 8
+release 0
+# Geometry
+x 1200
+y 520
+w 600
+h 400
+# Appearance
+border
+yLabel "Counts"
+fgColor index 14
+bgColor index 3
+gridColor index 14
+font "arial-bold-r-14.0"
+# Operating Modes
+nPts 1
+# X axis properties
+showXAxis
+xAxisSrc "AutoScale"
+xMax 1
+# Y axis properties
+showYAxis
+yAxisSrc "AutoScale"
+yMax 1
+# Y2 axis properties
+y2AxisSrc "AutoScale"
+y2Max 1
+# Trace Properties
+numTraces 1
+yPv {
+  0 "$(P)$(R)C7ChanLiveMCA_RBV"
+}
+plotColor {
+  0 index 24
+}
+endObjectProperties
+
+# (X-Y Graph)
+object xyGraphClass
+beginObjectProperties
+major 4
+minor 8
+release 0
+# Geometry
+x 600
+y 520
+w 600
+h 400
+# Appearance
+border
+yLabel "Counts"
+fgColor index 14
+bgColor index 3
+gridColor index 14
+font "arial-bold-r-14.0"
+# Operating Modes
+nPts 1
+# X axis properties
+showXAxis
+xAxisSrc "AutoScale"
+xMax 1
+# Y axis properties
+showYAxis
+yAxisSrc "AutoScale"
+yMax 1
+# Y2 axis properties
+y2AxisSrc "AutoScale"
+y2Max 1
+# Trace Properties
+numTraces 1
+yPv {
+  0 "$(P)$(R)C6ChanLiveMCA_RBV"
+}
+plotColor {
+  0 index 24
+}
+endObjectProperties
+
+# (X-Y Graph)
+object xyGraphClass
+beginObjectProperties
+major 4
+minor 8
+release 0
+# Geometry
+x 0
+y 520
+w 600
+h 400
+# Appearance
+border
+yLabel "Counts"
+fgColor index 14
+bgColor index 3
+gridColor index 14
+font "arial-bold-r-14.0"
+# Operating Modes
+nPts 1
+# X axis properties
+showXAxis
+xAxisSrc "AutoScale"
+xMax 1
+# Y axis properties
+showYAxis
+yAxisSrc "AutoScale"
+yMax 1
+# Y2 axis properties
+y2AxisSrc "AutoScale"
+y2Max 1
+# Trace Properties
+numTraces 1
+yPv {
+  0 "$(P)$(R)C5ChanLiveMCA_RBV"
+}
+plotColor {
+  0 index 24
+}
+endObjectProperties
+
+# (X-Y Graph)
+object xyGraphClass
+beginObjectProperties
+major 4
+minor 8
+release 0
+# Geometry
+x 1800
+y 75
+w 600
+h 400
+# Appearance
+border
+yLabel "Counts"
+fgColor index 14
+bgColor index 3
+gridColor index 14
+font "arial-bold-r-14.0"
+# Operating Modes
+nPts 1
+# X axis properties
+showXAxis
+xAxisSrc "AutoScale"
+xMax 1
+# Y axis properties
+showYAxis
+yAxisSrc "AutoScale"
+yMax 1
+# Y2 axis properties
+y2AxisSrc "AutoScale"
+y2Max 1
+# Trace Properties
+numTraces 1
+yPv {
+  0 "$(P)$(R)C4ChanLiveMCA_RBV"
+}
+plotColor {
+  0 index 24
+}
+endObjectProperties
+
+# (X-Y Graph)
+object xyGraphClass
+beginObjectProperties
+major 4
+minor 8
+release 0
+# Geometry
+x 1200
+y 75
+w 600
+h 400
+# Appearance
+border
+yLabel "Counts"
+fgColor index 14
+bgColor index 3
+gridColor index 14
+font "arial-bold-r-14.0"
+# Operating Modes
+nPts 1
+# X axis properties
+showXAxis
+xAxisSrc "AutoScale"
+xMax 1
+# Y axis properties
+showYAxis
+yAxisSrc "AutoScale"
+yMax 1
+# Y2 axis properties
+y2AxisSrc "AutoScale"
+y2Max 1
+# Trace Properties
+numTraces 1
+yPv {
+  0 "$(P)$(R)C3ChanLiveMCA_RBV"
+}
+plotColor {
+  0 index 24
+}
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 2405
+h 35
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 2405
+h 35
+lineColor index 51
+fill
+fillColor index 51
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1203
+y 10
+w 38
+h 18
+font "arial-bold-r-16.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "MCA"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 2405
+h 35
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 2405
+h 35
+lineColor index 51
+fill
+fillColor index 51
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1203
+y 10
+w 38
+h 18
+font "arial-bold-r-16.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "MCA"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 2405
+h 35
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 2405
+h 35
+lineColor index 51
+fill
+fillColor index 51
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1203
+y 10
+w 38
+h 18
+font "arial-bold-r-16.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "MCA"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 2405
+h 35
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 2405
+h 35
+lineColor index 51
+fill
+fillColor index 51
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1203
+y 10
+w 38
+h 18
+font "arial-bold-r-16.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "MCA"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 2405
+h 35
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 2405
+h 35
+lineColor index 51
+fill
+fillColor index 51
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1203
+y 10
+w 38
+h 18
+font "arial-bold-r-16.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "MCA"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 2405
+h 35
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 2405
+h 35
+lineColor index 51
+fill
+fillColor index 51
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1203
+y 10
+w 38
+h 18
+font "arial-bold-r-16.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "MCA"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 2405
+h 35
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 2405
+h 35
+lineColor index 51
+fill
+fillColor index 51
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1203
+y 10
+w 38
+h 18
+font "arial-bold-r-16.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "MCA"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 2405
+h 35
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 2405
+h 35
+lineColor index 51
+fill
+fillColor index 51
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1203
+y 10
+w 38
+h 18
+font "arial-bold-r-16.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "MCA"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Text w. Reg. Exp.)
+object activeXRegTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 225
+y 45
+w 2
+h 0
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+autoSize
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 190
+y 40
+w 215
+h 35
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 190
+y 40
+w 215
+h 35
+lineColor index 51
+fill
+fillColor index 6
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 250
+y 45
+w 96
+h 23
+font "arial-bold-r-20.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Channel 1"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 785
+y 40
+w 215
+h 35
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 785
+y 40
+w 215
+h 35
+lineColor index 51
+fill
+fillColor index 6
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 845
+y 45
+w 97
+h 23
+font "arial-bold-r-20.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Channel 2"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1375
+y 40
+w 215
+h 35
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1375
+y 40
+w 215
+h 35
+lineColor index 51
+fill
+fillColor index 6
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1435
+y 45
+w 97
+h 23
+font "arial-bold-r-20.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Channel 3"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1975
+y 40
+w 215
+h 35
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1975
+y 40
+w 215
+h 35
+lineColor index 51
+fill
+fillColor index 6
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 2035
+y 45
+w 96
+h 23
+font "arial-bold-r-20.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Channel 4"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 165
+y 485
+w 215
+h 35
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 165
+y 485
+w 215
+h 35
+lineColor index 51
+fill
+fillColor index 6
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 225
+y 490
+w 97
+h 23
+font "arial-bold-r-20.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Channel 5"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 785
+y 485
+w 215
+h 35
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 785
+y 485
+w 215
+h 35
+lineColor index 51
+fill
+fillColor index 6
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 845
+y 490
+w 97
+h 23
+font "arial-bold-r-20.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Channel 6"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1380
+y 485
+w 215
+h 35
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1380
+y 485
+w 215
+h 35
+lineColor index 51
+fill
+fillColor index 6
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1440
+y 490
+w 97
+h 23
+font "arial-bold-r-20.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Channel 7"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1975
+y 485
+w 215
+h 35
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1975
+y 485
+w 215
+h 35
+lineColor index 51
+fill
+fillColor index 6
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 2035
+y 490
+w 97
+h 23
+font "arial-bold-r-20.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Channel 8"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+

@@ -370,7 +370,7 @@ class _TristanOdinData(_OdinData):
         }
     }
 
-    def __init__(self, server, READY, RELEASE, META, SENSOR, BASE_UDP_PORT):
+    def __init__(self, server, READY, RELEASE, META, SHARED_MEM_SIZE, BUFFER_IDX, SENSOR, BASE_UDP_PORT):
         # Create the Tristan plugin chain
         tristan_plugin = _TristanProcessPlugin(SENSOR)
         fw_plugin = _FileWriterPlugin(source=tristan_plugin)
@@ -379,14 +379,12 @@ class _TristanOdinData(_OdinData):
             PLUGIN_2=fw_plugin
         )
 
-        super(_TristanOdinData, self).__init__(server, READY, RELEASE, META, plugins)
+        super(_TristanOdinData, self).__init__(server, READY, RELEASE, META, SHARED_MEM_SIZE, BUFFER_IDX, plugins)
         self.sensor = SENSOR
         self.base_udp_port = BASE_UDP_PORT
 
     def create_config_files(self, index, total):
         macros = dict(DETECTOR_ROOT=OdinPaths.TRISTAN_TOOL,
-                      PROC_NUMBER=total,
-                      PROC_RANK=index-1,
                       RX_PORT_1=self.base_udp_port,
                       RX_PORT_2=self.base_udp_port + 1,
                       RX_PORT_3=self.base_udp_port + 2,
@@ -425,14 +423,14 @@ class TristanOdinDataServer(_OdinDataServer):
         SENSOR=Choice("Sensor type", ["1M", "2M", "10M"]),
         FEM_DEST_MAC=Simple("MAC address of node data link (destination for FEM to send to)", str),
         FEM_DEST_IP=Simple("IP address of node data link (destination for FEM to send to)", str),
-        FEM_DEST_NAME=Simple("Name of the destination netowrk interface", str),
+        FEM_DEST_NAME=Simple("Name of the destination network interface", str),
         FEM_DEST_SUBNET=Simple("Subnet mask node transmits on", int),
         SHARED_MEM_SIZE=Simple("Size of shared memory buffers in bytes", int),
         PLUGIN_CONFIG=Ident("Define a custom set of plugins", _PluginConfig)
     )
 
-    def create_odin_data_process(self, server, ready, release, meta, plugin_config):
-        process = _TristanOdinData(server, ready, release, meta, self.sensor, self.BASE_UDP_PORT)
+    def create_odin_data_process(self, server, ready, release, meta, buffer_size, buffer_idx, plugin_config):
+        process = _TristanOdinData(server, ready, release, meta, buffer_size, buffer_idx, self.sensor, self.BASE_UDP_PORT)
         self.BASE_UDP_PORT += 1
         return process
 
