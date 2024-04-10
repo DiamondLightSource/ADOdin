@@ -1,0 +1,1017 @@
+4 0 1
+beginScreenProperties
+h 1027
+major 4
+minor 0
+release 1
+w 577
+x 0
+y 0
+bgColor index 3
+botShadowColor index 11
+btnFont "arial-bold-r-14.0"
+ctlBgColor1 index 3
+ctlBgColor2 index 14
+ctlFgColor1 index 25
+ctlFgColor2 index 0
+ctlFont "arial-bold-r-14.0"
+fgColor index 14
+font "arial-medium-r-14.0"
+showGrid
+snapToGrid
+textColor index 14
+title "Device - ODN"
+topShadowColor index 1
+endScreenProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+h 30
+major 4
+minor 0
+release 0
+w 577
+x 0
+y 0
+
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+h 25
+major 4
+minor 0
+release 0
+w 575
+x 0
+y 2
+fillColor index 0
+lineColor index 1
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+h 25
+major 4
+minor 0
+release 0
+w 575
+x 1
+y 3
+fillColor index 0
+lineColor index 11
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+h 24
+major 4
+minor 2
+release 0
+w 575
+x 1
+y 3
+bgColor index 3
+botShadowColor index 0
+button3Popup
+buttonLabel "tooltip"
+displayFileName {
+  0 "generic-tooltip"
+}
+fgColor index 14
+font "arial-bold-r-14.0"
+invisible
+numDsps 1
+numPvs 4
+setPosition {
+  0 "button"
+}
+topShadowColor index 0
+xPosOffset 5
+yPosOffset 5
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 25
+major 4
+minor 1
+release 0
+w 617
+x 1
+y 3
+bgColor index 48
+fgColor index 14
+font "arial-bold-r-16.0"
+fontAlign "center"
+value {
+  "ODN Top"
+}
+endObjectProperties
+
+endGroup
+
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+h 977
+major 4
+minor 0
+release 0
+w 452
+x 10
+y 40
+
+
+beginGroup
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+h 25
+major 4
+minor 0
+release 0
+w 451
+x 10
+y 40
+bgColor index 3
+botShadowColor index 11
+controlPv "LOC\\$(!W)tab=e:0,CAM,CAM_OD,ARR"
+fgColor index 14
+font "arial-bold-r-12.0"
+inconsistentColor index 0
+orientation "horizontal"
+selectColor index 4
+topShadowColor index 1
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+h 951
+major 4
+minor 0
+release 1
+w 452
+x 10
+y 66
+fillColor index 0
+lineColor index 1
+numPoints 3
+xPoints {
+  0 10
+  1 462
+  2 462
+}
+yPoints {
+  0 1017
+  1 1017
+  2 66
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+h 951
+major 4
+minor 0
+release 1
+w 452
+x 10
+y 66
+fillColor index 0
+lineColor index 11
+numPoints 3
+xPoints {
+  0 10
+  1 10
+  2 462
+}
+yPoints {
+  0 1017
+  1 66
+  2 66
+}
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+h 950
+major 4
+minor 1
+release 0
+w 450
+x 11
+y 66
+bgColor index 3
+botShadowColor index 0
+displayFileName {
+  0 "XspressMain.edl"
+  1 "XspressDAQMain.edl"
+  2 "NDStdArrays.edl"
+}
+displaySource "menu"
+fgColor index 14
+filePv "LOC\\$(!W)tab"
+noScroll
+numDsps 3
+sizeOfs 5
+symbols {
+  0 "P=XSPRESS,R=:CAM:,label=CAM"
+  1 "P=XSPRESS,R=:OD:,label=CAM_OD"
+  2 "P=XSPRESS,R=:ARR:,label=ARR"
+}
+topShadowColor index 0
+endObjectProperties
+
+endGroup
+
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+h 20
+major 4
+minor 0
+release 0
+w 90
+x 477
+y 40
+
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+h 20
+major 4
+minor 2
+release 0
+w 90
+x 477
+y 40
+bgColor index 3
+botShadowColor index 11
+buttonLabel ""
+displayFileName {
+  0 "OdinDataStatus2.edl"
+}
+fgColor index 43
+font "arial-bold-r-14.0"
+numDsps 1
+numPvs 4
+symbols {
+  0 "P=XSPRESS,R=:OD:"
+}
+topShadowColor index 1
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 16
+major 4
+minor 1
+release 0
+w 86
+x 479
+y 42
+alarmPv "LOC\\dummy0=i:0"
+bgAlarm
+bgColor index 3
+fgColor index 43
+font "arial-bold-r-14.0"
+fontAlign "center"
+value {
+  "CAM_DATA"
+}
+visInvert
+visMax "2"
+visMin "1"
+visPv "LOC\\dummy0=i:0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 16
+major 4
+minor 1
+release 0
+w 86
+x 479
+y 42
+alarmPv "LOC\\dummy0=i:0"
+bgAlarm
+bgColor index 16
+fgColor index 43
+font "arial-bold-r-14.0"
+fontAlign "center"
+value {
+  "CAM_DATA"
+}
+visMax "2"
+visMin "1"
+visPv "LOC\\dummy0=i:0"
+endObjectProperties
+
+endGroup
+
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+h 20
+major 4
+minor 0
+release 0
+w 90
+x 477
+y 70
+
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+h 20
+major 4
+minor 2
+release 0
+w 90
+x 477
+y 70
+bgColor index 3
+botShadowColor index 11
+buttonLabel ""
+displayFileName {
+  0 "XspressAll.edl"
+}
+fgColor index 43
+font "arial-bold-r-14.0"
+numDsps 1
+numPvs 4
+symbols {
+  0 "P=XSPRESS,R=:CAM:"
+}
+topShadowColor index 1
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 16
+major 4
+minor 1
+release 0
+w 86
+x 479
+y 72
+alarmPv "LOC\\dummy0=i:0"
+bgAlarm
+bgColor index 3
+fgColor index 43
+font "arial-bold-r-14.0"
+fontAlign "center"
+value {
+  "CAM_debug"
+}
+visInvert
+visMax "2"
+visMin "1"
+visPv "LOC\\dummy0=i:0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 16
+major 4
+minor 1
+release 0
+w 86
+x 479
+y 72
+alarmPv "LOC\\dummy0=i:0"
+bgAlarm
+bgColor index 16
+fgColor index 43
+font "arial-bold-r-14.0"
+fontAlign "center"
+value {
+  "CAM_debug"
+}
+visMax "2"
+visMin "1"
+visPv "LOC\\dummy0=i:0"
+endObjectProperties
+
+endGroup
+
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+h 20
+major 4
+minor 0
+release 0
+w 90
+x 477
+y 100
+
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+h 20
+major 4
+minor 2
+release 0
+w 90
+x 477
+y 100
+bgColor index 3
+botShadowColor index 11
+buttonLabel ""
+displayFileName {
+  0 "Xspress8Channels.edl"
+}
+fgColor index 43
+font "arial-bold-r-14.0"
+numDsps 1
+numPvs 4
+symbols {
+  0 "P=XSPRESS,R=:CAM:"
+}
+topShadowColor index 1
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 16
+major 4
+minor 1
+release 0
+w 86
+x 479
+y 102
+alarmPv "LOC\\dummy0=i:0"
+bgAlarm
+bgColor index 3
+fgColor index 43
+font "arial-bold-r-14.0"
+fontAlign "center"
+value {
+  "CAM_SCA"
+}
+visInvert
+visMax "2"
+visMin "1"
+visPv "LOC\\dummy0=i:0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 16
+major 4
+minor 1
+release 0
+w 86
+x 479
+y 102
+alarmPv "LOC\\dummy0=i:0"
+bgAlarm
+bgColor index 16
+fgColor index 43
+font "arial-bold-r-14.0"
+fontAlign "center"
+value {
+  "CAM_SCA"
+}
+visMax "2"
+visMin "1"
+visPv "LOC\\dummy0=i:0"
+endObjectProperties
+
+endGroup
+
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+h 20
+major 4
+minor 0
+release 0
+w 90
+x 477
+y 130
+
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+h 20
+major 4
+minor 2
+release 0
+w 90
+x 477
+y 130
+bgColor index 3
+botShadowColor index 11
+buttonLabel ""
+displayFileName {
+  0 "Xspress8ChannelsDTC.edl"
+}
+fgColor index 43
+font "arial-bold-r-14.0"
+numDsps 1
+numPvs 4
+symbols {
+  0 "P=XSPRESS,R=:CAM:"
+}
+topShadowColor index 1
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 16
+major 4
+minor 1
+release 0
+w 86
+x 479
+y 132
+alarmPv "LOC\\dummy0=i:0"
+bgAlarm
+bgColor index 3
+fgColor index 43
+font "arial-bold-r-14.0"
+fontAlign "center"
+value {
+  "CAM_DTC"
+}
+visInvert
+visMax "2"
+visMin "1"
+visPv "LOC\\dummy0=i:0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 16
+major 4
+minor 1
+release 0
+w 86
+x 479
+y 132
+alarmPv "LOC\\dummy0=i:0"
+bgAlarm
+bgColor index 16
+fgColor index 43
+font "arial-bold-r-14.0"
+fontAlign "center"
+value {
+  "CAM_DTC"
+}
+visMax "2"
+visMin "1"
+visPv "LOC\\dummy0=i:0"
+endObjectProperties
+
+endGroup
+
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+h 20
+major 4
+minor 0
+release 0
+w 90
+x 477
+y 160
+
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+h 20
+major 4
+minor 2
+release 0
+w 90
+x 477
+y 160
+bgColor index 3
+botShadowColor index 11
+buttonLabel ""
+displayFileName {
+  0 "XspressStatus8Chan2Fem.edl"
+}
+fgColor index 43
+font "arial-bold-r-14.0"
+numDsps 1
+numPvs 4
+symbols {
+  0 "P=XSPRESS,R=:CAM:"
+}
+topShadowColor index 1
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 16
+major 4
+minor 1
+release 0
+w 86
+x 479
+y 162
+alarmPv "LOC\\dummy0=i:0"
+bgAlarm
+bgColor index 3
+fgColor index 43
+font "arial-bold-r-14.0"
+fontAlign "center"
+value {
+  "CAM_Status"
+}
+visInvert
+visMax "2"
+visMin "1"
+visPv "LOC\\dummy0=i:0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 16
+major 4
+minor 1
+release 0
+w 86
+x 479
+y 162
+alarmPv "LOC\\dummy0=i:0"
+bgAlarm
+bgColor index 16
+fgColor index 43
+font "arial-bold-r-14.0"
+fontAlign "center"
+value {
+  "CAM_Status"
+}
+visMax "2"
+visMin "1"
+visPv "LOC\\dummy0=i:0"
+endObjectProperties
+
+endGroup
+
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+h 20
+major 4
+minor 0
+release 0
+w 90
+x 477
+y 190
+
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+h 20
+major 4
+minor 2
+release 0
+w 90
+x 477
+y 190
+bgColor index 3
+botShadowColor index 11
+buttonLabel ""
+displayFileName {
+  0 "Xspress8ChanMCA.edl"
+}
+fgColor index 43
+font "arial-bold-r-14.0"
+numDsps 1
+numPvs 4
+symbols {
+  0 "P=XSPRESS,R=:CAM:,CHAN=8"
+}
+topShadowColor index 1
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 16
+major 4
+minor 1
+release 0
+w 86
+x 479
+y 192
+alarmPv "LOC\\dummy0=i:0"
+bgAlarm
+bgColor index 3
+fgColor index 43
+font "arial-bold-r-14.0"
+fontAlign "center"
+value {
+  "CAM_MCA"
+}
+visInvert
+visMax "2"
+visMin "1"
+visPv "LOC\\dummy0=i:0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 16
+major 4
+minor 1
+release 0
+w 86
+x 479
+y 192
+alarmPv "LOC\\dummy0=i:0"
+bgAlarm
+bgColor index 16
+fgColor index 43
+font "arial-bold-r-14.0"
+fontAlign "center"
+value {
+  "CAM_MCA"
+}
+visMax "2"
+visMin "1"
+visPv "LOC\\dummy0=i:0"
+endObjectProperties
+
+endGroup
+
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+h 20
+major 4
+minor 0
+release 0
+w 90
+x 477
+y 220
+
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+h 20
+major 4
+minor 2
+release 0
+w 90
+x 477
+y 220
+bgColor index 3
+botShadowColor index 11
+buttonLabel ""
+displayFileName {
+  0 "ODN.OdinData.edl"
+}
+fgColor index 43
+font "arial-bold-r-14.0"
+numDsps 1
+numPvs 4
+topShadowColor index 1
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 16
+major 4
+minor 1
+release 0
+w 86
+x 479
+y 222
+alarmPv "LOC\\dummy0=i:0"
+bgAlarm
+bgColor index 3
+fgColor index 43
+font "arial-bold-r-14.0"
+fontAlign "center"
+value {
+  "OdinData"
+}
+visInvert
+visMax "2"
+visMin "1"
+visPv "LOC\\dummy0=i:0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 16
+major 4
+minor 1
+release 0
+w 86
+x 479
+y 222
+alarmPv "LOC\\dummy0=i:0"
+bgAlarm
+bgColor index 16
+fgColor index 43
+font "arial-bold-r-14.0"
+fontAlign "center"
+value {
+  "OdinData"
+}
+visMax "2"
+visMin "1"
+visPv "LOC\\dummy0=i:0"
+endObjectProperties
+
+endGroup
+
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+h 30
+major 4
+minor 0
+release 0
+w 50
+x 0
+y 0
+
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+h 29
+major 4
+minor 0
+release 0
+w 48
+x 0
+y 0
+fillColor index 0
+lineColor index 1
+lineWidth 2
+endObjectProperties
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+h 29
+major 4
+minor 0
+release 0
+w 48
+x 2
+y 2
+fillColor index 0
+lineColor index 11
+lineWidth 2
+endObjectProperties
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+h 27
+major 4
+minor 0
+release 0
+w 47
+x 2
+y 2
+fill
+fillColor index 48
+lineColor index 49
+lineWidth 3
+endObjectProperties
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+h 3
+major 4
+minor 0
+release 0
+w 4
+x 12
+y 6
+fill
+fillColor index 0
+lineColor index 1
+lineWidth 2
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 30
+major 4
+minor 1
+release 0
+w 50
+x 0
+y 0
+bgColor index 3
+fgColor index 14
+font "arial-bold-r-14.0"
+fontAlign "center"
+useDisplayBg
+value {
+  "ODN"
+}
+endObjectProperties
+
+endGroup
+
+
+endObjectProperties
+
+# (Exit Button)
+object activeExitButtonClass
+beginObjectProperties
+h 20
+major 4
+minor 1
+release 0
+w 90
+x 477
+y 997
+3d
+bgColor index 3
+botShadowColor index 11
+fgColor index 46
+font "arial-medium-r-16.0"
+label "EXIT"
+topShadowColor index 1
+endObjectProperties
