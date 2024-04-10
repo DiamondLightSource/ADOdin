@@ -3,9 +3,9 @@ TOP = .
 
 include $(TOP)/configure/CONFIG
 
-DIRS := $(DIRS) configure
+# DIRS := $(DIRS) configure
 DIRS := $(DIRS) odinApp
-DIRS := $(DIRS) $(filter-out $(DIRS), etc)
+# DIRS := $(DIRS) $(filter-out $(DIRS), etc)
 DIRS := $(DIRS) $(filter-out $(DIRS), iocs)
 
 ifeq ($(BUILD_IOCS), YES)
@@ -24,3 +24,5 @@ realuninstall: realuninstall_iocs
 realuninstall_iocs:
 	$(MAKE) -C iocs realuninstall
 .PHONY: realuninstall realuninstall_iocs
+
+UNINSTALL_DIRS += ./data
