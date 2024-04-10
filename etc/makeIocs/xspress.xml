@@ -1,27 +1,24 @@
 <?xml version="1.0" ?>
 <components arch="linux-x86_64">
-	<EPICS_BASE.EpicsEnvSet key="EPICS_CA_MAX_ARRAY_BYTES" value="10000000"/>
-	<ADOdin.XspressOdinDataServer IP="127.0.0.1" PROCESSES="9" SENSOR="36CHAN" SHARED_MEM_SIZE="2147483648" name="XSP.DATA1"/>
-	<ADOdin.XspressOdinControlServer DETECTOR="Xspress4" IP="127.0.0.1" ODIN_DATA_SERVER_1="XSP.DATA1" PORT="8888" SETTINGS_PATH="/dls_sw/b18/epics/xspress4/xspress4.list_mode37_pb/settings" name="ControlServer"/>
-	<ADOdin.XspressOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="ControlServer" P="XSPRESS" PORT="ODN.OD" TIMEOUT="1"/>
-	<ADOdin.XspressDetector ADDR="0" ODIN_CONTROL_SERVER="ControlServer" ODIN_DATA_DRIVER="ODN.OD" P="XSPRESS" PORT="ODN.CAM" TIMEOUT="1"/>
-	<ADCore.NDROI ENABLED="1" NDARRAY_PORT="ODN.CAM" P="XSPRESS" PORT="ODN.ROI" R=":ROI:"/>
-	<ADCore.NDStdArrays ENABLED="1" FTVL="ULONG" NDARRAY_PORT="ODN.ROI" NELEMENTS="4096" P="XSPRESS" PORT="ODN.LIVE" R=":LIVE:" TYPE="Int32"/>
-	<ADCore.NDStdArrays ENABLED="1" FTVL="ULONG" NDARRAY_PORT="ODN.CAM" NELEMENTS="2359296" P="XSPRESS" PORT="ODN.ARR" R=":ARR:" TYPE="Int32"/>
-	<EPICS_BASE.dbpf name="DBPF.1" pv="XSPRESS:OD:ReadStatus.SCAN" value="7"/>
-	<EPICS_BASE.dbpf name="DBPF.2" pv="XSPRESS:CAM:ReadStatus.SCAN" value="7"/>
-	<EPICS_BASE.dbpf name="DBPF.3" pv="XSPRESS:OD:ImageHeight" value="1"/>
-	<EPICS_BASE.dbpf name="DBPF.4" pv="XSPRESS:OD:ImageWidth" value="1"/>
-	<EPICS_BASE.dbpf name="DBPF.5" pv="XSPRESS:OD:NumFramesChunks" value="1"/>
-	<EPICS_BASE.dbpf name="DBPF.6" pv="XSPRESS:OD:NumRowChunks" value="1"/>
-	<EPICS_BASE.dbpf name="DBPF.7" pv="XSPRESS:OD:NumColChunks" value="1"/>
-	<EPICS_BASE.dbpf name="DBPF.8" pv="XSPRESS:CAM:CONFIG_PATH" value="/dls_sw/b18/epics/xspress4/xspress4.list_mode37_pb/settings"/>
-	<EPICS_BASE.dbpf name="DBPF.9" pv="XSPRESS:CAM:LiveViewEndpoint" value="tcp://127.0.0.1:15510"/>
-	<EPICS_BASE.dbpf name="DBPF.10" pv="XSPRESS:ROI:EnableCallbacks" value="Enable"/>
-	<EPICS_BASE.dbpf name="DBPF.11" pv="XSPRESS:ROI:SizeY" value="1"/>
-	<EPICS_BASE.dbpf name="DBPF.12" pv="XSPRESS:LIVE:EnableCallbacks" value="Enable"/>
-	<EPICS_BASE.dbpf name="DBPF.13" pv="XSPRESS:ARR:EnableCallbacks" value="Enable"/>
-	<EPICS_BASE.dbpf name="DBPF.14" pv="XSPRESS:CAM:APP_DEBUG" value="0"/>
-	<ADOdin.OdinStartAllScript driver="ODN.OD" name="StartAllScript"/>
-	<ADOdin.XspressOdinProcServ ADODIN_IOC_NAME="BL29P-EA-IOC-80" IOC_NAME="BL29P-CS-IOC-80" ODIN_DATA_DRIVER="ODN.OD" PREFIX="BL29P-CS-XSP1" PROCESS_PREFIX="BL29P-EA-XSP1"/>
+        <EPICS_BASE.StartupCommand at_end="False" command="callbackSetQueueSize(400000)" name="CallbackQueue" post_init="False"/>
+        <EPICS_BASE.EpicsEnvSet key="EPICS_CA_MAX_ARRAY_BYTES" value="7000000"/>
+        <ADOdin.XspressOdinDataServer IP="127.0.0.1" PROCESSES="2" SENSOR="8CHAN" name="XSP.DATASERVER"/>
+        <ADOdin.XspressOdinControlServer DETECTOR="Xspress3" MAX_CHANNELS="8" NUM_CARDS="2" ODIN_DATA_SERVER_1="XSP.DATASERVER" SETTINGS_PATH="/dls_sw/i18/epics/xspress3/xspress3.cube+cube/settings" name="XSP.CONTROLSERVER"/>
+        <ADOdin.XspressOdinDataDriver ADDR="0" ODIN_CONTROL_SERVER="XSP.CONTROLSERVER" P="XSPRESS" PORT="ODN.OD" TIMEOUT="1"/>
+        <ADOdin.XspressDetector ADDR="0" MAX_CHANNELS="8" NUM_CARDS="2" NUM_PROCESSES="2" ODIN_CONTROL_SERVER="XSP.CONTROLSERVER" ODIN_DATA_DRIVER="ODN.OD" P="XSPRESS" PORT="ODN.CAM" TIMEOUT="1"/>
+        <!--<ADCore.NDROI ENABLED="1" NDARRAY_PORT="ODN.CAM" P="XSPRESS" PORT="ODN.ROI" R=":ROI:"/>-->
+        <!--<ADCore.NDStdArrays ENABLED="1" FTVL="ULONG" NDARRAY_PORT="ODN.ROI" NELEMENTS="4096" P="XSPRESS" PORT="ODN.LIVE" R=":LIVE:" TYPE="Int32"/>-->
+        <ADCore.NDStdArrays ENABLED="0" FTVL="ULONG" NDARRAY_PORT="ODN.CAM" NELEMENTS="2359296" P="XSPRESS" PORT="ODN.ARR" QUEUE="100" R=":ARR:" TYPE="Int32"/>
+        <ADOdin.XspressOdinProcServ ADODIN_IOC_NAME="XSPRESS" IOC_NAME="XSPRESS-PROC-SERV" ODIN_DATA_DRIVER="ODN.OD" PREFIX="XSP-PROC-SERV" PROCESS_PREFIX="XSP-ODN" name="ODN.ProcServ"/>
+        <EPICS_BASE.dbpf name="DBPF.1" pv="XSPRESS:OD:ReadStatus.SCAN" value="7"/>
+        <EPICS_BASE.dbpf name="DBPF.2" pv="XSPRESS:CAM:ReadStatus.SCAN" value="7"/>
+        <EPICS_BASE.dbpf name="DBPF.3" pv="XSPRESS:CAM:CONFIG_PATH" value="/dls_sw/i18/epics/xspress3/xspress3.cube+cube/settings"/>
+        <EPICS_BASE.dbpf name="DBPF.4" pv="XSPRESS:CAM:LiveViewEndpoint" value="tcp://127.0.0.1:15510"/>
+        <!--<EPICS_BASE.dbpf name="DBPF.5" pv="XSPRESS:ARR:EnableCallbacks" value="Enable"/>-->
+        <EPICS_BASE.dbpf name="DBPF.6" pv="XSPRESS:CAM:RECONFIGURE" value="1"/>
+        <EPICS_BASE.dbpf name="DBPF.7" pv="XSPRESS:OD:ImageHeight" value="1"/>
+        <EPICS_BASE.dbpf name="DBPF.8" pv="XSPRESS:OD:ImageWidth" value="4096"/>
+        <EPICS_BASE.dbpf name="DBPF.9" pv="XSPRESS:OD:NumFramesChunks" value="1"/>
+        <EPICS_BASE.dbpf name="DBPF.10" pv="XSPRESS:OD:NumRowChunks" value="1"/>
+        <EPICS_BASE.dbpf name="DBPF.11" pv="XSPRESS:OD:NumColChunks" value="4096"/>
 </components>
