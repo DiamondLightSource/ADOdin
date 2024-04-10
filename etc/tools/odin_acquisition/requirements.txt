@@ -1,3 +1,0 @@
-cothread==2.17
-numpy==1.20.1
-timeout-decorator==0.5.0

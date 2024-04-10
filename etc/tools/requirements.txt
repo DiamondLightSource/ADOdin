@@ -1,4 +1,0 @@
-numpy
-matplotlib
-h5py
-progress
