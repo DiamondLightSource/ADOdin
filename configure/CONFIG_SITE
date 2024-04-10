@@ -44,6 +44,6 @@ endif
 ZMQ_LIB = /usr/lib64
 ZMQ_INCLUDE = -I/usr/include
 
-HDF5          = /dls_sw/prod/tools/RHEL6-x86_64/hdf5/1-10-1/prefix
-HDF5_LIB      = $(HDF5)/lib
-HDF5_INCLUDE  = -I$(HDF5)/include
+# HDF5          = /dls_sw/prod/tools/RHEL6-x86_64/hdf5/1-10-1/prefix
+# HDF5_LIB      = $(HDF5)/lib
+# HDF5_INCLUDE  = -I$(HDF5)/include
