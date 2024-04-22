@@ -1,0 +1,9 @@
+[
+  { 
+    "app":
+    {
+      "debug_level": 2,
+      "ctrl_endpoint": "tcp://127.0.0.1:12000"
+    }
+  }
+]

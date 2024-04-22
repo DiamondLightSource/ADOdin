@@ -1,0 +1,15 @@
+[
+    {
+        "decoder_type": "Xspress",
+        "decoder_path": "/dls_sw/work/odin/xspress3odin/xspress-detector/vscode_prefix/lib",
+        "rx_type": "zmq",
+        "rx_address": "127.0.0.1",
+        "rx_ports": "15151,"
+    },
+    {
+        "decoder_config": {
+            "enable_packet_logging": false,
+            "frame_timeout_ms": 1000
+        }
+    }
+]

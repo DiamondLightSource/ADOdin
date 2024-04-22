@@ -1,0 +1,485 @@
+[
+    {
+        "fr_setup": {
+            "fr_ready_cnxn": "tcp://127.0.0.1:10001",
+            "fr_release_cnxn": "tcp://127.0.0.1:10002"
+        },
+        "meta_endpoint": "tcp://*:10008"
+    },
+    {
+        "plugin": {
+            "load": {
+                "index": "xspress",
+                "name": "XspressProcessPlugin",
+                "library": "/dls_sw/work/odin/xspress3odin/xspress-detector/vscode_prefix/lib/libXspressProcessPlugin.so"
+            }
+        }
+    },
+    {
+        "plugin": {
+            "load": {
+                "index": "xspress-list",
+                "name": "XspressListModeProcessPlugin",
+                "library": "/dls_sw/work/odin/xspress3odin/xspress-detector/vscode_prefix/lib/libXspressListModeProcessPlugin.so"
+            }
+        }
+    },
+    {
+        "plugin": {
+            "load": {
+                "index": "view",
+                "name": "LiveViewPlugin",
+                "library": "/dls_sw/prod/tools/RHEL7-x86_64/odin-data/1.9.0+dls2/prefix/lib/libLiveViewPlugin.so"
+            }
+        }
+    },
+    {
+        "plugin": {
+            "load": {
+                "index": "offset",
+                "name": "OffsetAdjustmentPlugin",
+                "library":  "/dls_sw/prod/tools/RHEL7-x86_64/odin-data/1.9.0+dls2/prefix/lib/libOffsetAdjustmentPlugin.so"
+            }
+        }
+    },
+    {
+        "plugin": {
+            "load": {
+                "index": "param",
+                "name": "ParameterAdjustmentPlugin",
+                "library":  "/dls_sw/prod/tools/RHEL7-x86_64/odin-data/1.9.0+dls2/prefix/lib/libParameterAdjustmentPlugin.so"
+            }
+        }
+    },
+    {
+        "plugin": {
+            "load": {
+                "index": "blosc",
+                "name": "BloscPlugin",
+                "library": "/dls_sw/prod/tools/RHEL7-x86_64/odin-data/1.9.0+dls2/prefix/lib/libBloscPlugin.so"
+            }
+        }
+    },
+    {
+        "plugin": {
+            "load": {
+                "index": "hdf",
+                "name": "FileWriterPlugin",
+                "library": "/dls_sw/prod/tools/RHEL7-x86_64/odin-data/1.9.0+dls2/prefix/lib/libHdf5Plugin.so"
+            }
+        }
+    },
+    {
+        "plugin": {
+            "connect": {
+                "index": "xspress",
+                "connection": "frame_receiver"
+            }
+        }
+    },
+    {
+        "plugin": {
+            "connect": {
+                "index": "view",
+                "connection": "xspress"
+            }
+        }
+    },
+    {
+        "plugin": {
+            "connect": {
+                "index": "offset",
+                "connection": "xspress"
+            }
+        }
+    },
+    {
+        "plugin": {
+            "connect": {
+                "index": "param",
+                "connection": "offset"
+            }
+        }
+    },
+    {
+        "plugin": {
+            "connect": {
+                "index": "blosc",
+                "connection": "param"
+            }
+        }
+    },
+    {
+        "plugin": {
+            "connect": {
+                "index": "hdf",
+                "connection": "blosc"
+            }
+        }
+    },
+    {
+        "hdf": {
+            "process": {
+                "number": 1,
+                "rank": 0
+            },
+            "file": {
+                "postfix": "_A"
+            }
+        }
+    },
+    {
+        "hdf": {
+            "dataset": {
+                "mca_0": {
+                    "datatype": "uint32",
+                    "chunks": [
+                        256,
+                        1,
+                        4096
+                    ],
+                    "dims": [
+                        1,
+                        4096
+                    ],
+                    "compression": "blosc",
+                    "indexes": true
+                }
+            }
+        }
+    },
+    {
+        "hdf": {
+            "dataset": {
+                "mca_1": {
+                    "datatype": "uint32",
+                    "chunks": [
+                        256,
+                        1,
+                        4096
+                    ],
+                    "dims": [
+                        1,
+                        4096
+                    ],
+                    "compression": "blosc",
+                    "indexes": true
+                }
+            }
+        }
+    },
+    {
+        "hdf": {
+            "dataset": {
+                "mca_2": {
+                    "datatype": "uint32",
+                    "chunks": [
+                        256,
+                        1,
+                        4096
+                    ],
+                    "dims": [
+                        1,
+                        4096
+                    ],
+                    "compression": "blosc",
+                    "indexes": true
+                }
+            }
+        }
+    },
+    {
+        "hdf": {
+            "dataset": {
+                "mca_3": {
+                    "datatype": "uint32",
+                    "chunks": [
+                        256,
+                        1,
+                        4096
+                    ],
+                    "dims": [
+                        1,
+                        4096
+                    ],
+                    "compression": "blosc",
+                    "indexes": true
+                }
+            }
+        }
+    },
+    {
+        "hdf": {
+            "master": "mca_3"
+        }
+    },
+    {
+        "xspress": {
+            "live_view": "view"
+        }
+    },
+    {
+        "view": {
+            "live_view_socket_addr": "tcp://0.0.0.0:15500",
+            "dataset_name": "live",
+            "frame_frequency": 0,
+            "per_second": 20
+        }
+    },
+    {
+        "store": {
+            "index": "mca",
+            "value": [
+                {
+                    "plugin": {
+                        "disconnect": "all"
+                    }
+                },
+                {
+                    "plugin": {
+                        "disconnect": {
+                            "index": "xspress-list",
+                            "connection": "frame_receiver"
+                        }
+                    }
+                },
+                {
+                    "plugin": {
+                        "connect": {
+                            "index": "xspress",
+                            "connection": "frame_receiver"
+                        }
+                    }
+                },
+                {
+                    "plugin": {
+                        "connect": {
+                            "index": "view",
+                            "connection": "xspress"
+                        }
+                    }
+                },
+                {
+                    "plugin": {
+                        "connect": {
+                            "index": "offset",
+                            "connection": "xspress"
+                        }
+                    }
+                },
+                {
+                    "plugin": {
+                        "connect": {
+                            "index": "param",
+                            "connection": "offset"
+                        }
+                    }
+                },
+                {
+                    "plugin": {
+                        "connect": {
+                            "index": "blosc",
+                            "connection": "param"
+                        }
+                    }
+                },
+                {
+                    "plugin": {
+                        "connect": {
+                            "index": "hdf",
+                            "connection": "blosc"
+                        }
+                    }
+                },
+                {
+                    "hdf": {
+                        "delete_datasets": true
+                    }
+                },
+                {
+                    "hdf": {
+                        "dataset": {
+                            "uid": {
+                                "datatype": "uint64",
+                                "chunks": [1000]
+                            }
+                        }
+                    }
+                },
+                {
+                    "param": {
+                        "parameter": {
+                            "uid": {
+                                "adjustment": 1
+                            }
+                        }
+                    }
+                },
+                {
+                    "hdf": {
+                        "dataset": {
+                            "mca_0": {
+                                "datatype": "uint32",
+                                "chunks": [
+                                    256,
+                                    1,
+                                    4096
+                                ],
+                                "dims": [
+                                    1,
+                                    4096
+                                ],
+                                "compression": "blosc",
+                                "indexes": true
+                            }
+                        }
+                    }
+                },
+                {
+                    "hdf": {
+                        "dataset": {
+                            "mca_1": {
+                                "datatype": "uint32",
+                                "chunks": [
+                                    256,
+                                    1,
+                                    4096
+                                ],
+                                "dims": [
+                                    1,
+                                    4096
+                                ],
+                                "compression": "blosc",
+                                "indexes": true
+                            }
+                        }
+                    }
+                },
+                {
+                    "hdf": {
+                        "dataset": {
+                            "mca_2": {
+                                "datatype": "uint32",
+                                "chunks": [
+                                    256,
+                                    1,
+                                    4096
+                                ],
+                                "dims": [
+                                    1,
+                                    4096
+                                ],
+                                "compression": "blosc",
+                                "indexes": true
+                            }
+                        }
+                    }
+                },
+                {
+                    "hdf": {
+                        "dataset": {
+                            "mca_3": {
+                                "datatype": "uint32",
+                                "chunks": [
+                                    256,
+                                    1,
+                                    4096
+                                ],
+                                "dims": [
+                                    1,
+                                    4096
+                                ],
+                                "compression": "blosc",
+                                "indexes": true
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "store": {
+            "index": "list",
+            "value": [
+                {
+                    "plugin": {
+                        "disconnect": "all"
+                    }
+                },
+                {
+                    "plugin": {
+                        "disconnect": {
+                            "index": "xspress",
+                            "connection": "frame_receiver"
+                        }
+                    }
+                },
+                {
+                    "plugin": {
+                        "connect": {
+                            "index": "xspress-list",
+                            "connection": "frame_receiver"
+                        }
+                    }
+                },
+                {
+                    "plugin": {
+                        "connect": {
+                            "index": "hdf",
+                            "connection": "xspress-list"
+                        }
+                    }
+                },
+                {
+                    "xspress-list": {
+                        "channels": [0, 1, 2, 3, 4
+                        ],
+                        "frame_size": 4194304
+                    }
+                },
+                {
+                    "hdf": {
+                        "delete_datasets": true
+                    }
+                },
+                {
+                    "hdf": {
+                        "dataset": {
+                            "raw_0": {
+                                "datatype": "uint64",
+                                "chunks": [
+                                    524288
+                                ]
+                            },
+                            "raw_1": {
+                                "datatype": "uint64",
+                                "chunks": [
+                                    524288
+                                ]
+                            },
+                            "raw_2": {
+                                "datatype": "uint64",
+                                "chunks": [
+                                    524288
+                                ]
+                            },
+                            "raw_3": {
+                                "datatype": "uint64",
+                                "chunks": [
+                                    524288
+                                ]
+                            },
+                            "raw_4": {
+                                "datatype": "uint64",
+                                "chunks": [
+                                    524288
+                                ]
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+]
