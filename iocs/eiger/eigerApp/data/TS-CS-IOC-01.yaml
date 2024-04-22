@@ -1,0 +1,10 @@
+#!/dls_sw/prod/python3/RHEL7-x86_64/odinprocservcontrol/0.2/prefix/bin/odinprocservcontrol
+
+ioc_name: TS-CS-IOC-01
+prefix: TS-CS-EIG1
+process_prefix: TS-EA-EIG1
+process_count: 11
+server_process_name: TS-EA-EIG1-01
+server_delay: 2
+adodin_ioc_name: TS-EA-IOC-01
+ioc_delay: 5
