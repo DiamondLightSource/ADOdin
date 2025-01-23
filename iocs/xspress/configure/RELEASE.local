@@ -1,0 +1,18 @@
+# QD-specific RELEASE file
+
+# Base paths
+EPICS_BASE=/odin/epics/epics-base
+SUPPORT=/odin/epics/support
+
+AREADETECTOR=$(SUPPORT)/areaDetector-R3-12-1
+
+# Support module dependencies
+ADCORE=$(AREADETECTOR)/ADCore
+ADSUPPORT=$(AREADETECTOR)/ADSupport
+ASYN=$(SUPPORT)/asyn-R4-44-2
+BUSY=$(SUPPORT)/busy-R1-7-4
+CALC=$(SUPPORT)/calc-R3-7-5
+RESTCLIENT=$(SUPPORT)/restClient
+
+# ADOdin
+ADODIN=$(SUPPORT)/ADOdin

@@ -1,7 +1,14 @@
 #!/bin/sh
-export EPICS_CA_SERVER_PORT=6064
-export EPICS_CA_REPEATER_PORT=6065
 TOP="$(cd $(dirname "$0")/../..; pwd)"
+
+# Support module paths for base screens
+SUPPORT=/odin/epics/support
+AREADETECTOR=${SUPPORT}/areaDetector-R3-12-1
+
+ASYN=${SUPPORT}/asyn-R4-44-2
+ADCORE=${AREADETECTOR}/ADCore
+ADODIN=${SUPPORT}/ADOdin
+PROCSERV=${SUPPORT}/procServControl
 
 # first load the paths. These have been generated from the configure/RELEASE
 # tree. If we have a -d arg then load the opi/edl paths first
@@ -17,10 +24,15 @@ if [ "$1" = "-d" ]; then
 else
     OPTS="-x -eolc -noedit"
 fi
-EDMDATAFILES="${EDMDATAFILES}${TOP}/data"
-EDMDATAFILES="${EDMDATAFILES}:/dls_sw/prod/R3.14.12.7/support/ADCore/3-12-1dls3/data"
-EDMDATAFILES="${EDMDATAFILES}:/dls/science/users/hvc52853/OdinDEV/ADOdin/data"
-EDMDATAFILES="${EDMDATAFILES}:/dls_sw/prod/R3.14.12.7/support/asyn/4-41dls2/data"
+
+EDMDATAFILES="${EDMDATAFILES}:${ASYN}/opi/edm"
+EDMDATAFILES="${EDMDATAFILES}:${ADCORE}/ADApp/op/edl"
+EDMDATAFILES="${EDMDATAFILES}:${ADODIN}/odinApp/op/edl/odin"
+EDMDATAFILES="${EDMDATAFILES}:${ADODIN}/odinApp/op/edl/xspress"
+EDMDATAFILES="${EDMDATAFILES}:${ADODIN}/odinApp/op/edl/excalibur"
+EDMDATAFILES="${EDMDATAFILES}:${ADODIN}/iocs/xspress/xspressApp/opi/edl"
+EDMDATAFILES="${EDMDATAFILES}:${PROCSERV}/procServControlApp/opi/edl"
+
 
 export EDMDATAFILES
 

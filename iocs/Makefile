@@ -1,7 +1,8 @@
 TOP = ..
 include $(TOP)/configure/CONFIG
 
-DIRS := $(wildcard excalibur eiger tristan arc-sim arc-lab xspress)
+# Only build Xspress
+DIRS := $(wildcard xspress)
 
 include $(TOP)/configure/RULES_TOP
 
