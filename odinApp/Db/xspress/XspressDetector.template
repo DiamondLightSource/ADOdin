@@ -178,25 +178,6 @@ record(longout, "$(P)$(R)LIB_XSP_DEBUG")
     field(SCAN, "Passive")
 }
 
-
-record(bi, "$(P)$(R)COLLECTRESGRADES_RBV")
-{
-    field(DTYP, "asynInt32")
-    field(SCAN, "I/O Intr")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_config/use_resgrades")
-    field(ZNAM, "No")
-    field(ONAM, "Yes")
-}
-
-record(bo, "$(P)$(R)COLLECTRESGRADES")
-{
-    field(DTYP, "asynInt32")
-    field(SCAN, "Passive")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))_ODB_config/use_resgrades")
-    field(ZNAM, "No")
-    field(ONAM, "Yes")
-}
-
 record(mbbi, "$(P)$(R)RUN_FLAGS_RBV")
 {
     field(DTYP, "asynInt32")
@@ -557,49 +538,7 @@ record(longout, "$(P)$(R)LiveIndexChannel")
 {
 }
 
-record(longout, "$(P)$(R)LiveIndexResgrade")
-{
-}
-
-record(calcout, "$(P)$(R)ResetLiveIndexResgrade")
-{
-    field(INPA, "$(P)$(R)COLLECTRESGRADES CPP")
-    field(CALC, "0")
-    field(OUT, "$(P)$(R)LiveIndexResgrade PP")
-}
-
-record(calcout, "$(P)$(R)CalcLiveIndex")
-{
-    field(INPA, "$(P)$(R)COLLECTRESGRADES CPP")
-    field(INPB, "$(P)$(R)LiveIndexChannel CPP")
-    field(INPC, "$(P)$(R)LiveIndexResgrade CPP")
-    field(CALC, "A=0?B:(B*16)+C")
-}
-
-record(calcout, "$(P)$(R)ReadbackLiveIndexChannel")
-{
-    field(INPA, "$(P)$(R)COLLECTRESGRADES CPP")
-    field(INPB, "$(P)$(R)CalcLiveIndex CPP")
-    field(CALC, "A=0?B:B/16")
-    field(SCAN, "1 second")
-    field(OUT, "$(P)$(R)LiveIndexChannel_RBV PP")
-}
-
 record(longout, "$(P)$(R)LiveIndexChannel_RBV")
-{
-}
-
-record(calcout, "$(P)$(R)ReadbackLiveIndexResgrade")
-{
-    field(INPA, "$(P)$(R)COLLECTRESGRADES CPP")
-    field(INPB, "$(P)$(R)CalcLiveIndex CPP")
-    field(INPC, "$(P)$(R)LiveIndexChannel_RBV CPP")
-    field(CALC, "A=0?0:(B-(16*C))")
-    field(SCAN, "1 second")
-    field(OUT, "$(P)$(R)LiveIndexResgrade_RBV PP")
-}
-
-record(longout, "$(P)$(R)LiveIndexResgrade_RBV")
 {
 }
 
