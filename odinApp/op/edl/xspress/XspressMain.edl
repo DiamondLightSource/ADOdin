@@ -1568,46 +1568,6 @@ major 4
 minor 0
 release 0
 x 285
-y 240
-w 140
-h 25
-fgColor index 25
-bgColor index 3
-inconsistentColor index 0
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)$(R)COLLECTRESGRADES"
-indicatorPv "$(P)$(R)COLLECTRESGRADES_RBV"
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 205
-y 240
-w 70
-h 25
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Collect"
-  "Resgrades"
-}
-endObjectProperties
-
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 285
 y 270
 w 140
 h 20
